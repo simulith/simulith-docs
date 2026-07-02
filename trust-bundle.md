@@ -4,7 +4,7 @@ Reproducible **zip** for sales and POC evaluators: public compatibility matrix, 
 
 **Sales narrative:** `cursor/company/sales/trust-bundle.md`  
 **Editions (draft):** `cursor/company/sales/editions-and-licensing.md`  
-**Matrix (FW-CMP-003):** [compatibility-matrix.md](compatibility-matrix.md)
+**Matrix (FW-CMP-003):** [compatibility-matrix.md](compatibility-matrix.md) · **Public mirror:** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
 ---
 

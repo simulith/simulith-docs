@@ -2,6 +2,8 @@
 
 Public reference for **local API support** vs **`simulith verify` coverage** on DynamoDB, SQS, and SSM.
 
+**Public mirror (prospects, sales, Hub):** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
+
 **Consolidated summary (percentages, Terraform, Console):** [`aws-parity-overview.md`](aws-parity-overview.md).
 
 **Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
