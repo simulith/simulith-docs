@@ -242,7 +242,7 @@ Verify deletes each `simulith-verify-*` queue on Simulith via **DeleteQueue** wh
 
 ## Continuous integration (GitHub Actions)
 
-Every pull request and push to `main`/`master` runs the **`Parity smoke`** job in [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) (alongside runtime unit tests).
+Every pull request and push to `main`/`master` runs the **`Parity smoke`** job in `.github/workflows/ci.yml` (alongside runtime unit tests).
 
 ### What runs
 
@@ -294,7 +294,7 @@ Inspect JSON: `simulith report -i artifacts/verify-dynamodb.json`
 
 ### Docker Compose verify (SML-076)
 
-The **`Parity smoke (Docker)`** job in [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) validates the **shipped runtime Docker image**: Compose builds and starts Simulith on `:4566`, seeds state in a one-off container, then runs the same **verify smoke** commands from a host-built CLI (`--skip-aws`). No manual `simulith start` step.
+The **`Parity smoke (Docker)`** job in `.github/workflows/ci.yml` validates the **shipped runtime Docker image**: Compose builds and starts Simulith on `:4566`, seeds state in a one-off container, then runs the same **verify smoke** commands from a host-built CLI (`--skip-aws`). No manual `simulith start` step.
 
 | Service | Artifact |
 | --- | --- |

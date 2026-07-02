@@ -16,7 +16,7 @@ runtime/examples/terraform/
 
 Each subdirectory with `main.tf` is a **standalone** module: `cd` into it, then `terraform init && apply`.
 
-**Endpoint:** Docker all-in-one (Console `:9080`) → `http://127.0.0.1:9080/runtime` in `terraform.tfvars.example` / `dev.tfvars.example`. Native / host `:4566` → `*.native.example`. **Real AWS** → workspace `aws` + `-var-file=terraform.aws-dev.tfvars` (DynamoDB, SQS) or `dev.aws.tfvars` (SSM parameters) — see [terraform-integration.md — Workspaces](../../docs/terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws).
+**Endpoint:** Docker all-in-one (Console `:9080`) → `http://127.0.0.1:9080/runtime` in `terraform.tfvars.example` / `dev.tfvars.example`. Native / host `:4566` → `*.native.example`. **Real AWS** → workspace `aws` + `-var-file=terraform.aws-dev.tfvars` (DynamoDB, SQS) or `dev.aws.tfvars` (SSM parameters) — see [terraform-integration.md — Workspaces](../../terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws).
 
 ## Green path status (apply → destroy)
 
@@ -30,6 +30,6 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`ssm/`](ssm/) | Green | Green | Use `-parallelism=1` on apply and destroy; import documented |
 | [`ssm/parameters/`](ssm/parameters/) | Green | Green | 27× `/SIMULITH/DEV/*` locally; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` — [README](ssm/parameters/README.md) |
 
-Full walkthrough: [terraform-integration.md — Green path IaC](../../docs/terraform-integration.md#green-path-iac).
+Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 
-Guide: [terraform-integration.md](../../docs/terraform-integration.md) · Parity gaps: cursor/company/future-work/
+Guide: [terraform-integration.md](../../terraform-integration.md) · Parity gaps: cursor/company/future-work/

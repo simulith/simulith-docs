@@ -21,7 +21,7 @@ Default **`environment=dev`** disables PITR and deletion protection so `terrafor
 
 Table name: **`${var.project_name}_user`** (e.g. `loyaleasy_user`, `simulith_dev_user`).
 
-> **Important:** Terraform, the AWS CLI, and the Console must use the **same** Simulith instance. See [terraform-integration.md — Endpoint matrix](../../../../docs/terraform-integration.md#endpoint-matrix).
+> **Important:** Terraform, the AWS CLI, and the Console must use the **same** Simulith instance. See [terraform-integration.md — Endpoint matrix](../../../../terraform-integration.md#endpoint-matrix).
 
 ## Prerequisites
 
@@ -281,4 +281,4 @@ Do **not** use `simulith reset` for Terraform-managed tables unless you also rem
 
 ---
 
-Service index: [../README.md](../README.md) · Guide: [terraform-integration.md](../../../../docs/terraform-integration.md)
+Service index: [../README.md](../../../../README.md) · Guide: [terraform-integration.md](../../../../terraform-integration.md)

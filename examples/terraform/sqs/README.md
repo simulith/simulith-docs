@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-- Simulith running for local apply ([quickstart](../../../docs/quickstart.md))
+- Simulith running for local apply ([quickstart](../../../quickstart.md))
 - Terraform ≥ 1.6, AWS provider ~> 5.x
 - AWS credentials configured for real AWS apply
 
@@ -28,7 +28,7 @@ The workspace name does **not** switch the endpoint — `use_simulith_endpoint` 
 | Docker all-in-one (Console `:9080`) | `http://127.0.0.1:9080/runtime` — default in `terraform.tfvars.example` |
 | Native / host `:4566` | `http://127.0.0.1:4566` — `terraform.tfvars.native.example` |
 
-CLI and Console must use the **same** runtime. See [endpoint matrix](../../../docs/terraform-integration.md#endpoint-matrix).
+CLI and Console must use the **same** runtime. See [endpoint matrix](../../../terraform-integration.md#endpoint-matrix).
 
 ## Apply (Simulith)
 
@@ -49,7 +49,7 @@ terraform destroy
 
 Use the **same** `terraform.tfvars` / endpoint as apply. If destroy times out at 3m, rebuild Simulith (includes JSON `QueueDoesNotExist` fix) or `terraform state rm aws_sqs_queue.app` once the queue is gone in Console/CLI.
 
-See [Green path IaC](../../../docs/terraform-integration.md#green-path-iac).
+See [Green path IaC](../../../terraform-integration.md#green-path-iac).
 
 ## Apply (real AWS dev)
 
@@ -68,7 +68,7 @@ aws sqs get-queue-url --queue-name simulith-dev-app-queue-tf --region us-east-1
 
 ## Manual test (AWS CLI — Simulith)
 
-After apply (or after [seed](../../../docs/seed.md) for `demo-queue`):
+After apply (or after [seed](../../../seed.md) for `demo-queue`):
 
 ```bash
 export AWS_ENDPOINT=http://127.0.0.1:9080/runtime
@@ -89,7 +89,7 @@ aws sqs receive-message --queue-url "$QUEUE_URL" \
   --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
 ```
 
-Full loop (send → receive → delete): [aws-cli-examples.md — SQS](../../../docs/aws-cli-examples.md#sqs).
+Full loop (send → receive → delete): [aws-cli-examples.md — SQS](../../../aws-cli-examples.md#sqs).
 
 ## Console (Simulith only)
 
@@ -105,10 +105,10 @@ Peek does not expose receipt handles; use **Receive message** before **Delete**.
 ## Limitations
 
 - Standard queues only (no `.fifo`)
-- [sqs.md](../../../docs/sqs.md) — MVP deviations
+- [sqs.md](../../../sqs.md) — MVP deviations
 
 ## Related
 
 - [standard-queue.tf.example](./standard-queue.tf.example) — minimal snippet
-- [terraform-integration.md — Workspaces](../../../docs/terraform-integration.md#workspaces-and--var-file-user-table--real-aws)
-- [console.md](../../../docs/console.md)
+- [terraform-integration.md — Workspaces](../../../terraform-integration.md#workspaces-and--var-file-user-table--real-aws)
+- [console.md](../../../console.md)

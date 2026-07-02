@@ -4,7 +4,7 @@ Runnable smoke test using **AWS SDK for JavaScript v3** against a local Simulith
 
 ## Prerequisites
 
-- Simulith running on port **4566** — see [quickstart](../../docs/quickstart.md)
+- Simulith running on port **4566** — see [quickstart](../../quickstart.md)
 - Node.js 18+
 
 ## Run
@@ -25,4 +25,4 @@ export SIMULITH_ENDPOINT=http://127.0.0.1:4566
 export AWS_DEFAULT_REGION=us-east-1
 ```
 
-Full guide: [sdk-examples.md](../../docs/sdk-examples.md).
+Full guide: [sdk-examples.md](../../sdk-examples.md).

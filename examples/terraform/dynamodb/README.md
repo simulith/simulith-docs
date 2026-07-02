@@ -7,4 +7,4 @@
 
 Future work: cursor/company/future-work/dynamodb/
 
-Parent index: [../README.md](../README.md)
+Parent index: [../README.md](../../../README.md)

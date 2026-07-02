@@ -178,7 +178,7 @@ aws ssm get-parameter --name /app/demo/api-url \
 
 For more CLI operations, see **[AWS CLI examples](aws-cli-examples.md)**. This quickstart only proves the endpoint works.
 
-**Automated equivalent** (no AWS CLI): from `runtime/` run `go test ./internal/runtime -run TestSmoke_MVP -count=1`, or from repo root `maintainer workflow (private monorepo)`. See [scripts/README.md](../scripts/README.md).
+**Automated equivalent** (no AWS CLI): from `runtime/` run `go test ./internal/runtime -run TestSmoke_MVP -count=1`, or from repo root `maintainer workflow (private monorepo)`. See scripts/README.md.
 
 ---
 
@@ -266,5 +266,5 @@ Product roadmap: `cursor/company/mvp-work-plan.md`.
 
 ## Related
 
-- Module overview: [../README.md](../README.md)
+- Module overview: [../README.md](README.md)
 - Full doc index: [README.md](README.md)

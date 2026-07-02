@@ -17,7 +17,7 @@ SIMULITH_VERSION=0.1.0 docker compose -f docker-compose.all-in-one.published.yml
 # omit SIMULITH_VERSION for :latest
 ```
 
-Same single entry URL as below (`http://localhost:9080`). Details: [release.md](release.md), [docker.md](docker.md).
+Same single entry URL as below (`http://localhost:9080`). Details: [release.md](https://simulith.dev), [docker.md](docker.md).
 
 ### Workshop demo — all-in-one (recommended, SML-060 / FW-PRD-012)
 
@@ -68,7 +68,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 6. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, etc.).
 7. Click **Reset local state** — clears all panels.
 
-Console README: [`../../console/README.md`](../../console/README.md).
+Console README: [`../../console/README.md`](console.md).
 
 ---
 
@@ -137,7 +137,7 @@ Failed **parity** scenarios may include optional **`diffDetail`** (`path`, `aws`
 
 **Import flow:** Console → **Verify** → upload one or more JSON files (or paste JSON). Multiple uploads show tabs per service.
 
-**CI artifact URL (ship criteria):** GitHub does not allow unauthenticated browser fetch of artifact URLs. Download the artifact zip from the PR/run **Checks** tab → extract JSON → upload in Console. See [`compatibility.md`](compatibility.md) § CI and [`../../console/README.md`](../../console/README.md).
+**CI artifact URL (ship criteria):** GitHub does not allow unauthenticated browser fetch of artifact URLs. Download the artifact zip from the PR/run **Checks** tab → extract JSON → upload in Console. See [`compatibility.md`](compatibility.md) § CI and [`../../console/README.md`](console.md).
 
 Schema reference: `runtime/internal/verify/report/types.go`. Smoke vs parity modes: [`compatibility.md`](compatibility.md).
 

@@ -4,7 +4,7 @@ Minimal root module: one **DynamoDB** hash-key table against Simulith.
 
 ## Prerequisites
 
-- Simulith on port **4566** — [quickstart](../../../../docs/quickstart.md)
+- Simulith on port **4566** — [quickstart](../../../../quickstart.md)
 - Terraform ≥ 1.6
 
 ## Run
@@ -37,6 +37,6 @@ terraform destroy
 
 Type `yes` when prompted. No `simulith reset` or `terraform state rm` required for this module.
 
-If destroy fails: confirm Simulith is running on `http://127.0.0.1:4566` and the provider endpoint matches. See [terraform-integration.md — Green path IaC](../../../../docs/terraform-integration.md#green-path-iac).
+If destroy fails: confirm Simulith is running on `http://127.0.0.1:4566` and the provider endpoint matches. See [terraform-integration.md — Green path IaC](../../../../terraform-integration.md#green-path-iac).
 
-Service index: [../README.md](../README.md) · Guide: [terraform-integration.md](../../../../docs/terraform-integration.md)
+Service index: [../README.md](../../../../README.md) · Guide: [terraform-integration.md](../../../../terraform-integration.md)

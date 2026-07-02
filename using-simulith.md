@@ -2,7 +2,7 @@
 
 You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with DynamoDB, SQS, and SSM locally, and how that compares to real AWS.
 
-> **Installation:** not covered here — see [quickstart](quickstart.md) or [Docker Hub overviews](../dockerhub/README.md).
+> **Installation:** not covered here — see [quickstart](quickstart.md) or [Docker Hub overviews](https://hub.docker.com/r/simulith/simulith).
 
 ---
 
@@ -269,5 +269,5 @@ Docker-specific issues (ports, bind address): [docker.md — Troubleshooting](do
 
 ## Related
 
-- Installation: [quickstart.md](quickstart.md) · [docker.md](docker.md) · [Docker Hub](../dockerhub/README.md)
+- Installation: [quickstart.md](quickstart.md) · [docker.md](docker.md) · [Docker Hub](https://hub.docker.com/r/simulith/simulith)
 - Product scope: mvp-work-plan.md

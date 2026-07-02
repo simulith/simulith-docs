@@ -26,7 +26,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | SQS | queue `demo-queue` | One message `hello from seed` |
 | SSM | `/app/demo/api-url`, `/app/demo/env` | String parameters for local app config |
 
-Example fixture source: [seeds/default.json](../seeds/default.json) (embedded copy in `internal/seed/default.json`).
+Example fixture source: seeds/default.json (embedded copy in `internal/seed/default.json`).
 
 ## Workflow
 

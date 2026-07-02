@@ -2,7 +2,7 @@
 
 Consolidated view of **Simulith Console vs AWS Management Console** for DynamoDB, SQS, and SSM: what the **local web UI ships today**, what is **missing**, and **backlog IDs**. (Engineering doc — “MVP” here denotes **scope boundary**, not user-facing Console copy; see FW-PRD-016 / SML-083.)
 
-> **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](../../console/README.md)  
+> **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](console.md)  
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension  
 > **Backlog:** `cursor/company/future-work/product/`
 

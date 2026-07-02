@@ -2,9 +2,9 @@
 
 Docker reference for the Simulith runtime. For first-time onboarding, see [quickstart.md](quickstart.md).
 
-> **Releases (versioned images + binaries):** see [release.md](release.md) — tag-driven pipeline, multi-arch image, smoke and gated publishing.
+> **Releases (versioned images + binaries):** see [release.md](https://simulith.dev) — tag-driven pipeline, multi-arch image, smoke and gated publishing.
 
-> **Docker Hub overviews (source):** [`../dockerhub/README.md`](../dockerhub/README.md) — copy-paste README for `simulith/simulith` and `simulith/console` (SML-090 / FW-PRD-021).
+> **Docker Hub overviews (source):** [`../dockerhub/README.md`](https://hub.docker.com/r/simulith/simulith) — copy-paste README for `simulith/simulith` and `simulith/console` (SML-090 / FW-PRD-021).
 
 Validation steps for SML-003: `cursor/analysis/features/_core/simulith-docker-support/test-checklist.md`
 
@@ -33,7 +33,7 @@ SIMULITH_VERSION=0.1.0 docker compose -f docker-compose.all-in-one.published.yml
 # or omit SIMULITH_VERSION for :latest
 ```
 
-Runtime and Console are separate images that share the release version. See [release.md](release.md).
+Runtime and Console are separate images that share the release version. See [release.md](https://simulith.dev).
 
 ## Quick run (runtime only)
 
@@ -140,6 +140,6 @@ Create the directory on the host if needed. On Windows, ensure the path is share
 - [using-simulith.md](using-simulith.md) — **after Docker is running**: workflows, Simulith vs AWS, endpoint matrix
 - [console.md](console.md) — all-in-one workshop demo
 - [quickstart.md](quickstart.md) — onboarding
-- [README.md](../README.md) — module overview
-- [`../dockerhub/README.md`](../dockerhub/README.md) — Docker Hub repository overviews (source)
+- [README.md](README.md) — module overview
+- [`../dockerhub/README.md`](https://hub.docker.com/r/simulith/simulith) — Docker Hub repository overviews (source)
 - `cursor/company/mvp-work-plan.md` — STORY-003

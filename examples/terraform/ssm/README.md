@@ -11,7 +11,7 @@
 
 `aws_ssm_parameter` **terraform apply** and **destroy** work against Simulith when the runtime is listening on `http://127.0.0.1:4566` (provider uses PutParameter, GetParameter, DescribeParameters, DeleteParameter).
 
-Optional **`aws_ssm_parameters_by_path`** data source (see [`path-data.tf.example`](./path-data.tf.example)) uses GetParametersByPath — run [`simulith seed`](../../../docs/seed.md) first so `/app/demo/*` exists.
+Optional **`aws_ssm_parameters_by_path`** data source (see [`path-data.tf.example`](./path-data.tf.example)) uses GetParametersByPath — run [`simulith seed`](../../../seed.md) first so `/app/demo/*` exists.
 
 **Green path:** apply → optional verify → destroy without `simulith reset` workarounds. Validated with `hashicorp/aws` ~> 5.x (SML-057).
 
@@ -52,7 +52,7 @@ aws ssm get-parameters-by-path --path /app --recursive \
   --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
 ```
 
-**Git Bash on Windows:** export `MSYS2_ARG_CONV_EXCL="*"` before CLI commands with `/app/...` paths. See [aws-cli-examples.md](../../../docs/aws-cli-examples.md#ssm-parameter-store).
+**Git Bash on Windows:** export `MSYS2_ARG_CONV_EXCL="*"` before CLI commands with `/app/...` paths. See [aws-cli-examples.md](../../../aws-cli-examples.md#ssm-parameter-store).
 
 ## Destroy
 
@@ -64,7 +64,7 @@ Simulith implements **DeleteParameter** — destroy removes Terraform-managed pa
 
 Seed parameters (`/app/demo/*`) are unchanged unless you imported them into state.
 
-See [Green path IaC](../../../docs/terraform-integration.md#green-path-iac) for the full apply/destroy walkthrough.
+See [Green path IaC](../../../terraform-integration.md#green-path-iac) for the full apply/destroy walkthrough.
 
 ## Import existing parameters
 
@@ -80,7 +80,7 @@ terraform plan -parallelism=1   # expect no drift when value/type match main.tf
 terraform destroy -parallelism=1
 ```
 
-See [terraform-integration.md — Import](../../../docs/terraform-integration.md#import-existing-resources-mvp).
+See [terraform-integration.md — Import](../../../terraform-integration.md#import-existing-resources-mvp).
 
 ## Path prefix data source
 
@@ -93,9 +93,9 @@ See [terraform-integration.md — Import](../../../docs/terraform-integration.md
 - `DescribeParameters` MVP (Name Equals/BeginsWith) — required for Terraform provider refresh
 - **DeleteParameters** batch delete (SML-062) — CLI/SDK; Terraform still uses **DeleteParameter** per resource
 - Parameter **tags** supported on `aws_ssm_parameter` (SML-070)
-- See [ssm.md](../../../docs/ssm.md) for API deviations
+- See [ssm.md](../../../ssm.md) for API deviations
 
 ## Related
 
-- [terraform-integration.md](../../../docs/terraform-integration.md)
-- [aws-cli-examples.md](../../../docs/aws-cli-examples.md#ssm-parameter-store)
+- [terraform-integration.md](../../../terraform-integration.md)
+- [aws-cli-examples.md](../../../aws-cli-examples.md#ssm-parameter-store)

@@ -62,7 +62,7 @@ export MSYS2_ARG_CONV_EXCL="*"
 aws ssm get-parameters-by-path --path /SIMULITH/DEV --recursive --region us-east-1
 ```
 
-Do **not** use `//SIMULITH/DEV` (double slash sends a different name). PowerShell/CMD need no extra export. See [aws-cli-examples.md — SSM](../../../../docs/aws-cli-examples.md#ssm-parameter-store).
+Do **not** use `//SIMULITH/DEV` (double slash sends a different name). PowerShell/CMD need no extra export. See [aws-cli-examples.md — SSM](../../../../aws-cli-examples.md#ssm-parameter-store).
 
 ## Run (real AWS — Loyaleasy prod)
 
@@ -109,5 +109,5 @@ terraform destroy -var-file=dev.aws.tfvars -parallelism=1
 
 ## Related
 
-- Minimal SSM demo: [`../`](../README.md)
-- [`terraform-integration.md`](../../../../docs/terraform-integration.md)
+- Minimal SSM demo: [`../`](../../../../README.md)
+- [`terraform-integration.md`](../../../../terraform-integration.md)

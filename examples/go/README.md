@@ -4,7 +4,7 @@ Runnable smoke test using **AWS SDK for Go v2** against a local Simulith endpoin
 
 ## Prerequisites
 
-- Simulith running on port **4566** — see [quickstart](../../docs/quickstart.md)
+- Simulith running on port **4566** — see [quickstart](../../quickstart.md)
 - Go 1.22+
 
 ## Run
@@ -24,4 +24,4 @@ export SIMULITH_ENDPOINT=http://127.0.0.1:4566
 export AWS_DEFAULT_REGION=us-east-1
 ```
 
-Full guide: [sdk-examples.md](../../docs/sdk-examples.md).
+Full guide: [sdk-examples.md](../../sdk-examples.md).
