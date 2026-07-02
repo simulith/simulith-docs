@@ -1,0 +1,238 @@
+{
+  "simulith_dev_user": [
+    {
+      "PutRequest": {
+        "Item": {
+          "cognito_sub": {
+            "S": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+          },
+          "programId": {
+            "S": "PCM"
+          },
+          "typeNumber": {
+            "S": "1-15383082"
+          },
+          "email": {
+            "S": "juanviar@gmail.com"
+          },
+          "given_name": {
+            "S": "Juan"
+          },
+          "family_name": {
+            "S": "Villa"
+          },
+          "phone_number": {
+            "S": "573136008814"
+          },
+          "identification": {
+            "S": "15383082"
+          },
+          "identificationTypeId": {
+            "N": "1"
+          },
+          "roles": {
+            "L": [
+              {
+                "S": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+              }
+            ]
+          },
+          "tenantIds": {
+            "L": [
+              {
+                "S": "2ee8faa4-c9e8-4c66-a30d-f92e6708ac37"
+              }
+            ]
+          },
+          "isCustomer": {
+            "N": "0"
+          },
+          "termsaccepted": {
+            "N": "0"
+          },
+          "status": {
+            "S": "active"
+          },
+          "createdAt": {
+            "S": "2025-02-20T12:00:00Z"
+          },
+          "updatedAt": {
+            "S": "2025-02-20T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "cognito_sub": {
+            "S": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e"
+          },
+          "programId": {
+            "S": "PCM"
+          },
+          "typeNumber": {
+            "S": "1-8288221"
+          },
+          "email": {
+            "S": "elmauro@gmail.com"
+          },
+          "given_name": {
+            "S": "Hernán"
+          },
+          "family_name": {
+            "S": "Cadavid"
+          },
+          "phone_number": {
+            "S": "3116344195"
+          },
+          "identification": {
+            "S": "8288221"
+          },
+          "identificationTypeId": {
+            "N": "1"
+          },
+          "roles": {
+            "L": [
+              {
+                "S": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e"
+              }
+            ]
+          },
+          "isCustomer": {
+            "N": "1"
+          },
+          "termsaccepted": {
+            "N": "0"
+          },
+          "status": {
+            "S": "active"
+          },
+          "createdAt": {
+            "S": "2025-02-20T12:00:00Z"
+          },
+          "updatedAt": {
+            "S": "2025-02-20T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "cognito_sub": {
+            "S": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f"
+          },
+          "programId": {
+            "S": "PCM"
+          },
+          "typeNumber": {
+            "S": "1-12345678"
+          },
+          "email": {
+            "S": "elmauro@gmail.com"
+          },
+          "given_name": {
+            "S": "Mauricio"
+          },
+          "family_name": {
+            "S": "Cadavid"
+          },
+          "phone_number": {
+            "S": "123456789012"
+          },
+          "identification": {
+            "S": "12345678"
+          },
+          "identificationTypeId": {
+            "N": "1"
+          },
+          "roles": {
+            "L": [
+              {
+                "S": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e"
+              }
+            ]
+          },
+          "isCustomer": {
+            "N": "1"
+          },
+          "termsaccepted": {
+            "N": "0"
+          },
+          "status": {
+            "S": "active"
+          },
+          "createdAt": {
+            "S": "2025-02-20T12:00:00Z"
+          },
+          "updatedAt": {
+            "S": "2025-02-20T12:00:00Z"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "cognito_sub": {
+            "S": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a"
+          },
+          "programId": {
+            "S": "PCM"
+          },
+          "typeNumber": {
+            "S": "1-98632674"
+          },
+          "email": {
+            "S": "mauricio.cadavid@hatchworks.com"
+          },
+          "given_name": {
+            "S": "Mauricio"
+          },
+          "family_name": {
+            "S": "Cadavid"
+          },
+          "phone_number": {
+            "S": "3116344194"
+          },
+          "identification": {
+            "S": "98632674"
+          },
+          "identificationTypeId": {
+            "N": "1"
+          },
+          "roles": {
+            "L": [
+              {
+                "S": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f"
+              }
+            ]
+          },
+          "tenantIds": {
+            "L": [
+              {
+                "S": "2ee8faa4-c9e8-4c66-a30d-f92e6708ac37"
+              }
+            ]
+          },
+          "isCustomer": {
+            "N": "0"
+          },
+          "termsaccepted": {
+            "N": "0"
+          },
+          "status": {
+            "S": "active"
+          },
+          "createdAt": {
+            "S": "2025-02-20T12:00:00Z"
+          },
+          "updatedAt": {
+            "S": "2025-02-20T12:00:00Z"
+          }
+        }
+      }
+    }
+  ]
+}

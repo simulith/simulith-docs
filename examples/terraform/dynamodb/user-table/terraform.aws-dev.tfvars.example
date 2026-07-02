@@ -1,0 +1,9 @@
+# Real AWS — dev-shaped table (PITR + deletion protection OFF; easy destroy).
+# Copy to terraform.aws-dev.tfvars (gitignored) and use workspace "aws" (see README).
+#
+#   terraform workspace new aws
+#   terraform apply -var-file=terraform.aws-dev.tfvars
+project_name          = "simulith_dev"
+environment           = "dev"
+use_simulith_endpoint = false
+aws_region            = "us-east-1"

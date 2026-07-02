@@ -1,0 +1,17 @@
+{
+  "name": "simulith-sdk-example-nodejs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AWS SDK v3 smoke example against Simulith",
+  "scripts": {
+    "start": "node index.mjs",
+    "dynamodb": "node index.mjs --dynamodb",
+    "sqs": "node index.mjs --sqs",
+    "seed": "node index.mjs --seed"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.758.0",
+    "@aws-sdk/client-sqs": "^3.758.0"
+  }
+}

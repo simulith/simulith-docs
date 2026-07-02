@@ -1,0 +1,24 @@
+# Minimal aws_sqs_queue against Simulith — paste into your root module.
+# All-in-one: endpoints.sqs = "http://127.0.0.1:9080/runtime"
+# Native:     endpoints.sqs = "http://127.0.0.1:4566"
+
+provider "aws" {
+  region                      = "us-east-1"
+  access_key                  = "test"
+  secret_key                  = "secret"
+  skip_credentials_validation = true
+  skip_metadata_api_check     = true
+  skip_requesting_account_id  = true
+
+  endpoints {
+    sqs = "http://127.0.0.1:9080/runtime"
+  }
+}
+
+resource "aws_sqs_queue" "app" {
+  name = "my-queue"
+}
+
+output "queue_url" {
+  value = aws_sqs_queue.app.url
+}

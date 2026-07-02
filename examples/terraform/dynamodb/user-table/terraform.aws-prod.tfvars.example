@@ -1,0 +1,11 @@
+# Real AWS prod — PITR + deletion protection ON.
+# Copy to terraform.aws-prod.tfvars (gitignored) and use workspace "aws" (see README).
+#
+#   terraform workspace select aws
+#   terraform apply -var-file=terraform.aws-prod.tfvars
+#
+# Before destroy: disable deletion protection (environment=dev + re-apply, or AWS Console).
+project_name          = "loyaleasy-prod"
+environment           = "prod"
+use_simulith_endpoint = false
+aws_region            = "us-east-1"

@@ -1,0 +1,10 @@
+# Simulith local — native CLI or Docker with host :4566 published
+# Copy to terraform.tfvars when NOT using docker-compose.all-in-one (Console-only proxy).
+#
+#   go run ./cmd/simulith start
+#   or: docker compose -f docker-compose.all-in-one.yml -f docker-compose.all-in-one.runtime-port.yml up --build
+project_name          = "loyaleasy"
+environment           = "dev"
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:4566"
+aws_region            = "us-east-1"

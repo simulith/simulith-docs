@@ -1,0 +1,17 @@
+# Real AWS prod (Loyaleasy stacks) — copy to prod.tfvars
+#   terraform workspace select aws
+#   terraform apply -var-file=prod.tfvars -parallelism=1
+#
+# Set secrets via TF_VAR_* or a gitignored prod.tfvars (never commit real values).
+env                   = "PROD"
+project_name          = "loyaleasy"
+use_simulith_endpoint = false
+use_remote_state      = true
+aws_region            = "us-east-1"
+
+account_id = "421800335080"
+algorithm  = "HS512"
+api_key    = "LOYALTY"
+domain     = "prod.loyaleasy.com"
+endpoint   = "https://dynamodb.us-east-1.amazonaws.com"
+region     = "us-east-1"

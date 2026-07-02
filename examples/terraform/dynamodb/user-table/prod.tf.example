@@ -1,0 +1,21 @@
+# Real AWS — same .tf files as Simulith green path; only variables differ.
+#
+# Copy examples (gitignored when not *.example):
+#   cp terraform.aws-dev.tfvars.example terraform.aws-dev.tfvars
+#   cp terraform.aws-prod.tfvars.example terraform.aws-prod.tfvars
+#
+# Isolate state from local Simulith:
+#   terraform workspace new aws
+#   terraform workspace select aws
+#
+# AWS dev (simulith_dev_user, easy destroy):
+#   terraform apply -var-file=terraform.aws-dev.tfvars
+#
+# AWS prod (PITR + deletion protection):
+#   terraform apply -var-file=terraform.aws-prod.tfvars
+#
+# Back to Simulith local:
+#   terraform workspace select default
+#   terraform apply    # uses terraform.tfvars — NOT terraform.aws-dev.tfvars unless -var-file
+#
+# Before destroy on prod: disable deletion_protection (environment=dev + re-apply, or AWS Console).

@@ -1,0 +1,21 @@
+# Real AWS dev — copy to dev.aws.tfvars (gitignored). Workspace aws required.
+#
+#   terraform workspace select -or-create aws
+#   export TF_VAR_access_key_id=...
+#   export TF_VAR_secret_access_key=...
+#   export TF_VAR_secret_password=...
+#   terraform apply -var-file=dev.aws.tfvars -parallelism=1
+#
+# Unlike dev.tfvars, this hits real AWS SSM (use_simulith_endpoint = false).
+env                   = "DEV"
+project_name          = "simulith"
+use_simulith_endpoint = false
+use_remote_state      = false
+aws_region            = "us-east-1"
+
+account_id = "421800335080"
+algorithm  = "HS512"
+api_key    = "LOYALTY"
+domain     = "dev.loyaleasy.com"
+endpoint   = "https://dynamodb.us-east-1.amazonaws.com"
+region     = "us-east-1"

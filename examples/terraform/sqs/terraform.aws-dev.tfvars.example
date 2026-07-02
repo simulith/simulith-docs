@@ -1,0 +1,7 @@
+# Real AWS dev — copy to terraform.aws-dev.tfvars (gitignored). Workspace aws required.
+#
+#   terraform workspace select -or-create aws
+#   terraform apply -var-file=terraform.aws-dev.tfvars
+use_simulith_endpoint = false
+aws_region            = "us-east-1"
+queue_name            = "simulith-dev-app-queue-tf"
