@@ -168,6 +168,6 @@ Follow `cursor/company/DOCUMENTATION-GOVERNANCE.md`. **Do not** copy the full ma
 
 - [compatibility-matrix.md](compatibility-matrix.md) — operation-level truth table
 - [compatibility.md](compatibility.md) — running verify
-- [smithy-contracts.md](smithy-contracts.md) — structural contract (Smithy AST)
+- smithy-contracts.md — structural contract (Smithy AST)
 - [console-parity-overview.md](console-parity-overview.md) — Console vs AWS Console (UI)
 - mvp-work-plan.md — MVP exit criteria (met)

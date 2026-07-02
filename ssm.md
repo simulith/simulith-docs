@@ -126,5 +126,5 @@ Optional snapshot v1 `"ssm"` block is supported (SML-026).
 - [compatibility.md](compatibility.md) — `simulith verify ssm` parity checks
 - [aws-cli-examples.md](aws-cli-examples.md)
 - [persistence.md](persistence.md)
-- [protocol.md](protocol.md)
-- [smithy-contracts.md](smithy-contracts.md)
+- protocol.md
+- smithy-contracts.md

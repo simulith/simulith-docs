@@ -241,8 +241,8 @@ Container-specific config: [docker.md](docker.md).
 | SDK examples | [sdk-examples.md](sdk-examples.md) |
 | Terraform integration | [terraform-integration.md](terraform-integration.md) — start with [Green path IaC](terraform-integration.md#green-path-iac) |
 | Simulith Console (GUI) | [console.md](console.md) |
-| Protocol & errors | [protocol.md](protocol.md) |
-| Smithy contracts | [smithy-contracts.md](smithy-contracts.md) |
+| Protocol & errors | protocol.md |
+| Smithy contracts | smithy-contracts.md |
 | All runtime docs | [README.md](README.md) |
 
 Product roadmap: `cursor/company/mvp-work-plan.md`.

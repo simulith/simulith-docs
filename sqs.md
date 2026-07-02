@@ -238,6 +238,6 @@ Service faults use AWS Query XML (`ErrorResponse` with `Code`, `Message`, `Type`
 - [compatibility-matrix.md](compatibility-matrix.md) — public MVP operation × verify coverage matrix
 - [compatibility.md](compatibility.md) — `simulith verify sqs` parity and smoke modes
 - [aws-cli-examples.md](aws-cli-examples.md) — AWS CLI cookbook
-- [smithy-contracts.md](smithy-contracts.md) — vendored SQS Smithy model
-- [protocol.md](protocol.md) — POST / multiplex (JSON + Query)
+- smithy-contracts.md — vendored SQS Smithy model
+- protocol.md — POST / multiplex (JSON + Query)
 - [quickstart.md](quickstart.md) — starting the runtime

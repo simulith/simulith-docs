@@ -334,5 +334,5 @@ bash ./scripts/build-trust-bundle.sh
 - [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix
 - [dynamodb.md](dynamodb.md) — DynamoDB operations
 - [ssm.md](ssm.md) — SSM operations
-- [smithy-contracts.md](smithy-contracts.md) — structural vs behavioral contracts
+- smithy-contracts.md — structural vs behavioral contracts
 - [quickstart.md](quickstart.md) — starting the runtime

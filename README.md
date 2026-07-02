@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `45c79fb` on 2026-07-02.
+Generated from monorepo commit `a665314` on 2026-07-02.
 
 ## Start here
 
@@ -56,5 +56,3 @@ Generated from monorepo commit `45c79fb` on 2026-07-02.
 | [Persistence](persistence.md) | SQLite state |
 | [Seed](seed.md) | Demo fixtures |
 | [Snapshot](snapshot.md) | Save/restore state |
-| [Protocol](protocol.md) | AWS JSON wire format |
-| [Smithy contracts](smithy-contracts.md) | API model subset |

@@ -534,6 +534,6 @@ Full deviation tables:
 - [quickstart.md](quickstart.md) — onboarding
 - [aws-cli-examples.md](aws-cli-examples.md) — CLI cookbook
 - [compatibility.md](compatibility.md) — `simulith verify dynamodb` (Go SDK internally)
-- [protocol.md](protocol.md) — AWS JSON + Query wire formats
+- protocol.md — AWS JSON + Query wire formats
 - [terraform-integration.md](terraform-integration.md) — Terraform / IaC cookbook
-- [smithy-contracts.md](smithy-contracts.md) — API models
+- smithy-contracts.md — API models

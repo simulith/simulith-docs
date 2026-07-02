@@ -557,5 +557,5 @@ Full deviation tables:
 - [sdk-examples.md](sdk-examples.md) — Go + Node.js SDK cookbook
 - [terraform-integration.md](terraform-integration.md) — Terraform / IaC cookbook
 - [compatibility.md](compatibility.md) — `simulith verify dynamodb`
-- [protocol.md](protocol.md) — AWS JSON + Query wire formats
-- [smithy-contracts.md](smithy-contracts.md) — API models
+- protocol.md — AWS JSON + Query wire formats
+- smithy-contracts.md — API models
