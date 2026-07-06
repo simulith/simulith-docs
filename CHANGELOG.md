@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.8.0] - 2026-07-06
+
+### Features
+
+- **SML-109**: S3 ListObjectsV2
+
 ## [0.7.0] - 2026-07-06
 
 ### Features
