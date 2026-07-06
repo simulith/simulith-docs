@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.7.0] - 2026-07-06
+
+### Features
+
+- **SML-108**: S3 object CRUD
+
 ## [0.6.0] - 2026-07-06
 
 ### Features
