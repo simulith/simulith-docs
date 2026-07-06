@@ -24,7 +24,7 @@ Last updated: 2026-06-09 (SML-080 — verify DeleteParameters; **40/40** ops).
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**No fourth MVP service** is planned (ECS, S3, Lambda runtime, etc. remain out of scope per work plan).
+**No fourth Foundation service** was in the original scope (ECS, Lambda runtime, etc. remain out of scope per work plan). **Expansion:** S3 and follow-on services — see `product-vision.md`.
 
 ---
 

@@ -10,13 +10,14 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `a665314` on 2026-07-02.
+Generated from monorepo commit `1f78da3` on 2026-07-06.
 
 ## Start here
 
 | Guide | Purpose |
 | --- | --- |
 | [Quickstart](quickstart.md) | Run Simulith in under 5 minutes |
+| [Changelog](CHANGELOG.md) | Release notes by version (SML-driven) |
 | [Using Simulith (local vs AWS)](using-simulith.md) | After Docker is up — workflows and endpoints |
 | [Docker](docker.md) | Images, volumes, health checks |
 | [Console](console.md) | Web GUI at `:9080` |
@@ -37,6 +38,7 @@ Generated from monorepo commit `a665314` on 2026-07-02.
 | [DynamoDB](dynamodb.md) | Tables and items (MVP subset) |
 | [SQS](sqs.md) | Queues and messages |
 | [SSM](ssm.md) | Parameter Store |
+| [S3](s3.md) | Buckets (lifecycle; object CRUD planned) |
 
 ## Compatibility
 
