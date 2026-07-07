@@ -7,7 +7,7 @@ Consolidated view of **Simulith vs AWS** for the three MVP services: what is **i
 > **Backlog IDs:** `cursor/company/future-work/`  
 > **MVP scope:** `cursor/company/mvp-work-plan.md`
 
-Last updated: 2026-06-09 (SML-080 — verify DeleteParameters; **40/40** ops).
+Last updated: 2026-07-07 (SML-110 — simulith verify s3; S3 added as 4th service).
 
 ---
 
@@ -18,13 +18,14 @@ Last updated: 2026-06-09 (SML-080 — verify DeleteParameters; **40/40** ops).
 | **DynamoDB** | 17 | 17 / 17 (100%) | **100%** (17 / 17) | **~38%** (17 / ~45) |
 | **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | **~55%** (14 / ~22) |
 | **SSM** (Parameter Store) | 9 | 9 / 9 (100%) | **100%** (10 / 10) | **~58%** (9 / ~12) |
-| **Total MVP** | **40** | **40 / 40 (100%)** | **95%** (40 / 42) | **~49%** (40 / ~79) |
+| **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
+| **Total** | **48** | **48 / 48 (100%)** | **94%** (48 / 51) | **~36%** (48 / ~136) |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service `future-work/*/README.md`.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**No fourth Foundation service** was in the original scope (ECS, Lambda runtime, etc. remain out of scope per work plan). **Expansion:** S3 and follow-on services — see `product-vision.md`.
+**S3 is the first expansion service** (SML-106–SML-110). Next: Terraform green path (FW-S3-006), then Lambda, API Gateway per product vision. ECS, EC2, VPC remain out of scope.
 
 ---
 
@@ -138,6 +139,29 @@ DynamoDB **import** for tables and SSM **import** for parameters are **documente
 **Full panel-by-panel analysis:** [`console-parity-overview.md`](console-parity-overview.md).
 
 Simulith Console (**FW-PRD-001** + **FW-PRD-013** / SML-055 + **FW-PRD-015** / SML-056 + **FW-PRD-005** / SML-059 Verify panel + **FW-PRD-012** / SML-060 all-in-one Compose) ships MVP panels for DynamoDB, SQS, SSM, verify report import, and single-port workshop demo (~**92%** of reference Console flows — see [`console-parity-overview.md`](console-parity-overview.md)).
+
+---
+
+## S3
+
+Guide: [s3.md](s3.md) · Backlog: `future-work/s3/`
+
+### Implemented (functional)
+
+CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, ListObjectsV2 (prefix, max-keys, continuation-token).
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| Terraform green path S3 | P1 | FW-S3-006 |
+| CopyObject / DeleteObjects | P2 | FW-S3-010 |
+| Console S3 panel | P2 | FW-S3-011 |
+| Multipart upload, versioning | P3 | FW-S3-020, FW-S3-021 |
+
+### Tier A reference set (9 ops)
+
+8 **available** (no CopyObject) = **89%** Tier A S3 coverage.
 
 ---
 

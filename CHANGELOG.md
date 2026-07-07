@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.9.0] - 2026-07-07
+
+### Features
+
+- **SML-110**: simulith verify s3
+
 ## [0.8.0] - 2026-07-06
 
 ### Features

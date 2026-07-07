@@ -10,15 +10,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 > **Backlog (gaps):** `cursor/company/future-work/` · Policy: `DOCUMENTATION-GOVERNANCE.md`
 
-Last updated: 2026-06-09 (PITR metadata APIs — Terraform user-table green path).
+Last updated: 2026-07-07 (SML-110 — simulith verify s3; S3 added to matrix).
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| MVP services in matrix | 3 (DynamoDB, SQS, SSM) |
-| Operations **available** locally | 40 |
-| Default verify scenarios | DynamoDB 6, SQS 10, SSM 9 |
+| Services in matrix | 4 (DynamoDB, SQS, SSM, S3) |
+| Operations **available** locally | 49 |
+| Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -119,6 +119,25 @@ Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (9 scenarios)
 
 ---
 
+## S3
+
+Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateBucket | available | yes (`create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`) | Idempotent; names 3–63 chars |
+| ListBuckets | available | yes (`create-list-delete-bucket`) | |
+| DeleteBucket | available | yes (`create-list-delete-bucket`) | Empty bucket only |
+| PutObject | available | yes (`put-get-object`, `object-round-trip`, `list-objects-v2-prefix`) | Single-part; Content-Type from header |
+| GetObject | available | yes (`put-get-object`, `object-round-trip`) | Body + Content-Type, Content-Length, ETag |
+| HeadObject | available | yes (`head-object`) | Existence check; Content-Length |
+| DeleteObject | available | yes (`delete-object`) | Idempotent (204) |
+| ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
+
+**Not in matrix (gap):** multipart upload, versioning, CopyObject, CORS, SSE-KMS, S3 Select.
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -128,12 +147,14 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item` |
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags` | — |
+| S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
 simulith verify dynamodb --skip-aws --filter extended
 simulith verify sqs --skip-aws
 simulith verify ssm --skip-aws
+simulith verify s3 --skip-aws
 ```
 
 ---
