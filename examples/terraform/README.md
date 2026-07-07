@@ -8,10 +8,11 @@ runtime/examples/terraform/
 ├── dynamodb/
 │   ├── music/          ← minimal demo (apply OK)
 │   └── user-table/     ← prod-derived subset (apply OK)
-├── sqs/                              ← aws_sqs_queue apply + destroy (GetQueueAttributes, DeleteQueue tombstone)
-└── ssm/
-    ├── (root)            ← minimal /app/tf-demo/* demo
-    └── parameters/     ← Loyaleasy-shaped paths; Simulith local uses `/SIMULITH/DEV/*`
+├── sqs/                ← aws_sqs_queue apply + destroy (GetQueueAttributes, DeleteQueue tombstone)
+├── ssm/
+│   ├── (root)          ← minimal /app/tf-demo/* demo
+│   └── parameters/     ← Loyaleasy-shaped paths; Simulith local uses `/SIMULITH/DEV/*`
+└── s3/                 ← aws_s3_bucket + aws_s3_object apply + destroy (s3_use_path_style)
 ```
 
 Each subdirectory with `main.tf` is a **standalone** module: `cd` into it, then `terraform init && apply`.
@@ -29,6 +30,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`sqs/`](sqs/) | Green | Green | `app-queue-tf`; destroy ~60–90s on Simulith; [README](sqs/README.md) |
 | [`ssm/`](ssm/) | Green | Green | Use `-parallelism=1` on apply and destroy; import documented |
 | [`ssm/parameters/`](ssm/parameters/) | Green | Green | 27× `/SIMULITH/DEV/*` locally; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` — [README](ssm/parameters/README.md) |
+| [`s3/`](s3/) | Green | Green | 1 bucket + 2 objects; `s3_use_path_style = true`; [README](s3/README.md) |
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 

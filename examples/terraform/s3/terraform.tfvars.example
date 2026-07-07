@@ -1,0 +1,7 @@
+# Simulith local — copy to terraform.tfvars (workspace default; NOT real AWS)
+#   terraform workspace select default
+#   terraform apply
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:9080/runtime"
+aws_region            = "us-east-1"
+bucket_name           = "app-assets-tf"

@@ -1,6 +1,6 @@
 # Terraform integration — Simulith runtime
 
-Use the **`hashicorp/aws` provider** to provision MVP **DynamoDB**, **SQS**, and **SSM Parameter Store** resources against Simulith locally.
+Use the **`hashicorp/aws` provider** to provision MVP **DynamoDB**, **SQS**, **SSM Parameter Store**, and **S3** resources against Simulith locally.
 
 > **New to Simulith?** Complete the [Quickstart](quickstart.md) first (run server on port **4566**).
 
@@ -12,6 +12,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | DynamoDB (user table) | [`dynamodb/user-table/`](examples/terraform/dynamodb/user-table/) | Yes (PK only) |
 | SQS | [`sqs/`](examples/terraform/sqs/) | Yes |
 | SSM Parameter Store | [`ssm/`](examples/terraform/ssm/) | Yes |
+| S3 | [`s3/`](examples/terraform/s3/) | Yes — bucket + 2 objects |
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md).
 
@@ -104,6 +105,7 @@ provider "aws" {
     dynamodb = "http://127.0.0.1:4566"
     sqs      = "http://127.0.0.1:4566"
     ssm      = "http://127.0.0.1:4566"
+    s3       = "http://127.0.0.1:4566"
   }
 }
 ```
@@ -193,6 +195,39 @@ See [ssm.md](ssm.md) and [aws-cli-examples.md — SSM](aws-cli-examples.md#ssm-p
 
 ---
 
+## S3 — `aws_s3_bucket` + `aws_s3_object`
+
+Bucket creation, object upload, and clean destroy:
+
+```hcl
+resource "aws_s3_bucket" "app" {
+  bucket        = "app-assets-tf"
+  force_destroy = true  # delete objects before bucket on terraform destroy
+}
+
+resource "aws_s3_object" "config" {
+  bucket       = aws_s3_bucket.app.id
+  key          = "config/app.json"
+  content      = jsonencode({ environment = "local" })
+  content_type = "application/json"
+}
+```
+
+> **Required:** `s3_use_path_style = true` in the provider when pointing at Simulith. The provider's post-create read cycle calls `HeadBucket`, `GetBucketLocation`, `GetBucketVersioning`, and several other configuration reads — all handled by Simulith with sensible empty stubs.
+
+Runnable module: [`examples/terraform/s3/`](examples/terraform/s3/) — 1 bucket + 2 objects, workspace isolation (`default` / `aws`).
+
+```bash
+cd runtime/examples/terraform/s3
+cp terraform.tfvars.example terraform.tfvars   # once; set simulith_endpoint
+terraform init && terraform apply
+terraform destroy
+```
+
+See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](examples/terraform/s3/README.md) for full walkthrough.
+
+---
+
 ## Green path IaC
 
 **Green path** = `terraform init` → `apply` → optional CLI verify → **`terraform destroy`** completes without `simulith reset` + `terraform state rm` workarounds. Simulith implements the delete APIs Terraform expects locally.
@@ -206,6 +241,7 @@ See [ssm.md](ssm.md) and [aws-cli-examples.md — SSM](aws-cli-examples.md#ssm-p
 | [`sqs/`](examples/terraform/sqs/) | Green | Green | CreateQueue, GetQueueAttributes, DeleteQueue — destroy ~60–90s on Simulith |
 | [`ssm/`](examples/terraform/ssm/) | Green | Green | PutParameter, GetParameter, DescribeParameters, DeleteParameter — `-parallelism=1` |
 | [`ssm/parameters/`](examples/terraform/ssm/parameters/) | Green | Green | 27 params; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` |
+| [`s3/`](examples/terraform/s3/) | Green | Green | CreateBucket, HeadBucket, GetBucketLocation, GetBucketVersioning, PutObject, HeadObject, DeleteObject, DeleteBucket — `s3_use_path_style = true` |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 
@@ -334,6 +370,10 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 | SSM DescribeParameters | **MVP** (Name Equals/BeginsWith) — Terraform `aws_ssm_parameter` refresh |
 | SSM DeleteParameters (batch) | **Available** (SML-062) — up to 10 names; partial `InvalidParameters` |
 | SSM terraform import | **Documented** — parameter name → `aws_ssm_parameter` (MVP) |
+| S3 `aws_s3_bucket` | **Available** — `CreateBucket`, `HeadBucket`, `GetBucketLocation/Versioning/ACL/Accelerate`, stub config reads; `s3_use_path_style = true` required |
+| S3 `aws_s3_object` | **Available** — `PutObject`, `HeadObject`, `DeleteObject`; single-part only |
+| S3 `force_destroy` | **Available** — clears objects before `DeleteBucket` on destroy |
+| S3 multipart / versioning / ACL writes | Not supported |
 | IAM / VPC / Lambda | Out of scope |
 
 Full deviation tables:
@@ -370,3 +410,4 @@ Production AWS Terraform in this repo lives under `infrastructure/` and targets 
 | [`dynamodb/music/`](examples/terraform/dynamodb/music/) | Hash key demo table | — |
 | [`dynamodb/user-table/`](examples/terraform/dynamodb/user-table/) | Hash key + 2 GSIs, PAY_PER_REQUEST, tags, SSE, PITR metadata | Same module on AWS with `environment=prod` |
 | [`sqs/`](examples/terraform/sqs/) | Standard queue apply | FIFO, redrive, tags |
+| [`s3/`](examples/terraform/s3/) | Bucket + 2 objects apply | Multipart, versioning, ACL writes |

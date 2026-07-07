@@ -7,7 +7,7 @@ Consolidated view of **Simulith vs AWS** for the three MVP services: what is **i
 > **Backlog IDs:** `cursor/company/future-work/`  
 > **MVP scope:** `cursor/company/mvp-work-plan.md`
 
-Last updated: 2026-07-07 (SML-110 — simulith verify s3; S3 added as 4th service).
+Last updated: 2026-07-07 (SML-111 — Terraform green path S3: `aws_s3_bucket` + `aws_s3_object` apply/destroy).
 
 ---
 
@@ -25,7 +25,7 @@ Last updated: 2026-07-07 (SML-110 — simulith verify s3; S3 added as 4th servic
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**S3 is the first expansion service** (SML-106–SML-110). Next: Terraform green path (FW-S3-006), then Lambda, API Gateway per product vision. ECS, EC2, VPC remain out of scope.
+**S3 is the first expansion service** (SML-106–SML-111). Next: CopyObject / DeleteObjects (FW-S3-010), Console S3 panel (FW-S3-011), then Lambda, API Gateway per product vision. ECS, EC2, VPC remain out of scope.
 
 ---
 
@@ -154,9 +154,9 @@ CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObje
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Terraform green path S3 | P1 | FW-S3-006 |
 | CopyObject / DeleteObjects | P2 | FW-S3-010 |
 | Console S3 panel | P2 | FW-S3-011 |
+| Multipart upload | P3 | FW-S3-007 |
 | Multipart upload, versioning | P3 | FW-S3-020, FW-S3-021 |
 
 ### Tier A reference set (9 ops)

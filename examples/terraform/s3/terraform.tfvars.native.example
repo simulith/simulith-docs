@@ -1,0 +1,7 @@
+# Simulith native (runtime on host :4566, no Console)
+#   terraform workspace select default
+#   terraform apply -var-file=terraform.tfvars.native.example
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:4566"
+aws_region            = "us-east-1"
+bucket_name           = "app-assets-tf"

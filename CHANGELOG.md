@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.10.0] - 2026-07-07
+
+### Features
+
+- **SML-111**: Terraform green path S3
+
 ## [0.9.0] - 2026-07-07
 
 ### Features

@@ -1,0 +1,7 @@
+# Real AWS dev — copy to terraform.aws-dev.tfvars (workspace aws)
+#   terraform workspace select -or-create aws
+#   terraform apply -var-file=terraform.aws-dev.tfvars
+use_simulith_endpoint = false
+simulith_endpoint     = ""
+aws_region            = "us-east-1"
+bucket_name           = "simulith-dev-app-assets-tf"
