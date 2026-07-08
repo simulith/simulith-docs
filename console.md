@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, and Verify (SML-051 + SML-055 / FW-PRD-001 + FW-PRD-013).
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, and Verify (SML-051 + SML-055 / FW-PRD-001 + FW-PRD-013).
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -65,8 +65,9 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 3. Open **DynamoDB** — browse, create tables, put/edit/delete items (Simple strings or **JSON document** for Map/List).
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
-6. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, etc.).
-7. Click **Reset local state** — clears all panels.
+6. Open **S3** — list/create/delete buckets, list objects by prefix, upload/download/delete objects.
+7. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, etc.).
+8. Click **Reset local state** — clears all panels.
 
 Console README: [`../../console/README.md`](console.md).
 
@@ -112,6 +113,7 @@ Registered in `runtime/internal/admin/` on the **same SQLite store** as AWS hand
 | **DynamoDB** | ListTables, Scan, CreateTable (hash key String), DeleteTable, Put/Update/Delete item (Simple), **JSON document** put/edit (Map/List via GetItem → PutItem) | GSIs / expressions → CLI; visual attribute editor deferred |
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
+| **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; no seed buckets |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 

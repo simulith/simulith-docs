@@ -1,27 +1,28 @@
 # Console parity overview — Simulith Console vs AWS Console
 
-Consolidated view of **Simulith Console vs AWS Management Console** for DynamoDB, SQS, and SSM: what the **local web UI ships today**, what is **missing**, and **backlog IDs**. (Engineering doc — “MVP” here denotes **scope boundary**, not user-facing Console copy; see FW-PRD-016 / SML-083.)
+Consolidated view of **Simulith Console vs AWS Management Console** for DynamoDB, SQS, SSM, and S3: what the **local web UI ships today**, what is **missing**, and **backlog IDs**. (Engineering doc — “MVP” here denotes **scope boundary**, not user-facing Console copy; see FW-PRD-016 / SML-083.)
 
 > **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](console.md)  
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension  
 > **Backlog:** `cursor/company/future-work/product/`
 
-Last updated: 2026-06-09.
+Last updated: 2026-07-08 (SML-113 — Console S3 panel).
 
 ---
 
 ## Executive summary
 
-Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. Scope: **DynamoDB, SQS, SSM** on localhost — no IAM, CloudWatch, or multi-region.
+Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. Scope: **DynamoDB, SQS, SSM, S3** on localhost — no IAM, CloudWatch, or multi-region.
 
 | Panel | MVP flows **in Console UI** | Reference set* | **Shipped** | Notes |
 | --- | --- | ---: | ---: | --- |
 | **Dashboard** | Health, seed, reset | 3 | **3 / 3 (100%)** | Parity metrics UI deferred |
 | **DynamoDB** | List/create/delete table; Scan; put/edit/delete item (Simple + JSON document) | 7 | **7 / 7 (100%)** | GSI wizard / expression builders → CLI |
-| **SQS** | List queues; peek; send; receive+delete | 5 | **4 / 5 (80%)** | Purge, FIFO, visibility deferred |
-| **SSM** | Browse by path; put/edit/delete String param | 4 | **3 / 4 (75%)** | SecureString, batch delete deferred |
+| **SQS** | List queues; peek; send; receive+delete; purge | 5 | **5 / 5 (100%)** | FIFO, visibility deferred |
+| **SSM** | Browse by path; put/edit/delete String + SecureString | 4 | **4 / 4 (100%)** | StringList / batch delete UI deferred |
+| **S3** | List/create/delete bucket; list objects; upload/download/delete object | 6 | **6 / 6 (100%)** | CopyObject / batch delete UI deferred |
 | **Cross-cutting** | Same-origin proxy; admin peek; verify report import | 3 | **3 / 3 (100%)** | Snapshot UI deferred |
-| **Total (weighted)** | — | **21** | **~19 / 21 (~90%)** | Honest MVP subset |
+| **Total (weighted)** | — | **28** | **~28 / 28 (~100%)** | Honest MVP subset |
 
 \* **Reference set** = flows a developer expects when comparing Simulith Console to AWS Console for **local MVP demos** (not every AWS Console screen or wizard).
 
@@ -99,6 +100,22 @@ Guide: [console.md](console.md) · API: [ssm.md](ssm.md)
 | View parameter value | Table column | — |
 | Create / update parameter | **PutParameter** — **String** or **SecureString** (mock encryption notice) | — |
 | Delete parameter | **DeleteParameter** + confirm; **DeleteParameters** batch (API) | Batch multi-select UI — **FW-SSM-013** API shipped SML-062; Console optional Fase 7b |
+
+---
+
+## S3 panel
+
+Guide: [console.md](console.md) · API: [s3.md](s3.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| List buckets | **ListBuckets** — bucket selector | — |
+| Create / delete bucket | **CreateBucket** form; **DeleteBucket** + confirm (empty only) | — |
+| Browse objects | **ListObjectsV2** — prefix filter + pagination | — |
+| Upload object | File input → **PutObject** | Multipart deferred |
+| Download object | **GetObject** → browser download | — |
+| Delete object | **DeleteObject** + confirm | **DeleteObjects** batch UI deferred |
+| Copy object | Not in UI | API shipped SML-112; Console optional |
 
 ---
 
