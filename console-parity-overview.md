@@ -6,7 +6,7 @@ Consolidated view of **Simulith Console vs AWS Management Console** for DynamoDB
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension  
 > **Backlog:** `cursor/company/future-work/product/`
 
-Last updated: 2026-07-08 (SML-113 — Console S3 panel).
+Last updated: 2026-07-08 (SML-116 — Console Verify S3 parity).
 
 ---
 
@@ -126,7 +126,7 @@ Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) 
 | Flow | Simulith Console | Gap / backlog |
 | --- | --- | --- |
 | View local verify report | **Upload** `.simulith/verify-last.json` or paste JSON | — |
-| View CI parity smoke JSON | **Upload** `verify-{dynamodb,sqs,ssm}.json` or `verify-docker-*.json` from artifact zip | Live GitHub artifact URL fetch — auth/CORS |
+| View CI parity smoke JSON | **Upload** `verify-{dynamodb,sqs,ssm,s3}.json` or `verify-docker-*.json` from artifact zip | Live GitHub artifact URL fetch — auth/CORS |
 | Structured parity diff | **Upload** report with `diffDetail` — table Path / AWS / Simulith (**SML-077**) | — |
 | Run verify from UI | Not in UI | CLI `simulith verify` or CI pipeline |
 | HTML diff report | Not in UI | `simulith report --output-html` CLI |
@@ -148,7 +148,7 @@ Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) 
 ## Out of scope (Console)
 
 - Full AWS Console feature parity (wizards, dashboards, alarms, tags UI for every resource)
-- Services beyond MVP (S3, Lambda, ECS, …)
+- Services beyond shipped set (Lambda, ECS, …)
 - Multi-account, multi-region, SSO
 - Replacing AWS CLI/SDK for automation or CI
 

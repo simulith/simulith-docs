@@ -23,7 +23,7 @@ Output: `dist/simulith-trust-bundle-YYYYMMDD.zip`
 
 ## What the script does
 
-1. **`ci-verify-smoke.sh`** — seed → start server → `simulith verify dynamodb|sqs|ssm --skip-aws` → three JSON files
+1. **`ci-verify-smoke.sh`** — seed → start server → `simulith verify dynamodb|sqs|ssm|s3 --skip-aws` → four JSON files
 2. **`simulith report --output-html`** — HTML for each JSON
 3. **Copy** `docs/compatibility-matrix.md` and `docs/quickstart.md` into the bundle
 4. **Write** bundle `README.md` (timestamp, git commit when available)
@@ -47,6 +47,8 @@ reports/
   verify-sqs.html
   verify-ssm.json
   verify-ssm.html
+  verify-s3.json
+  verify-s3.html
 ```
 
 Reports use schema `version: 1`, **`mode: smoke`** (no `compatibilityPercent`). For full AWS parity, run verify without `--skip-aws` — [compatibility.md](compatibility.md).
@@ -72,7 +74,7 @@ Optional extended DynamoDB report (not in default bundle): set `VERIFY_DDB_EXTEN
 
 | Source | Contents |
 | --- | --- |
-| **Parity smoke** CI job | `artifacts/verify-{dynamodb,sqs,ssm}.json` only |
+| **Parity smoke** CI job | `artifacts/verify-{dynamodb,sqs,ssm,s3}.json` |
 | **Trust bundle** script | Same JSON + HTML reports + matrix + quickstart + README in zip |
 
 Download CI JSON from PR **Checks → Parity smoke → Artifacts**. The Trust bundle is for **offline/email** delivery without GitHub access.

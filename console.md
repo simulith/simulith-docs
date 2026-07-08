@@ -66,7 +66,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
 6. Open **S3** — list/create/delete buckets, list objects by prefix, upload/download/delete objects.
-7. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, etc.).
+7. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
 8. Click **Reset local state** — clears all panels.
 
 Console README: [`../../console/README.md`](console.md).
@@ -131,8 +131,8 @@ Import and inspect **`CompatibilityReport` v1** JSON in the browser — no serve
 
 | Source | File(s) | Notes |
 | --- | --- | --- |
-| Local CLI | `.simulith/verify-last.json` | `simulith verify dynamodb --save-last` (or sqs/ssm) |
-| CI artifact | `verify-dynamodb.json`, `verify-sqs.json`, `verify-ssm.json`, `verify-docker-*.json` | Jobs **Parity smoke** / **Parity smoke (Docker)** |
+| Local CLI | `.simulith/verify-last.json` | `simulith verify dynamodb --save-last` (or sqs/ssm/s3) |
+| CI artifact | `verify-dynamodb.json`, `verify-sqs.json`, `verify-ssm.json`, `verify-s3.json`, `verify-docker-*.json` | Jobs **Parity smoke** / **Parity smoke (Docker)** |
 | Trust bundle | Same JSON files inside the zip | `mode: smoke` — no `compatibilityPercent` |
 
 Failed **parity** scenarios may include optional **`diffDetail`** (`path`, `aws`, `simulith`) from runtime SML-075; Console renders a field-by-field table (**SML-077**). Legacy reports with only `diff` text still work.

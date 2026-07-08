@@ -253,6 +253,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | DynamoDB | `simulith verify dynamodb --skip-aws` | 6 |
 | SQS | `simulith verify sqs --skip-aws` | 10 |
 | SSM | `simulith verify ssm --skip-aws` | 9 |
+| S3 | `simulith verify s3 --skip-aws` | 6 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`).
 
@@ -267,6 +268,7 @@ runtime/artifacts/
   verify-dynamodb.json
   verify-sqs.json
   verify-ssm.json
+  verify-s3.json
 ```
 
 Download from the PR **Checks** tab → **Parity smoke** → **Artifacts**.
@@ -301,6 +303,7 @@ The **`Parity smoke (Docker)`** job in `.github/workflows/ci.yml` validates the 
 | DynamoDB | `artifacts/verify-docker-dynamodb.json` |
 | SQS | `artifacts/verify-docker-sqs.json` |
 | SSM | `artifacts/verify-docker-ssm.json` |
+| S3 | `artifacts/verify-docker-s3.json` |
 
 Download **`parity-verify-docker-reports`** from the PR Checks tab. The job **fails** when verify or compose health checks fail.
 
