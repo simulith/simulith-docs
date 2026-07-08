@@ -58,7 +58,7 @@ Detailed steps follow.
 
 ## 1. Load demo data
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, and SSM parameters under `/app/demo/*`. Details: [seed.md](seed.md).
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, and S3 bucket `demo-bucket`. Details: [seed.md](seed.md).
 
 **Stop the server first** if it is already running (SQLite lock). Seed writes directly to the state database.
 

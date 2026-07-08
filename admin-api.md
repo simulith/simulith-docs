@@ -64,7 +64,7 @@ Runtime admin status (Console dashboard).
 
 ### `POST /_simulith/v1/seed`
 
-Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoDB, SQS, and SSM state, then applies the default profile.
+Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoDB, SQS, SSM, and S3 state, then applies the default profile.
 
 **Response 200:**
 
@@ -76,7 +76,7 @@ Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoD
 
 ### `POST /_simulith/v1/reset`
 
-Clear all local DynamoDB, SQS, and SSM state (`ResetLocalState`).
+Clear all local DynamoDB, SQS, SSM, and S3 state (`ResetLocalState`).
 
 **Response 200:**
 

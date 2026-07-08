@@ -113,7 +113,7 @@ Registered in `runtime/internal/admin/` on the **same SQLite store** as AWS hand
 | **DynamoDB** | ListTables, Scan, CreateTable (hash key String), DeleteTable, Put/Update/Delete item (Simple), **JSON document** put/edit (Map/List via GetItem → PutItem) | GSIs / expressions → CLI; visual attribute editor deferred |
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
-| **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; no seed buckets |
+| **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 
