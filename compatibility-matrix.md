@@ -10,14 +10,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 > **Backlog (gaps):** `cursor/company/future-work/` · Policy: `DOCUMENTATION-GOVERNANCE.md`
 
-Last updated: 2026-07-07 (SML-110 — simulith verify s3; S3 added to matrix).
+Last updated: 2026-07-08 (SML-112 — S3 CopyObject + DeleteObjects).
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 4 (DynamoDB, SQS, SSM, S3) |
-| Operations **available** locally | 49 |
+| Operations **available** locally | 51 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -132,9 +132,11 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 | GetObject | available | yes (`put-get-object`, `object-round-trip`) | Body + Content-Type, Content-Length, ETag |
 | HeadObject | available | yes (`head-object`) | Existence check; Content-Length |
 | DeleteObject | available | yes (`delete-object`) | Idempotent (204) |
+| CopyObject | available | — | Same/cross-bucket via `x-amz-copy-source` |
+| DeleteObjects | available | — | Batch up to 1000 keys (`POST ?delete`) |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
 
-**Not in matrix (gap):** multipart upload, versioning, CopyObject, CORS, SSE-KMS, S3 Select.
+**Not in matrix (gap):** multipart upload, versioning, CORS, SSE-KMS, S3 Select.
 
 ---
 

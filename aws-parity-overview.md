@@ -7,7 +7,7 @@ Consolidated view of **Simulith vs AWS** for the three MVP services: what is **i
 > **Backlog IDs:** `cursor/company/future-work/`  
 > **MVP scope:** `cursor/company/mvp-work-plan.md`
 
-Last updated: 2026-07-07 (SML-111 — Terraform green path S3: `aws_s3_bucket` + `aws_s3_object` apply/destroy).
+Last updated: 2026-07-08 (SML-112 — S3 CopyObject + DeleteObjects).
 
 ---
 
@@ -25,7 +25,7 @@ Last updated: 2026-07-07 (SML-111 — Terraform green path S3: `aws_s3_bucket` +
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**S3 is the first expansion service** (SML-106–SML-111). Next: CopyObject / DeleteObjects (FW-S3-010), Console S3 panel (FW-S3-011), then Lambda, API Gateway per product vision. ECS, EC2, VPC remain out of scope.
+**S3 is the first expansion service** (SML-106–SML-112). Next: Console S3 panel (FW-S3-011), then Lambda, API Gateway per product vision. ECS, EC2, VPC remain out of scope.
 
 ---
 
@@ -148,20 +148,19 @@ Guide: [s3.md](s3.md) · Backlog: `future-work/s3/`
 
 ### Implemented (functional)
 
-CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, ListObjectsV2 (prefix, max-keys, continuation-token).
+CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, CopyObject, DeleteObjects (batch), ListObjectsV2 (prefix, max-keys, continuation-token).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| CopyObject / DeleteObjects | P2 | FW-S3-010 |
 | Console S3 panel | P2 | FW-S3-011 |
 | Multipart upload | P3 | FW-S3-007 |
 | Multipart upload, versioning | P3 | FW-S3-020, FW-S3-021 |
 
 ### Tier A reference set (9 ops)
 
-8 **available** (no CopyObject) = **89%** Tier A S3 coverage.
+9 **available** = **100%** Tier A S3 coverage (DeleteObjects batch is additional).
 
 ---
 

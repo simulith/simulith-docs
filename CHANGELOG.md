@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.11.0] - 2026-07-08
+
+### Features
+
+- **SML-112**: S3 CopyObject and DeleteObjects
+
 ## [0.10.0] - 2026-07-07
 
 ### Features
