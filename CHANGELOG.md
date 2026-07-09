@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.15.0] - 2026-07-09
+
+### Features
+
+- **SML-120**: Lambda service scaffold + Function CRUD
+
 ## [0.14.0] - 2026-07-08
 
 ### Features

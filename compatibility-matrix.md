@@ -10,14 +10,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 > **Backlog (gaps):** `cursor/company/future-work/` · Policy: `DOCUMENTATION-GOVERNANCE.md`
 
-Last updated: 2026-07-08 (SML-112 — S3 CopyObject + DeleteObjects).
+Last updated: 2026-07-09 (SML-120 — Lambda service scaffold + Function CRUD).
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 4 (DynamoDB, SQS, SSM, S3) |
-| Operations **available** locally | 51 |
+| Services in matrix | 5 (DynamoDB, SQS, SSM, S3, Lambda) |
+| Operations **available** locally | 55 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -137,6 +137,24 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
 
 **Not in matrix (gap):** multipart upload, versioning, CORS, SSE-KMS, S3 Select.
+
+---
+
+## Lambda
+
+Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (planned — SML-123)
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateFunction | available | no | Code.ZipFile (base64); runtime string not validated |
+| ListFunctions | available | no | Returns all functions; no pagination |
+| GetFunction | available | no | Returns Configuration + Code.Location |
+| DeleteFunction | available | no | 204; removes metadata + zip from disk |
+| InvokeFunction | gap | no | Planned SML-121 (subprocess node/python) |
+| UpdateFunctionCode | gap | no | Planned SML-121 |
+| Event Source Mapping (SQS) | gap | no | Planned SML-122 |
+
+**Not in matrix (gap):** InvokeFunction, UpdateFunctionCode, Event Source Mapping, Layers, aliases, versions, Function URLs.
 
 ---
 

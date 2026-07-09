@@ -7,7 +7,7 @@ Consolidated view of **Simulith vs AWS** for the three MVP services: what is **i
 > **Backlog IDs:** `cursor/company/future-work/`  
 > **MVP scope:** `cursor/company/mvp-work-plan.md`
 
-Last updated: 2026-07-08 (SML-112 — S3 CopyObject + DeleteObjects).
+Last updated: 2026-07-09 (SML-120 — Lambda service scaffold + Function CRUD).
 
 ---
 
@@ -19,13 +19,14 @@ Last updated: 2026-07-08 (SML-112 — S3 CopyObject + DeleteObjects).
 | **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | **~55%** (14 / ~22) |
 | **SSM** (Parameter Store) | 9 | 9 / 9 (100%) | **100%** (10 / 10) | **~58%** (9 / ~12) |
 | **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
-| **Total** | **48** | **48 / 48 (100%)** | **94%** (48 / 51) | **~36%** (48 / ~136) |
+| **Lambda** | 4 | — (SML-123 planned) | **~57%** (4 / 7 Tier A) | **~5%** (4 / ~75) |
+| **Total** | **52** | **48 / 48 (100%)** verified | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service `future-work/*/README.md`.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**S3 is the first expansion service** (SML-106–SML-112). Next: Console S3 panel (FW-S3-011), then Lambda, API Gateway per product vision. ECS, EC2, VPC remain out of scope.
+**Lambda is the second expansion service** (SML-120+). S3 shipped (SML-106–SML-112). Next: InvokeFunction subprocess (SML-121), SQS ESM (SML-122), verify (SML-123), Terraform (SML-124), Console panel (SML-125). ECS, EC2, VPC remain out of scope.
 
 ---
 
@@ -164,14 +165,41 @@ CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObje
 
 ---
 
+## Lambda
+
+Guide: [lambda.md](lambda.md) · Backlog: `future-work/lambda/`
+
+### Implemented (SML-120 — scaffold)
+
+CreateFunction, ListFunctions, GetFunction, DeleteFunction.
+
+Metadata in SQLite (`lambda_functions`). Zip stored at `{data-dir}/lambda/{name}/code.zip`. Protocol: `rest-json` on `/2015-03-31/functions/…`.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| InvokeFunction (subprocess node/python) | P0 | FW-LAM-002 / SML-121 |
+| Event Source Mapping SQS | P1 | FW-LAM-003 / SML-122 |
+| simulith verify lambda | P1 | FW-LAM-004 / SML-123 |
+| Terraform green path | P1 | FW-LAM-005 / SML-124 |
+| Console Lambda panel | P1 | FW-LAM-006 / SML-125 |
+
+### Tier A reference set (7 ops)
+
+4 **available** (CRUD) = **~57%** Tier A Lambda coverage. Tier A includes InvokeFunction, UpdateFunctionCode, CreateEventSourceMapping.
+
+---
+
 ## What to do next (priority)
 
-Siguiente story: **SML-081** / **FW-CMP-012** (historial % parity) — reservado. Verify MVP ops **40/40** ✅ (**SML-080**). **Libre:** **SML-082+**.
+**Lambda expansion activa:** SML-120 shipped (scaffold). Siguiente: **SML-121** (InvokeFunction subprocess, P0). Verify MVP ops **40/40** ✅ (**SML-080**). **Reservado:** **SML-081** / FW-CMP-012.
 
-| Priority | Theme | Examples |
+| Priority | Theme | Story |
 | --- | --- | --- |
+| **P0** | Lambda InvokeFunction subprocess | **SML-121** / FW-LAM-002 |
+| **P1** | Lambda SQS ESM + verify + Terraform + Console | SML-122–125 |
 | **P3** | Historial parity entre releases | **SML-081** / FW-CMP-012 ← reservado |
-| **P3 bajo demanda** | FIFO SQS, ParameterFilters completos | FW-SQS-030, FW-SSM-021 |
 
 ---
 
