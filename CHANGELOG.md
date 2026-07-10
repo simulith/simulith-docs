@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.17.1] - 2026-07-10
+
+### Fixes
+
+- **PR-233**: Lambda list ESM routing before S3 path-style matching
+
 ## [0.17.0] - 2026-07-10
 
 ### Features
