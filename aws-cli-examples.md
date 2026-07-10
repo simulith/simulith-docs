@@ -497,6 +497,49 @@ Path-prefix reads in Terraform: copy [`path-data.tf.example`](examples/terraform
 
 ---
 
+## Lambda
+
+Function CRUD is available locally (v0.15.0+). **InvokeFunction** is not shipped yet — see [lambda.md](lambda.md).
+
+```bash
+# Create a zip from a Node.js handler
+cat > /tmp/index.js <<'EOF'
+exports.handler = async (event) => ({
+  statusCode: 200,
+  body: JSON.stringify({ message: 'hello from simulith' })
+});
+EOF
+cd /tmp && zip function.zip index.js
+
+aws lambda create-function \
+  --function-name my-fn \
+  --runtime nodejs20.x \
+  --handler index.handler \
+  --role arn:aws:iam::000000000000:role/r \
+  --zip-file fileb:///tmp/function.zip \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws lambda list-functions \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws lambda get-function \
+  --function-name my-fn \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws lambda delete-function \
+  --function-name my-fn \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+# Invoke (requires node or python3 on PATH)
+aws lambda invoke \
+  --function-name my-fn \
+  --payload '{"key":"value"}' \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION" \
+  /tmp/lambda-out.json
+```
+
+---
+
 ## Seeded data
 
 After [`simulith seed`](seed.md) (Demo table + `demo-queue` + SSM `/app/demo/*`):
@@ -543,6 +586,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | SQS long polling | Short poll only |
 | SQS SendMessageBatch / DeleteMessageBatch | Available (SML-039) |
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; Terraform [`examples/terraform/ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
+| Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode; see [lambda.md](lambda.md) |
 
 Full deviation tables:
 

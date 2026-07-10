@@ -18,8 +18,8 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 | ListFunctions | `GET /2015-03-31/functions` | ✓ |
 | GetFunction | `GET /2015-03-31/functions/{name}` | ✓ |
 | DeleteFunction | `DELETE /2015-03-31/functions/{name}` | ✓ |
-| InvokeFunction | `POST /2015-03-31/functions/{name}/invocations` | planned (SML-121) |
-| UpdateFunctionCode | `PUT /2015-03-31/functions/{name}/code` | planned (SML-121) |
+| InvokeFunction | `POST /2015-03-31/functions/{name}/invocations` | ✓ (SML-121) |
+| UpdateFunctionCode | `PUT /2015-03-31/functions/{name}/code` | ✓ (SML-121) |
 | Event Source Mapping (SQS) | — | planned (SML-122) |
 
 ## AWS CLI examples
@@ -59,6 +59,29 @@ aws lambda get-function --function-name my-fn --endpoint-url $ENDPOINT
 aws lambda delete-function --function-name my-fn --endpoint-url $ENDPOINT
 ```
 
+## InvokeFunction (sync)
+
+Requires **`node`** or **`python3`** on the host PATH (not included in the default Docker runtime image).
+
+```bash
+# Invoke (RequestResponse — default)
+aws lambda invoke \
+  --function-name my-fn \
+  --payload '{"key":"value"}' \
+  --endpoint-url $ENDPOINT \
+  /tmp/out.json
+
+cat /tmp/out.json
+
+# UpdateFunctionCode
+aws lambda update-function-code \
+  --function-name my-fn \
+  --zip-file fileb:///tmp/function.zip \
+  --endpoint-url $ENDPOINT
+```
+
+Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`). `Environment.Variables` from CreateFunction are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
+
 ## Persistence
 
 Function metadata is stored in the SQLite database (`lambda_functions` table). The zip payload is stored on disk at:
@@ -93,8 +116,9 @@ Default values: region `us-east-1`, accountId `000000000000`.
 
 ## Known gaps and limits
 
-- **InvokeFunction** — not implemented; returns 501. Planned for SML-121 (subprocess execution: Node.js + Python).
-- **UpdateFunctionCode** — not implemented; planned for SML-121.
+- **InvocationType: Event** (async) — not supported; use sync invoke only.
+- **Go/Java/custom runtimes** — not supported for invoke; Node.js and Python only.
+- **Docker runtime image** — does not bundle `node` or `python3`; invoke works when binaries are on PATH (local dev) or image is extended.
 - **Code.S3Bucket / Code.S3Key** — not supported. Use `Code.ZipFile` (base64).
 - **Runtime validation** — Simulith accepts any runtime string. AWS enforces a specific list.
 - **Zip size limits** — no limit enforced in this version. AWS limits 50 MB compressed / 250 MB uncompressed.
