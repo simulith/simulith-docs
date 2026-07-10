@@ -10,7 +10,7 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 - AWS SDK for Go, Node.js, Python, etc.
 - Terraform (`aws_lambda_function`)
 
-## Implemented operations (SML-120)
+## Implemented operations (SML-120–122)
 
 | Operation | Method + Path | Status |
 |---|---|---|
@@ -20,7 +20,10 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 | DeleteFunction | `DELETE /2015-03-31/functions/{name}` | ✓ |
 | InvokeFunction | `POST /2015-03-31/functions/{name}/invocations` | ✓ (SML-121) |
 | UpdateFunctionCode | `PUT /2015-03-31/functions/{name}/code` | ✓ (SML-121) |
-| Event Source Mapping (SQS) | — | planned (SML-122) |
+| CreateEventSourceMapping | `POST /2015-03-31/event-source-mappings` | ✓ (SML-122) |
+| ListEventSourceMappings | `GET /2015-03-31/event-source-mappings` | ✓ (SML-122) |
+| GetEventSourceMapping | `GET /2015-03-31/event-source-mappings/{uuid}` | ✓ (SML-122) |
+| DeleteEventSourceMapping | `DELETE /2015-03-31/event-source-mappings/{uuid}` | ✓ (SML-122) |
 
 ## AWS CLI examples
 
@@ -82,6 +85,28 @@ aws lambda update-function-code \
 
 Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`). `Environment.Variables` from CreateFunction are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
 
+## SQS event source mapping (SML-122)
+
+Map a local SQS queue to a Lambda function. The runtime **polls enabled mappings in the background** (~1s interval), batches messages, invokes the function with a standard SQS `Records` event, and deletes messages on success.
+
+```bash
+# Queue must exist (e.g. after simulith seed or aws sqs create-queue)
+QUEUE_ARN=arn:aws:sqs:us-east-1:000000000000:demo-queue
+
+aws lambda create-event-source-mapping \
+  --function-name my-fn \
+  --event-source-arn "$QUEUE_ARN" \
+  --batch-size 10 \
+  --endpoint-url $ENDPOINT
+
+aws lambda list-event-source-mappings --function-name my-fn --endpoint-url $ENDPOINT
+
+# UUID from create/list output
+aws lambda delete-event-source-mapping --uuid <uuid> --endpoint-url $ENDPOINT
+```
+
+**Limits:** SQS ARNs only; `BatchSize` capped at 10; async `InvocationType: Event` not used (poller invokes synchronously). Requires `node`/`python3` on PATH for the target function.
+
 ## Persistence
 
 Function metadata is stored in the SQLite database (`lambda_functions` table). The zip payload is stored on disk at:
@@ -116,7 +141,7 @@ Default values: region `us-east-1`, accountId `000000000000`.
 
 ## Known gaps and limits
 
-- **InvocationType: Event** (async) — not supported; use sync invoke only.
+- **InvocationType: Event** (async HTTP invoke) — not supported; ESM uses sync invoke internally.
 - **Go/Java/custom runtimes** — not supported for invoke; Node.js and Python only.
 - **Docker runtime image** — does not bundle `node` or `python3`; invoke works when binaries are on PATH (local dev) or image is extended.
 - **Code.S3Bucket / Code.S3Key** — not supported. Use `Code.ZipFile` (base64).

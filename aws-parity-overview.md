@@ -7,7 +7,7 @@ Consolidated view of **Simulith vs AWS** for the three MVP services: what is **i
 > **Backlog IDs:** `cursor/company/future-work/`  
 > **MVP scope:** `cursor/company/mvp-work-plan.md`
 
-Last updated: 2026-07-10 (SML-121 — Lambda InvokeFunction sync subprocess).
+Last updated: 2026-07-10 (SML-122 — Lambda SQS event source mapping).
 
 ---
 
@@ -19,14 +19,14 @@ Last updated: 2026-07-10 (SML-121 — Lambda InvokeFunction sync subprocess).
 | **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | **~55%** (14 / ~22) |
 | **SSM** (Parameter Store) | 9 | 9 / 9 (100%) | **100%** (10 / 10) | **~58%** (9 / ~12) |
 | **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
-| **Lambda** | 6 | — (SML-123 planned) | **~86%** (6 / 7 Tier A) | **~8%** (6 / ~75) |
-| **Total** | **54** | **48 / 48 (100%)** verified | — | — |
+| **Lambda** | 10 | — (SML-123 planned) | **100%** (7 / 7 Tier A) | **~13%** (10 / ~75) |
+| **Total** | **58** | **48 / 48 (100%)** verified | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service `future-work/*/README.md`.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda is the second expansion service** (SML-120+). Function CRUD (SML-120) + sync invoke (SML-121). Next: SQS ESM (SML-122), verify (SML-123), Terraform (SML-124), Console panel (SML-125). ECS, EC2, VPC remain out of scope.
+**Lambda is the second expansion service** (SML-120+). CRUD + invoke (SML-120–121) + **SQS ESM** (SML-122). Next: verify (SML-123), Terraform (SML-124), Console panel (SML-125).
 
 ---
 
@@ -171,17 +171,16 @@ Guide: [lambda.md](lambda.md) · Backlog: `future-work/lambda/`
 
 ### Implemented (SML-120 + SML-121)
 
-CreateFunction, ListFunctions, GetFunction, DeleteFunction, **InvokeFunction** (sync subprocess), **UpdateFunctionCode**.
+CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction, UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll).
 
-Metadata in SQLite (`lambda_functions`). Zip stored at `{data-dir}/lambda/{name}/code.zip`. Protocol: `rest-json` on `/2015-03-31/functions/…`.
+Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip stored at `{data-dir}/lambda/{name}/code.zip`.
 
-**Invoke:** `nodejs*` and `python*` runtimes execute handler code via subprocess (`node` / `python3` on PATH). `Environment.Variables` injected; `Timeout` honored. Docker image does not include Node/Python — use host binaries or extend the image for container-only workflows.
+**ESM poller:** enabled mappings poll SQS every ~1s, invoke target function with `Records` batch, delete messages on success.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Event Source Mapping SQS | P1 | FW-LAM-003 / SML-122 |
 | simulith verify lambda | P1 | FW-LAM-004 / SML-123 |
 | Terraform green path | P1 | FW-LAM-005 / SML-124 |
 | Console Lambda panel | P1 | FW-LAM-006 / SML-125 |
@@ -189,17 +188,17 @@ Metadata in SQLite (`lambda_functions`). Zip stored at `{data-dir}/lambda/{name}
 
 ### Tier A reference set (7 ops)
 
-6 **available** = **~86%** Tier A Lambda coverage. Remaining Tier A: CreateEventSourceMapping (SML-122).
+7 **available** = **100%** Tier A Lambda coverage.
 
 ---
 
 ## What to do next (priority)
 
-**Lambda expansion activa:** SML-120 + **SML-121** shipped (CRUD + sync invoke). Siguiente: **SML-122** (SQS ESM). Verify MVP ops **40/40** ✅ (**SML-080**). **Reservado:** **SML-081** / FW-CMP-012.
+**Lambda expansion activa:** SML-120–**122** shipped. Siguiente: **SML-123** (verify lambda).
 
 | Priority | Theme | Story |
 | --- | --- | --- |
-| **P1** | Lambda SQS ESM + verify + Terraform + Console | SML-122–125 |
+| **P1** | Lambda verify + Terraform + Console | SML-123–125 |
 | **P3** | Historial parity entre releases | **SML-081** / FW-CMP-012 ← reservado |
 
 ---

@@ -152,7 +152,7 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (planned — S
 | DeleteFunction | available | no | 204; removes metadata + zip from disk |
 | InvokeFunction | available | no | Sync subprocess; `nodejs*` and `python*` runtimes; requires `node`/`python3` on PATH |
 | UpdateFunctionCode | available | no | Replaces zip on disk; updates CodeSize / CodeSha256 |
-| Event Source Mapping (SQS) | gap | no | Planned SML-122 |
+| Event Source Mapping (SQS) | available | no | Create/List/Get/Delete; background poll → invoke (SML-122) |
 
 **Not in matrix (gap):** Event Source Mapping, Layers, aliases, versions, Function URLs, async invoke (`InvocationType: Event`).
 

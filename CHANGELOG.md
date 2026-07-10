@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.17.0] - 2026-07-10
+
+### Features
+
+- **SML-122**: Lambda SQS event source mapping
+
 ## [0.16.0] - 2026-07-10
 
 ### Features
