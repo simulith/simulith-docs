@@ -28,6 +28,11 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 | GetFunctionUrlConfig | `GET /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
 | DeleteFunctionUrlConfig | `DELETE /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
 | Function URL invoke | `POST /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
+| PublishLayerVersion | `POST /2018-10-31/layers/{name}/versions` | ✓ (SML-130) |
+| ListLayers | `GET /2018-10-31/layers` | ✓ (SML-130) |
+| ListLayerVersions | `GET /2018-10-31/layers/{name}/versions` | ✓ (SML-130) |
+| GetLayerVersion | `GET /2018-10-31/layers/{name}/versions/{version}` | ✓ (SML-130) |
+| DeleteLayerVersion | `DELETE /2018-10-31/layers/{name}/versions/{version}` | ✓ (SML-130) |
 
 ## AWS CLI examples
 
@@ -120,6 +125,44 @@ curl -s -X POST "http://localhost:4566/2021-10-31/functions/my-fn/url" \
 
 **Notes:** POST with `{"AuthType":"..."}` creates the URL; POST with an event payload invokes. Function URL events are passed as raw JSON (not API Gateway HTTP v2 envelope). `AuthType: AWS_IAM` requires SigV4 on invoke.
 
+## Lambda Layers (SML-130)
+
+Share dependencies across functions via layer zips. Layer API uses `/2018-10-31/layers/…`. On invoke, layer zips are extracted **before** the function zip (function code wins on path conflicts).
+
+**Node.js layout:** zip must contain `nodejs/node_modules/<package>/…`. Simulith sets `NODE_PATH` so `require()` resolves from layer modules.
+
+```bash
+# Build a layer zip (nodejs)
+mkdir -p /tmp/layer/nodejs/node_modules/my-lib
+echo 'module.exports = { ok: true };' > /tmp/layer/nodejs/node_modules/my-lib/index.js
+cd /tmp/layer && zip -r layer.zip nodejs
+
+# PublishLayerVersion
+aws lambda publish-layer-version \
+  --layer-name my-deps \
+  --zip-file fileb:///tmp/layer/layer.zip \
+  --compatible-runtimes nodejs20.x \
+  --endpoint-url $ENDPOINT
+
+# CreateFunction with Layers (use LayerVersionArn from publish output)
+aws lambda create-function \
+  --function-name my-fn \
+  --runtime nodejs20.x \
+  --handler index.handler \
+  --role arn:aws:iam::000000000000:role/r \
+  --zip-file fileb:///tmp/function.zip \
+  --layers arn:aws:lambda:us-east-1:000000000000:layer:my-deps:1 \
+  --endpoint-url $ENDPOINT
+
+# List / get / delete layer versions
+aws lambda list-layers --endpoint-url $ENDPOINT
+aws lambda list-layer-versions --layer-name my-deps --endpoint-url $ENDPOINT
+aws lambda get-layer-version --layer-name my-deps --version-number 1 --endpoint-url $ENDPOINT
+aws lambda delete-layer-version --layer-name my-deps --version-number 1 --endpoint-url $ENDPOINT
+```
+
+**Limits:** `AddLayerVersionPermission` not implemented (open local access). `UpdateFunctionConfiguration` for Layers-only changes not supported — set `Layers` on CreateFunction. Python layer `PYTHONPATH` not implemented (nodejs first).
+
 ## SQS event source mapping (SML-122)
 
 Map a local SQS queue to a Lambda function. The runtime **polls enabled mappings in the background** (~1s interval), batches messages, invokes the function with a standard SQS `Records` event, and deletes messages on success.
@@ -166,6 +209,12 @@ Function metadata is stored in the SQLite database (`lambda_functions` table). T
 
 Both metadata and zip survive runtime restarts. `simulith reset` removes all Lambda state.
 
+Layer version zips are stored at:
+
+```
+{data-dir}/lambda/layers/{layer-name}/{version}/code.zip
+```
+
 ## Function ARN format
 
 ```
@@ -186,19 +235,21 @@ Default values: region `us-east-1`, accountId `000000000000`.
 | `Timeout` | no | `3` | Seconds; used by SML-121 (invoke) |
 | `MemorySize` | no | `128` | MB |
 | `Environment.Variables` | no | `{}` | Injected into subprocess on invoke (SML-121) |
+| `Layers` | no | `[]` | Layer version ARNs; merged into invoke workspace (SML-130) |
 | `Description` | no | `""` | Metadata only |
 
 ## Known gaps and limits
 
 - **InvocationType: Event** (async HTTP invoke) — **supported** (202 + background run). ESM poller still uses sync invoke internally.
 - **Function URLs** — **supported** via `/2021-10-31/functions/<name>/url` (create/get/delete + HTTP invoke on same path; `AuthType: NONE` default).
+- **Lambda Layers** — **supported** via `/2018-10-31/layers/…` (publish/list/get/delete; `Layers` on CreateFunction; nodejs `NODE_PATH`).
 - **Go/Java/custom runtimes** — not supported for invoke; Node.js and Python only.
 - **Docker runtime image** — does not bundle `node` or `python3`; invoke works when binaries are on PATH (local dev) or image is extended.
 - **Code.S3Bucket / Code.S3Key** — not supported. Use `Code.ZipFile` (base64).
 - **Runtime validation** — Simulith accepts any runtime string. AWS enforces a specific list.
 - **Zip size limits** — no limit enforced in this version. AWS limits 50 MB compressed / 250 MB uncompressed.
 - **ListFunctions pagination** — `Marker` / `MaxItems` query params are ignored; all functions are returned.
-- **Tags, aliases, versions** — not implemented.
+- **Tags, aliases, versions** — not implemented (layers **are** implemented — SML-130).
 - **Concurrency** — not applicable for local development.
 
 ## Compatibility matrix row
@@ -216,7 +267,7 @@ export SIMULITH_VERIFY_LAMBDA_ROLE_ARN=arn:aws:iam::<account>:role/<lambda-execu
 simulith verify lambda --region us-east-1 --endpoint http://127.0.0.1:4566
 ```
 
-**Eight scenarios:** function CRUD lifecycle, invoke sync payload, async invoke (`InvocationType: Event`), function URL invoke, update function code, SQS ESM lifecycle, list functions after create, get function code location.
+**Nine scenarios:** function CRUD lifecycle, invoke sync payload, async invoke (`InvocationType: Event`), function URL invoke, **layer-backed invoke**, update function code, SQS ESM lifecycle, list functions after create, get function code location.
 
 **Invoke scenario** requires **`node`** on the **Simulith runtime host** PATH (not only on the verify client). In Docker CI the runtime image has no Node — those scenarios are **skipped** automatically via `/health` → `lambdaInvoke.node`. Typical local dev: install `node` on the host running `simulith start`.
 

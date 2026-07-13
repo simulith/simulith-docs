@@ -26,7 +26,7 @@ Last updated: 2026-07-13 (SML-123 — `simulith verify lambda`).
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP slice + seed shipped (SML-120–128, v0.15.0–v0.21.0). **Next (close P2 gaps):** FW-LAM-007 async invoke + Function URLs, then FW-LAM-008 layers — before API Gateway (B3).
+**Lambda expansion:** MVP slice + seed shipped (SML-120–128, v0.15.0–v0.21.0). **P2 shipped:** FW-LAM-007 async invoke + Function URLs (SML-129, v0.22.0), **FW-LAM-008 Layers** (SML-130). **Next:** API Gateway (B3).
 
 ---
 
@@ -169,11 +169,11 @@ CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObje
 
 Guide: [lambda.md](lambda.md) · Backlog: `future-work/lambda/`
 
-### Implemented (SML-120–128)
+### Implemented (SML-120–130)
 
-CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction (sync), UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll). Default seed includes **`demo-fn`** (SML-128).
+CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction (sync + async Event), UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll), **Function URLs**, **Lambda Layers** (publish/list/get/delete + `Layers` on CreateFunction). Default seed includes **`demo-fn`** (SML-128).
 
-Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip stored at `{data-dir}/lambda/{name}/code.zip`.
+Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_layer_versions`). Function zip at `{data-dir}/lambda/{name}/code.zip`; layer zips at `{data-dir}/lambda/layers/{name}/{version}/code.zip`.
 
 **ESM poller:** enabled mappings poll SQS every ~1s, invoke target function with `Records` batch, delete messages on success.
 
@@ -181,10 +181,11 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip sto
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Lambda Layers | P2 | FW-LAM-008 |
 | Aliases, versions, Go runtime | P3 | FW-LAM-023, FW-LAM-025 |
 
 **Shipped (SML-129):** async invoke (`InvocationType: Event`) and Function URLs.
+
+**Shipped (SML-130):** Lambda Layers (`PublishLayerVersion`, layer CRUD, `Layers` on CreateFunction, nodejs `NODE_PATH` on invoke).
 
 ### Tier A reference set (7 ops)
 
@@ -194,12 +195,11 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip sto
 
 ## What to do next (priority)
 
-**Lambda P2 (before API Gateway B3):** FW-LAM-008 (Layers) per `future-work/lambda/README.md`.
+**Next (API Gateway B3):** per `future-work/lambda/README.md` and `product-vision.md`.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **P2** | Lambda Layers | FW-LAM-008 |
-| **B3** | API Gateway (after Lambda P2) | TBD |
+| **B3** | API Gateway | TBD |
 
 ---
 
