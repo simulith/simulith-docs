@@ -1,18 +1,18 @@
 # Console parity overview — Simulith Console vs AWS Console
 
-Consolidated view of **Simulith Console vs AWS Management Console** for DynamoDB, SQS, SSM, and S3: what the **local web UI ships today**, what is **missing**, and **backlog IDs**. (Engineering doc — “MVP” here denotes **scope boundary**, not user-facing Console copy; see FW-PRD-016 / SML-083.)
+Consolidated view of **Simulith Console vs AWS Management Console** for DynamoDB, SQS, SSM, S3, and Lambda: what the **local web UI ships today**, what is **missing**, and **backlog IDs**. (Engineering doc — “MVP” here denotes **scope boundary**, not user-facing Console copy; see FW-PRD-016 / SML-083.)
 
 > **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](console.md)  
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension  
 > **Backlog:** `cursor/company/future-work/product/`
 
-Last updated: 2026-07-08 (SML-116 — Console Verify S3 parity).
+Last updated: 2026-07-13 (SML-125 — Console Lambda panel).
 
 ---
 
 ## Executive summary
 
-Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. Scope: **DynamoDB, SQS, SSM, S3** on localhost — no IAM, CloudWatch, or multi-region.
+Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. Scope: **DynamoDB, SQS, SSM, S3, Lambda** on localhost — no IAM, CloudWatch, or multi-region.
 
 | Panel | MVP flows **in Console UI** | Reference set* | **Shipped** | Notes |
 | --- | --- | ---: | ---: | --- |
@@ -21,6 +21,7 @@ Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AW
 | **SQS** | List queues; peek; send; receive+delete; purge | 5 | **5 / 5 (100%)** | FIFO, visibility deferred |
 | **SSM** | Browse by path; put/edit/delete String + SecureString | 4 | **4 / 4 (100%)** | StringList / batch delete UI deferred |
 | **S3** | List/create/delete bucket; list objects; upload/download/delete object | 6 | **6 / 6 (100%)** | CopyObject / batch delete UI deferred |
+| **Lambda** | List functions; view config; invoke JSON; delete function | 4 | **4 / 4 (100%)** | Create/update code UI deferred; ESM UI deferred |
 | **Cross-cutting** | Same-origin proxy; admin peek; verify report import | 3 | **3 / 3 (100%)** | Snapshot UI deferred |
 | **Total (weighted)** | — | **28** | **~28 / 28 (~100%)** | Honest MVP subset |
 
@@ -119,6 +120,21 @@ Guide: [console.md](console.md) · API: [s3.md](s3.md)
 
 ---
 
+## Lambda panel
+
+Guide: [console.md](console.md) · API: [lambda.md](lambda.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| List functions | **ListFunctions** — function selector | — |
+| View configuration | **GetFunction** — runtime, handler, role, timeout, memory, env | — |
+| Test invoke | **Invoke** — JSON payload + response (RequestResponse) | Requires node/python3 on runtime host |
+| Delete function | **DeleteFunction** + confirm | — |
+| Create / update code | Not in UI | CLI / Terraform (`examples/terraform/lambda`) |
+| Event source mappings | Not in UI | **FW-LAM-003** API shipped; Console optional |
+
+---
+
 ## Verify panel
 
 Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) · CI artifacts: [compatibility.md § CI](compatibility.md#continuous-integration-github-actions)
@@ -148,7 +164,7 @@ Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) 
 ## Out of scope (Console)
 
 - Full AWS Console feature parity (wizards, dashboards, alarms, tags UI for every resource)
-- Services beyond shipped set (Lambda, ECS, …)
+- Services beyond shipped set (ECS, …)
 - Multi-account, multi-region, SSO
 - Replacing AWS CLI/SDK for automation or CI
 

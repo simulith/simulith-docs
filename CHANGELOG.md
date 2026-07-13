@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.20.0] - 2026-07-13
+
+### Features
+
+- **SML-125**: Console Lambda panel
+
 ## [0.19.0] - 2026-07-13
 
 ### Features
