@@ -24,6 +24,10 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 | ListEventSourceMappings | `GET /2015-03-31/event-source-mappings` | ✓ (SML-122) |
 | GetEventSourceMapping | `GET /2015-03-31/event-source-mappings/{uuid}` | ✓ (SML-122) |
 | DeleteEventSourceMapping | `DELETE /2015-03-31/event-source-mappings/{uuid}` | ✓ (SML-122) |
+| CreateFunctionUrlConfig | `POST /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
+| GetFunctionUrlConfig | `GET /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
+| DeleteFunctionUrlConfig | `DELETE /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
+| Function URL invoke | `POST /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
 
 ## AWS CLI examples
 
@@ -76,6 +80,14 @@ aws lambda invoke \
 
 cat /tmp/out.json
 
+# Invoke async (Event) — returns HTTP 202 immediately; handler runs in background
+aws lambda invoke \
+  --function-name my-fn \
+  --invocation-type Event \
+  --payload '{"key":"value"}' \
+  --endpoint-url $ENDPOINT \
+  /tmp/out.json
+
 # UpdateFunctionCode
 aws lambda update-function-code \
   --function-name my-fn \
@@ -84,6 +96,29 @@ aws lambda update-function-code \
 ```
 
 Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`). `Environment.Variables` from CreateFunction are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
+
+## Function URLs (SML-129)
+
+HTTP invoke without API Gateway. Management API uses `/2021-10-31/functions/{name}/url`; the returned `FunctionUrl` is the same path on `localhost` for local dev.
+
+```bash
+# Create Function URL (AuthType NONE — default)
+aws lambda create-function-url-config \
+  --function-name my-fn \
+  --auth-type NONE \
+  --endpoint-url $ENDPOINT
+
+# Get / delete config
+aws lambda get-function-url-config --function-name my-fn --endpoint-url $ENDPOINT
+aws lambda delete-function-url-config --function-name my-fn --endpoint-url $ENDPOINT
+
+# HTTP invoke (no SigV4 when AuthType is NONE)
+curl -s -X POST "http://localhost:4566/2021-10-31/functions/my-fn/url" \
+  -H "Content-Type: application/json" \
+  -d '{"hello":"world"}'
+```
+
+**Notes:** POST with `{"AuthType":"..."}` creates the URL; POST with an event payload invokes. Function URL events are passed as raw JSON (not API Gateway HTTP v2 envelope). `AuthType: AWS_IAM` requires SigV4 on invoke.
 
 ## SQS event source mapping (SML-122)
 
@@ -155,7 +190,8 @@ Default values: region `us-east-1`, accountId `000000000000`.
 
 ## Known gaps and limits
 
-- **InvocationType: Event** (async HTTP invoke) — not supported; ESM uses sync invoke internally.
+- **InvocationType: Event** (async HTTP invoke) — **supported** (202 + background run). ESM poller still uses sync invoke internally.
+- **Function URLs** — **supported** via `/2021-10-31/functions/<name>/url` (create/get/delete + HTTP invoke on same path; `AuthType: NONE` default).
 - **Go/Java/custom runtimes** — not supported for invoke; Node.js and Python only.
 - **Docker runtime image** — does not bundle `node` or `python3`; invoke works when binaries are on PATH (local dev) or image is extended.
 - **Code.S3Bucket / Code.S3Key** — not supported. Use `Code.ZipFile` (base64).
@@ -180,9 +216,9 @@ export SIMULITH_VERIFY_LAMBDA_ROLE_ARN=arn:aws:iam::<account>:role/<lambda-execu
 simulith verify lambda --region us-east-1 --endpoint http://127.0.0.1:4566
 ```
 
-**Six scenarios:** function CRUD lifecycle, invoke sync payload, update function code, SQS ESM lifecycle, list functions after create, get function code location.
+**Eight scenarios:** function CRUD lifecycle, invoke sync payload, async invoke (`InvocationType: Event`), function URL invoke, update function code, SQS ESM lifecycle, list functions after create, get function code location.
 
-**Invoke scenario** requires **`node`** on PATH; it is **skipped** with a clear message when `node` is missing (typical in Docker runtime image).
+**Invoke scenario** requires **`node`** on the **Simulith runtime host** PATH (not only on the verify client). In Docker CI the runtime image has no Node — those scenarios are **skipped** automatically via `/health` → `lambdaInvoke.node`. Typical local dev: install `node` on the host running `simulith start`.
 
 **AWS parity** requires `SIMULITH_VERIFY_LAMBDA_ROLE_ARN` — an IAM role with trust for `lambda.amazonaws.com` and permissions to create/delete functions and event source mappings. ESM scenarios also need SQS create/delete on the same account.
 

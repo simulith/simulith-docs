@@ -26,7 +26,7 @@ Last updated: 2026-07-13 (SML-123 — `simulith verify lambda`).
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** SML-120–**123** shipped (CRUD, invoke, ESM, verify). Next: Terraform (SML-124), Console panel (SML-125).
+**Lambda expansion:** MVP slice + seed shipped (SML-120–128, v0.15.0–v0.21.0). **Next (close P2 gaps):** FW-LAM-007 async invoke + Function URLs, then FW-LAM-008 layers — before API Gateway (B3).
 
 ---
 
@@ -169,9 +169,9 @@ CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObje
 
 Guide: [lambda.md](lambda.md) · Backlog: `future-work/lambda/`
 
-### Implemented (SML-120 + SML-121)
+### Implemented (SML-120–128)
 
-CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction, UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll).
+CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction (sync), UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll). Default seed includes **`demo-fn`** (SML-128).
 
 Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip stored at `{data-dir}/lambda/{name}/code.zip`.
 
@@ -181,9 +181,10 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip sto
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Terraform green path | P1 | FW-LAM-005 / SML-124 (in progress) |
-| Console Lambda panel | P1 | FW-LAM-006 / SML-125 |
-| Async invoke + Function URLs | P2 | FW-LAM-007 |
+| Lambda Layers | P2 | FW-LAM-008 |
+| Aliases, versions, Go runtime | P3 | FW-LAM-023, FW-LAM-025 |
+
+**Shipped (SML-129):** async invoke (`InvocationType: Event`) and Function URLs.
 
 ### Tier A reference set (7 ops)
 
@@ -193,12 +194,12 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip sto
 
 ## What to do next (priority)
 
-**Lambda expansion activa:** SML-120–**123** shipped. Siguiente: **SML-124** (Terraform).
+**Lambda P2 (before API Gateway B3):** FW-LAM-008 (Layers) per `future-work/lambda/README.md`.
 
-| Priority | Theme | Story |
+| Priority | Theme | Backlog |
 | --- | --- | --- |
-| **P1** | Lambda Terraform + Console | SML-124–125 |
-| **P3** | Historial parity entre releases | **SML-081** / FW-CMP-012 ← reservado |
+| **P2** | Lambda Layers | FW-LAM-008 |
+| **B3** | API Gateway (after Lambda P2) | TBD |
 
 ---
 

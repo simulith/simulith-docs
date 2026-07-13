@@ -142,7 +142,7 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 
 ## Lambda
 
-Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (6 scenarios)
+Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (8 scenarios)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
@@ -157,7 +157,13 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (6 scenarios)
 | GetEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | UUID path |
 | DeleteEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | 202 Accepted |
 
-**Not in matrix (gap):** Layers, aliases, versions, Function URLs, async invoke (`InvocationType: Event`).
+**Not in matrix (gap):** Layers, aliases, versions.
+
+| CreateFunctionUrlConfig | available | yes (`function-url-invoke`) | `/2021-10-31/functions/{name}/url` |
+| GetFunctionUrlConfig | available | yes (`function-url-invoke`) | |
+| DeleteFunctionUrlConfig | available | yes (`function-url-invoke`) | |
+| Function URL HTTP invoke | available | yes (`function-url-invoke`) | Same path; raw JSON event |
+| InvokeFunction (Event) | available | yes (`invoke-async-event`) | HTTP 202 + background run |
 
 ---
 
@@ -171,7 +177,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip` | — |
-| Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
+| Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws

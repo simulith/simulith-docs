@@ -296,8 +296,9 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | SQS | `simulith verify sqs --skip-aws` | 10 |
 | SSM | `simulith verify ssm --skip-aws` | 9 |
 | S3 | `simulith verify s3 --skip-aws` | 6 |
+| Lambda | `simulith verify lambda --skip-aws` | 8 |
 
-No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`).
+No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH.
 
 **Extended DynamoDB scenarios** (`--filter extended`, 13 total) are **not** part of the default PR job — they add time and overlap with default smoke coverage goals; run them locally or set `VERIFY_DDB_EXTENDED=true` when invoking the script below.
 
@@ -311,6 +312,7 @@ runtime/artifacts/
   verify-sqs.json
   verify-ssm.json
   verify-s3.json
+  verify-lambda.json
 ```
 
 Download from the PR **Checks** tab → **Parity smoke** → **Artifacts**.
@@ -346,6 +348,7 @@ The **`Parity smoke (Docker)`** job in `.github/workflows/ci.yml` validates the 
 | SQS | `artifacts/verify-docker-sqs.json` |
 | SSM | `artifacts/verify-docker-ssm.json` |
 | S3 | `artifacts/verify-docker-s3.json` |
+| Lambda | `artifacts/verify-docker-lambda.json` |
 
 Download **`parity-verify-docker-reports`** from the PR Checks tab. The job **fails** when verify or compose health checks fail.
 
