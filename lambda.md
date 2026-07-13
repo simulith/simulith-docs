@@ -175,3 +175,18 @@ simulith verify lambda --region us-east-1 --endpoint http://127.0.0.1:4566
 Save JSON report: `simulith verify lambda --skip-aws --save-last` (writes `.simulith/verify-last.json`).
 
 Details: [compatibility.md](compatibility.md) · [compatibility-matrix.md](compatibility-matrix.md)
+
+## Terraform green path (SML-124)
+
+`aws_lambda_function` + `aws_sqs_queue` + `aws_lambda_event_source_mapping` apply and destroy on Simulith:
+
+```bash
+cd runtime/examples/terraform/lambda
+cp terraform.tfvars.native.example terraform.tfvars
+terraform init && terraform apply
+terraform destroy
+```
+
+Provider endpoints: `lambda` and `sqs` → Simulith base URL. Simulith accepts any `lambda_role_arn` string (default dummy role in examples).
+
+Walkthrough: [examples/terraform/lambda/README.md](examples/terraform/lambda/README.md) · [terraform-integration.md](terraform-integration.md#green-path-iac)

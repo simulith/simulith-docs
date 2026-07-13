@@ -1,0 +1,6 @@
+use_simulith_endpoint = false
+aws_region            = "us-east-1"
+function_name         = "simulith-dev-worker-tf"
+queue_name            = "simulith-dev-worker-tf-queue"
+# Replace with a real Lambda execution role in your AWS account
+lambda_role_arn       = "arn:aws:iam::000000000000:role/YOUR_LAMBDA_EXECUTION_ROLE"

@@ -106,6 +106,7 @@ provider "aws" {
     sqs      = "http://127.0.0.1:4566"
     ssm      = "http://127.0.0.1:4566"
     s3       = "http://127.0.0.1:4566"
+    lambda   = "http://127.0.0.1:4566"
   }
 }
 ```
@@ -242,6 +243,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`ssm/`](examples/terraform/ssm/) | Green | Green | PutParameter, GetParameter, DescribeParameters, DeleteParameter — `-parallelism=1` |
 | [`ssm/parameters/`](examples/terraform/ssm/parameters/) | Green | Green | 27 params; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` |
 | [`s3/`](examples/terraform/s3/) | Green | Green | CreateBucket, HeadBucket, GetBucketLocation, GetBucketVersioning, PutObject, HeadObject, DeleteObject, DeleteBucket — `s3_use_path_style = true` |
+| [`lambda/`](examples/terraform/lambda/) | Green | Green | CreateFunction, GetFunction, DeleteFunction, CreateQueue, GetQueueAttributes, DeleteQueue, Create/List/Get/DeleteEventSourceMapping |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 

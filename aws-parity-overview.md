@@ -181,7 +181,7 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`). Zip sto
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Terraform green path | P1 | FW-LAM-005 / SML-124 |
+| Terraform green path | P1 | FW-LAM-005 / SML-124 (in progress) |
 | Console Lambda panel | P1 | FW-LAM-006 / SML-125 |
 | Async invoke + Function URLs | P2 | FW-LAM-007 |
 
