@@ -107,6 +107,20 @@ aws lambda delete-event-source-mapping --uuid <uuid> --endpoint-url $ENDPOINT
 
 **Limits:** SQS ARNs only; `BatchSize` capped at 10; async `InvocationType: Event` not used (poller invokes synchronously). Requires `node`/`python3` on PATH for the target function.
 
+## Default seed (`demo-fn`)
+
+After `simulith seed` or Console **Seed demo data**, function **`demo-fn`** (Node.js 20.x echo handler) and an SQS event source mapping to `demo-queue` are loaded. Fixture format: [seed.md](seed.md).
+
+```bash
+aws lambda get-function --function-name demo-fn \
+  --endpoint-url http://127.0.0.1:4566 --region us-east-1
+
+aws lambda list-event-source-mappings --function-name demo-fn \
+  --endpoint-url http://127.0.0.1:4566 --region us-east-1
+```
+
+Sync invoke of `demo-fn` requires `node` on the runtime host PATH (Docker runtime image does not bundle Node by default).
+
 ## Persistence
 
 Function metadata is stored in the SQLite database (`lambda_functions` table). The zip payload is stored on disk at:

@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `0a5ca42` on 2026-07-13.
+Generated from monorepo commit `14dca49` on 2026-07-13.
 
 ## Start here
 
@@ -38,7 +38,8 @@ Generated from monorepo commit `0a5ca42` on 2026-07-13.
 | [DynamoDB](dynamodb.md) | Tables and items (MVP subset) |
 | [SQS](sqs.md) | Queues and messages |
 | [SSM](ssm.md) | Parameter Store |
-| [S3](s3.md) | Buckets (lifecycle; object CRUD planned) |
+| [S3](s3.md) | Buckets and objects |
+| [Lambda](lambda.md) | Functions, invoke, SQS ESM; seeded  |
 
 ## Compatibility
 

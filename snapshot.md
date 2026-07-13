@@ -1,6 +1,6 @@
 # Snapshot — Simulith runtime
 
-Save and restore **full local SQLite state** (DynamoDB + SQS) as a versioned JSON snapshot.
+Save and restore **local SQLite state** (DynamoDB + SQS + SSM) as a versioned JSON snapshot. **S3 and Lambda are not included** in snapshot v1 — metadata lives in SQLite but object bytes and function zips are filesystem-backed; use [seed.md](seed.md) or AWS API to recreate.
 
 ## Commands
 
@@ -68,13 +68,15 @@ simulith start
 ```
 
 - **`kind`** must be `simulith-snapshot` — seed fixture files are rejected
-- Empty `dynamodb` or `sqs` sections are valid (partial snapshots)
+- Empty `dynamodb`, `sqs`, or `ssm` sections are valid (partial snapshots)
+- **S3 / Lambda** — not exported in v1 (see [persistence.md](persistence.md))
 
 Re-export snapshots after Simulith schema upgrades if restore fails on older files.
 
 ## Out of scope (MVP)
 
 - Binary SQLite file copy — JSON v1 only
+- S3 object bytes and Lambda deployment zips in snapshot — deferred
 - Snapshot registry/list/delete CLI — use the filesystem
 
 ## Related

@@ -1,6 +1,6 @@
 # Persistence — Simulith runtime
 
-Local state for **DynamoDB**, **SQS**, and **SSM Parameter Store** is stored in SQLite.
+Local state for **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, and **Lambda** is stored in SQLite. S3 object bytes and Lambda deployment zips live on the filesystem beside the database.
 
 ## Configuration
 
@@ -38,20 +38,22 @@ CREATE TABLE dynamodb_items (
 CREATE TABLE sqs_queues ( ... );
 CREATE TABLE sqs_messages ( ... );
 
-CREATE TABLE ssm_parameters (
-  name TEXT PRIMARY KEY,
-  type TEXT NOT NULL,
-  value TEXT NOT NULL,
-  version INTEGER NOT NULL DEFAULT 1,
-  last_modified TEXT NOT NULL,
-  data_type TEXT,
-  tags_json TEXT
-);
+CREATE TABLE ssm_parameters ( ... );
+
+CREATE TABLE s3_buckets ( ... );
+CREATE TABLE s3_objects ( ... );
+
+CREATE TABLE lambda_functions ( ... );
+CREATE TABLE lambda_event_source_mappings ( ... );
 ```
 
 - **DynamoDB** — table metadata in `dynamodb_tables`; items in `dynamodb_items`
 - **SQS** — queue metadata in `sqs_queues`; messages in `sqs_messages`
 - **SSM** — parameters in `ssm_parameters` (full parameter name as primary key)
+- **S3** — bucket names in `s3_buckets`; object metadata in `s3_objects`; object bytes under `{data-dir}/s3/{bucket}/…` — [s3.md](s3.md)
+- **Lambda** — function metadata in `lambda_functions`; SQS mappings in `lambda_event_source_mappings`; zip payloads under `{data-dir}/lambda/{function-name}/code.zip` — [lambda.md](lambda.md)
+
+`{data-dir}` defaults to the directory containing `state.db` (e.g. `./.simulith/`).
 
 Data survives process restarts. Reopening the database file preserves all rows.
 
@@ -70,7 +72,7 @@ volumes:
 
 ## Reset
 
-Clear all local **DynamoDB, SQS, and SSM** state:
+Clear all local **DynamoDB, SQS, SSM, S3, and Lambda** state:
 
 ```bash
 simulith reset
@@ -83,7 +85,9 @@ After reset:
 - `dynamodb_tables` and `dynamodb_items` are empty
 - `sqs_queues` and `sqs_messages` are empty
 - `ssm_parameters` is empty
-- CreateQueue / PutItem / SendMessage work on a clean store
+- `s3_buckets` and `s3_objects` are empty; S3 object files under `{data-dir}/s3/` are removed
+- `lambda_functions` and `lambda_event_source_mappings` are empty; Lambda zips under `{data-dir}/lambda/` are removed
+- CreateQueue / PutItem / SendMessage / CreateBucket / CreateFunction work on a clean store
 
 No confirmation prompt (non-interactive by design).
 
@@ -112,6 +116,8 @@ Older snapshot files without `"ssm"` still restore; SSM rows are cleared when re
 ## Related
 
 - [dynamodb.md](dynamodb.md) — DynamoDB operations and item storage
-- [sqs.md](sqs.md) — SQS queues and messages
+- [ssm.md](ssm.md) — SSM Parameter Store
+- [s3.md](s3.md) — S3 buckets and objects
+- [lambda.md](lambda.md) — Lambda functions and event source mappings
 - [docker.md](docker.md) — container volumes and healthcheck
 - [quickstart.md](quickstart.md) — getting started

@@ -61,7 +61,7 @@ docker compose -f docker-compose.yml -f docker-compose.console.yml up --build
 Default Console host port is **9080** (not 8080) to avoid conflicts with other local services. Override: `SIMULITH_CONSOLE_PORT=8080 docker compose ...`.
 
 1. Open the Console dashboard — expect **Connected** when runtime is healthy.
-2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`).
+2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM).
 3. Open **DynamoDB** — browse, create tables, put/edit/delete items (Simple strings or **JSON document** for Map/List).
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
@@ -115,7 +115,7 @@ Registered in `runtime/internal/admin/` on the **same SQLite store** as AWS hand
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
-| **Lambda** | ListFunctions, GetFunction (config + env), Invoke (RequestResponse JSON), DeleteFunction | Create/update code UI deferred; invoke needs node/python3 on runtime host PATH |
+| **Lambda** | ListFunctions, GetFunction (config + env), Invoke (RequestResponse JSON), DeleteFunction | Create/update code UI deferred; seeded `demo-fn` via Dashboard **Seed**; invoke needs node/python3 on runtime host PATH |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 

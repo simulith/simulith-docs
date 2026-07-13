@@ -24,6 +24,8 @@ Output: `dist/simulith-trust-bundle-YYYYMMDD.zip`
 ## What the script does
 
 1. **`ci-verify-smoke.sh`** — seed → start server → `simulith verify dynamodb|sqs|ssm|s3 --skip-aws` → four JSON files
+
+> **Lambda:** `simulith verify lambda` ships (SML-123) but is not yet included in the trust-bundle script — run manually or see [compatibility.md](compatibility.md).
 2. **`simulith report --output-html`** — HTML for each JSON
 3. **Copy** `docs/compatibility-matrix.md` and `docs/quickstart.md` into the bundle
 4. **Write** bundle `README.md` (timestamp, git commit when available)
@@ -50,6 +52,8 @@ reports/
   verify-s3.json
   verify-s3.html
 ```
+
+> **Deferred:** `verify-lambda.json` / HTML — add when `build-trust-bundle.sh` includes `simulith verify lambda`.
 
 Reports use schema `version: 1`, **`mode: smoke`** (no `compatibilityPercent`). For full AWS parity, run verify without `--skip-aws` — [compatibility.md](compatibility.md).
 

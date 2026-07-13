@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.21.0] - 2026-07-13
+
+### Features
+
+- **SML-128**: Lambda demo-fn in default seed
+
 ## [0.20.0] - 2026-07-13
 
 ### Features

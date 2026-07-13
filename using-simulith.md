@@ -60,7 +60,7 @@ Your app / CLI / Terraform
 | **Data storage** | AWS-managed, multi-AZ | **SQLite** under `/app/.simulith` in Docker (mount a volume to persist) — [persistence.md](persistence.md) |
 | **Billing / quotas** | AWS pricing and service limits | None — limited by disk and MVP subset |
 | **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda** (CRUD, invoke, SQS ESM) — [aws-parity-overview.md](aws-parity-overview.md) |
-| **API coverage** | Complete per service | **Subset** — 48 verify scenarios on DynamoDB/SQS/SSM/S3; Lambda CRUD + invoke + ESM via CLI (`simulith verify lambda` planned) |
+| **API coverage** | Complete per service | **Subset** — 54 verify scenarios across DynamoDB, SQS, SSM, S3, and Lambda — [compatibility-matrix.md](compatibility-matrix.md) |
 | **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console-parity-overview.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
@@ -117,8 +117,8 @@ Best for **exploration**, demos, and users who prefer a GUI.
 
 1. Open **http://localhost:9080**
 2. **Seed demo data** on the dashboard (or load seed via CLI — [seed.md](seed.md))
-3. Explore **DynamoDB**, **SQS**, **SSM**, and **S3** panels
-4. **Lambda:** CRUD, invoke, and SQS event source mapping via AWS CLI — see [lambda.md](lambda.md) (Console panel planned; invoke needs `node`/`python3` on PATH)
+3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, and **Lambda** panels (`demo-fn` after Seed)
+4. **Lambda panel:** list, config, invoke with JSON — sync invoke needs `node`/`python3` on the runtime host PATH — [lambda.md](lambda.md)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 
 Walkthrough: [console.md — Quick run](console.md#quick-run-docker). UI gaps vs AWS Console: [console-parity-overview.md](console-parity-overview.md).

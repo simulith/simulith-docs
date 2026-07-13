@@ -64,7 +64,7 @@ Runtime admin status (Console dashboard).
 
 ### `POST /_simulith/v1/seed`
 
-Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoDB, SQS, SSM, and S3 state, then applies the default profile.
+Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoDB, SQS, SSM, S3, and Lambda state, then applies the default profile (includes `demo-fn` — [seed.md](seed.md)).
 
 **Response 200:**
 
@@ -76,7 +76,7 @@ Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoD
 
 ### `POST /_simulith/v1/reset`
 
-Clear all local DynamoDB, SQS, SSM, and S3 state (`ResetLocalState`).
+Clear all local DynamoDB, SQS, SSM, S3, and Lambda state (`ResetLocalState`).
 
 **Response 200:**
 
@@ -88,7 +88,7 @@ Clear all local DynamoDB, SQS, SSM, and S3 state (`ResetLocalState`).
 
 ### `GET /_simulith/v1/snapshot`
 
-Export full local state as a **snapshot JSON document** (same format as `simulith snapshot save`). Includes DynamoDB, SQS, and SSM.
+Export full local state as a **snapshot JSON document** (same format as `simulith snapshot save`). Includes DynamoDB, SQS, and SSM. **S3 and Lambda are not included** in snapshot v1 — use [seed.md](seed.md) or AWS API/Terraform to recreate.
 
 **Response 200:** snapshot document with `"kind": "simulith-snapshot"`.
 

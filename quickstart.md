@@ -16,7 +16,9 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | --- | --- |
 | DynamoDB | CreateTable, CRUD, Query, Scan — [dynamodb.md](dynamodb.md) |
 | SQS | CreateQueue, Send/Receive/DeleteMessage — [sqs.md](sqs.md) |
-| SSM | Put/GetParameter (SQLite persistence) |
+| SSM | Put/GetParameter (SQLite persistence) — [ssm.md](ssm.md) |
+| S3 | Bucket/object CRUD — [s3.md](s3.md) |
+| Lambda | Function CRUD, sync invoke, SQS ESM — [lambda.md](lambda.md) |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 
@@ -58,7 +60,7 @@ Detailed steps follow.
 
 ## 1. Load demo data
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, and S3 bucket `demo-bucket`. Details: [seed.md](seed.md).
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, and Lambda function `demo-fn` (with SQS ESM to `demo-queue`). Details: [seed.md](seed.md).
 
 **Stop the server first** if it is already running (SQLite lock). Seed writes directly to the state database.
 
@@ -89,7 +91,7 @@ cd runtime
 docker compose -f docker-compose.all-in-one.yml up --build
 ```
 
-Open **http://localhost:9080** — use **Seed demo data** on the Dashboard, then explore DynamoDB / SQS / SSM panels.
+Open **http://localhost:9080** — use **Seed demo data** on the Dashboard, then explore DynamoDB / SQS / SSM / S3 / Lambda panels.
 
 Runtime health via proxy:
 
@@ -169,11 +171,13 @@ aws sqs receive-message \
   --region us-east-1
 ```
 
-Expected: table metadata for `Demo`; message body `hello from seed`; SSM parameter `/app/demo/api-url` value `http://localhost:8080`.
+Expected: table metadata for `Demo`; message body `hello from seed`; SSM parameter `/app/demo/api-url` value `http://localhost:8080`; Lambda `demo-fn` listed after seed.
 
 ```bash
 aws ssm get-parameter --name /app/demo/api-url \
   --endpoint-url http://127.0.0.1:4566 --region us-east-1
+
+aws lambda list-functions --endpoint-url http://127.0.0.1:4566 --region us-east-1
 ```
 
 For more CLI operations, see **[AWS CLI examples](aws-cli-examples.md)**. This quickstart only proves the endpoint works.
@@ -188,10 +192,12 @@ For more CLI operations, see **[AWS CLI examples](aws-cli-examples.md)**. This q
 | --- | --- | --- |
 | `simulith start` | Run HTTP runtime | this guide |
 | `simulith seed` | Load demo fixture | [seed.md](seed.md) |
-| `simulith reset` | Clear DynamoDB + SQS state | [persistence.md](persistence.md) |
-| `simulith snapshot save\|restore` | Export/import full state | [snapshot.md](snapshot.md) |
+| `simulith reset` | Clear DynamoDB + SQS + SSM + S3 + Lambda state | [persistence.md](persistence.md) |
+| `simulith snapshot save\|restore` | Export/import full state (DDB/SQS/SSM only in v1) | [snapshot.md](snapshot.md) |
 | `simulith verify dynamodb` | Compare DynamoDB against real AWS | [compatibility.md](compatibility.md) |
 | `simulith verify ssm` | Compare SSM against real AWS | [compatibility.md](compatibility.md) |
+| `simulith verify s3` | Compare S3 against real AWS | [compatibility.md](compatibility.md) |
+| `simulith verify lambda` | Compare Lambda against real AWS | [compatibility.md](compatibility.md) |
 | `simulith report` | HTML report from verify JSON | [compatibility.md](compatibility.md) |
 
 ---

@@ -1,6 +1,6 @@
 # SDK examples — Simulith runtime
 
-Copy-paste **AWS SDK** examples for MVP **DynamoDB** and **SQS** against Simulith.
+Copy-paste **AWS SDK** examples for MVP **DynamoDB** and **SQS** against Simulith. For **Lambda**, use AWS CLI patterns in [lambda.md](lambda.md) (SDK setup is the same endpoint + static credentials).
 
 > **New to Simulith?** Complete the [Quickstart](quickstart.md) first (run server, optional seed). For CLI equivalents see [AWS CLI examples](aws-cli-examples.md).
 

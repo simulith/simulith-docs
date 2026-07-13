@@ -1,6 +1,6 @@
 # Terraform integration — Simulith runtime
 
-Use the **`hashicorp/aws` provider** to provision MVP **DynamoDB**, **SQS**, **SSM Parameter Store**, and **S3** resources against Simulith locally.
+Use the **`hashicorp/aws` provider** to provision **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, and **Lambda** resources against Simulith locally.
 
 > **New to Simulith?** Complete the [Quickstart](quickstart.md) first (run server on port **4566**).
 
@@ -13,6 +13,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | SQS | [`sqs/`](examples/terraform/sqs/) | Yes |
 | SSM Parameter Store | [`ssm/`](examples/terraform/ssm/) | Yes |
 | S3 | [`s3/`](examples/terraform/s3/) | Yes — bucket + 2 objects |
+| Lambda | [`lambda/`](examples/terraform/lambda/) | Yes — function + SQS ESM (green path) |
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md).
 
@@ -376,7 +377,8 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 | S3 `aws_s3_object` | **Available** — `PutObject`, `HeadObject`, `DeleteObject`; single-part only |
 | S3 `force_destroy` | **Available** — clears objects before `DeleteBucket` on destroy |
 | S3 multipart / versioning / ACL writes | Not supported |
-| IAM / VPC / Lambda | Out of scope |
+| Lambda `aws_lambda_function` + SQS ESM | **Available** — green path [`lambda/`](examples/terraform/lambda/) (SML-124) |
+| IAM / VPC | Out of scope |
 
 Full deviation tables:
 
@@ -390,7 +392,7 @@ Full deviation tables:
 
 | Approach | When to use |
 | --- | --- |
-| [`simulith seed`](seed.md) | Curated Demo table + demo-queue fixture |
+| [`simulith seed`](seed.md) | Curated Demo table + demo-queue + demo-bucket + demo-fn fixture |
 | [AWS CLI examples](aws-cli-examples.md) | One-off commands |
 | [SDK examples](sdk-examples.md) | Application code integration |
 
