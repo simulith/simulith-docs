@@ -240,6 +240,48 @@ Verify deletes each `simulith-verify-*` queue on Simulith via **DeleteQueue** wh
 
 ---
 
+## Lambda verification
+
+```bash
+simulith verify lambda
+```
+
+### Modes
+
+**Full parity** runs six curated scenarios on both AWS and Simulith and compares normalized JSON responses:
+
+1. Function CRUD lifecycle (Create, List, Get, Delete)
+2. Invoke sync payload (RequestResponse; compares status + JSON body)
+3. UpdateFunctionCode (CodeSha256 changes)
+4. SQS event source mapping lifecycle (Create/List/Get/Delete; creates SQS queue in scenario)
+5. ListFunctions after create
+6. GetFunction Code.Location
+
+Prerequisites:
+
+- AWS credentials configured
+- `SIMULITH_VERIFY_LAMBDA_ROLE_ARN` — Lambda execution role ARN (trust `lambda.amazonaws.com`; SQS + Lambda permissions for ESM scenario)
+- Simulith reachable at the configured endpoint
+- **`node`** on PATH for invoke scenario (skipped automatically when missing)
+
+Function and queue names use a unique prefix (`simulith-verify-<timestamp>-*`). Scenarios delete AWS functions, ESMs, and queues when they finish; a final sweep removes any that remain.
+
+**Simulith-only smoke** (`--skip-aws`):
+
+```bash
+simulith verify lambda --skip-aws
+```
+
+### Flags
+
+Same flags as DynamoDB verify (`--endpoint`, `--region`, `--skip-aws`, `--filter`, `--timeout`, `--output`, `--save-last`). JSON reports use `service: lambda`.
+
+### Simulith cleanup
+
+Verify deletes each `simulith-verify-*` function on Simulith via **DeleteFunction** when a scenario finishes. Use `simulith reset` to clear unrelated local Lambda state.
+
+---
+
 ## Continuous integration (GitHub Actions)
 
 Every pull request and push to `main`/`master` runs the **`Parity smoke`** job in `.github/workflows/ci.yml` (alongside runtime unit tests).

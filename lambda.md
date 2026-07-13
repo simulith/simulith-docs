@@ -153,4 +153,25 @@ Default values: region `us-east-1`, accountId `000000000000`.
 
 ## Compatibility matrix row
 
-See [`aws-parity-overview.md`](aws-parity-overview.md) for the full matrix. Lambda parity tracking begins with SML-123 (`simulith verify lambda`).
+See [`aws-parity-overview.md`](aws-parity-overview.md) for the full matrix. Run **`simulith verify lambda`** for curated parity scenarios (SML-123).
+
+## Verify (SML-123)
+
+```bash
+# Simulith-only smoke (no AWS credentials)
+simulith verify lambda --skip-aws --endpoint http://127.0.0.1:4566
+
+# Full parity vs real AWS
+export SIMULITH_VERIFY_LAMBDA_ROLE_ARN=arn:aws:iam::<account>:role/<lambda-execution-role>
+simulith verify lambda --region us-east-1 --endpoint http://127.0.0.1:4566
+```
+
+**Six scenarios:** function CRUD lifecycle, invoke sync payload, update function code, SQS ESM lifecycle, list functions after create, get function code location.
+
+**Invoke scenario** requires **`node`** on PATH; it is **skipped** with a clear message when `node` is missing (typical in Docker runtime image).
+
+**AWS parity** requires `SIMULITH_VERIFY_LAMBDA_ROLE_ARN` — an IAM role with trust for `lambda.amazonaws.com` and permissions to create/delete functions and event source mappings. ESM scenarios also need SQS create/delete on the same account.
+
+Save JSON report: `simulith verify lambda --skip-aws --save-last` (writes `.simulith/verify-last.json`).
+
+Details: [compatibility.md](compatibility.md) · [compatibility-matrix.md](compatibility-matrix.md)

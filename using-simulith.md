@@ -59,8 +59,8 @@ Your app / CLI / Terraform
 | **Account ID** | Your 12-digit account | Fixed **`000000000000`** in ARNs and queue URLs |
 | **Data storage** | AWS-managed, multi-AZ | **SQLite** under `/app/.simulith` in Docker (mount a volume to persist) — [persistence.md](persistence.md) |
 | **Billing / quotas** | AWS pricing and service limits | None — limited by disk and MVP subset |
-| **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda** (Function CRUD) — [aws-parity-overview.md](aws-parity-overview.md) |
-| **API coverage** | Complete per service | **Subset** — 48 verify scenarios on DynamoDB/SQS/SSM/S3; Lambda CRUD via CLI (invoke planned) |
+| **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda** (CRUD, invoke, SQS ESM) — [aws-parity-overview.md](aws-parity-overview.md) |
+| **API coverage** | Complete per service | **Subset** — 48 verify scenarios on DynamoDB/SQS/SSM/S3; Lambda CRUD + invoke + ESM via CLI (`simulith verify lambda` planned) |
 | **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console-parity-overview.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
@@ -118,7 +118,7 @@ Best for **exploration**, demos, and users who prefer a GUI.
 1. Open **http://localhost:9080**
 2. **Seed demo data** on the dashboard (or load seed via CLI — [seed.md](seed.md))
 3. Explore **DynamoDB**, **SQS**, **SSM**, and **S3** panels
-4. **Lambda:** Function CRUD via AWS CLI — see [lambda.md](lambda.md) (Console panel planned)
+4. **Lambda:** CRUD, invoke, and SQS event source mapping via AWS CLI — see [lambda.md](lambda.md) (Console panel planned; invoke needs `node`/`python3` on PATH)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 
 Walkthrough: [console.md — Quick run](console.md#quick-run-docker). UI gaps vs AWS Console: [console-parity-overview.md](console-parity-overview.md).
@@ -225,7 +225,7 @@ Positioning: Simulith **complements** AWS; see partnership proposal.
 Do **not** expect locally:
 
 - IAM policy enforcement (unless strict SigV4 mode)
-- Multi-region replication, streams, FIFO SQS, Lambda invoke / event sources, multipart S3, etc.
+- Multi-region replication, streams, FIFO SQS, async Lambda invoke / Function URLs, multipart S3, etc.
 - Every DynamoDB/SQS/SSM/S3 operation AWS documents
 
 **Where to look:**

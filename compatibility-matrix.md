@@ -10,7 +10,7 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 > **Backlog (gaps):** `cursor/company/future-work/` · Policy: `DOCUMENTATION-GOVERNANCE.md`
 
-Last updated: 2026-07-09 (SML-120 — Lambda service scaffold + Function CRUD).
+Last updated: 2026-07-13 (SML-123 — `simulith verify lambda`).
 
 ## Summary
 
@@ -142,19 +142,22 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 
 ## Lambda
 
-Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (planned — SML-123)
+Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (6 scenarios)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateFunction | available | no | Code.ZipFile (base64); runtime string not validated |
-| ListFunctions | available | no | Returns all functions; no pagination |
-| GetFunction | available | no | Returns Configuration + Code.Location |
-| DeleteFunction | available | no | 204; removes metadata + zip from disk |
-| InvokeFunction | available | no | Sync subprocess; `nodejs*` and `python*` runtimes; requires `node`/`python3` on PATH |
-| UpdateFunctionCode | available | no | Replaces zip on disk; updates CodeSize / CodeSha256 |
-| Event Source Mapping (SQS) | available | no | Create/List/Get/Delete; background poll → invoke (SML-122) |
+| CreateFunction | available | yes (`function-crud-lifecycle`) | Code.ZipFile (base64); runtime string not validated |
+| ListFunctions | available | yes (`list-functions-after-create`) | Returns all functions; no pagination |
+| GetFunction | available | yes (`get-function-code-location`) | Returns Configuration + Code.Location |
+| DeleteFunction | available | yes (`function-crud-lifecycle`) | 204; removes metadata + zip from disk |
+| InvokeFunction | available | yes (`invoke-sync-payload`) | Sync subprocess; skips if `node` not on PATH |
+| UpdateFunctionCode | available | yes (`update-function-code`) | Replaces zip on disk; updates CodeSize / CodeSha256 |
+| CreateEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | SQS ARNs only; BatchSize capped at 10 |
+| ListEventSourceMappings | available | yes (`esm-sqs-lifecycle`) | Filter by FunctionName |
+| GetEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | UUID path |
+| DeleteEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | 202 Accepted |
 
-**Not in matrix (gap):** Event Source Mapping, Layers, aliases, versions, Function URLs, async invoke (`InvocationType: Event`).
+**Not in matrix (gap):** Layers, aliases, versions, Function URLs, async invoke (`InvocationType: Event`).
 
 ---
 
@@ -168,6 +171,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip` | — |
+| Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -175,6 +179,7 @@ simulith verify dynamodb --skip-aws --filter extended
 simulith verify sqs --skip-aws
 simulith verify ssm --skip-aws
 simulith verify s3 --skip-aws
+simulith verify lambda --skip-aws
 ```
 
 ---

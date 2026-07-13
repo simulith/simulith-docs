@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.18.0] - 2026-07-13
+
+### Features
+
+- **SML-123**: simulith verify lambda
+
 ## [0.17.1] - 2026-07-10
 
 ### Fixes

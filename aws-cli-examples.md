@@ -499,7 +499,7 @@ Path-prefix reads in Terraform: copy [`path-data.tf.example`](examples/terraform
 
 ## Lambda
 
-Function CRUD is available locally (v0.15.0+). **InvokeFunction** is not shipped yet — see [lambda.md](lambda.md).
+Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Invoke** requires `node` or `python3` on the same PATH as the Simulith process — the default Docker image does not include them. See [lambda.md](lambda.md).
 
 ```bash
 # Create a zip from a Node.js handler
@@ -530,12 +530,24 @@ aws lambda delete-function \
   --function-name my-fn \
   --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
 
-# Invoke (requires node or python3 on PATH)
+# Invoke (requires node or python3 on PATH — not in default Docker image)
 aws lambda invoke \
   --function-name my-fn \
   --payload '{"key":"value"}' \
   --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION" \
   /tmp/lambda-out.json
+
+# SQS → Lambda (create queue first, then mapping; poller invokes in background)
+aws sqs create-queue --queue-name worker-queue \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws lambda create-event-source-mapping \
+  --function-name my-fn \
+  --event-source-arn arn:aws:sqs:us-east-1:000000000000:worker-queue \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws lambda list-event-source-mappings --function-name my-fn \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
 ```
 
 ---
@@ -586,7 +598,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | SQS long polling | Short poll only |
 | SQS SendMessageBatch / DeleteMessageBatch | Available (SML-039) |
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; Terraform [`examples/terraform/ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
-| Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode; see [lambda.md](lambda.md) |
+| Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
 
 Full deviation tables:
 
