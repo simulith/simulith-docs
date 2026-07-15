@@ -1,6 +1,6 @@
 # Compatibility matrix — Simulith MVP
 
-Public reference for **local API support** vs **`simulith verify` coverage** on DynamoDB, SQS, and SSM.
+Public reference for **local API support** vs **`simulith verify` coverage** on DynamoDB, SQS, SSM, S3, and Lambda.
 
 **Public mirror (prospects, sales, Hub):** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
@@ -10,15 +10,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 > **Backlog (gaps):** `cursor/company/future-work/` · Policy: `DOCUMENTATION-GOVERNANCE.md`
 
-Last updated: 2026-07-13 (SML-123 — `simulith verify lambda`).
+Last updated: 2026-07-14 (SML-130 — Lambda Layers).
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 5 (DynamoDB, SQS, SSM, S3, Lambda) |
-| Operations **available** locally | 55 |
-| Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6 |
+| Operations **available** locally | 69 |
+| Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).

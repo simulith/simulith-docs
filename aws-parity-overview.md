@@ -1,13 +1,13 @@
 # AWS parity overview — Simulith MVP
 
-Consolidated view of **Simulith vs AWS** for the three MVP services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 + Lambda expansion): what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Console vs AWS Console (UI):** [`console-parity-overview.md`](console-parity-overview.md) — separate dimension  
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)  
 > **Backlog IDs:** `cursor/company/future-work/`  
 > **MVP scope:** `cursor/company/mvp-work-plan.md`
 
-Last updated: 2026-07-13 (SML-123 — `simulith verify lambda`).
+Last updated: 2026-07-14 (SML-130 — Lambda Layers).
 
 ---
 
@@ -19,14 +19,14 @@ Last updated: 2026-07-13 (SML-123 — `simulith verify lambda`).
 | **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | **~55%** (14 / ~22) |
 | **SSM** (Parameter Store) | 9 | 9 / 9 (100%) | **100%** (10 / 10) | **~58%** (9 / ~12) |
 | **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
-| **Lambda** | 10 | 10 / 10 (100%) | **100%** (7 / 7 Tier A) | **~13%** (10 / ~75) |
-| **Total** | **58** | **58 / 58 (100%)** verified | — | — |
+| **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
+| **Total** | **69** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service `future-work/*/README.md`.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP slice + seed shipped (SML-120–128, v0.15.0–v0.21.0). **P2 shipped:** FW-LAM-007 async invoke + Function URLs (SML-129, v0.22.0), **FW-LAM-008 Layers** (SML-130). **Next:** API Gateway (B3).
+**Lambda expansion:** MVP + P2 complete (SML-120–130, v0.15.0–v0.23.0). **P2 shipped:** FW-LAM-007 async invoke + Function URLs (SML-129, v0.22.0), **FW-LAM-008 Layers** (SML-130, v0.23.0). **Next:** API Gateway B3 runtime (SML-132 / FW-APIGW-001); analysis kickoff SML-131.
 
 ---
 
@@ -122,6 +122,8 @@ Guide: [terraform-integration.md](terraform-integration.md) · Examples: [`examp
 | [`sqs/`](examples/terraform/sqs/) | Green | Green | DeleteQueue tombstone; destroy ~60–90s — [README](examples/terraform/sqs/README.md) |
 | [`ssm/`](examples/terraform/ssm/) | Green | Green | Put/Get/Describe/Delete; `-parallelism=1` |
 | [`ssm/parameters/`](examples/terraform/ssm/parameters/) | Green | Green | `/SIMULITH/DEV/*`; `dev.tfvars` / `dev.aws.tfvars` |
+| [`s3/`](examples/terraform/s3/) | Green | Green | 1 bucket + 2 objects; `s3_use_path_style = true` |
+| [`lambda/`](examples/terraform/lambda/) | Green | Green | 1 function + 1 queue + 1 ESM; `endpoints { lambda, sqs }` |
 
 ### Terraform — still pending
 
@@ -155,7 +157,6 @@ CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObje
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Console S3 panel | P2 | FW-S3-011 |
 | Multipart upload | P3 | FW-S3-007 |
 | Multipart upload, versioning | P3 | FW-S3-020, FW-S3-021 |
 

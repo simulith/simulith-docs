@@ -225,7 +225,7 @@ Positioning: Simulith **complements** AWS; see partnership proposal.
 Do **not** expect locally:
 
 - IAM policy enforcement (unless strict SigV4 mode)
-- Multi-region replication, streams, FIFO SQS, async Lambda invoke / Function URLs, multipart S3, etc.
+- Multi-region replication, streams, FIFO SQS, multipart S3, etc.
 - Every DynamoDB/SQS/SSM/S3 operation AWS documents
 
 **Where to look:**
