@@ -7,6 +7,20 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.23.2] - 2026-07-15
+
+### Fixes
+
+- **Console**: Keep UI English regardless of browser locale (#268)
+
+### Changed
+
+- **Web & Console**: Add support contact email `simulithcloud@gmail.com` (#268)
+
+### Documentation
+
+- Public docs hygiene Phase 2 — sanitize mirror for end users (#267)
+
 ## [0.23.1] - 2026-07-15
 
 ### Fixes
