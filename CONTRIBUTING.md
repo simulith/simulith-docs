@@ -21,4 +21,4 @@ See `runtime/docs/simulith-docs.md` in the monorepo for the full bootstrap and p
 - Do not treat pull requests here as the primary doc workflow (they will be overwritten on the next sync).
 - Do not add internal backlog, sales-only, or maintainer release docs — those stay in the monorepo.
 
-Automated sync on release: `.github/workflows/sync-simulith-docs.yml` (FW-PRD-027 / SML-096). Set repo variable `DOCS_MIRROR_SYNC=true` and secret `SIMULITH_DOCS_SYNC_TOKEN`.
+Automated sync on release: `.github/workflows/sync-simulith-docs.yml`. Set repo variable `DOCS_MIRROR_SYNC=true` and secret `SIMULITH_DOCS_SYNC_TOKEN`.

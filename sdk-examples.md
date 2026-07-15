@@ -50,7 +50,7 @@ go get github.com/aws/aws-sdk-go-v2/config \
 
 ### Client setup
 
-Pattern matches the internal compatibility runner (`internal/verify/dynamodb/client.go`):
+Pattern matches the internal compatibility runner (the runtime):
 
 ```go
 import (
@@ -519,7 +519,7 @@ CLI equivalent: [aws-cli-examples.md — Seeded data](aws-cli-examples.md#seeded
 | DynamoDB GSI / LSI Query | Not supported |
 | SQS FIFO queues | Not supported |
 | SQS long polling | Short poll only |
-| SQS SendMessageBatch / DeleteMessageBatch | Available (SML-039) |
+| SQS SendMessageBatch / DeleteMessageBatch | Available |
 | SSM Parameter Store | CLI/Terraform examples; runnable SDK samples (Go/Node/Python) deferred — see [ssm.md](ssm.md), [terraform-integration.md](terraform-integration.md), [examples/terraform/ssm/](examples/terraform/ssm/) |
 
 Full deviation tables:
@@ -534,6 +534,5 @@ Full deviation tables:
 - [quickstart.md](quickstart.md) — onboarding
 - [aws-cli-examples.md](aws-cli-examples.md) — CLI cookbook
 - [compatibility.md](compatibility.md) — `simulith verify dynamodb` (Go SDK internally)
-- protocol.md — AWS JSON + Query wire formats
+
 - [terraform-integration.md](terraform-integration.md) — Terraform / IaC cookbook
-- smithy-contracts.md — API models

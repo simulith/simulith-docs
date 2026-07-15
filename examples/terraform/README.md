@@ -36,4 +36,4 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 
-Guide: [terraform-integration.md](../../terraform-integration.md) · Parity gaps: cursor/company/future-work/
+Guide: [terraform-integration.md](../../terraform-integration.md) · Parity gaps: [aws-parity-overview.md](../../aws-parity-overview.md)

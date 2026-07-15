@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, and Verify (SML-051 + SML-055 / FW-PRD-001 + FW-PRD-013).
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -8,7 +8,7 @@ For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
 ## Quick run (Docker)
 
-### Full product — published images (no repo, SML-085 / FW-PRD-018)
+### Full product — published images
 
 Pulls published images (`simulith/simulith` + `simulith/console`) — no checkout or `--build`. From any folder containing the compose file:
 
@@ -19,7 +19,7 @@ SIMULITH_VERSION=0.1.0 docker compose -f docker-compose.all-in-one.published.yml
 
 Same single entry URL as below (`http://localhost:9080`). Details: [release.md](https://simulith.dev), [docker.md](docker.md).
 
-### Workshop demo — all-in-one (recommended, SML-060 / FW-PRD-012)
+### Workshop demo — all-in-one
 
 One Compose file, **one host URL** — runtime + Console. Runtime is reached via Console proxy (`/runtime`, `/_simulith`); **`:4566` is not published** on the host by default.
 
@@ -42,8 +42,6 @@ docker compose -f docker-compose.all-in-one.yml -f docker-compose.all-in-one.run
 ```
 
 AWS CLI via proxy: `--endpoint-url http://127.0.0.1:9080/runtime`
-
-Validation: `maintainer workflow (private monorepo)`
 
 ### Dev overlay — two files, both ports
 
@@ -92,7 +90,7 @@ The Console uses **same-origin proxies** so the browser does not need CORS on th
 
 Canonical reference: **[Admin API](admin-api.md)** (`/_simulith/v1/*`).
 
-Registered in `runtime/internal/admin/` on the **same SQLite store** as AWS handlers. Console nginx proxies `/_simulith/*` to the runtime.
+Registered in the runtime on the **same SQLite store** as AWS handlers. Console nginx proxies `/_simulith/*` to the runtime.
 
 | Method | Path | Summary |
 | --- | --- | --- |
@@ -117,9 +115,9 @@ Registered in `runtime/internal/admin/` on the **same SQLite store** as AWS hand
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
 | **Lambda** | ListFunctions, GetFunction (config + env), Invoke (RequestResponse JSON), DeleteFunction | Create/update code UI deferred; seeded `demo-fn` via Dashboard **Seed**; invoke needs node/python3 on runtime host PATH |
 
-Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
+Full gap analysis: [console.md](console.md).
 
-### DynamoDB JSON document mode (SML-056)
+### DynamoDB JSON document mode
 
 - **Put item** → **JSON document** tab: paste a plain JSON object; nested objects become **Map**, arrays become **List** (via `@aws-sdk/util-dynamodb` → PutItem).
 - **Edit item** → **GetItem** loads the full item; **JSON document** tab saves with **PutItem** (replaces the entire item — attributes omitted from JSON are removed).
@@ -127,7 +125,7 @@ Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 
 ---
 
-## Verify panel (SML-059 / FW-PRD-005)
+## Verify panel
 
 Import and inspect **`CompatibilityReport` v1** JSON in the browser — no server-side verify run.
 
@@ -137,13 +135,13 @@ Import and inspect **`CompatibilityReport` v1** JSON in the browser — no serve
 | CI artifact | `verify-dynamodb.json`, `verify-sqs.json`, `verify-ssm.json`, `verify-s3.json`, `verify-docker-*.json` | Jobs **Parity smoke** / **Parity smoke (Docker)** |
 | Trust bundle | Same JSON files inside the zip | `mode: smoke` — no `compatibilityPercent` |
 
-Failed **parity** scenarios may include optional **`diffDetail`** (`path`, `aws`, `simulith`) from runtime SML-075; Console renders a field-by-field table (**SML-077**). Legacy reports with only `diff` text still work.
+Failed **parity** scenarios may include optional **`diffDetail`** (`path`, `aws`, `simulith`) from runtime ; Console renders a field-by-field table. Legacy reports with only `diff` text still work.
 
 **Import flow:** Console → **Verify** → upload one or more JSON files (or paste JSON). Multiple uploads show tabs per service.
 
 **CI artifact URL (ship criteria):** GitHub does not allow unauthenticated browser fetch of artifact URLs. Download the artifact zip from the PR/run **Checks** tab → extract JSON → upload in Console. See [`compatibility.md`](compatibility.md) § CI and [`../../console/README.md`](console.md).
 
-Schema reference: `runtime/internal/verify/report/types.go`. Smoke vs parity modes: [`compatibility.md`](compatibility.md).
+Schema reference: the runtime. Smoke vs parity modes: [`compatibility.md`](compatibility.md).
 
 ---
 
@@ -167,7 +165,7 @@ Vite dev server proxies `/runtime` and `/_simulith` to `http://127.0.0.1:4566`.
 | --- | --- |
 | Live verify run from Console (admin trigger) | CLI `simulith verify` — import JSON on Verify panel instead |
 | Snapshot save/restore UI | CLI `simulith snapshot` |
-| Full AWS Console parity | See [console-parity-overview.md](console-parity-overview.md) |
+| Full AWS Console parity | See [console.md](console.md) |
 
 ---
 
@@ -187,4 +185,4 @@ Vite dev server proxies `/runtime` and `/_simulith` to `http://127.0.0.1:4566`.
 - [`docker.md`](docker.md) — runtime container
 - [`seed.md`](seed.md) — fixture contents
 - [`persistence.md`](persistence.md) — state store
-- Future work: `product/README.md` · Parity: [`console-parity-overview.md`](console-parity-overview.md)
+- Future work: `product/README.md` · Parity: [`console.md`](console.md)

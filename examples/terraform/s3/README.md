@@ -49,7 +49,7 @@ terraform workspace select default
 terraform destroy
 ```
 
-`force_destroy = true` on the bucket clears all objects before deleting it.  
+`force_destroy = true` on the bucket clears all objects before deleting it.
 Expected plan: **3 to destroy**.
 
 ## Apply (real AWS dev)

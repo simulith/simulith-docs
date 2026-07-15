@@ -8,9 +8,7 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-> **Backlog (gaps):** `cursor/company/future-work/` · Policy: `DOCUMENTATION-GOVERNANCE.md`
-
-Last updated: 2026-07-14 (SML-130 — Lambda Layers).
+Last updated: 2026-07-14..
 
 ## Summary
 
@@ -23,7 +21,7 @@ Last updated: 2026-07-14 (SML-130 — Lambda Layers).
 
 Run verification: [`compatibility.md`](compatibility.md).
 
-**Trust bundle:** packaged matrix + verify smoke reports for enterprise POCs — [`trust-bundle.md`](trust-bundle.md) · sales guide: `cursor/company/sales/trust-bundle.md`.
+**Trust bundle:** packaged matrix + verify smoke reports for enterprise POCs — [`trust-bundle.md`](trust-bundle.md) · sales guide: .
 
 ## Legend
 
@@ -107,7 +105,7 @@ Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (9 scenarios)
 | PutParameter | available | yes (`put-get-parameter`, `put-overwrite`, `secure-string`) | SecureString mock encryption |
 | GetParameter | available | yes (`put-get-parameter`, `secure-string`) | `WithDecryption` for SecureString |
 | DeleteParameter | available | yes (`delete-parameter`) | |
-| DeleteParameters | available | yes (`delete-parameters`) | Batch delete up to 10 names (SML-062) |
+| DeleteParameters | available | yes (`delete-parameters`) | Batch delete up to 10 names |
 | GetParameters | available | yes (`get-parameters-batch`) | Up to 10 names |
 | GetParametersByPath | available | yes (`get-parameters-by-path`) | |
 | DescribeParameters | available | yes (`describe-parameters`) | Terraform refresh; MVP filters only |
@@ -195,22 +193,9 @@ simulith verify lambda --skip-aws
 
 ---
 
-## Maintenance
-
-Update this matrix in the **same change** when you ship or remove an MVP HTTP operation. Follow `cursor/company/DOCUMENTATION-GOVERNANCE.md` — do not duplicate this table in `future-work/`.
-
-When you update:
-
-- Ship or remove an MVP HTTP operation (update service doc + this table + [`aws-parity-overview.md`](aws-parity-overview.md) if summary changes).
-- Add or rename a verify scenario (`internal/verify/<service>/scenarios.go` + [compatibility.md](compatibility.md)).
-
-Source of truth for handlers: [dynamodb.md](dynamodb.md), [sqs.md](sqs.md), [ssm.md](ssm.md). Source of truth for verify names: `runtime/internal/verify/*/scenarios.go`. Gaps and priority: `future-work/`.
-
----
-
 ## Related
 
 - [compatibility.md](compatibility.md) — running verify and reports
 - [quickstart.md](quickstart.md) — onboarding
 - [README.md](README.md) — doc index
-- Product backlog: `cursor/company/future-work/compatibility/README.md`
+- Product backlog:

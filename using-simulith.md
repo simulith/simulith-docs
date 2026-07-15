@@ -61,7 +61,7 @@ Your app / CLI / Terraform
 | **Billing / quotas** | AWS pricing and service limits | None — limited by disk and MVP subset |
 | **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda** (CRUD, invoke, SQS ESM) — [aws-parity-overview.md](aws-parity-overview.md) |
 | **API coverage** | Complete per service | **Subset** — 54 verify scenarios across DynamoDB, SQS, SSM, S3, and Lambda — [compatibility-matrix.md](compatibility-matrix.md) |
-| **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console-parity-overview.md) |
+| **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
 
@@ -121,7 +121,7 @@ Best for **exploration**, demos, and users who prefer a GUI.
 4. **Lambda panel:** list, config, invoke with JSON — sync invoke needs `node`/`python3` on the runtime host PATH — [lambda.md](lambda.md)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 
-Walkthrough: [console.md — Quick run](console.md#quick-run-docker). UI gaps vs AWS Console: [console-parity-overview.md](console-parity-overview.md).
+Walkthrough: [console.md — Quick run](console.md#quick-run-docker). UI gaps vs AWS Console: [console.md](console.md).
 
 ### 2. AWS CLI
 
@@ -216,7 +216,7 @@ Simulith is for **development and testing** — production stays on AWS.
 3. On AWS: workspace `aws` + credentials/endpoints for real AWS — [Workspaces and var-file](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws)
 4. Run `simulith verify` before relying on parity claims — [compatibility.md](compatibility.md)
 
-Positioning: Simulith **complements** AWS; see partnership proposal.
+Positioning: Simulith **complements** AWS for local development and testing — not a replacement for production workloads.
 
 ---
 
@@ -234,7 +234,7 @@ Do **not** expect locally:
 | --- | --- |
 | Which API ops ship? | [compatibility-matrix.md](compatibility-matrix.md) |
 | % coverage and gaps | [aws-parity-overview.md](aws-parity-overview.md) |
-| Console UI gaps | [console-parity-overview.md](console-parity-overview.md) |
+| Console UI gaps | [console.md](console.md) |
 | DynamoDB limits / deviations | [dynamodb.md](dynamodb.md) |
 | SQS limits / deviations | [sqs.md](sqs.md) |
 | Lambda limits / deviations | [lambda.md](lambda.md) |
@@ -271,5 +271,4 @@ Docker-specific issues (ports, bind address): [docker.md — Troubleshooting](do
 
 ## Related
 
-- Installation: [quickstart.md](quickstart.md) · [docker.md](docker.md) · [Docker Hub](https://hub.docker.com/r/simulith/simulith)
-- Product scope: mvp-work-plan.md
+- Installation: [quickstart.md](quickstart.md) · [docker.md](docker.md) · [Docker Hub — runtime](https://hub.docker.com/r/simulith/simulith)

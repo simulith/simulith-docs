@@ -1,10 +1,10 @@
 # Trust bundle — enterprise evaluation package
 
-Reproducible **zip** for sales and POC evaluators: public compatibility matrix, verify smoke reports (JSON + HTML), and quickstart — FW-PRD-003 / SML-053.
+Reproducible **zip** for sales and POC evaluators: public compatibility matrix, verify smoke reports (JSON + HTML), and quickstart.
 
-**Sales narrative:** `cursor/company/sales/trust-bundle.md`  
-**Editions (draft):** `cursor/company/sales/editions-and-licensing.md`  
-**Matrix (FW-CMP-003):** [compatibility-matrix.md](compatibility-matrix.md) · **Public mirror:** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
+**Sales narrative:**
+**Editions (draft):**
+**Matrix:** [compatibility-matrix.md](compatibility-matrix.md) · **Public mirror:** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
 ---
 
@@ -106,7 +106,7 @@ Generated zips and staging dirs are gitignored (`dist/`).
 ## Related
 
 - [compatibility.md](compatibility.md) — verify modes and CI
-- [compatibility-matrix.md](compatibility-matrix.md) — FW-CMP-003
+- [compatibility-matrix.md](compatibility-matrix.md)
 - [quickstart.md](quickstart.md) — onboarding
 - [terraform-integration.md#green-path-iac](terraform-integration.md#green-path-iac) — IaC evaluation path
 - [console.md](console.md) — optional GUI

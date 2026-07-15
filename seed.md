@@ -28,7 +28,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | S3 | bucket `demo-bucket` | `readme.txt` (`hello from seed`), `config/app.json` |
 | Lambda | function `demo-fn` | Node.js echo handler; ESM to `demo-queue` |
 
-Example fixture source: seeds/default.json (embedded copy in `internal/seed/default.json`).
+Example fixture source: seeds/default.json (embedded copy in the runtime).
 
 **Lambda invoke after seed** requires `node` or `python3` on the Simulith runtime host PATH (same as Console panel invoke).
 
@@ -144,7 +144,7 @@ Notes:
 ## Out of scope (MVP)
 - YAML fixtures — JSON only
 - Seeding via live HTTP — store-direct apply only
-- Snapshot import — see [snapshot.md](snapshot.md) (SML-020)
+- Snapshot import — see [snapshot.md](snapshot.md)
 
 ## Related
 

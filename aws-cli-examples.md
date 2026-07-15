@@ -596,7 +596,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | DynamoDB GSI / LSI Query | Not supported |
 | SQS FIFO queues | Not supported |
 | SQS long polling | Short poll only |
-| SQS SendMessageBatch / DeleteMessageBatch | Available (SML-039) |
+| SQS SendMessageBatch / DeleteMessageBatch | Available |
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; Terraform [`examples/terraform/ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
 | Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
 
@@ -613,5 +613,3 @@ Full deviation tables:
 - [sdk-examples.md](sdk-examples.md) — Go + Node.js SDK cookbook
 - [terraform-integration.md](terraform-integration.md) — Terraform / IaC cookbook
 - [compatibility.md](compatibility.md) — `simulith verify dynamodb`
-- protocol.md — AWS JSON + Query wire formats
-- smithy-contracts.md — API models

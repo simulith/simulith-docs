@@ -17,7 +17,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md).
 
-Parity gaps and post-MVP backlog: `cursor/company/future-work/` (DynamoDB, SQS, SSM).
+Parity gaps and post-MVP backlog:  (DynamoDB, SQS, SSM).
 
 **Consolidated parity table (% by service, Terraform, Console):** [aws-parity-overview.md](aws-parity-overview.md).
 
@@ -162,7 +162,7 @@ Queue URLs follow: `http://{host}/000000000000/{queueName}` (e.g. `http://127.0.
 
 Runnable module: [`examples/terraform/sqs/`](examples/terraform/sqs/) — `use_simulith_endpoint`, workspaces (`default` / `aws`), `terraform.aws-dev.tfvars` for real AWS.
 
-**GetQueueAttributes** is implemented (SML-025), so `terraform apply` succeeds. **`terraform destroy`** (SML-061): **DeleteQueue** tombstones the queue (~60s grace); the provider polls until **GetQueueAttributes** returns **`QueueDoesNotExist`**. On Simulith expect **~60–90 seconds** (provider timeout default: 3m). JSON responses map tombstone expiry to shape **`QueueDoesNotExist`** for the HashiCorp waiter.
+**GetQueueAttributes** is implemented, so `terraform apply` succeeds. **`terraform destroy`**: **DeleteQueue** tombstones the queue (~60s grace); the provider polls until **GetQueueAttributes** returns **`QueueDoesNotExist`**. On Simulith expect **~60–90 seconds** (provider timeout default: 3m). JSON responses map tombstone expiry to shape **`QueueDoesNotExist`** for the HashiCorp waiter.
 
 Use `-parallelism=1` if applying DynamoDB and SQS in one run (SQLite).
 
@@ -279,7 +279,7 @@ terraform plan    # expect no drift for matching schema
 terraform destroy # removes table when done
 ```
 
-**ListTables** (SML-041) supports discovery; import binds Terraform state to an existing table name.
+**ListTables** supports discovery; import binds Terraform state to an existing table name.
 
 **SQS queues** — `terraform import aws_sqs_queue.<name> <queue-url>` may work when the queue exists; not validated as part of the MVP green-path examples — prefer apply with a new queue name.
 
@@ -296,7 +296,7 @@ terraform plan -parallelism=1   # expect no drift when value/type match main.tf
 terraform destroy -parallelism=1
 ```
 
-**DescribeParameters** (Name Equals/BeginsWith) and **GetParameter** return **`Tier: Standard`** and **`DataType: text`** for String parameters — required for `hashicorp/aws` ~> 5.x provider refresh (SML-057).
+**DescribeParameters** (Name Equals/BeginsWith) and **GetParameter** return **`Tier: Standard`** and **`DataType: text`** for String parameters — required for `hashicorp/aws` ~> 5.x provider refresh.
 
 Prod-only attributes (FIFO SQS, batch SSM edge cases) — see future-work. The **user-table** module is green on Simulith with full prod shape — full command walkthrough (Go, Docker, Terraform, **`batch-write-item` seed**): [`dynamodb/user-table/`](examples/terraform/dynamodb/user-table/README.md).
 
@@ -365,19 +365,19 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 | DynamoDB UpdateTable | **Available** — billing, SSE, deletion protection, stream metadata, GSI add/update/delete |
 | DynamoDB streams / PITR restore / TTL | Not supported (PITR **metadata** APIs shipped for Terraform) |
 | SQS FIFO queues | Not supported |
-| SQS GetQueueAttributes | **Available** (SML-025) — `aws_sqs_queue` apply supported |
-| SQS DeleteQueue / terraform destroy | **Available** (SML-061) — deleting tombstone window for provider poll |
+| SQS GetQueueAttributes | **Available** — `aws_sqs_queue` apply supported |
+| SQS DeleteQueue / terraform destroy | **Available** — deleting tombstone window for provider poll |
 | Resource tags | **Available** — DynamoDB table tags via TagResource / ListTagsOfResource |
 | Parallel apply | Use `-parallelism=1` if applying DDB + SQS in one module (SQLite contention) |
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; examples [`ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
 | SSM DescribeParameters | **MVP** (Name Equals/BeginsWith) — Terraform `aws_ssm_parameter` refresh |
-| SSM DeleteParameters (batch) | **Available** (SML-062) — up to 10 names; partial `InvalidParameters` |
+| SSM DeleteParameters (batch) | **Available** — up to 10 names; partial `InvalidParameters` |
 | SSM terraform import | **Documented** — parameter name → `aws_ssm_parameter` (MVP) |
 | S3 `aws_s3_bucket` | **Available** — `CreateBucket`, `HeadBucket`, `GetBucketLocation/Versioning/ACL/Accelerate`, stub config reads; `s3_use_path_style = true` required |
 | S3 `aws_s3_object` | **Available** — `PutObject`, `HeadObject`, `DeleteObject`; single-part only |
 | S3 `force_destroy` | **Available** — clears objects before `DeleteBucket` on destroy |
 | S3 multipart / versioning / ACL writes | Not supported |
-| Lambda `aws_lambda_function` + SQS ESM | **Available** — green path [`lambda/`](examples/terraform/lambda/) (SML-124) |
+| Lambda `aws_lambda_function` + SQS ESM | **Available** — green path [`lambda/`](examples/terraform/lambda/) |
 | IAM / VPC | Out of scope |
 
 Full deviation tables:

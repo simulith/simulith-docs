@@ -17,7 +17,7 @@ state:
   path: ./.simulith/state.db
 ```
 
-The same resolution order as the HTTP server applies: flags → env → file → defaults (`internal/config`).
+The same resolution order as the HTTP server applies: flags → env → file → defaults (the runtime).
 
 ## Schema
 

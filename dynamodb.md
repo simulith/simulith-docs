@@ -9,10 +9,10 @@ Local DynamoDB table metadata and item storage (Phase 3 MVP).
 | CreateTable | **Available** | Metadata persisted in SQLite |
 | DescribeTable | **Available** | Reads stored metadata |
 | PutItem | **Available** | Full item replace by primary key |
-| BatchWriteItem | **Available** (SML-066) | Up to 25 put/delete requests; no per-item conditions |
-| BatchGetItem | **Available** (SML-067) | Up to 100 keys; missing keys omitted |
-| TransactWriteItems | **Available** (SML-068) | Up to 100 actions; atomic all-or-nothing |
-| TransactGetItems | **Available** (SML-068) | Up to 100 keys; ordered `Responses` |
+| BatchWriteItem | **Available** | Up to 25 put/delete requests; no per-item conditions |
+| BatchGetItem | **Available** | Up to 100 keys; missing keys omitted |
+| TransactWriteItems | **Available** | Up to 100 actions; atomic all-or-nothing |
+| TransactGetItems | **Available** | Up to 100 keys; ordered `Responses` |
 | GetItem | **Available** | Point read; omits `Item` when missing |
 | Query | **Available** | Base table + GSI/LSI via `IndexName`; MVP KeyCondition + Filter |
 | Scan | **Available** | Full table read; Filter + pagination + parallel `Segment`/`TotalSegments` |
@@ -117,7 +117,7 @@ Not supported yet: **ReplicaUpdates**, **TableClass**, **OnDemandThroughput**, L
 
 - **DescribeContinuousBackups** — `ContinuousBackupsStatus` always **ENABLED**; `PointInTimeRecoveryStatus` **ENABLED** or **DISABLED** from stored flag
 - **UpdateContinuousBackups** — sets `PointInTimeRecoveryEnabled`; when enabled, returns stub `EarliestRestorableDateTime` / `LatestRestorableDateTime` (35-day window)
-- **No real backups** — `RestoreTableToPointInTime` and export APIs are not implemented (FW-DDB-022+)
+- **No real backups** — `RestoreTableToPointInTime` and export APIs are not implemented
 - Enables **`aws_dynamodb_table.point_in_time_recovery`** green path on Simulith — see [`examples/terraform/dynamodb/user-table/`](examples/terraform/dynamodb/user-table/)
 
 ## Persistence
@@ -165,7 +165,7 @@ Supported DynamoDB wire types:
 
 Key attributes must use scalar types (`S`, `N`, or `B`) matching the table `AttributeDefinitions`.
 
-**Console:** Map/List item editing in the web UI — **JSON document** tab (SML-056 / FW-PRD-015); Simple tab for string scalars. See [`console.md`](console.md).
+**Console:** Map/List item editing in the web UI — **JSON document** tab; Simple tab for string scalars. See [`console.md`](console.md).
 
 ## Local behavior deviations
 
@@ -208,7 +208,7 @@ See the cookbook for CreateTable, Query, Scan, UpdateItem, and DeleteItem.
 
 ## Errors
 
-Service faults use `internal/protocol/awserrors`:
+Service faults use the runtime:
 
 - `TableAlreadyExistsException` — duplicate CreateTable
 - `ResourceNotFoundException` — operation on unknown table

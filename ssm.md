@@ -10,20 +10,20 @@ SSM uses **AWS JSON 1.1** (`application/x-amz-json-1.1` + `X-Amz-Target: AmazonS
 
 | Operation | Status | Notes |
 | --- | --- | --- |
-| PutParameter | **Available** (SML-027) | Create or overwrite; SQLite persistence (SML-026) |
-| GetParameter | **Available** (SML-027) | Returns `Parameter` with ARN, version, last modified |
-| DeleteParameter | **Available** (SML-029) | Removes one parameter by name |
-| DeleteParameters | **Available** (SML-062) | Up to 10 names; missing/invalid → `InvalidParameters` |
-| GetParameters | **Available** (SML-030) | Up to 10 names; `Parameters` sorted A–Z; missing → `InvalidParameters` |
-| GetParametersByPath | **Available** (SML-030) | Path prefix filter; `Recursive` default **false** (one level); pagination |
-| DescribeParameters | **Available** (SML-031) | MVP: `ParameterFilters` Name Equals/BeginsWith only; for Terraform refresh |
-| AddTagsToResource | **Available** (SML-070) | `ResourceType=Parameter`; merge tags by key |
-| RemoveTagsFromResource | **Available** (SML-070) | `ResourceType=Parameter` |
-| ListTagsForResource | **Available** (SML-070) | Parameter `TagList` sorted by key |
+| PutParameter | **Available** | Create or overwrite; SQLite persistence |
+| GetParameter | **Available** | Returns `Parameter` with ARN, version, last modified |
+| DeleteParameter | **Available** | Removes one parameter by name |
+| DeleteParameters | **Available** | Up to 10 names; missing/invalid → `InvalidParameters` |
+| GetParameters | **Available** | Up to 10 names; `Parameters` sorted A–Z; missing → `InvalidParameters` |
+| GetParametersByPath | **Available** | Path prefix filter; `Recursive` default **false** (one level); pagination |
+| DescribeParameters | **Available** | MVP: `ParameterFilters` Name Equals/BeginsWith only; for Terraform refresh |
+| AddTagsToResource | **Available** | `ResourceType=Parameter`; merge tags by key |
+| RemoveTagsFromResource | **Available** | `ResourceType=Parameter` |
+| ListTagsForResource | **Available** | Parameter `TagList` sorted by key |
 
 Not implemented yet: full ParameterFilters, labels, real AWS KMS encryption.
 
-## Parameter tags (SML-070)
+## Parameter tags
 
 - **PutParameter** — optional `Tags` merged on create; on overwrite, omitted `Tags` preserves existing tags
 - **AddTagsToResource** — `ResourceType=Parameter`, `ResourceId` = parameter name; merges/overwrites keys
@@ -31,7 +31,7 @@ Not implemented yet: full ParameterFilters, labels, real AWS KMS encryption.
 - **ListTagsForResource** — returns `TagList` (empty array when none)
 - Terraform `tags = { ... }` on `aws_ssm_parameter` uses these APIs — see [`examples/terraform/ssm/`](examples/terraform/ssm/)
 
-## SecureString (mock local, SML-069)
+## SecureString
 
 - **PutParameter** with `Type=SecureString` stores a **mock-encrypted** value in SQLite (prefix `simulith-secure:v1:` + base64). **Not real KMS** — local dev only.
 - **GetParameter** / **GetParameters** / **GetParametersByPath**: without `WithDecryption`, SecureString values return the stored ciphertext; with `WithDecryption=true`, return decrypted plaintext (same as AWS semantics).
@@ -102,7 +102,7 @@ Parameters are stored in SQLite (`ssm_parameters`). See [persistence.md](persist
 
 `simulith reset` clears SSM rows with DynamoDB and SQS.
 
-Optional snapshot v1 `"ssm"` block is supported (SML-026).
+Optional snapshot v1 `"ssm"` block is supported.
 
 ## Deviations (MVP)
 
@@ -114,7 +114,7 @@ Optional snapshot v1 `"ssm"` block is supported (SML-026).
 | Tier / policies | **Tier** returned as `Standard` on Get/Describe (MVP stub for Terraform); tier input on Put ignored |
 | Post-delete name reuse delay | Not enforced (AWS: ~30s) |
 | DescribeParameters / ParameterFilters | **MVP subset** — Name Equals/BeginsWith only; other filter keys ignored |
-| DeleteParameters (batch) | **Available** (SML-062) — up to 10 names per call |
+| DeleteParameters (batch) | **Available** — up to 10 names per call |
 | GetParametersByPath at scale | Full-table name scan in memory (local MVP) |
 | NextToken format | Simulith offset token (not AWS-compatible) |
 
@@ -126,5 +126,3 @@ Optional snapshot v1 `"ssm"` block is supported (SML-026).
 - [compatibility.md](compatibility.md) — `simulith verify ssm` parity checks
 - [aws-cli-examples.md](aws-cli-examples.md)
 - [persistence.md](persistence.md)
-- protocol.md
-- smithy-contracts.md

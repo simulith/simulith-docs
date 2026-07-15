@@ -2,15 +2,13 @@
 
 Get from zero to a **working local AWS-compatible runtime** with a DynamoDB + SQS smoke test in **under five minutes**.
 
-This guide is the **stable onboarding entry point** for the MVP. It is not tied to a single user story.
-
-> **Story validation:** To QA a specific feature (SML-001, SML-002, …), use that story's checklist — index: `cursor/analysis/shared/runtime-validation-index.md`.
+This guide is the **stable onboarding entry point** for evaluators and developers. **Docker** (published images) is the recommended path — no repository checkout required.
 
 ---
 
 ## What you get
 
-Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs can target with `--endpoint-url`. The MVP ships:
+Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs can target with `--endpoint-url`. Shipped services:
 
 | Service | Status |
 | --- | --- |
@@ -26,12 +24,10 @@ State persists in SQLite. Developer commands: seed, reset, snapshot — see [per
 
 ## Prerequisites
 
-Pick **one** run path:
-
 | Path | You need |
 | --- | --- |
-| **Docker** (recommended) | Docker Desktop or Engine + Compose |
-| **Native** | Go 1.24+ ([go.dev/dl](https://go.dev/dl/)) |
+| **Docker** (recommended) | Docker Desktop or Engine |
+| **Native (from source)** | Go 1.24+ ([go.dev/dl](https://go.dev/dl/)) and a monorepo checkout — see [Appendix: native](#appendix-native-from-source) |
 
 For the **smoke test** below:
 
@@ -39,93 +35,55 @@ For the **smoke test** below:
 
 **Windows:** Examples use Bash-style lines. Git Bash or WSL works best; adapt paths for PowerShell if needed.
 
-All commands assume you are in the **`runtime/`** module directory:
-
-```bash
-cd runtime
-```
-
 ---
 
 ## Five-minute path (overview)
 
-1. Load the demo fixture (`simulith seed`) — server must not be running
-2. Start Simulith (Docker or native)
+1. Pull and run Simulith (Docker)
+2. Load demo data (Console **Seed** button or CLI)
 3. Verify `/health`
 4. Smoke-test DynamoDB, SQS, and SSM with AWS CLI
 
-Detailed steps follow.
-
 ---
 
-## 1. Load demo data
+## 1. Run Simulith (Docker)
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, and Lambda function `demo-fn` (with SQS ESM to `demo-queue`). Details: [seed.md](seed.md).
+### Option A — Runtime + Console (recommended)
 
-**Stop the server first** if it is already running (SQLite lock). Seed writes directly to the state database.
-
-**Native:**
+One entry URL at **http://localhost:9080**. The runtime container must be named **`simulith`** on the same Docker network.
 
 ```bash
-cd runtime
-go run ./cmd/simulith seed
+docker network create simulith-net 2>/dev/null || true
+
+docker run -d --name simulith --network simulith-net \
+  -v simulith-data:/app/.simulith \
+  simulith/simulith:latest
+
+docker run -d --name simulith-console --network simulith-net \
+  -p 9080:8080 \
+  simulith/console:latest
 ```
 
-**Docker** (uses the Compose named volume — do **not** run host `go run seed` unless you enable the bind mount in [docker.md](docker.md)):
+Open **http://localhost:9080** — use **Seed demo data** on the Dashboard, then explore service panels.
 
-```bash
-cd runtime
-docker compose run --rm --entrypoint simulith simulith seed
-```
-
----
-
-## 2. Start Simulith
-
-### Option A — Docker workshop demo (Console + runtime, one URL)
-
-Recommended for **first contact** and workshops — FW-PRD-012 / SML-060. See [console.md](console.md) and [docker.md](docker.md).
-
-```bash
-cd runtime
-docker compose -f docker-compose.all-in-one.yml up --build
-```
-
-Open **http://localhost:9080** — use **Seed demo data** on the Dashboard, then explore DynamoDB / SQS / SSM / S3 / Lambda panels.
-
-Runtime health via proxy:
+Health via Console proxy:
 
 ```bash
 curl http://localhost:9080/runtime/health
 ```
 
-Expected: `{"status":"ok"}`. Host `:4566` is **not** required for this path.
+Expected: `{"status":"ok"}`. Optional direct runtime port: add `-p 4566:4566` to the `simulith` container.
 
-### Option B — Docker (runtime only)
+**Stop:** `docker rm -f simulith-console simulith && docker network rm simulith-net`
 
-See [docker.md](docker.md) for volumes, healthcheck, and troubleshooting.
+More layouts (Compose, volumes, troubleshooting): [docker.md](docker.md) · [console.md](console.md).
 
-```bash
-cd runtime
-docker compose up --build
-```
-
-In another terminal:
+### Option B — Runtime only (CLI / SDK)
 
 ```bash
-curl http://localhost:4566/health
-```
-
-Expected: `{"status":"ok"}`
-
-Compose binds `0.0.0.0:4566` so the host can reach the server.
-
-### Option C — Native
-
-```bash
-cd runtime
-go mod download
-go run ./cmd/simulith start
+docker run --rm -p 4566:4566 \
+  -v simulith-data:/app/.simulith \
+  simulith/simulith:latest
 ```
 
 In another terminal:
@@ -134,24 +92,34 @@ In another terminal:
 curl http://127.0.0.1:4566/health
 ```
 
-Bare `simulith` defaults to `start`:
+Expected: `{"status":"ok"}`.
+
+---
+
+## 2. Demo data
+
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, and Lambda function `demo-fn` (with SQS ESM to `demo-queue`). Details: [seed.md](seed.md).
+
+**Console (Option A):** Dashboard → **Seed demo data** (runtime must be healthy).
+
+**CLI (runtime container):** stop conflicting writers first (SQLite lock), then:
 
 ```bash
-go run ./cmd/simulith
+docker exec simulith simulith seed
 ```
 
-Build a binary (optional):
-
-```bash
-go build -o simulith ./cmd/simulith
-./simulith start
-```
+For native installs from source, see [Appendix: native](#appendix-native-from-source).
 
 ---
 
 ## 3. Smoke test (AWS CLI)
 
-With the server running:
+With the server running, use the endpoint that matches your layout:
+
+| Layout | `--endpoint-url` |
+| --- | --- |
+| Runtime + Console | `http://127.0.0.1:9080/runtime` |
+| Runtime only | `http://127.0.0.1:4566` |
 
 **DynamoDB — describe seeded table:**
 
@@ -182,8 +150,6 @@ aws lambda list-functions --endpoint-url http://127.0.0.1:4566 --region us-east-
 
 For more CLI operations, see **[AWS CLI examples](aws-cli-examples.md)**. This quickstart only proves the endpoint works.
 
-**Automated equivalent** (no AWS CLI): from `runtime/` run `go test ./internal/runtime -run TestSmoke_MVP -count=1`, or from repo root `maintainer workflow (private monorepo)`. See scripts/README.md.
-
 ---
 
 ## CLI commands at a glance
@@ -204,7 +170,7 @@ For more CLI operations, see **[AWS CLI examples](aws-cli-examples.md)**. This q
 
 ## Configuration (optional)
 
-Copy the example config:
+When running from source, copy the example config:
 
 ```bash
 cp config.example.yaml config.yaml
@@ -247,11 +213,6 @@ Container-specific config: [docker.md](docker.md).
 | SDK examples | [sdk-examples.md](sdk-examples.md) |
 | Terraform integration | [terraform-integration.md](terraform-integration.md) — start with [Green path IaC](terraform-integration.md#green-path-iac) |
 | Simulith Console (GUI) | [console.md](console.md) |
-| Protocol & errors | protocol.md |
-| Smithy contracts | smithy-contracts.md |
-| All runtime docs | [README.md](README.md) |
-
-Product roadmap: `cursor/company/mvp-work-plan.md`.
 
 ---
 
@@ -259,18 +220,32 @@ Product roadmap: `cursor/company/mvp-work-plan.md`.
 
 | Issue | Fix |
 | --- | --- |
-| `go: command not found` | Install Go 1.24+, reopen terminal |
-| Port in use | `--port 8787` or `SIMULITH_PORT=8787` |
+| Port in use | Map another host port, e.g. `-p 8787:4566` |
 | LocalStack also on 4566 | Change port on one tool |
 | `simulith seed` / `reset` fails with DB locked | Stop the running server first |
-| Docker smoke fails after host `go run seed` | Default Compose uses a **named volume** — seed with `docker compose run --rm --entrypoint simulith simulith seed`, or enable bind mount in [docker.md](docker.md) |
+| Console shows **Unavailable** | Ensure runtime is healthy; container must be named `simulith` on the same network |
 | AWS CLI errors | Install AWS CLI v2; set `--region us-east-1` and `--endpoint-url` on every command |
-| SSM `ValidationException` … must begin with a forward slash` (Git Bash) | MSYS rewrites `/app/...` to `C:/Program Files/Git/app/...`. Before AWS CLI: `export MSYS2_ARG_CONV_EXCL="*"` or `export MSYS_NO_PATHCONV=1` (do not use `--name //app/...` — that sends a double-slash name and returns `ParameterNotFound`) |
+| SSM `ValidationException` … must begin with a forward slash` (Git Bash) | MSYS rewrites `/app/...` to `C:/Program Files/Git/app/...`. Before AWS CLI: `export MSYS2_ARG_CONV_EXCL="*"` or `export MSYS_NO_PATHCONV=1` |
 | Docker health check fails | See [docker.md](docker.md) |
+| `go: command not found` (native path only) | Install Go 1.24+, reopen terminal |
+
+---
+
+## Appendix: native from source
+
+For **Simulith contributors** building from the monorepo (`runtime/` module):
+
+```bash
+cd runtime
+go run ./cmd/simulith seed    # server must be stopped
+go run ./cmd/simulith start
+```
+
+Workshop Compose (build from repo): `docker compose -f docker-compose.all-in-one.yml up --build` — see [console.md](console.md).
 
 ---
 
 ## Related
 
-- Module overview: [../README.md](README.md)
 - Full doc index: [README.md](README.md)
+- Product site: [simulith.dev](https://simulith.dev)

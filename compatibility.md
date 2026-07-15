@@ -106,7 +106,7 @@ PASS  create-describe-table
 6 passed, 0 failed
 ```
 
-### JSON and HTML reports (SML-013)
+### JSON and HTML reports
 
 Write a JSON report during verify:
 
@@ -115,7 +115,7 @@ simulith verify dynamodb --skip-aws --output report.json
 simulith verify dynamodb --output report.json --save-last   # also writes .simulith/verify-last.json
 ```
 
-Render HTML and print a compatibility summary. Failed parity scenarios show the **first divergent JSON path** with AWS and Simulith values side by side (SML-075):
+Render HTML and print a compatibility summary. Failed parity scenarios show the **first divergent JSON path** with AWS and Simulith values side by side:
 
 ```bash
 simulith report --input report.json --output-html report.html
@@ -133,7 +133,7 @@ JSON schema (`version: 1`):
 | `summary.total` / `passed` / `failed` | Scenario counts |
 | `summary.compatibilityPercent` | Present for parity only |
 | `scenarios[]` | Per-scenario pass/fail, error, diff snippet |
-| `scenarios[].diffDetail` | Optional first JSON path diff (`path`, `aws`, `simulith`) when parity fails (SML-075) |
+| `scenarios[].diffDetail` | Optional first JSON path diff (`path`, `aws`, `simulith`) when parity fails |
 | `cleanupFailed` | Tables not deleted during cleanup (AWS and/or Simulith) |
 
 Example workflow:
@@ -338,7 +338,7 @@ VERIFY_DDB_EXTENDED=true SIMULITH_BIN=./bin/simulith bash ./scripts/ci-verify-sm
 
 Inspect JSON: `simulith report -i artifacts/verify-dynamodb.json`
 
-### Docker Compose verify (SML-076)
+### Docker Compose verify
 
 The **`Parity smoke (Docker)`** job in `.github/workflows/ci.yml` validates the **shipped runtime Docker image**: Compose builds and starts Simulith on `:4566`, seeds state in a one-off container, then runs the same **verify smoke** commands from a host-built CLI (`--skip-aws`). No manual `simulith start` step.
 
@@ -367,7 +367,7 @@ COMPOSE_MODE=all-in-one SIMULITH_BIN=./bin/simulith bash ./scripts/ci-verify-smo
 
 Uses `docker-compose.yml` by default, or `docker-compose.all-in-one.yml` + `docker-compose.all-in-one.runtime-port.yml` when `COMPOSE_MODE=all-in-one`.
 
-**Enterprise Trust bundle (FW-PRD-003):** zip with matrix + smoke JSON/HTML + quickstart — [`trust-bundle.md`](trust-bundle.md):
+**Enterprise Trust bundle:** zip with matrix + smoke JSON/HTML + quickstart — [`trust-bundle.md`](trust-bundle.md):
 
 ```bash
 bash ./scripts/build-trust-bundle.sh
@@ -378,9 +378,9 @@ bash ./scripts/build-trust-bundle.sh
 
 ## Related
 
-- [trust-bundle.md](trust-bundle.md) — enterprise evaluation zip (FW-PRD-003)
+- [trust-bundle.md](trust-bundle.md) — enterprise evaluation zip
 - [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix
 - [dynamodb.md](dynamodb.md) — DynamoDB operations
 - [ssm.md](ssm.md) — SSM operations
-- smithy-contracts.md — structural vs behavioral contracts
+
 - [quickstart.md](quickstart.md) — starting the runtime

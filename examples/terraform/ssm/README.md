@@ -13,7 +13,7 @@
 
 Optional **`aws_ssm_parameters_by_path`** data source (see [`path-data.tf.example`](./path-data.tf.example)) uses GetParametersByPath — run [`simulith seed`](../../../seed.md) first so `/app/demo/*` exists.
 
-**Green path:** apply → optional verify → destroy without `simulith reset` workarounds. Validated with `hashicorp/aws` ~> 5.x (SML-057).
+**Green path:** apply → optional verify → destroy without `simulith reset` workarounds. Validated with `hashicorp/aws` ~> 5.x.
 
 ## Prerequisites
 
@@ -91,8 +91,8 @@ See [terraform-integration.md — Import](../../../terraform-integration.md#impo
 ## Limitations
 
 - `DescribeParameters` MVP (Name Equals/BeginsWith) — required for Terraform provider refresh
-- **DeleteParameters** batch delete (SML-062) — CLI/SDK; Terraform still uses **DeleteParameter** per resource
-- Parameter **tags** supported on `aws_ssm_parameter` (SML-070)
+- **DeleteParameters** batch delete — CLI/SDK; Terraform still uses **DeleteParameter** per resource
+- Parameter **tags** supported on `aws_ssm_parameter`
 - See [ssm.md](../../../ssm.md) for API deviations
 
 ## Related

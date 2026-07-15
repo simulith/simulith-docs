@@ -2,12 +2,10 @@
 
 Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 + Lambda expansion): what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
-> **Console vs AWS Console (UI):** [`console-parity-overview.md`](console-parity-overview.md) — separate dimension  
-> **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)  
-> **Backlog IDs:** `cursor/company/future-work/`  
-> **MVP scope:** `cursor/company/mvp-work-plan.md`
+> **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
+> **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-14 (SML-130 — Lambda Layers).
+Last updated: 2026-07-14..
 
 ---
 
@@ -22,11 +20,11 @@ Last updated: 2026-07-14 (SML-130 — Lambda Layers).
 | **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
 | **Total** | **69** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
-\* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service `future-work/*/README.md`.
+\* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete (SML-120–130, v0.15.0–v0.23.0). **P2 shipped:** FW-LAM-007 async invoke + Function URLs (SML-129, v0.22.0), **FW-LAM-008 Layers** (SML-130, v0.23.0). **Next:** API Gateway B3 runtime (SML-132 / FW-APIGW-001); analysis kickoff SML-131.
+**Lambda expansion:** MVP + P2 complete. **P2 shipped:**  async invoke + Function URLs, ** Layers**. **Next:** API Gateway B3 runtime; analysis kickoff .
 
 ---
 
@@ -43,7 +41,7 @@ Last updated: 2026-07-14 (SML-130 — Lambda Layers).
 
 ## DynamoDB
 
-Guide: [dynamodb.md](dynamodb.md) · Backlog: `future-work/dynamodb/`
+Guide: [dynamodb.md](dynamodb.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
@@ -57,7 +55,7 @@ Guide: [dynamodb.md](dynamodb.md) · Backlog: `future-work/dynamodb/`
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Streams, TTL, export/import, real PITR restore | P3 | FW-DDB-020+ (PITR **metadata** APIs shipped for Terraform) |
+| Streams, TTL, export/import, real PITR restore | P3 | + (PITR **metadata** APIs shipped for Terraform) |
 
 ### Tier A reference set (17 ops)
 
@@ -67,7 +65,7 @@ Guide: [dynamodb.md](dynamodb.md) · Backlog: `future-work/dynamodb/`
 
 ## SQS
 
-Guide: [sqs.md](sqs.md) · Backlog: `future-work/sqs/`
+Guide: [sqs.md](sqs.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
@@ -77,10 +75,10 @@ CreateQueue (standard, idempotent), SendMessage, SendMessageBatch, ReceiveMessag
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| FIFO queues | P3 | FW-SQS-030 |
-| TagQueue / ListQueueTags | P3 | FW-SQS-031 |
+| FIFO queues | P3 |  |
+| TagQueue / ListQueueTags | P3 |  |
 
-**Admin peek (non-AWS route):** `GET /_simulith/v1/sqs/messages` — shipped (SML-052); used for local debug, not AWS API parity.
+**Admin peek (non-AWS route):** `GET /_simulith/v1/sqs/messages` — shipped; used for local debug, not AWS API parity.
 
 ### Tier A reference set (15 ops)
 
@@ -90,7 +88,7 @@ CreateQueue (standard, idempotent), SendMessage, SendMessageBatch, ReceiveMessag
 
 ## SSM Parameter Store
 
-Guide: [ssm.md](ssm.md) · Backlog: `future-work/ssm/`
+Guide: [ssm.md](ssm.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
@@ -100,7 +98,7 @@ PutParameter, GetParameter, DeleteParameter, **DeleteParameters**, GetParameters
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Full ParameterFilters / labels | P3 | FW-SSM-021 |
+| Full ParameterFilters / labels | P3 |  |
 | Runnable SDK samples (Go/Node/Python) | DX | SSM section deferred in sdk-examples |
 
 ### Tier A reference set (10 ops)
@@ -129,25 +127,25 @@ Guide: [terraform-integration.md](terraform-integration.md) · Examples: [`examp
 
 | Item | Impact | Backlog |
 | --- | --- | --- |
-| Terraform CI job (apply/destroy in GitHub Actions) | Repeatable IaC smoke | deferred in SML-024 |
+| Terraform CI job (apply/destroy in GitHub Actions) | Repeatable IaC smoke | deferred in  |
 | Import for SQS queues | Secondary workflows | terraform-integration.md |
 | Prod-only `.example` files (GSI prod, FIFO, SSE) | Expect partial — not green without reading limits | service future-work |
 
-DynamoDB **import** for tables and SSM **import** for parameters are **documented** (SML-041, SML-057). SQS import remains secondary.
+DynamoDB **import** for tables and SSM **import** for parameters are **documented**. SQS import remains secondary.
 
 ---
 
 ## Console vs AWS Console
 
-**Full panel-by-panel analysis:** [`console-parity-overview.md`](console-parity-overview.md).
+**Full panel-by-panel analysis:** [`console.md`](console.md).
 
-Simulith Console (**FW-PRD-001** + **FW-PRD-013** / SML-055 + **FW-PRD-015** / SML-056 + **FW-PRD-005** / SML-059 Verify panel + **FW-PRD-012** / SML-060 all-in-one Compose) ships MVP panels for DynamoDB, SQS, SSM, verify report import, and single-port workshop demo (~**92%** of reference Console flows — see [`console-parity-overview.md`](console-parity-overview.md)).
+Simulith Console ships MVP panels for DynamoDB, SQS, SSM, verify report import, and single-port workshop demo (~**92%** of reference Console flows — see [`console.md`](console.md)).
 
 ---
 
 ## S3
 
-Guide: [s3.md](s3.md) · Backlog: `future-work/s3/`
+Guide: [s3.md](s3.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
@@ -168,11 +166,11 @@ CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObje
 
 ## Lambda
 
-Guide: [lambda.md](lambda.md) · Backlog: `future-work/lambda/`
+Guide: [lambda.md](lambda.md) · Backlog: the product backlog
 
-### Implemented (SML-120–130)
+### Implemented
 
-CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction (sync + async Event), UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll), **Function URLs**, **Lambda Layers** (publish/list/get/delete + `Layers` on CreateFunction). Default seed includes **`demo-fn`** (SML-128).
+CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction (sync + async Event), UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll), **Function URLs**, **Lambda Layers** (publish/list/get/delete + `Layers` on CreateFunction). Default seed includes **`demo-fn`**.
 
 Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_layer_versions`). Function zip at `{data-dir}/lambda/{name}/code.zip`; layer zips at `{data-dir}/lambda/layers/{name}/{version}/code.zip`.
 
@@ -182,11 +180,11 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Aliases, versions, Go runtime | P3 | FW-LAM-023, FW-LAM-025 |
+| Aliases, versions, Go runtime | P3 | ,  |
 
-**Shipped (SML-129):** async invoke (`InvocationType: Event`) and Function URLs.
+**Shipped:** async invoke (`InvocationType: Event`) and Function URLs.
 
-**Shipped (SML-130):** Lambda Layers (`PublishLayerVersion`, layer CRUD, `Layers` on CreateFunction, nodejs `NODE_PATH` on invoke).
+**Shipped:** Lambda Layers (`PublishLayerVersion`, layer CRUD, `Layers` on CreateFunction, nodejs `NODE_PATH` on invoke).
 
 ### Tier A reference set (7 ops)
 
@@ -196,7 +194,7 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_
 
 ## What to do next (priority)
 
-**Next (API Gateway B3):** per `future-work/lambda/README.md` and `product-vision.md`.
+**Next (API Gateway B3):** per the product backlog and `product-vision.md`.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
@@ -204,22 +202,9 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_
 
 ---
 
-## Maintenance
-
-Update this overview when:
-
-- Shipping or removing an HTTP operation ([`compatibility-matrix.md`](compatibility-matrix.md) same PR).
-- Changing Terraform green path status ([`terraform-integration.md`](terraform-integration.md)).
-- Shipping Console capabilities ([`console-parity-overview.md`](console-parity-overview.md) + [`console.md`](console.md) + `FW-PRD-*`).
-
-Follow `cursor/company/DOCUMENTATION-GOVERNANCE.md`. **Do not** copy the full matrix here — link to it. **Do not** list P2 backlog in detail — link to `future-work/`.
-
----
-
 ## Related
 
 - [compatibility-matrix.md](compatibility-matrix.md) — operation-level truth table
 - [compatibility.md](compatibility.md) — running verify
-- smithy-contracts.md — structural contract (Smithy AST)
-- [console-parity-overview.md](console-parity-overview.md) — Console vs AWS Console (UI)
-- mvp-work-plan.md — MVP exit criteria (met)
+
+- [console.md](console.md) — Console vs AWS Console (UI)

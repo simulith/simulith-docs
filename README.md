@@ -10,14 +10,14 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `25b3c8b` on 2026-07-15.
+Generated from monorepo commit `b7784fd` on 2026-07-15.
 
 ## Start here
 
 | Guide | Purpose |
 | --- | --- |
 | [Quickstart](quickstart.md) | Run Simulith in under 5 minutes |
-| [Changelog](CHANGELOG.md) | Release notes by version (SML-driven) |
+| [Changelog](CHANGELOG.md) | Release notes by version |
 | [Using Simulith (local vs AWS)](using-simulith.md) | After Docker is up — workflows and endpoints |
 | [Docker](docker.md) | Images, volumes, health checks |
 | [Console](console.md) | Web GUI at `:9080` |
@@ -39,7 +39,7 @@ Generated from monorepo commit `25b3c8b` on 2026-07-15.
 | [SQS](sqs.md) | Queues and messages |
 | [SSM](ssm.md) | Parameter Store |
 | [S3](s3.md) | Buckets and objects |
-| [Lambda](lambda.md) | Functions, invoke, SQS ESM; seeded  |
+| [Lambda](lambda.md) | Functions, invoke, SQS ESM; seeded demo-fn |
 
 ## Compatibility
 
@@ -47,7 +47,6 @@ Generated from monorepo commit `25b3c8b` on 2026-07-15.
 | --- | --- |
 | [Compatibility matrix](compatibility-matrix.md) | Operation × verify coverage |
 | [AWS parity overview](aws-parity-overview.md) | API summary by service |
-| [Console parity overview](console-parity-overview.md) | Console vs AWS Console |
 | [Compatibility / verify](compatibility.md) | `simulith verify` and reports |
 | [Trust bundle](trust-bundle.md) | Enterprise evaluation package |
 

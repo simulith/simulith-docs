@@ -4,9 +4,7 @@ Docker reference for the Simulith runtime. For first-time onboarding, see [quick
 
 > **Releases (versioned images + binaries):** see [release.md](https://simulith.dev) — tag-driven pipeline, multi-arch image, smoke and gated publishing.
 
-> **Docker Hub overviews (source):** [`../dockerhub/README.md`](https://hub.docker.com/r/simulith/simulith) — copy-paste README for `simulith/simulith` and `simulith/console` (SML-090 / FW-PRD-021).
-
-Validation steps for SML-003: `cursor/analysis/features/_core/simulith-docker-support/test-checklist.md`
+> **Docker Hub overviews (source):** [`../dockerhub/README.md`](https://hub.docker.com/r/simulith/simulith) — copy-paste README for `simulith/simulith` and `simulith/console`.
 
 ## Prerequisites
 
@@ -142,4 +140,4 @@ Create the directory on the host if needed. On Windows, ensure the path is share
 - [quickstart.md](quickstart.md) — onboarding
 - [README.md](README.md) — module overview
 - [`../dockerhub/README.md`](https://hub.docker.com/r/simulith/simulith) — Docker Hub repository overviews (source)
-- `cursor/company/mvp-work-plan.md` — STORY-003
+-  —

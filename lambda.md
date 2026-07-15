@@ -10,7 +10,7 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 - AWS SDK for Go, Node.js, Python, etc.
 - Terraform (`aws_lambda_function`)
 
-## Implemented operations (SML-120–122)
+## Implemented operations
 
 | Operation | Method + Path | Status |
 |---|---|---|
@@ -18,21 +18,21 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 | ListFunctions | `GET /2015-03-31/functions` | ✓ |
 | GetFunction | `GET /2015-03-31/functions/{name}` | ✓ |
 | DeleteFunction | `DELETE /2015-03-31/functions/{name}` | ✓ |
-| InvokeFunction | `POST /2015-03-31/functions/{name}/invocations` | ✓ (SML-121) |
-| UpdateFunctionCode | `PUT /2015-03-31/functions/{name}/code` | ✓ (SML-121) |
-| CreateEventSourceMapping | `POST /2015-03-31/event-source-mappings` | ✓ (SML-122) |
-| ListEventSourceMappings | `GET /2015-03-31/event-source-mappings` | ✓ (SML-122) |
-| GetEventSourceMapping | `GET /2015-03-31/event-source-mappings/{uuid}` | ✓ (SML-122) |
-| DeleteEventSourceMapping | `DELETE /2015-03-31/event-source-mappings/{uuid}` | ✓ (SML-122) |
-| CreateFunctionUrlConfig | `POST /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
-| GetFunctionUrlConfig | `GET /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
-| DeleteFunctionUrlConfig | `DELETE /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
-| Function URL invoke | `POST /2021-10-31/functions/{name}/url` | ✓ (SML-129) |
-| PublishLayerVersion | `POST /2018-10-31/layers/{name}/versions` | ✓ (SML-130) |
-| ListLayers | `GET /2018-10-31/layers` | ✓ (SML-130) |
-| ListLayerVersions | `GET /2018-10-31/layers/{name}/versions` | ✓ (SML-130) |
-| GetLayerVersion | `GET /2018-10-31/layers/{name}/versions/{version}` | ✓ (SML-130) |
-| DeleteLayerVersion | `DELETE /2018-10-31/layers/{name}/versions/{version}` | ✓ (SML-130) |
+| InvokeFunction | `POST /2015-03-31/functions/{name}/invocations` | ✓ |
+| UpdateFunctionCode | `PUT /2015-03-31/functions/{name}/code` | ✓ |
+| CreateEventSourceMapping | `POST /2015-03-31/event-source-mappings` | ✓ |
+| ListEventSourceMappings | `GET /2015-03-31/event-source-mappings` | ✓ |
+| GetEventSourceMapping | `GET /2015-03-31/event-source-mappings/{uuid}` | ✓ |
+| DeleteEventSourceMapping | `DELETE /2015-03-31/event-source-mappings/{uuid}` | ✓ |
+| CreateFunctionUrlConfig | `POST /2021-10-31/functions/{name}/url` | ✓ |
+| GetFunctionUrlConfig | `GET /2021-10-31/functions/{name}/url` | ✓ |
+| DeleteFunctionUrlConfig | `DELETE /2021-10-31/functions/{name}/url` | ✓ |
+| Function URL invoke | `POST /2021-10-31/functions/{name}/url` | ✓ |
+| PublishLayerVersion | `POST /2018-10-31/layers/{name}/versions` | ✓ |
+| ListLayers | `GET /2018-10-31/layers` | ✓ |
+| ListLayerVersions | `GET /2018-10-31/layers/{name}/versions` | ✓ |
+| GetLayerVersion | `GET /2018-10-31/layers/{name}/versions/{version}` | ✓ |
+| DeleteLayerVersion | `DELETE /2018-10-31/layers/{name}/versions/{version}` | ✓ |
 
 ## AWS CLI examples
 
@@ -102,7 +102,7 @@ aws lambda update-function-code \
 
 Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`). `Environment.Variables` from CreateFunction are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
 
-## Function URLs (SML-129)
+## Function URLs
 
 HTTP invoke without API Gateway. Management API uses `/2021-10-31/functions/{name}/url`; the returned `FunctionUrl` is the same path on `localhost` for local dev.
 
@@ -125,7 +125,7 @@ curl -s -X POST "http://localhost:4566/2021-10-31/functions/my-fn/url" \
 
 **Notes:** POST with `{"AuthType":"..."}` creates the URL; POST with an event payload invokes. Function URL events are passed as raw JSON (not API Gateway HTTP v2 envelope). `AuthType: AWS_IAM` requires SigV4 on invoke.
 
-## Lambda Layers (SML-130)
+## Lambda Layers
 
 Share dependencies across functions via layer zips. Layer API uses `/2018-10-31/layers/…`. On invoke, layer zips are extracted **before** the function zip (function code wins on path conflicts).
 
@@ -163,7 +163,7 @@ aws lambda delete-layer-version --layer-name my-deps --version-number 1 --endpoi
 
 **Limits:** `AddLayerVersionPermission` not implemented (open local access). `UpdateFunctionConfiguration` for Layers-only changes not supported — set `Layers` on CreateFunction. Python layer `PYTHONPATH` not implemented (nodejs first).
 
-## SQS event source mapping (SML-122)
+## SQS event source mapping
 
 Map a local SQS queue to a Lambda function. The runtime **polls enabled mappings in the background** (~1s interval), batches messages, invokes the function with a standard SQS `Records` event, and deletes messages on success.
 
@@ -232,10 +232,10 @@ Default values: region `us-east-1`, accountId `000000000000`.
 | `Handler` | yes | — | e.g. `index.handler` |
 | `Role` | yes | — | Any ARN string accepted |
 | `Code.ZipFile` | yes | — | Base64-encoded zip; `Code.S3Bucket/S3Key` not supported |
-| `Timeout` | no | `3` | Seconds; used by SML-121 (invoke) |
+| `Timeout` | no | `3` | Seconds; used by  (invoke) |
 | `MemorySize` | no | `128` | MB |
-| `Environment.Variables` | no | `{}` | Injected into subprocess on invoke (SML-121) |
-| `Layers` | no | `[]` | Layer version ARNs; merged into invoke workspace (SML-130) |
+| `Environment.Variables` | no | `{}` | Injected into subprocess on invoke |
+| `Layers` | no | `[]` | Layer version ARNs; merged into invoke workspace |
 | `Description` | no | `""` | Metadata only |
 
 ## Known gaps and limits
@@ -249,14 +249,14 @@ Default values: region `us-east-1`, accountId `000000000000`.
 - **Runtime validation** — Simulith accepts any runtime string. AWS enforces a specific list.
 - **Zip size limits** — no limit enforced in this version. AWS limits 50 MB compressed / 250 MB uncompressed.
 - **ListFunctions pagination** — `Marker` / `MaxItems` query params are ignored; all functions are returned.
-- **Tags, aliases, versions** — not implemented (layers **are** implemented — SML-130).
+- **Tags, aliases, versions** — not implemented.
 - **Concurrency** — not applicable for local development.
 
 ## Compatibility matrix row
 
-See [`aws-parity-overview.md`](aws-parity-overview.md) for the full matrix. Run **`simulith verify lambda`** for curated parity scenarios (SML-123).
+See [`aws-parity-overview.md`](aws-parity-overview.md) for the full matrix. Run **`simulith verify lambda`** for curated parity scenarios.
 
-## Verify (SML-123)
+## Verify
 
 ```bash
 # Simulith-only smoke (no AWS credentials)
@@ -277,7 +277,7 @@ Save JSON report: `simulith verify lambda --skip-aws --save-last` (writes `.simu
 
 Details: [compatibility.md](compatibility.md) · [compatibility-matrix.md](compatibility-matrix.md)
 
-## Terraform green path (SML-124)
+## Terraform green path
 
 `aws_lambda_function` + `aws_sqs_queue` + `aws_lambda_event_source_mapping` apply and destroy on Simulith:
 

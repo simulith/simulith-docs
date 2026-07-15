@@ -10,20 +10,20 @@ SQS uses **AWS Query** (`application/x-www-form-urlencoded` + **XML** responses)
 
 | Operation | Status | Notes |
 | --- | --- | --- |
-| CreateQueue | **Available** (SML-014, idempotent SML-038) | Standard queues only |
-| SendMessage | **Available** (SML-015) | Standard queues; body + optional DelaySeconds |
-| SendMessageBatch | **Available** (SML-039) | Up to 10 entries; partial success |
-| ReceiveMessage | **Available** (SML-016, long poll SML-037) | Visibility timeout; long/short poll |
-| DeleteMessage | **Available** (SML-017) | Receipt handle from ReceiveMessage |
-| DeleteMessageBatch | **Available** (SML-039) | Up to 10 entries; partial success |
-| ChangeMessageVisibility | **Available** (SML-065) | Extend or shorten in-flight visibility; invalid handle → error |
-| ChangeMessageVisibilityBatch | **Available** (SML-065) | Up to 10 entries; partial success |
-| GetQueueAttributes | **Available** (SML-025) | QueueArn, timeouts, approximate counts |
-| GetQueueUrl | **Available** (SML-033) | Resolve URL by `QueueName` |
-| ListQueues | **Available** (SML-034) | List stored `QueueUrl` values; optional prefix and pagination |
-| DeleteQueue | **Available** (SML-035) | Remove queue and all messages by `QueueUrl` |
-| PurgeQueue | **Available** (SML-064) | Delete all messages; queue remains; 60s throttle |
-| SetQueueAttributes | **Available** (SML-036) | Update persisted queue metadata (incl. RedrivePolicy) |
+| CreateQueue | **Available** | Standard queues only |
+| SendMessage | **Available** | Standard queues; body + optional DelaySeconds |
+| SendMessageBatch | **Available** | Up to 10 entries; partial success |
+| ReceiveMessage | **Available** | Visibility timeout; long/short poll |
+| DeleteMessage | **Available** | Receipt handle from ReceiveMessage |
+| DeleteMessageBatch | **Available** | Up to 10 entries; partial success |
+| ChangeMessageVisibility | **Available** | Extend or shorten in-flight visibility; invalid handle → error |
+| ChangeMessageVisibilityBatch | **Available** | Up to 10 entries; partial success |
+| GetQueueAttributes | **Available** | QueueArn, timeouts, approximate counts |
+| GetQueueUrl | **Available** | Resolve URL by `QueueName` |
+| ListQueues | **Available** | List stored `QueueUrl` values; optional prefix and pagination |
+| DeleteQueue | **Available** | Remove queue and all messages by `QueueUrl` |
+| PurgeQueue | **Available** | Delete all messages; queue remains; 60s throttle |
+| SetQueueAttributes | **Available** | Update persisted queue metadata (incl. RedrivePolicy) |
 
 ## CreateQueue
 
@@ -49,7 +49,7 @@ Queue metadata is stored in the same SQLite database as DynamoDB (`state.path`, 
 
 See **[aws-cli-examples.md — SQS](aws-cli-examples.md#sqs)**.
 
-Response includes `MessageId` and `MD5OfMessageBody`. Messages are stored in SQLite (`sqs_messages`) for ReceiveMessage (SML-016).
+Response includes `MessageId` and `MD5OfMessageBody`. Messages are stored in SQLite (`sqs_messages`) for ReceiveMessage.
 
 Optional `DelaySeconds` (0–900) is stored; visibility is enforced when receiving.
 
@@ -65,7 +65,7 @@ Supports **Query** and **AWS JSON 1.0** (`AmazonSQS.SendMessageBatch`).
 
 See **[aws-cli-examples.md — SQS](aws-cli-examples.md#sqs)**.
 
-Response includes `Message` entries with `Body`, `MessageId`, `ReceiptHandle`, and `MD5OfBody`. Save `ReceiptHandle` for DeleteMessage (SML-017).
+Response includes `Message` entries with `Body`, `MessageId`, `ReceiptHandle`, and `MD5OfBody`. Save `ReceiptHandle` for DeleteMessage.
 
 Optional parameters:
 
@@ -88,7 +88,7 @@ Delete works even while the message is within its visibility timeout (in-flight)
 
 See **[aws-cli-examples.md — SQS batch](aws-cli-examples.md#sendmessagebatch--deletemessagebatch)**.
 
-Deletes up to **10** messages by receipt handle. Partial per-entry errors use the same `Successful` / `Failed` pattern as SendMessageBatch. Stale handles report **success** (no-op), matching single DeleteMessage (SML-017).
+Deletes up to **10** messages by receipt handle. Partial per-entry errors use the same `Successful` / `Failed` pattern as SendMessageBatch. Stale handles report **success** (no-op), matching single DeleteMessage.
 
 ## GetQueueUrl
 
@@ -208,8 +208,8 @@ If no attribute names are requested, Simulith returns the **full MVP subset** ab
 | Area | AWS | Simulith |
 | --- | --- | --- |
 | FIFO queues | Supported | **Not supported** — `FifoQueue=true` or `.fifo` names rejected |
-| Duplicate create | Returns existing `QueueUrl` when attributes match | **Same** (SML-038); mismatch → `QueueAlreadyExists` |
-| SendMessageBatch / DeleteMessageBatch / ChangeMessageVisibilityBatch | Up to 10 entries; partial errors | **Same** (SML-039, SML-065) |
+| Duplicate create | Returns existing `QueueUrl` when attributes match | **Same**; mismatch → `QueueAlreadyExists` |
+| SendMessageBatch / DeleteMessageBatch / ChangeMessageVisibilityBatch | Up to 10 entries; partial errors | **Same** |
 | FIFO send fields | MessageGroupId / deduplication | **Rejected** with `InvalidParameterValue` |
 | QueueUrl host match | Strict URL must match queue | **Resolved by queue name** in URL path |
 | Long polling | Distributed sampling | **SQLite poll loop** (~200ms); blocks up to `WaitTimeSeconds` or queue default |
@@ -238,6 +238,5 @@ Service faults use AWS Query XML (`ErrorResponse` with `Code`, `Message`, `Type`
 - [compatibility-matrix.md](compatibility-matrix.md) — public MVP operation × verify coverage matrix
 - [compatibility.md](compatibility.md) — `simulith verify sqs` parity and smoke modes
 - [aws-cli-examples.md](aws-cli-examples.md) — AWS CLI cookbook
-- smithy-contracts.md — vendored SQS Smithy model
-- protocol.md — POST / multiplex (JSON + Query)
+
 - [quickstart.md](quickstart.md) — starting the runtime

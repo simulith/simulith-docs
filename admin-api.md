@@ -114,7 +114,7 @@ Import a snapshot JSON document into the live store.
 
 ### `GET /_simulith/v1/sqs/messages`
 
-**Peek** queue messages without calling `ReceiveMessage` — does **not** change visibility or receipt handles (FW-SQS-020 / Floci-style inspection).
+**Peek** queue messages without calling `ReceiveMessage` — does **not** change visibility or receipt handles.
 
 | Query | Required | Description |
 | --- | --- | --- |
@@ -173,13 +173,13 @@ curl -s http://127.0.0.1:9080/_simulith/v1/status
 
 | Capability | Follow-up |
 | --- | --- |
-| Trigger `simulith verify` from admin API | Optional follow-up — use CLI or Console **Verify** panel import (FW-PRD-005 shipped SML-059) |
-| DELETE on peek endpoint | Optional — use PurgeQueue (FW-SQS-021 shipped SML-064) |
+| Trigger `simulith verify` from admin API | Optional follow-up — use CLI or Console **Verify** panel import |
+| DELETE on peek endpoint | Optional — use PurgeQueue |
 | Console snapshot save/restore UI | Optional follow-up; CLI + admin API exist |
 
 ---
 
 ## Implementation
 
-- Package: `runtime/internal/admin/`
-- Registered in: `runtime/internal/runtime/server.go` (before AWS catch-all)
+- Package: the runtime
+- Registered in: the runtime (before AWS catch-all)
