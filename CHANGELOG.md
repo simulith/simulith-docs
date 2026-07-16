@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.25.0] - 2026-07-16
+
+### Features
+
+- ****: API Gateway resources + Lambda proxy integration (runtime)
+
+## [0.24.0] - 2026-07-16
+
+### Features
+
+- ****: API Gateway scaffold + Rest API CRUD (runtime)
+
 ## [0.23.2] - 2026-07-15
 
 ### Fixes

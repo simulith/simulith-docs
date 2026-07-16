@@ -1,11 +1,11 @@
 # AWS parity overview — Simulith MVP
 
-Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 + Lambda expansion): what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 + Lambda + API Gateway expansion): what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-14..
+Last updated: 2026-07-16..
 
 ---
 
@@ -18,13 +18,14 @@ Last updated: 2026-07-14..
 | **SSM** (Parameter Store) | 9 | 9 / 9 (100%) | **100%** (10 / 10) | **~58%** (9 / ~12) |
 | **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
 | **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
-| **Total** | **69** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **API Gateway** | 4 | — | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
+| **Total** | **73** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **P2 shipped:**  async invoke + Function URLs, ** Layers**. **Next:** API Gateway B3 runtime; analysis kickoff .
+**Lambda expansion:** MVP + P2 complete. **API Gateway B3:**  Rest API CRUD +  resources/Lambda proxy. **Next:**  deployment/stage/HTTP invoke.
 
 ---
 
@@ -192,13 +193,32 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_
 
 ---
 
+## API Gateway
+
+Guide: [apigateway.md](apigateway.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateRestApi, GetRestApis, GetRestApi, DeleteRestApi, CreateResource, PutMethod, PutIntegration (`AWS_PROXY`). Metadata in SQLite (`apigateway_*` tables). SigV4 service `apigateway`; paths under `/restapis`. Root resource created on Rest API create (`rootResourceId`).
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| Deployment, stage, HTTP invoke | P1 |  |
+| Verify, Terraform, Console | P1 | –006 |
+
+7 **available** operations (Rest API lifecycle + proxy integration config).
+
+---
+
 ## What to do next (priority)
 
-**Next (API Gateway B3):** per the product backlog and `product-vision.md`.
+**Next (API Gateway B3):**  — deployment, stage, HTTP invoke.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **B3** | API Gateway | TBD |
+| **B3** | API Gateway | + |
 
 ---
 

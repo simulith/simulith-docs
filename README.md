@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `91fa8df` on 2026-07-15.
+Generated from monorepo commit `32459ca` on 2026-07-16.
 
 ## Start here
 
@@ -40,6 +40,7 @@ Generated from monorepo commit `91fa8df` on 2026-07-15.
 | [SSM](ssm.md) | Parameter Store |
 | [S3](s3.md) | Buckets and objects |
 | [Lambda](lambda.md) | Functions, invoke, SQS ESM; seeded demo-fn |
+| [API Gateway](apigateway.md) | REST API CRUD (management API) |
 
 ## Compatibility
 

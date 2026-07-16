@@ -1,6 +1,6 @@
 # Compatibility matrix — Simulith MVP
 
-Public reference for **local API support** vs **`simulith verify` coverage** on DynamoDB, SQS, SSM, S3, and Lambda.
+Public reference for **local API support** vs **`simulith verify` coverage** on DynamoDB, SQS, SSM, S3, Lambda, and API Gateway (REST API management).
 
 **Public mirror (prospects, sales, Hub):** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
@@ -8,14 +8,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-07-14..
+Last updated: 2026-07-16..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 5 (DynamoDB, SQS, SSM, S3, Lambda) |
-| Operations **available** locally | 69 |
+| Services in matrix | 6 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway) |
+| Operations **available** locally | 76 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -167,6 +167,24 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
 | CreateFunction (`Layers`) | available | yes (`layer-invoke`) | Layer ARNs on configuration |
 
 **Not in matrix (gap):** aliases, versions.
+
+---
+
+## API Gateway
+
+Guide: [apigateway.md](apigateway.md) · Verify: not yet
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateRestApi | available | — | `POST /restapis`; metadata in SQLite; auto root resource |
+| GetRestApis | available | — | `{ "items": [ ... ] }` |
+| GetRestApi | available | — | 404 `NotFoundException` when missing; includes `rootResourceId` |
+| DeleteRestApi | available | — | 202 Accepted; cascades resources/methods/integrations |
+| CreateResource | available | — | `POST /restapis/{id}/resources` |
+| PutMethod | available | — | `PUT .../resources/{id}/methods/{http_method}` |
+| PutIntegration | available | — | `AWS_PROXY` → Lambda invoke URI |
+
+**Not in matrix (gap):** deployments, stages, HTTP invoke.
 
 ---
 
