@@ -18,14 +18,14 @@ Last updated: 2026-07-17..
 | **SSM** (Parameter Store) | 9 | 9 / 9 (100%) | **100%** (10 / 10) | **~58%** (9 / ~12) |
 | **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
 | **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
-| **API Gateway** | 4 | — | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
+| **API Gateway** | 4 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
 | **Total** | **73** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** through . **Next:**  verify apigateway.
+**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** through . **Next:**  Terraform green path.
 
 ---
 
@@ -213,7 +213,7 @@ CreateRestApi, GetRestApis, GetRestApi, DeleteRestApi, CreateResource, PutMethod
 
 ## What to do next (priority)
 
-**Next (API Gateway B3):**  — `simulith verify apigateway`.
+**Next (API Gateway B3):**  — Terraform green path API Gateway.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |

@@ -64,9 +64,18 @@ curl "http://localhost:4566/restapis/<id>/dev/_user_request_/hello"
 
 REST API metadata, resources, methods, integrations, deployments, and stages are stored in SQLite (`apigateway_*` tables). `simulith reset` clears API Gateway state with other services. Deleting a Rest API cascades to child rows.
 
+## Verify
+
+```bash
+simulith verify apigateway --skip-aws          # Simulith-only smoke (4 scenarios)
+simulith verify apigateway                     # AWS parity (requires SIMULITH_VERIFY_LAMBDA_ROLE_ARN)
+simulith verify apigateway --filter rest-api   # subset by scenario name prefix
+```
+
+Scenarios: `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke`.
+
 ## Out of scope (follow-up stories)
 
-- `simulith verify apigateway`
 - Terraform green path example
 - Console panel
 

@@ -172,22 +172,22 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
 
 ## API Gateway
 
-Guide: [apigateway.md](apigateway.md) · Verify: not yet
+Guide: [apigateway.md](apigateway.md) · Verify: `simulith verify apigateway`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateRestApi | available | — | `POST /restapis`; metadata in SQLite; auto root resource |
-| GetRestApis | available | — | `{ "items": [ ... ] }` |
-| GetRestApi | available | — | 404 `NotFoundException` when missing; includes `rootResourceId` |
-| DeleteRestApi | available | — | 202 Accepted; cascades resources/methods/integrations |
-| CreateResource | available | — | `POST /restapis/{id}/resources` |
-| PutMethod | available | — | `PUT .../resources/{id}/methods/{http_method}` |
-| PutIntegration | available | — | `AWS_PROXY` → Lambda invoke URI |
-| CreateDeployment | available | — | `POST /restapis/{id}/deployments` |
-| CreateStage | available | — | `POST /restapis/{id}/stages` |
-| Stage HTTP invoke | available | — | `…/{stage}/_user_request_/…` → Lambda proxy (no SigV4) |
+| CreateRestApi | available | yes (`rest-api-crud-lifecycle`) | `POST /restapis`; metadata in SQLite; auto root resource |
+| GetRestApis | available | yes (`rest-api-crud-lifecycle`) | `{ "item": [ ... ] }` (AWS REST JSON) |
+| GetRestApi | available | yes (`rest-api-crud-lifecycle`) | 404 `NotFoundException` when missing; includes `rootResourceId` |
+| DeleteRestApi | available | yes (`rest-api-crud-lifecycle`) | 202 Accepted; cascades resources/methods/integrations |
+| CreateResource | available | yes (`proxy-integration-lifecycle`) | `POST /restapis/{id}/resources` or `…/resources/{parentId}` |
+| PutMethod | available | yes (`proxy-integration-lifecycle`) | `PUT .../resources/{id}/methods/{http_method}` |
+| PutIntegration | available | yes (`proxy-integration-lifecycle`) | `AWS_PROXY` → Lambda invoke URI |
+| CreateDeployment | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/deployments` |
+| CreateStage | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/stages` |
+| Stage HTTP invoke | available | yes (`stage-http-invoke`) | `…/{stage}/_user_request_/…` → Lambda proxy (no SigV4) |
 
-**Not in matrix (gap):** verify, Terraform example, Console panel.
+**Not in matrix (gap):** Terraform example, Console panel.
 
 ---
 
@@ -202,6 +202,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
+| API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -210,6 +211,7 @@ simulith verify sqs --skip-aws
 simulith verify ssm --skip-aws
 simulith verify s3 --skip-aws
 simulith verify lambda --skip-aws
+simulith verify apigateway --skip-aws
 ```
 
 ---
