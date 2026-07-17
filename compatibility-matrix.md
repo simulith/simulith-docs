@@ -8,14 +8,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-07-16..
+Last updated: 2026-07-17..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 6 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway) |
-| Operations **available** locally | 76 |
+| Operations **available** locally | 79 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -183,8 +183,11 @@ Guide: [apigateway.md](apigateway.md) · Verify: not yet
 | CreateResource | available | — | `POST /restapis/{id}/resources` |
 | PutMethod | available | — | `PUT .../resources/{id}/methods/{http_method}` |
 | PutIntegration | available | — | `AWS_PROXY` → Lambda invoke URI |
+| CreateDeployment | available | — | `POST /restapis/{id}/deployments` |
+| CreateStage | available | — | `POST /restapis/{id}/stages` |
+| Stage HTTP invoke | available | — | `…/{stage}/_user_request_/…` → Lambda proxy (no SigV4) |
 
-**Not in matrix (gap):** deployments, stages, HTTP invoke.
+**Not in matrix (gap):** verify, Terraform example, Console panel.
 
 ---
 

@@ -5,7 +5,7 @@ Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 +
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-16..
+Last updated: 2026-07-17..
 
 ---
 
@@ -25,7 +25,7 @@ Last updated: 2026-07-16..
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **API Gateway B3:**  Rest API CRUD +  resources/Lambda proxy. **Next:**  deployment/stage/HTTP invoke.
+**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** through . **Next:**  verify apigateway.
 
 ---
 
@@ -199,22 +199,21 @@ Guide: [apigateway.md](apigateway.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRestApi, GetRestApis, GetRestApi, DeleteRestApi, CreateResource, PutMethod, PutIntegration (`AWS_PROXY`). Metadata in SQLite (`apigateway_*` tables). SigV4 service `apigateway`; paths under `/restapis`. Root resource created on Rest API create (`rootResourceId`).
+CreateRestApi, GetRestApis, GetRestApi, DeleteRestApi, CreateResource, PutMethod, PutIntegration (`AWS_PROXY`), CreateDeployment, CreateStage, stage HTTP invoke (`/_user_request_/` → Lambda). SQLite `apigateway_*` tables. SigV4 `apigateway` for management; invoke path without SigV4.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Deployment, stage, HTTP invoke | P1 |  |
 | Verify, Terraform, Console | P1 | –006 |
 
-7 **available** operations (Rest API lifecycle + proxy integration config).
+10 **available** operations (management + stage HTTP invoke).
 
 ---
 
 ## What to do next (priority)
 
-**Next (API Gateway B3):**  — deployment, stage, HTTP invoke.
+**Next (API Gateway B3):**  — `simulith verify apigateway`.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |

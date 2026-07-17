@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.26.0] - 2026-07-17
+
+### Features
+
+- ****: API Gateway deployment, stage, HTTP invoke (runtime)
+
 ## [0.25.0] - 2026-07-16
 
 ### Features

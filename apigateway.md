@@ -1,16 +1,18 @@
 # API Gateway — Simulith
 
-Local Amazon API Gateway (REST API management) emulation for development and testing.
+Local Amazon API Gateway (REST API) emulation for development and testing.
 
 ## Overview
 
-Simulith emulates the API Gateway **management** REST API on the same port as other services (default `:4566`). Requests use SigV4 service name `apigateway` and path prefix `/restapis`.
+Simulith emulates the API Gateway **management** REST API on the same port as other services (default `:4566`). Management requests use SigV4 service name `apigateway` and path prefix `/restapis`.
+
+**Stage HTTP invoke**: unauthenticated requests to `/restapis/{restapi_id}/{stage}/_user_request_/…` proxy to configured Lambda integrations.
 
 Compatible with:
 
 - AWS CLI (`aws apigateway`)
 - AWS SDKs (management APIs)
-- Terraform (`aws_api_gateway_rest_api`, `aws_api_gateway_resource`, `aws_api_gateway_method`, `aws_api_gateway_integration`) — management subset through
+- Terraform (`aws_api_gateway_rest_api`, resource/method/integration, deployment, stage) — through
 
 ## Implemented operations
 
@@ -23,6 +25,9 @@ Compatible with:
 | CreateResource | `POST /restapis/{restapi_id}/resources` | ✓ |
 | PutMethod | `PUT /restapis/{restapi_id}/resources/{resource_id}/methods/{http_method}` | ✓ |
 | PutIntegration | `PUT .../methods/{http_method}/integration` | ✓ |
+| CreateDeployment | `POST /restapis/{restapi_id}/deployments` | ✓ |
+| CreateStage | `POST /restapis/{restapi_id}/stages` | ✓ |
+| Stage HTTP invoke | `GET/POST …/restapis/{id}/{stage}/_user_request_/…` | ✓ |
 
 `CreateRestApi` creates a root resource automatically and returns `rootResourceId` (required for Terraform `aws_api_gateway_resource`).
 
@@ -39,44 +44,30 @@ aws apigateway create-rest-api \
   --name my-api \
   --description "local demo"
 
-aws apigateway get-rest-apis --endpoint-url "$ENDPOINT"
+# … resources, method ANY, AWS_PROXY integration
 
-aws apigateway get-rest-api --endpoint-url "$ENDPOINT" --rest-api-id <id>
+aws apigateway create-deployment \
+  --endpoint-url "$ENDPOINT" \
+  --rest-api-id <id>
 
-# Lambda proxy resource (use rootResourceId from create-rest-api)
-aws apigateway create-resource \
+aws apigateway create-stage \
   --endpoint-url "$ENDPOINT" \
   --rest-api-id <id> \
-  --parent-id <rootResourceId> \
-  --path-part "{proxy+}"
+  --stage-name dev \
+  --deployment-id <deploymentId>
 
-aws apigateway put-method \
-  --endpoint-url "$ENDPOINT" \
-  --rest-api-id <id> \
-  --resource-id <resourceId> \
-  --http-method ANY \
-  --authorization-type NONE
-
-aws apigateway put-integration \
-  --endpoint-url "$ENDPOINT" \
-  --rest-api-id <id> \
-  --resource-id <resourceId> \
-  --http-method ANY \
-  --type AWS_PROXY \
-  --integration-http-method POST \
-  --uri "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:123456789012:function:demo/invocations"
-
-aws apigateway delete-rest-api --endpoint-url "$ENDPOINT" --rest-api-id <id>
+# HTTP invoke (no SigV4 — local stage URL)
+curl "http://localhost:4566/restapis/<id>/dev/_user_request_/hello"
 ```
 
 ## Persistence
 
-REST API metadata, resources, methods, and integrations are stored in SQLite (`apigateway_*` tables). `simulith reset` clears API Gateway state with other services. Deleting a Rest API cascades to child resources.
+REST API metadata, resources, methods, integrations, deployments, and stages are stored in SQLite (`apigateway_*` tables). `simulith reset` clears API Gateway state with other services. Deleting a Rest API cascades to child rows.
 
 ## Out of scope (follow-up stories)
 
-- Deployments, stages, HTTP invoke
 - `simulith verify apigateway`
+- Terraform green path example
 - Console panel
 
 See .
