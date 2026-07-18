@@ -1,0 +1,8 @@
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:9080/runtime"
+aws_region            = "us-east-1"
+api_name              = "hello-tf"
+stage_name            = "dev"
+function_name         = "hello-tf"
+lambda_role_arn       = "arn:aws:iam::000000000000:role/simulith-apigw-tf"
+resource_path         = "hello"

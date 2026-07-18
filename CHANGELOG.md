@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.28.0] - 2026-07-18
+
+### Features
+
+- ****: Terraform green path API Gateway (runtime)
+
 ## [0.27.0] - 2026-07-17
 
 ### Features

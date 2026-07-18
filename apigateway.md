@@ -12,7 +12,7 @@ Compatible with:
 
 - AWS CLI (`aws apigateway`)
 - AWS SDKs (management APIs)
-- Terraform (`aws_api_gateway_rest_api`, resource/method/integration, deployment, stage) — through
+- Terraform (`aws_api_gateway_rest_api`, resource/method/integration, deployment, stage, `aws_lambda_permission`) — green path example
 
 ## Implemented operations
 
@@ -27,6 +27,17 @@ Compatible with:
 | PutIntegration | `PUT .../methods/{http_method}/integration` | ✓ |
 | CreateDeployment | `POST /restapis/{restapi_id}/deployments` | ✓ |
 | CreateStage | `POST /restapis/{restapi_id}/stages` | ✓ |
+| DeleteStage | `DELETE /restapis/{restapi_id}/stages/{stage_name}` | ✓ |
+| GetResources | `GET /restapis/{restapi_id}/resources` | ✓ — wire key `item` |
+| GetResource | `GET /restapis/{restapi_id}/resources/{resource_id}` | ✓ |
+| GetMethod | `GET …/methods/{http_method}` | ✓ |
+| GetIntegration | `GET …/methods/{http_method}/integration` | ✓ |
+| GetDeployment | `GET /restapis/{restapi_id}/deployments/{id}` | ✓ |
+| GetStage | `GET /restapis/{restapi_id}/stages/{stage_name}` | ✓ |
+| DeleteDeployment | `DELETE …/deployments/{id}` | ✓ |
+| DeleteResource | `DELETE …/resources/{resource_id}` | ✓ |
+| DeleteMethod | `DELETE …/methods/{http_method}` | ✓ |
+| DeleteIntegration | `DELETE …/integration` | ✓ |
 | Stage HTTP invoke | `GET/POST …/restapis/{id}/{stage}/_user_request_/…` | ✓ |
 
 `CreateRestApi` creates a root resource automatically and returns `rootResourceId` (required for Terraform `aws_api_gateway_resource`).
@@ -74,9 +85,22 @@ simulith verify apigateway --filter rest-api   # subset by scenario name prefix
 
 Scenarios: `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke`.
 
+## Terraform
+
+Green path module: [`examples/terraform/apigateway/`](examples/terraform/apigateway/).
+
+```bash
+cd runtime/examples/terraform/apigateway
+cp terraform.tfvars.native.example terraform.tfvars
+terraform init && terraform apply -parallelism=1
+curl "$(terraform output -raw invoke_url)"
+terraform destroy -parallelism=1
+```
+
+Provider routes **apigateway** and **lambda** endpoints to Simulith. Use **`-parallelism=1`** (SQLite). See [terraform-integration.md](terraform-integration.md).
+
 ## Out of scope (follow-up stories)
 
-- Terraform green path example
 - Console panel
 
 See .

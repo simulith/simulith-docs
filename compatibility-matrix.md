@@ -186,8 +186,14 @@ Guide: [apigateway.md](apigateway.md) · Verify: `simulith verify apigateway`
 | CreateDeployment | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/deployments` |
 | CreateStage | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/stages` |
 | Stage HTTP invoke | available | yes (`stage-http-invoke`) | `…/{stage}/_user_request_/…` → Lambda proxy (no SigV4) |
+| GetResources / GetResource / GetMethod / GetIntegration | available | — | Terraform refresh; GetResources wire key `item` |
+| GetDeployment / GetStage | available | — | Terraform read after create |
+| DeleteStage / DeleteDeployment / DeleteResource / DeleteMethod / DeleteIntegration | available | — | Terraform destroy |
+| Lambda AddPermission / RemovePermission / GetPolicy | available | — | `POST/DELETE/GET …/functions/{name}/policy` |
 
-**Not in matrix (gap):** Terraform example, Console panel.
+**Terraform:** [`examples/terraform/apigateway/`](examples/terraform/apigateway/) — green apply + HTTP invoke + destroy.
+
+**Not in matrix (gap):** Console panel.
 
 ---
 

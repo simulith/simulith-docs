@@ -13,7 +13,8 @@ runtime/examples/terraform/
 │   ├── (root)          ← minimal /app/tf-demo/* demo
 │   └── parameters/     ← Loyaleasy-shaped paths; Simulith local uses `/SIMULITH/DEV/*`
 ├── s3/                 ← aws_s3_bucket + aws_s3_object apply + destroy (s3_use_path_style)
-└── lambda/             ← aws_lambda_function + aws_sqs_queue + event source mapping
+├── lambda/             ← aws_lambda_function + aws_sqs_queue + event source mapping
+└── apigateway/         ← RestApi + Lambda AWS_PROXY + stage + permission
 ```
 
 Each subdirectory with `main.tf` is a **standalone** module: `cd` into it, then `terraform init && apply`.
@@ -33,6 +34,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`ssm/parameters/`](ssm/parameters/) | Green | Green | 27× `/SIMULITH/DEV/*` locally; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` — [README](ssm/parameters/README.md) |
 | [`s3/`](s3/) | Green | Green | 1 bucket + 2 objects; `s3_use_path_style = true`; [README](s3/README.md) |
 | [`lambda/`](lambda/) | Green | Green | 1 function + 1 queue + 1 ESM; `endpoints { lambda, sqs }`; [README](lambda/README.md) |
+| [`apigateway/`](apigateway/) | Green | Green | 8 resources; `endpoints { apigateway, lambda }`; `-parallelism=1`; [README](apigateway/README.md) |
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 

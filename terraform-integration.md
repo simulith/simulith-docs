@@ -245,6 +245,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`ssm/parameters/`](examples/terraform/ssm/parameters/) | Green | Green | 27 params; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` |
 | [`s3/`](examples/terraform/s3/) | Green | Green | CreateBucket, HeadBucket, GetBucketLocation, GetBucketVersioning, PutObject, HeadObject, DeleteObject, DeleteBucket — `s3_use_path_style = true` |
 | [`lambda/`](examples/terraform/lambda/) | Green | Green | CreateFunction, GetFunction, DeleteFunction, CreateQueue, GetQueueAttributes, DeleteQueue, Create/List/Get/DeleteEventSourceMapping |
+| [`apigateway/`](examples/terraform/apigateway/) | Green | Green | RestApi CRUD reads/deletes, resource/method/integration, deployment/stage, Lambda AddPermission/RemovePermission/GetPolicy — `-parallelism=1` |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 
@@ -256,7 +257,7 @@ Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 4. Optional: verify with AWS CLI (see [Verify resources](#verify-resources) below).
 5. **`terraform destroy`** — type `yes`. Resource removed from Simulith; Terraform state empty. For the SSM module, use **`terraform destroy -parallelism=1`** (same as apply).
 
-Use **`-parallelism=1`** for the SSM example (apply and destroy) and when applying multiple services in one run (SQLite contention).
+Use **`-parallelism=1`** for the SSM example (apply and destroy), the **API Gateway** example (SQLite contention), and when applying multiple services in one run.
 
 ### When to use `simulith reset`
 
