@@ -101,6 +101,6 @@ Provider routes **apigateway** and **lambda** endpoints to Simulith. Use **`-par
 
 ## Out of scope (follow-up stories)
 
-- Seed demo API
-
 Console panel: **shipped**  /  — [`console/README.md`](console.md), [`runtime/docs/console.md`](console.md).
+
+Seed demo API: **shipped**  /  — [`runtime/docs/seed.md`](seed.md) (`demo-api` → `demo-fn`).

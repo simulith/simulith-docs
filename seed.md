@@ -27,10 +27,17 @@ simulith seed [--config path] [--file path] [--no-reset]
 | SSM | `/app/demo/api-url`, `/app/demo/env` | String parameters for local app config |
 | S3 | bucket `demo-bucket` | `readme.txt` (`hello from seed`), `config/app.json` |
 | Lambda | function `demo-fn` | Node.js echo handler; ESM to `demo-queue` |
+| API Gateway | REST API `demo-api` (`demoapi001`) | Stage `dev` → `{proxy+}` AWS_PROXY to `demo-fn` |
 
 Example fixture source: seeds/default.json (embedded copy in the runtime).
 
-**Lambda invoke after seed** requires `node` or `python3` on the Simulith runtime host PATH (same as Console panel invoke).
+**Lambda / API Gateway invoke after seed** requires `node` or `python3` on the Simulith runtime host PATH (same as Console panel invoke).
+
+HTTP smoke after seed:
+
+```bash
+curl "http://127.0.0.1:4566/restapis/demoapi001/dev/_user_request_/hello"
+```
 
 ## Workflow
 
