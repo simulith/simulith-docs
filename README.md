@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `cf95b28` on 2026-07-18.
+Generated from monorepo commit `92c668a` on 2026-07-21.
 
 ## Start here
 

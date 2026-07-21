@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -65,8 +65,9 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
 6. Open **S3** — list/create/delete buckets, list objects by prefix, upload/download/delete objects.
 7. Open **Lambda** — list functions, inspect config, invoke with JSON payload, delete function (invoke needs node/python3 on runtime host).
-7. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
-8. Click **Reset local state** — clears all panels.
+8. Open **API Gateway** — list REST APIs, load stage, copy invoke URL, HTTP smoke invoke, delete API.
+9. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
+10. Click **Reset local state** — clears all panels.
 
 Console README: [`../../console/README.md`](console.md).
 
