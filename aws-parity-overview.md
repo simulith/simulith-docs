@@ -5,7 +5,7 @@ Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 +
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-21..
+Last updated: 2026-07-22..
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
@@ -28,7 +28,7 @@ Last updated: 2026-07-21..
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete. **Secrets Manager B4:**  scaffold shipped — verify/Terraform/Console next.
+**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete. **Secrets Manager B4:** –003 shipped. **Next:**  product messaging.
 
 ---
 
@@ -220,13 +220,13 @@ Guide: [secretsmanager.md](secretsmanager.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateSecret, GetSecretValue, ListSecrets, DeleteSecret (plain `SecretString` MVP). SQLite `secretsmanager_secrets`. SigV4 `secretsmanager` + `X-Amz-Target: SecretsManager.*`.
+CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, ListSecrets, DeleteSecret, GetResourcePolicy stub (plain `SecretString` MVP). `simulith verify secretsmanager`. Terraform green path [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/). SQLite `secretsmanager_secrets`. SigV4 `secretsmanager` + `X-Amz-Target: SecretsManager.*`.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Terraform, Console, seed | P1–P2 | –005,  |
+| Console, seed, product messaging | P1–P2 | –005,  |
 | Rotation, resource policies, KMS CMK | P3 | + |
 
 See [secretsmanager.md](secretsmanager.md) for MVP limits.
@@ -235,11 +235,11 @@ See [secretsmanager.md](secretsmanager.md) for MVP limits.
 
 ## What to do next (priority)
 
-**Secrets Manager B4:** –002 shipped. **Next:**  Terraform.
+**Secrets Manager B4:** –003 shipped. **Next:**  product messaging.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **B4** | Secrets Manager Terraform + DX | + |
+| **B4** | Secrets Manager DX + Console | + |
 
 ---
 

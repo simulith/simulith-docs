@@ -17,6 +17,9 @@ Compatible with AWS CLI (`aws secretsmanager`) and AWS SDKs when using `--endpoi
 | Operation | X-Amz-Target | Status |
 | --- | --- | --- |
 | CreateSecret | `SecretsManager.CreateSecret` | ✓ |
+| DescribeSecret | `SecretsManager.DescribeSecret` | ✓ |
+| PutSecretValue | `SecretsManager.PutSecretValue` | ✓ |
+| GetResourcePolicy | `SecretsManager.GetResourcePolicy` | ✓ stub |
 | GetSecretValue | `SecretsManager.GetSecretValue` | ✓ |
 | ListSecrets | `SecretsManager.ListSecrets` | ✓ |
 | DeleteSecret | `SecretsManager.DeleteSecret` | ✓ (immediate local delete) |
@@ -60,6 +63,10 @@ simulith verify secretsmanager --filter secret-crud  # subset by scenario name p
 ```
 
 Scenarios: `secret-crud-lifecycle`, `get-secret-value`. See [compatibility.md](compatibility.md).
+
+## Terraform
+
+Green path module: [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/) — `aws_secretsmanager_secret` + `aws_secretsmanager_secret_version`; apply + destroy with `-parallelism=1`. See [terraform-integration.md](terraform-integration.md#green-path-iac).
 
 ## Related
 

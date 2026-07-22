@@ -246,6 +246,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`s3/`](examples/terraform/s3/) | Green | Green | CreateBucket, HeadBucket, GetBucketLocation, GetBucketVersioning, PutObject, HeadObject, DeleteObject, DeleteBucket — `s3_use_path_style = true` |
 | [`lambda/`](examples/terraform/lambda/) | Green | Green | CreateFunction, GetFunction, DeleteFunction, CreateQueue, GetQueueAttributes, DeleteQueue, Create/List/Get/DeleteEventSourceMapping |
 | [`apigateway/`](examples/terraform/apigateway/) | Green | Green | RestApi CRUD reads/deletes, resource/method/integration, deployment/stage, Lambda AddPermission/RemovePermission/GetPolicy — `-parallelism=1` |
+| [`secretsmanager/`](examples/terraform/secretsmanager/) | Green | Green | CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, DeleteSecret — `-parallelism=1` |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 
