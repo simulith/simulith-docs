@@ -5,7 +5,7 @@ Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 +
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-17..
+Last updated: 2026-07-21..
 
 ---
 
@@ -25,7 +25,7 @@ Last updated: 2026-07-17..
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** through . **Next:**  Terraform green path.
+**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete — verify, Terraform, Console, seed `demo-api`. **Next breadth:** Secrets Manager (B4) or P2 deepening — see the product backlog.
 
 ---
 
@@ -199,25 +199,26 @@ Guide: [apigateway.md](apigateway.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRestApi, GetRestApis, GetRestApi, DeleteRestApi, CreateResource, PutMethod, PutIntegration (`AWS_PROXY`), CreateDeployment, CreateStage, stage HTTP invoke (`/_user_request_/` → Lambda). SQLite `apigateway_*` tables. SigV4 `apigateway` for management; invoke path without SigV4.
+CreateRestApi, GetRestApis, GetRestApi, DeleteRestApi, CreateResource, PutMethod, PutIntegration (`AWS_PROXY`), CreateDeployment, CreateStage, stage HTTP invoke (`/_user_request_/` → Lambda). `simulith verify apigateway`, Terraform green path, Console panel, default seed REST API **`demo-api`** (stage `dev` → `demo-fn`). SQLite `apigateway_*` tables. SigV4 `apigateway` for management; invoke path without SigV4.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Verify, Terraform, Console | P1 | –006 |
+| HTTP API (v2), authorizers, custom domains | P3 | + |
 
-10 **available** operations (management + stage HTTP invoke).
+Management + stage invoke operations — see [apigateway.md](apigateway.md) and [compatibility-matrix.md](compatibility-matrix.md).
 
 ---
 
 ## What to do next (priority)
 
-**Next (API Gateway B3):**  — Terraform green path API Gateway.
+**API Gateway B3:** complete. **Secrets Manager B4:**  runtime. **Optional:**  parity release history.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **B3** | API Gateway | + |
+| **B4** | Secrets Manager | + |
+| **P3** | Parity release history | `` /  |
 
 ---
 
