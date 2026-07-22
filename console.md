@@ -59,7 +59,7 @@ docker compose -f docker-compose.yml -f docker-compose.console.yml up --build
 Default Console host port is **9080** (not 8080) to avoid conflicts with other local services. Override: `SIMULITH_CONSOLE_PORT=8080 docker compose ...`.
 
 1. Open the Console dashboard — expect **Connected** when runtime is healthy.
-2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM).
+2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM, API Gateway `demo-api`, Secrets Manager `demo-secret`).
 3. Open **DynamoDB** — browse, create tables, put/edit/delete items (Simple strings or **JSON document** for Map/List).
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
@@ -117,7 +117,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
 | **Lambda** | ListFunctions, GetFunction (config + env), Invoke (RequestResponse JSON), DeleteFunction | Create/update code UI deferred; seeded `demo-fn` via Dashboard **Seed**; invoke needs node/python3 on runtime host PATH |
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi | Create/deploy UI deferred; seeded `demo-api` via **Seed** |
-| **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); rotation/policies deferred |
+| **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 
 Full gap analysis: [console.md](console.md).
 

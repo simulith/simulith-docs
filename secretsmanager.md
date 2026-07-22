@@ -72,6 +72,16 @@ Green path module: [`examples/terraform/secretsmanager/`](examples/terraform/sec
 
 Console panel: **shipped**  /  — [`console/README.md`](console.md), route `/secretsmanager`.
 
+## Default seed (`demo-secret`)
+
+After `simulith seed` or Console **Seed demo data**, secret **`demo-secret`** is loaded with `SecretString` `hello from seed`. Fixture format: [seed.md](seed.md).
+
+```bash
+aws secretsmanager get-secret-value \
+  --endpoint-url "$EP" \
+  --secret-id demo-secret
+```
+
 ## Related
 
 - Backlog:

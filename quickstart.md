@@ -100,7 +100,7 @@ Expected: `{"status":"ok"}`.
 
 ## 2. Demo data
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, and Lambda function `demo-fn` (with SQS ESM to `demo-queue`). Details: [seed.md](seed.md).
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, and Secrets Manager secret `demo-secret`. Details: [seed.md](seed.md).
 
 **Console (Option A):** Dashboard → **Seed demo data** (runtime must be healthy).
 

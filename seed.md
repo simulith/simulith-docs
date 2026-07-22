@@ -28,6 +28,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | S3 | bucket `demo-bucket` | `readme.txt` (`hello from seed`), `config/app.json` |
 | Lambda | function `demo-fn` | Node.js echo handler; ESM to `demo-queue` |
 | API Gateway | REST API `demo-api` (`demoapi001`) | Stage `dev` → `{proxy+}` AWS_PROXY to `demo-fn` |
+| Secrets Manager | secret `demo-secret` | Plain `SecretString` `hello from seed` |
 
 Example fixture source: seeds/default.json (embedded copy in the runtime).
 
@@ -51,7 +52,7 @@ aws ssm get-parameter --name /app/demo/api-url --endpoint-url http://127.0.0.1:4
 
 On **Git Bash (Windows)**, set `export MSYS2_ARG_CONV_EXCL="*"` before SSM CLI commands, or use [PowerShell](quickstart.md). See [quickstart troubleshooting](quickstart.md#troubleshooting).
 
-Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, and Lambda — same scope as `simulith reset` — then re-applies the fixture).
+Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, and Secrets Manager — same scope as `simulith reset` — then re-applies the fixture).
 
 More CLI examples: [aws-cli-examples.md](aws-cli-examples.md#seeded-data). SDK: [sdk-examples.md](sdk-examples.md#seeded-data).
 
@@ -146,7 +147,9 @@ Notes:
 - **`s3.buckets`** — `name` required; optional `objects` with `key`, `body`, optional `contentType`. Applied via store layer (`CreateBucket` + `PutObject`).
 - **`lambda.functions`** — `name`, `handlerSource` (Node.js module body) required; zip built at apply time and written under `LambdaDataDir`. Optional `runtime`, `handler`, `role`, `timeout`, `memorySize`, `environment`.
 - **`lambda.eventSourceMappings`** — `uuid`, `functionName`, `eventSourceArn` (SQS ARN) required; target queue must exist in fixture (apply after SQS). Optional `batchSize`, `enabled`.
-- Empty `dynamodb`, `sqs`, `ssm`, `s3`, or `lambda` sections are allowed
+- **`apigateway.restApis`** — `id`, `name` required; optional `description`, `proxyFunction` (default `demo-fn`), `stageName` (default `dev`). Seeds `{proxy+}` AWS_PROXY integration and deployment.
+- **`secretsmanager.secrets`** — `name`, `secretString` required; optional `description`, `createdAt`. Applied via store layer with fixed seed suffix/version for idempotent apply.
+- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, or `secretsmanager` sections are allowed
 
 ## Out of scope (MVP)
 - YAML fixtures — JSON only
