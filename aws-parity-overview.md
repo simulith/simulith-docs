@@ -1,11 +1,13 @@
 # AWS parity overview — Simulith MVP
 
-Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 + Lambda + API Gateway expansion): what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 + Lambda + API Gateway + Secrets Manager expansion): what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
 Last updated: 2026-07-21..
+
+> **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
 ---
 
@@ -19,13 +21,14 @@ Last updated: 2026-07-21..
 | **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
 | **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
 | **API Gateway** | 4 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
-| **Total** | **73** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **Secrets Manager** | 4 | 2 / 2 scenarios | — | **~5%** (4 / ~80) |
+| **Total** | **77** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete — verify, Terraform, Console, seed `demo-api`. **Next breadth:** Secrets Manager (B4) or P2 deepening — see the product backlog.
+**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete. **Secrets Manager B4:**  scaffold shipped — verify/Terraform/Console next.
 
 ---
 
@@ -211,14 +214,32 @@ Management + stage invoke operations — see [apigateway.md](apigateway.md) and 
 
 ---
 
+## Secrets Manager
+
+Guide: [secretsmanager.md](secretsmanager.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateSecret, GetSecretValue, ListSecrets, DeleteSecret (plain `SecretString` MVP). SQLite `secretsmanager_secrets`. SigV4 `secretsmanager` + `X-Amz-Target: SecretsManager.*`.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| Terraform, Console, seed | P1–P2 | –005,  |
+| Rotation, resource policies, KMS CMK | P3 | + |
+
+See [secretsmanager.md](secretsmanager.md) for MVP limits.
+
+---
+
 ## What to do next (priority)
 
-**API Gateway B3:** complete. **Secrets Manager B4:**  runtime. **Optional:**  parity release history.
+**Secrets Manager B4:** –002 shipped. **Next:**  Terraform.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **B4** | Secrets Manager | + |
-| **P3** | Parity release history | `` /  |
+| **B4** | Secrets Manager Terraform + DX | + |
 
 ---
 

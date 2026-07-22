@@ -4,6 +4,8 @@ Measure behavioral parity between **Simulith** and **real AWS** for DynamoDB, SQ
 
 For a **public operation × verify coverage matrix**, see [compatibility-matrix.md](compatibility-matrix.md).
 
+For **parity % over releases**, see [parity-release-history.md](parity-release-history.md).
+
 ## Commands
 
 ```bash
@@ -298,6 +300,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | S3 | `simulith verify s3 --skip-aws` | 6 |
 | Lambda | `simulith verify lambda --skip-aws` | 9 |
 | API Gateway | `simulith verify apigateway --skip-aws` | 4 |
+| Secrets Manager | `simulith verify secretsmanager --skip-aws` | 2 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH.
 
@@ -315,6 +318,7 @@ runtime/artifacts/
   verify-s3.json
   verify-lambda.json
   verify-apigateway.json
+  verify-secretsmanager.json
 ```
 
 Download from the PR **Checks** tab → **Parity smoke** → **Artifacts**.

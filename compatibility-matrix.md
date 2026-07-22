@@ -14,7 +14,7 @@ Last updated: 2026-07-17..
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 6 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway) |
+| Services in matrix | 7 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager) |
 | Operations **available** locally | 79 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
@@ -197,6 +197,19 @@ Guide: [apigateway.md](apigateway.md) · Verify: `simulith verify apigateway`
 
 ---
 
+## Secrets Manager
+
+Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secretsmanager`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateSecret | available | yes (`secret-crud-lifecycle`) | Plain `SecretString` MVP |
+| GetSecretValue | available | yes (`secret-crud-lifecycle`, `get-secret-value`) | By name or ARN |
+| ListSecrets | available | yes (`secret-crud-lifecycle`) | Full list (no pagination) |
+| DeleteSecret | available | yes (`secret-crud-lifecycle`) | Immediate delete with `ForceDeleteWithoutRecovery` |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -209,6 +222,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
+| Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -218,6 +232,7 @@ simulith verify ssm --skip-aws
 simulith verify s3 --skip-aws
 simulith verify lambda --skip-aws
 simulith verify apigateway --skip-aws
+simulith verify secretsmanager --skip-aws
 ```
 
 ---
