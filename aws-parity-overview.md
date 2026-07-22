@@ -28,7 +28,7 @@ Last updated: 2026-07-22..
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete. **Secrets Manager B4:** –003 shipped. **Next:**  product messaging.
+**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete. **Secrets Manager B4:** –005 shipped. **Optional:**  seed demo secret.
 
 ---
 
@@ -220,26 +220,26 @@ Guide: [secretsmanager.md](secretsmanager.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, ListSecrets, DeleteSecret, GetResourcePolicy stub (plain `SecretString` MVP). `simulith verify secretsmanager`. Terraform green path [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/). SQLite `secretsmanager_secrets`. SigV4 `secretsmanager` + `X-Amz-Target: SecretsManager.*`.
+CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, ListSecrets, DeleteSecret, GetResourcePolicy stub (plain `SecretString`). `simulith verify secretsmanager`. Terraform green path [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/). Console panel `/secretsmanager`. SQLite `secretsmanager_secrets`. SigV4 `secretsmanager` + `X-Amz-Target: SecretsManager.*`.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Console, seed, product messaging | P1–P2 | –005,  |
+| Console, seed | P2 |  |
 | Rotation, resource policies, KMS CMK | P3 | + |
 
-See [secretsmanager.md](secretsmanager.md) for MVP limits.
+See [secretsmanager.md](secretsmanager.md) for limits.
 
 ---
 
 ## What to do next (priority)
 
-**Secrets Manager B4:** –003 shipped. **Next:**  product messaging.
+**Secrets Manager B4:** –005 shipped. **Optional:**  seed demo secret.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **B4** | Secrets Manager DX + Console | + |
+| **B4** | Secrets Manager seed (optional) |  |
 
 ---
 

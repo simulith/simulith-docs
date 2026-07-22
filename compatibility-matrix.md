@@ -203,7 +203,7 @@ Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secret
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateSecret | available | yes (`secret-crud-lifecycle`) | Plain `SecretString` MVP |
+| CreateSecret | available | yes (`secret-crud-lifecycle`) | Plain `SecretString` only |
 | GetSecretValue | available | yes (`secret-crud-lifecycle`, `get-secret-value`) | By name or ARN |
 | ListSecrets | available | yes (`secret-crud-lifecycle`) | Full list (no pagination) |
 | DeleteSecret | available | yes (`secret-crud-lifecycle`) | Immediate delete with `ForceDeleteWithoutRecovery` |

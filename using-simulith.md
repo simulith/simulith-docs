@@ -1,6 +1,6 @@
 # Using Simulith — local development vs AWS
 
-You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with DynamoDB, SQS, SSM, S3, and Lambda locally, and how that compares to real AWS.
+You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with DynamoDB, SQS, SSM, S3, Lambda, API Gateway, and Secrets Manager locally, and how that compares to real AWS.
 
 > **Installation:** not covered here — see [quickstart](quickstart.md) or [Docker Hub overviews](https://hub.docker.com/r/simulith/simulith).
 
@@ -58,14 +58,14 @@ Your app / CLI / Terraform
 | **Credentials** | IAM user/role, SSO, etc. | Any static pair when SigV4 is off (default): e.g. `test` / `secret` |
 | **Account ID** | Your 12-digit account | Fixed **`000000000000`** in ARNs and queue URLs |
 | **Data storage** | AWS-managed, multi-AZ | **SQLite** under `/app/.simulith` in Docker (mount a volume to persist) — [persistence.md](persistence.md) |
-| **Billing / quotas** | AWS pricing and service limits | None — limited by disk and MVP subset |
-| **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda** (CRUD, invoke, SQS ESM) — [aws-parity-overview.md](aws-parity-overview.md) |
+| **Billing / quotas** | AWS pricing and service limits | None — limited by disk and documented API subset |
+| **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda**, **API Gateway** (REST subset), **Secrets Manager** — [aws-parity-overview.md](aws-parity-overview.md) |
 | **API coverage** | Complete per service | **Subset** — 54 verify scenarios across DynamoDB, SQS, SSM, S3, and Lambda — [compatibility-matrix.md](compatibility-matrix.md) |
 | **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
 
-When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**) for documented deviations before assuming a bug.
+When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**) for documented deviations before assuming a bug.
 
 ---
 

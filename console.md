@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -66,8 +66,9 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 6. Open **S3** — list/create/delete buckets, list objects by prefix, upload/download/delete objects.
 7. Open **Lambda** — list functions, inspect config, invoke with JSON payload, delete function (invoke needs node/python3 on runtime host).
 8. Open **API Gateway** — list REST APIs, load stage, copy invoke URL, HTTP smoke invoke, delete API.
-9. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
-10. Click **Reset local state** — clears all panels.
+9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
+10. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
+11. Click **Reset local state** — clears all panels.
 
 Console README: [`../../console/README.md`](console.md).
 
@@ -115,6 +116,8 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
 | **Lambda** | ListFunctions, GetFunction (config + env), Invoke (RequestResponse JSON), DeleteFunction | Create/update code UI deferred; seeded `demo-fn` via Dashboard **Seed**; invoke needs node/python3 on runtime host PATH |
+| **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi | Create/deploy UI deferred; seeded `demo-api` via **Seed** |
+| **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); rotation/policies deferred |
 
 Full gap analysis: [console.md](console.md).
 

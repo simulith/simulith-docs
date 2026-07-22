@@ -24,7 +24,7 @@ Compatible with AWS CLI (`aws secretsmanager`) and AWS SDKs when using `--endpoi
 | ListSecrets | `SecretsManager.ListSecrets` | ✓ |
 | DeleteSecret | `SecretsManager.DeleteSecret` | ✓ (immediate local delete) |
 
-## Limits (MVP)
+## Limits
 
 - Plain `SecretString` only (no binary secrets, KMS keys, or rotation)
 - No recovery window — `ForceDeleteWithoutRecovery` deletes immediately
@@ -67,6 +67,10 @@ Scenarios: `secret-crud-lifecycle`, `get-secret-value`. See [compatibility.md](c
 ## Terraform
 
 Green path module: [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/) — `aws_secretsmanager_secret` + `aws_secretsmanager_secret_version`; apply + destroy with `-parallelism=1`. See [terraform-integration.md](terraform-integration.md#green-path-iac).
+
+## Console
+
+Console panel: **shipped**  /  — [`console/README.md`](console.md), route `/secretsmanager`.
 
 ## Related
 
