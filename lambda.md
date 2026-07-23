@@ -98,9 +98,16 @@ aws lambda update-function-code \
   --function-name my-fn \
   --zip-file fileb:///tmp/function.zip \
   --endpoint-url $ENDPOINT
+
+# UpdateFunctionConfiguration (env, timeout, memory, layers, handler, runtime)
+aws lambda update-function-configuration \
+  --function-name my-fn \
+  --timeout 30 \
+  --environment "Variables={LOG_LEVEL=debug}" \
+  --endpoint-url $ENDPOINT
 ```
 
-Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`). `Environment.Variables` from CreateFunction are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
+Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`). `Environment.Variables` from CreateFunction or UpdateFunctionConfiguration are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
 
 ## Function URLs
 
@@ -161,7 +168,7 @@ aws lambda get-layer-version --layer-name my-deps --version-number 1 --endpoint-
 aws lambda delete-layer-version --layer-name my-deps --version-number 1 --endpoint-url $ENDPOINT
 ```
 
-**Limits:** `AddLayerVersionPermission` not implemented (open local access). `UpdateFunctionConfiguration` for Layers-only changes not supported — set `Layers` on CreateFunction. Python layer `PYTHONPATH` not implemented (nodejs first).
+**Limits:** `AddLayerVersionPermission` not implemented (open local access). Python layer `PYTHONPATH` not implemented (nodejs first).
 
 ## SQS event source mapping
 

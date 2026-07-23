@@ -239,7 +239,8 @@ See [secretsmanager.md](secretsmanager.md) for limits.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **B4** | — | — |
+| **Depth** | Lambda / API Gateway / Secrets Manager P3 | Per-service the product backlog Deferred |
+| **Product** | Vision, docs mirror, landing | the product backlog |
 
 ---
 
