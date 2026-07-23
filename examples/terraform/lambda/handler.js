@@ -3,6 +3,7 @@ exports.handler = async (event) => ({
   body: JSON.stringify({
     service: "simulith",
     managed_by: "terraform",
+    greeting: process.env.GREETING || "",
     records: (event.Records || []).length,
   }),
 });

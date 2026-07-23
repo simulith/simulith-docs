@@ -5,7 +5,7 @@ variable "simulith_endpoint" {
 }
 
 variable "use_simulith_endpoint" {
-  description = "When true, route Lambda and SQS API calls to Simulith; when false, use real AWS"
+  description = "When true, route Secrets Manager and Lambda API calls to Simulith; when false, use real AWS"
   type        = bool
   default     = true
 }
@@ -15,28 +15,20 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
+variable "secret_name" {
+  description = "Secrets Manager secret name"
+  type        = string
+  default     = "app-config-lambda-tf"
+}
+
 variable "function_name" {
   description = "Lambda function name"
   type        = string
-  default     = "worker-tf"
-}
-
-variable "queue_name" {
-  description = "SQS queue name for the event source mapping"
-  type        = string
-  default     = "worker-tf-queue"
+  default     = "secret-env-worker-tf"
 }
 
 variable "lambda_role_arn" {
   description = "Lambda execution role ARN. Simulith accepts any ARN; real AWS needs a valid role"
   type        = string
-  default     = "arn:aws:iam::000000000000:role/simulith-lambda-tf"
-}
-
-variable "environment_variables" {
-  description = "Lambda environment variables (UpdateFunctionConfiguration on re-apply when changed)"
-  type        = map(string)
-  default = {
-    GREETING = "hello-from-terraform"
-  }
+  default     = "arn:aws:iam::000000000000:role/simulith-secret-lambda-tf"
 }

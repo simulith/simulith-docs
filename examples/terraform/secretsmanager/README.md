@@ -67,5 +67,7 @@ Expected plan: **2 to destroy**. `recovery_window_in_days = 0` maps to immediate
 
 ## Related
 
+- **Secret → Lambda env:** [`../secretsmanager-lambda/`](../secretsmanager-lambda/) (Terraform data source pattern)
+- AWS CLI scripts: [`../../aws-cli/secretsmanager/`](../../aws-cli/secretsmanager/)
 - [secretsmanager.md](../../../secretsmanager.md)
 - [terraform-integration.md — Green path IaC](../../../terraform-integration.md#green-path-iac)

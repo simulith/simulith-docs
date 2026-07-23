@@ -4,3 +4,4 @@ aws_region            = "us-east-1"
 function_name         = "worker-tf"
 queue_name            = "worker-tf-queue"
 lambda_role_arn       = "arn:aws:iam::000000000000:role/simulith-lambda-tf"
+environment_variables = { GREETING = "hello-from-terraform" }

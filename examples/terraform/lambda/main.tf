@@ -23,6 +23,10 @@ resource "aws_lambda_function" "worker" {
 
   filename         = data.archive_file.lambda.output_path
   source_code_hash = data.archive_file.lambda.output_base64sha256
+
+  environment {
+    variables = var.environment_variables
+  }
 }
 
 resource "aws_lambda_event_source_mapping" "worker" {

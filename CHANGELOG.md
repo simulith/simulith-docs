@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.39.0] - 2026-07-23
+
+### Features
+
+- ****: Integration examples (Secrets Manager + Lambda env)
+
+## [0.38.0] - 2026-07-23
+
+### Features
+
+- ****: Honest integration examples (Lambda + API Gateway)
+
 ## [0.37.0] - 2026-07-23
 
 ### Features

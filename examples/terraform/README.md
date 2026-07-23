@@ -15,8 +15,11 @@ runtime/examples/terraform/
 ├── s3/                 ← aws_s3_bucket + aws_s3_object apply + destroy (s3_use_path_style)
 ├── lambda/             ← aws_lambda_function + aws_sqs_queue + event source mapping
 ├── apigateway/         ← RestApi + Lambda AWS_PROXY + stage + permission
-└── secretsmanager/     ← aws_secretsmanager_secret + secret_version
+├── secretsmanager/     ← aws_secretsmanager_secret + secret_version
+└── secretsmanager-lambda/  ← secret data source → Lambda environment
 ```
+
+**Honest integration examples:** [`../aws-cli/lambda/`](../aws-cli/lambda/) · [`../aws-cli/secretsmanager/`](../aws-cli/secretsmanager/) · Lambda env in [`lambda/README`](lambda/README.md) · secret → env in [`secretsmanager-lambda/README`](secretsmanager-lambda/README.md)
 
 Each subdirectory with `main.tf` is a **standalone** module: `cd` into it, then `terraform init && apply`.
 
@@ -34,9 +37,10 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`ssm/`](ssm/) | Green | Green | Use `-parallelism=1` on apply and destroy; import documented |
 | [`ssm/parameters/`](ssm/parameters/) | Green | Green | 27× `/SIMULITH/DEV/*` locally; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` — [README](ssm/parameters/README.md) |
 | [`s3/`](s3/) | Green | Green | 1 bucket + 2 objects; `s3_use_path_style = true`; [README](s3/README.md) |
-| [`lambda/`](lambda/) | Green | Green | 1 function + 1 queue + 1 ESM; `endpoints { lambda, sqs }`; [README](lambda/README.md) |
+| [`lambda/`](lambda/) | Green | Green | 1 function + 1 queue + 1 ESM; **env vars** + in-place config update on re-apply |
 | [`apigateway/`](apigateway/) | Green | Green | 8 resources; `endpoints { apigateway, lambda }`; `-parallelism=1`; [README](apigateway/README.md) |
 | [`secretsmanager/`](secretsmanager/) | Green | Green | 2 resources; `endpoints { secretsmanager }`; `-parallelism=1`; [README](secretsmanager/README.md) |
+| [`secretsmanager-lambda/`](secretsmanager-lambda/) | Green | Green | 3 resources + data source; `endpoints { secretsmanager, lambda }`; `-parallelism=1`; [README](secretsmanager-lambda/README.md) |
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 

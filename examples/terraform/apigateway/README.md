@@ -48,6 +48,24 @@ curl "$(terraform output -raw invoke_url)"
 
 Expected JSON includes `"managed_by":"terraform"`.
 
+## Source pattern (AWS → Simulith)
+
+This module mirrors a common AWS tutorial flow:
+
+1. **REST API** + `{proxy+}` resource + **ANY** method
+2. **AWS_PROXY** integration to Lambda
+3. **Deployment** + **stage** (`prod`)
+4. **`aws_lambda_permission`** for `apigateway.amazonaws.com`
+
+Simulith subset: no authorizers, usage plans, or custom domains — see [apigateway.md](../../../apigateway.md).
+
+**Related modules**
+
+- Lambda only (SQS ESM): [`../lambda/`](../lambda/)
+- Imperative CLI: [`../../aws-cli/lambda/`](../../aws-cli/lambda/)
+
+After the Lambda module apply, you can point API Gateway at the same function name — or use this standalone stack (`hello-tf`).
+
 ## Destroy (Simulith)
 
 ```bash

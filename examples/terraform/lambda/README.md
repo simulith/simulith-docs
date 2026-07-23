@@ -79,9 +79,26 @@ export AWS_ENDPOINT=http://127.0.0.1:4566
 
 aws lambda list-functions --endpoint-url "$AWS_ENDPOINT"
 aws lambda get-function --function-name worker-tf --endpoint-url "$AWS_ENDPOINT"
+aws lambda invoke --function-name worker-tf --payload '{}' /tmp/out.json --endpoint-url "$AWS_ENDPOINT"
+cat /tmp/out.json
+# Expect greeting from environment_variables (default GREETING=hello-from-terraform)
 aws lambda list-event-source-mappings --function-name worker-tf --endpoint-url "$AWS_ENDPOINT"
 aws sqs get-queue-url --queue-name worker-tf-queue --endpoint-url "$AWS_ENDPOINT"
 ```
+
+### UpdateFunctionConfiguration (in-place)
+
+Changing `environment_variables` in `terraform.tfvars` and re-running **`terraform apply`** updates config via Simulith **`UpdateFunctionConfiguration`** (no function replace). Example:
+
+```hcl
+environment_variables = { GREETING = "updated-from-terraform" }
+```
+
+Re-apply, then invoke again — payload should reflect the new greeting.
+
+**Source pattern:** [AWS Lambda environment variables](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html) · [Terraform `aws_lambda_function` environment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function#environment)
+
+Imperative equivalent: [`../../aws-cli/lambda/`](../../aws-cli/lambda/) (create → update-config → invoke).
 
 ## Resources created
 

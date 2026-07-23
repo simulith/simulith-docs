@@ -68,6 +68,8 @@ Scenarios: `secret-crud-lifecycle`, `get-secret-value`. See [compatibility.md](c
 
 Green path module: [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/) — `aws_secretsmanager_secret` + `aws_secretsmanager_secret_version`; apply + destroy with `-parallelism=1`. See [terraform-integration.md](terraform-integration.md#green-path-iac).
 
+**Cross-service pattern:** [`examples/terraform/secretsmanager-lambda/`](examples/terraform/secretsmanager-lambda/) — secret data source → Lambda `environment.variables`. **CLI scripts:** [`examples/aws-cli/secretsmanager/`](examples/aws-cli/secretsmanager/).
+
 ## Console
 
 Console panel: **shipped**  /  — [`console/README.md`](console.md), route `/secretsmanager`.

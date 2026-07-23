@@ -13,9 +13,11 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | SQS | [`sqs/`](examples/terraform/sqs/) | Yes |
 | SSM Parameter Store | [`ssm/`](examples/terraform/ssm/) | Yes |
 | S3 | [`s3/`](examples/terraform/s3/) | Yes — bucket + 2 objects |
-| Lambda | [`lambda/`](examples/terraform/lambda/) | Yes — function + SQS ESM (green path) |
+| Lambda | [`lambda/`](examples/terraform/lambda/) | Yes — function + SQS ESM; env vars + config update on re-apply |
+| API Gateway | [`apigateway/`](examples/terraform/apigateway/) | Yes — REST API + Lambda proxy + stage |
+| Secrets Manager | [`secretsmanager/`](examples/terraform/secretsmanager/) | Yes — secret + version |
 
-For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md).
+For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md). **Honest integration examples** (AWS-derived Terraform + CLI): [below](#honest-integration-examples).
 
 Parity gaps and post-MVP backlog:  (DynamoDB, SQS, SSM).
 
@@ -259,6 +261,29 @@ Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 5. **`terraform destroy`** — type `yes`. Resource removed from Simulith; Terraform state empty. For the SSM module, use **`terraform destroy -parallelism=1`** (same as apply).
 
 Use **`-parallelism=1`** for the SSM example (apply and destroy), the **API Gateway** example (SQLite contention), and when applying multiple services in one run.
+
+---
+
+## Honest integration examples
+
+**:** examples derived from AWS documentation, trimmed to Simulith's **documented subset**. Each README cites the AWS source and lists limits.
+
+| Pattern | Terraform | AWS CLI | Notes |
+| --- | --- | --- | --- |
+| Lambda create + config patch + invoke | [`lambda/`](examples/terraform/lambda/) | [`aws-cli/lambda/`](examples/aws-cli/lambda/) | Re-apply after changing `environment_variables` → `UpdateFunctionConfiguration` |
+| API Gateway → Lambda HTTP | [`apigateway/`](examples/terraform/apigateway/) | — | `curl $(terraform output -raw invoke_url)` after apply |
+| Secrets Manager → Lambda env | [`secretsmanager-lambda/`](examples/terraform/secretsmanager-lambda/) | [`aws-cli/secretsmanager/`](examples/aws-cli/secretsmanager/) | `aws_secretsmanager_secret_version` data source → `environment.variables`; re-apply after secret rotation |
+
+**Smoke (local CI / validation):**
+
+```bash
+# Simulith must be on :4566, or use --managed
+maintainer workflow (private monorepo) --managed
+maintainer workflow (private monorepo) --module lambda
+maintainer workflow (private monorepo) --module secretsmanager-lambda
+```
+
+Backlog: .
 
 ### When to use `simulith reset`
 

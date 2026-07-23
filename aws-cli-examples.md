@@ -497,9 +497,42 @@ Path-prefix reads in Terraform: copy [`path-data.tf.example`](examples/terraform
 
 ---
 
+## Secrets Manager
+
+Create, update, and read plain `SecretString` secrets locally. See [secretsmanager.md](secretsmanager.md).
+
+**Runnable scripts (AWS-derived):** [`examples/aws-cli/secretsmanager/`](examples/aws-cli/secretsmanager/) — create → get → put → get.
+
+```bash
+aws secretsmanager create-secret \
+  --name my-secret \
+  --secret-string '{"username":"admin","password":"local"}' \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws secretsmanager get-secret-value \
+  --secret-id my-secret \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws secretsmanager put-secret-value \
+  --secret-id my-secret \
+  --secret-string '{"username":"admin","password":"rotated"}' \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws secretsmanager delete-secret \
+  --secret-id my-secret \
+  --force-delete-without-recovery \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+**Terraform cross-service:** inject secret JSON into Lambda env via [`examples/terraform/secretsmanager-lambda/`](examples/terraform/secretsmanager-lambda/).
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Invoke** requires `node` or `python3` on the same PATH as the Simulith process — the default Docker image does not include them. See [lambda.md](lambda.md).
+
+**Runnable scripts (AWS-derived):** [`examples/aws-cli/lambda/`](examples/aws-cli/lambda/) — create → update-function-configuration → invoke.
 
 ```bash
 # Create a zip from a Node.js handler
@@ -599,6 +632,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | SQS SendMessageBatch / DeleteMessageBatch | Available |
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; Terraform [`examples/terraform/ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
 | Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
+| Secrets Manager | CreateSecret, PutSecretValue, GetSecretValue, DeleteSecret; see [secretsmanager.md](secretsmanager.md) |
 
 Full deviation tables:
 
