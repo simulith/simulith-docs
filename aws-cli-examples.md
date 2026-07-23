@@ -376,6 +376,36 @@ See [sqs.md](sqs.md) for protocol notes, FIFO limits, and error codes.
 
 ---
 
+## DynamoDB + SQS fan-out
+
+Application-level dual-write: persist an item, then enqueue async work. **No DynamoDB Streams.**
+
+**Runnable scripts (AWS-derived):** [`examples/aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/) — put-item → send-message → receive-message.
+
+Terraform infra: [`examples/terraform/dynamodb-sqs/`](examples/terraform/dynamodb-sqs/).
+
+```bash
+export TABLE_NAME=events-fanout-tf
+export QUEUE_URL=http://127.0.0.1:4566/000000000000/events-fanout-tf-queue
+export ITEM_ID=cli-event-1
+
+aws dynamodb put-item \
+  --table-name "$TABLE_NAME" \
+  --item "{\"Id\":{\"S\":\"$ITEM_ID\"},\"Status\":{\"S\":\"pending\"}}" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws sqs send-message \
+  --queue-url "$QUEUE_URL" \
+  --message-body "{\"itemId\":\"$ITEM_ID\",\"action\":\"process\"}" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws sqs receive-message \
+  --queue-url "$QUEUE_URL" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+---
+
 ## SSM Parameter Store
 
 Use JSON 1.1 targets (`AmazonSSM.*`). See [ssm.md](ssm.md).

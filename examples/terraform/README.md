@@ -17,9 +17,10 @@ runtime/examples/terraform/
 ├── apigateway/         ← RestApi + Lambda AWS_PROXY + stage + permission
 ├── secretsmanager/     ← aws_secretsmanager_secret + secret_version
 └── secretsmanager-lambda/  ← secret data source → Lambda environment
+└── dynamodb-sqs/           ← table + queue fan-out
 ```
 
-**Honest integration examples:** [`../aws-cli/lambda/`](../aws-cli/lambda/) · [`../aws-cli/secretsmanager/`](../aws-cli/secretsmanager/) · Lambda env in [`lambda/README`](lambda/README.md) · secret → env in [`secretsmanager-lambda/README`](secretsmanager-lambda/README.md)
+**Honest integration examples:** [`../aws-cli/lambda/`](../aws-cli/lambda/) · [`../aws-cli/secretsmanager/`](../aws-cli/secretsmanager/) · [`../aws-cli/dynamodb-sqs/`](../aws-cli/dynamodb-sqs/) · Lambda env in [`lambda/README`](lambda/README.md) · secret → env in [`secretsmanager-lambda/README`](secretsmanager-lambda/README.md) · fan-out in [`dynamodb-sqs/README`](dynamodb-sqs/README.md)
 
 Each subdirectory with `main.tf` is a **standalone** module: `cd` into it, then `terraform init && apply`.
 
@@ -41,6 +42,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`apigateway/`](apigateway/) | Green | Green | 8 resources; `endpoints { apigateway, lambda }`; `-parallelism=1`; [README](apigateway/README.md) |
 | [`secretsmanager/`](secretsmanager/) | Green | Green | 2 resources; `endpoints { secretsmanager }`; `-parallelism=1`; [README](secretsmanager/README.md) |
 | [`secretsmanager-lambda/`](secretsmanager-lambda/) | Green | Green | 3 resources + data source; `endpoints { secretsmanager, lambda }`; `-parallelism=1`; [README](secretsmanager-lambda/README.md) |
+| [`dynamodb-sqs/`](dynamodb-sqs/) | Green | Green | 1 table + 1 queue; `endpoints { dynamodb, sqs }`; destroy ~60–90s; [README](dynamodb-sqs/README.md) |
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 

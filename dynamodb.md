@@ -81,6 +81,8 @@ Not supported yet: per-item conditions, partial `UnprocessedItems` for capacity,
 
 **CLI seed example** (Terraform user-table + `user.json`): [`examples/terraform/dynamodb/user-table/README.md`](examples/terraform/dynamodb/user-table/README.md).
 
+**Cross-service fan-out:** [`examples/terraform/dynamodb-sqs/`](examples/terraform/dynamodb-sqs/) + CLI [`examples/aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/) — PutItem + SendMessage (no Streams).
+
 ## BatchGetItem (MVP)
 
 - **RequestItems** — map of table name or ARN → `Keys` (up to **100** keys total across all tables)

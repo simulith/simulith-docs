@@ -235,6 +235,7 @@ Service faults use AWS Query XML (`ErrorResponse` with `Code`, `Message`, `Type`
 
 ## Related
 
+- **DynamoDB + SQS fan-out:** [`examples/terraform/dynamodb-sqs/`](examples/terraform/dynamodb-sqs/) · CLI [`examples/aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/)
 - [compatibility-matrix.md](compatibility-matrix.md) — public MVP operation × verify coverage matrix
 - [compatibility.md](compatibility.md) — `simulith verify sqs` parity and smoke modes
 - [aws-cli-examples.md](aws-cli-examples.md) — AWS CLI cookbook
