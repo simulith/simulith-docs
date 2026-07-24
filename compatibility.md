@@ -296,7 +296,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | --- | --- | --- |
 | DynamoDB | `simulith verify dynamodb --skip-aws` | 6 |
 | SQS | `simulith verify sqs --skip-aws` | 10 |
-| SSM | `simulith verify ssm --skip-aws` | 9 |
+| SSM | `simulith verify ssm --skip-aws` | 10 |
 | S3 | `simulith verify s3 --skip-aws` | 6 |
 | Lambda | `simulith verify lambda --skip-aws` | 9 |
 | API Gateway | `simulith verify apigateway --skip-aws` | 4 |

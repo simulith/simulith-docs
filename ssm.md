@@ -21,7 +21,15 @@ SSM uses **AWS JSON 1.1** (`application/x-amz-json-1.1` + `X-Amz-Target: AmazonS
 | RemoveTagsFromResource | **Available** | `ResourceType=Parameter` |
 | ListTagsForResource | **Available** | Parameter `TagList` sorted by key |
 
-Not implemented yet: full ParameterFilters, labels, real AWS KMS encryption.
+Not implemented yet: full ParameterFilters, labels, Advanced tier, parameter policies, real AWS KMS encryption.
+
+## Parameter tier
+
+- **Standard tier only** — persisted in SQLite; returned on **PutParameter**, **GetParameter**, **DescribeParameters**
+- **PutParameter** accepts optional `Tier=Standard` (default when omitted)
+- **Standard value limit** — 4096 bytes (plaintext before SecureString encryption)
+- **Advanced tier** — rejected with validation error (deferred; see deviations)
+- **Parameter policies** (`Policies` on Put) — rejected (deferred with Advanced tier)
 
 ## Parameter tags
 
@@ -47,6 +55,10 @@ Required on create: `Name` (must start with `/`; leading/trailing spaces are tri
 `Overwrite` defaults to `false`. If the parameter exists and `Overwrite` is false, Simulith returns **ParameterAlreadyExists**.
 
 On overwrite, `Type` may be omitted to keep the existing type.
+
+Optional `Tier` — `Standard` only (default). `Advanced` returns a validation error. Standard parameters reject non-empty `Policies`.
+
+Standard-tier `Value` must not exceed **4096 bytes**.
 
 ## GetParameter
 
@@ -111,7 +123,7 @@ Optional snapshot v1 `"ssm"` block is supported.
 | SecureString | Mock local encryption at rest; `WithDecryption` returns plaintext; no AWS KMS |
 | Parameter history | Latest version only in API |
 | Tags | Accepted on Put (merged); **AddTagsToResource** / **RemoveTagsFromResource** / **ListTagsForResource** for parameters |
-| Tier / policies | **Tier** returned as `Standard` on Get/Describe (MVP stub for Terraform); tier input on Put ignored |
+| Tier / policies | **Standard tier** persisted; **4096-byte** value limit; **Advanced tier** and **parameter policies** rejected (explicit defer in docs) |
 | Post-delete name reuse delay | Not enforced (AWS: ~30s) |
 | DescribeParameters / ParameterFilters | **MVP subset** — Name Equals/BeginsWith only; other filter keys ignored |
 | DeleteParameters (batch) | **Available** — up to 10 names per call |

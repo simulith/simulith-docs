@@ -16,7 +16,7 @@ Last updated: 2026-07-17..
 | --- | --- |
 | Services in matrix | 7 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager) |
 | Operations **available** locally | 79 |
-| Default verify scenarios | DynamoDB 6, SQS 10, SSM 9, S3 6, Lambda 9 |
+| Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -98,22 +98,22 @@ Guide: [sqs.md](sqs.md) · Verify: `simulith verify sqs` (10 scenarios) · Stand
 
 ## SSM Parameter Store
 
-Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (9 scenarios)
+Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (10 scenarios)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| PutParameter | available | yes (`put-get-parameter`, `put-overwrite`, `secure-string`) | SecureString mock encryption |
-| GetParameter | available | yes (`put-get-parameter`, `secure-string`) | `WithDecryption` for SecureString |
+| PutParameter | available | yes (`put-get-parameter`, `put-overwrite`, `secure-string`, `parameter-tier`) | Standard tier + 4 KB limit |
+| GetParameter | available | yes (`put-get-parameter`, `secure-string`, `parameter-tier`) | `WithDecryption` for SecureString |
 | DeleteParameter | available | yes (`delete-parameter`) | |
 | DeleteParameters | available | yes (`delete-parameters`) | Batch delete up to 10 names |
 | GetParameters | available | yes (`get-parameters-batch`) | Up to 10 names |
 | GetParametersByPath | available | yes (`get-parameters-by-path`) | |
-| DescribeParameters | available | yes (`describe-parameters`) | Terraform refresh; MVP filters only |
+| DescribeParameters | available | yes (`describe-parameters`, `parameter-tier`) | Terraform refresh; MVP filters only |
 | AddTagsToResource | available | yes (`parameter-tags`) | Parameter resources only |
 | RemoveTagsFromResource | available | yes (`parameter-tags`) | Parameter resources only |
 | ListTagsForResource | available | yes (`parameter-tags`) | Parameter resources only |
 
-**Not in matrix (gap):** full ParameterFilters, labels, real AWS KMS, etc.
+**Not in matrix (gap):** full ParameterFilters, labels, Advanced tier, parameter policies, real AWS KMS, etc.
 
 ---
 
@@ -219,7 +219,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | --- | --- | --- |
 | DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item` |
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility` | — |
-| SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags` | — |
+| SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
