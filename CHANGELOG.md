@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.45.0] - 2026-07-24
+
+### Features
+
+- ****: Lambda Go runtime (provided bootstrap)
+
 ## [0.44.0] - 2026-07-24
 
 ### Features
