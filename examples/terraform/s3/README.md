@@ -93,6 +93,7 @@ cat /tmp/app.json
 
 ## Related
 
+- **Object lifecycle CLI:** [`../../aws-cli/s3/`](../../aws-cli/s3/) — put/head/get/list/copy/delete-objects
 - [terraform-integration.md](../../../terraform-integration.md)
 - [s3.md](../../../s3.md)
 - [compatibility-matrix.md](../../../compatibility-matrix.md#s3)

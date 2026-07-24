@@ -615,6 +615,47 @@ aws lambda list-event-source-mappings --function-name my-fn \
 
 ---
 
+## S3 object lifecycle
+
+Full object CRUD via `s3api` (single-part only). **Runnable scripts:** [`examples/aws-cli/s3/`](examples/aws-cli/s3/).
+
+```bash
+export BUCKET_NAME=cli-demo-bucket
+export OBJECT_KEY=demo/hello.txt
+
+aws s3api create-bucket --bucket "$BUCKET_NAME" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+echo "hello" > /tmp/hello.txt
+aws s3api put-object --bucket "$BUCKET_NAME" --key "$OBJECT_KEY" \
+  --body /tmp/hello.txt --content-type text/plain \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws s3api head-object --bucket "$BUCKET_NAME" --key "$OBJECT_KEY" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws s3api get-object --bucket "$BUCKET_NAME" --key "$OBJECT_KEY" /tmp/out.txt \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws s3api list-objects-v2 --bucket "$BUCKET_NAME" --prefix demo/ \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws s3api copy-object --bucket "$BUCKET_NAME" --key demo/copy.txt \
+  --copy-source "${BUCKET_NAME}/${OBJECT_KEY}" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws s3api delete-objects --bucket "$BUCKET_NAME" \
+  --delete '{"Objects":[{"Key":"demo/hello.txt"},{"Key":"demo/copy.txt"}]}' \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws s3api delete-bucket --bucket "$BUCKET_NAME" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+See [s3.md](s3.md) for limits (no multipart, path-style).
+
+---
+
 ## Seeded data
 
 After [`simulith seed`](seed.md) (Demo table + `demo-queue` + SSM `/app/demo/*`):
@@ -663,6 +704,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; Terraform [`examples/terraform/ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
 | Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
 | Secrets Manager | CreateSecret, PutSecretValue, GetSecretValue, DeleteSecret; see [secretsmanager.md](secretsmanager.md) |
+| S3 | Put/Get/Head/List/Copy/DeleteObject(s); see [s3.md](s3.md) |
 
 Full deviation tables:
 
