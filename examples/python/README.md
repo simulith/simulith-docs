@@ -12,10 +12,11 @@ Runnable smoke test using **boto3** against a local Simulith endpoint.
 ```bash
 cd runtime/examples/python
 python -m pip install -r requirements.txt
-python main.py                 # dynamodb + sqs smoke
+python main.py                 # dynamodb + sqs + ssm smoke
 python main.py --dynamodb      # DynamoDB Music workflow only
 python main.py --sqs           # SQS message loop only
-python main.py --seed          # Demo table + demo-queue (after simulith seed)
+python main.py --ssm           # SSM parameter path workflow only
+python main.py --seed          # Demo table + demo-queue + SSM (after simulith seed)
 ```
 
 Optional environment:

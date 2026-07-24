@@ -8,10 +8,12 @@
     "start": "node index.mjs",
     "dynamodb": "node index.mjs --dynamodb",
     "sqs": "node index.mjs --sqs",
+    "ssm": "node index.mjs --ssm",
     "seed": "node index.mjs --seed"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.758.0",
-    "@aws-sdk/client-sqs": "^3.758.0"
+    "@aws-sdk/client-sqs": "^3.758.0",
+    "@aws-sdk/client-ssm": "^3.758.0"
   }
 }

@@ -12,10 +12,11 @@ Runnable smoke test using **AWS SDK for JavaScript v3** against a local Simulith
 ```bash
 cd runtime/examples/nodejs
 npm install
-npm start                 # dynamodb + sqs smoke
+npm start                 # dynamodb + sqs + ssm smoke
 node index.mjs --dynamodb # DynamoDB Music workflow only
 node index.mjs --sqs      # SQS message loop only
-node index.mjs --seed     # Demo table + demo-queue (after simulith seed)
+node index.mjs --ssm      # SSM parameter path workflow only
+node index.mjs --seed     # Demo table + demo-queue + SSM (after simulith seed)
 ```
 
 Optional environment:

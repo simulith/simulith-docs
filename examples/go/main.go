@@ -13,15 +13,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
+	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	ssmtypes "github.com/aws/aws-sdk-go-v2/service/ssm/types"
 )
 
 func main() {
 	dynamodbFlag := flag.Bool("dynamodb", false, "run DynamoDB Music workflow")
 	sqsFlag := flag.Bool("sqs", false, "run SQS message loop")
+	ssmFlag := flag.Bool("ssm", false, "run SSM parameter path workflow")
 	seedFlag := flag.Bool("seed", false, "read seeded Demo table and demo-queue")
 	flag.Parse()
 
-	runAll := !*dynamodbFlag && !*sqsFlag && !*seedFlag
+	runAll := !*dynamodbFlag && !*sqsFlag && !*ssmFlag && !*seedFlag
 
 	endpoint := envOr("SIMULITH_ENDPOINT", "http://127.0.0.1:4566")
 	region := envOr("AWS_DEFAULT_REGION", "us-east-1")
@@ -38,6 +41,12 @@ func main() {
 			fatal("sqs", err)
 		}
 		fmt.Println("sqs: ok")
+	}
+	if runAll || *ssmFlag {
+		if err := runSSM(ctx, region, endpoint); err != nil {
+			fatal("ssm", err)
+		}
+		fmt.Println("ssm: ok")
 	}
 	if runAll || *seedFlag {
 		if err := runSeed(ctx, region, endpoint); err != nil {
@@ -184,6 +193,66 @@ func runSQS(ctx context.Context, region, endpoint string) error {
 	return nil
 }
 
+const (
+	ssmParamPath      = "/app/sdk-demo"
+	ssmParamLogLevel  = "/app/sdk-demo/log-level"
+	ssmParamRegionKey = "/app/sdk-demo/region"
+)
+
+func runSSM(ctx context.Context, region, endpoint string) error {
+	client, err := newSSMClient(ctx, region, endpoint)
+	if err != nil {
+		return err
+	}
+
+	for _, p := range []struct {
+		name, value string
+	}{
+		{ssmParamLogLevel, "info"},
+		{ssmParamRegionKey, "us-east-1"},
+	} {
+		_, err = client.PutParameter(ctx, &ssm.PutParameterInput{
+			Name:      aws.String(p.name),
+			Type:      ssmtypes.ParameterTypeString,
+			Value:     aws.String(p.value),
+			Overwrite: aws.Bool(true),
+		})
+		if err != nil {
+			return fmt.Errorf("put parameter %s: %w", p.name, err)
+		}
+	}
+
+	pathOut, err := client.GetParametersByPath(ctx, &ssm.GetParametersByPathInput{
+		Path:      aws.String(ssmParamPath),
+		Recursive: aws.Bool(true),
+	})
+	if err != nil {
+		return fmt.Errorf("get parameters by path: %w", err)
+	}
+	if len(pathOut.Parameters) < 2 {
+		return fmt.Errorf("get parameters by path: expected >=2 under %s, got %d", ssmParamPath, len(pathOut.Parameters))
+	}
+
+	got, err := client.GetParameter(ctx, &ssm.GetParameterInput{
+		Name: aws.String(ssmParamLogLevel),
+	})
+	if err != nil {
+		return fmt.Errorf("get parameter: %w", err)
+	}
+	if aws.ToString(got.Parameter.Value) != "info" {
+		return fmt.Errorf("get parameter: unexpected value %q", aws.ToString(got.Parameter.Value))
+	}
+
+	for _, name := range []string{ssmParamLogLevel, ssmParamRegionKey} {
+		_, err = client.DeleteParameter(ctx, &ssm.DeleteParameterInput{Name: aws.String(name)})
+		if err != nil {
+			return fmt.Errorf("delete parameter %s: %w", name, err)
+		}
+	}
+
+	return nil
+}
+
 func runSeed(ctx context.Context, region, endpoint string) error {
 	ddb, err := newDynamoDBClient(ctx, region, endpoint)
 	if err != nil {
@@ -219,6 +288,20 @@ func runSeed(ctx context.Context, region, endpoint string) error {
 		return fmt.Errorf("receive seed message: empty (run simulith seed first)")
 	}
 
+	ssmClient, err := newSSMClient(ctx, region, endpoint)
+	if err != nil {
+		return err
+	}
+	paramOut, err := ssmClient.GetParameter(ctx, &ssm.GetParameterInput{
+		Name: aws.String("/app/demo/api-url"),
+	})
+	if err != nil {
+		return fmt.Errorf("get seed parameter: %w", err)
+	}
+	if aws.ToString(paramOut.Parameter.Value) == "" {
+		return fmt.Errorf("get seed parameter: empty value")
+	}
+
 	return nil
 }
 
@@ -244,6 +327,19 @@ func newSQSClient(ctx context.Context, region, endpoint string) (*sqs.Client, er
 		return nil, fmt.Errorf("load config: %w", err)
 	}
 	return sqs.NewFromConfig(cfg, func(o *sqs.Options) {
+		o.BaseEndpoint = aws.String(endpoint)
+	}), nil
+}
+
+func newSSMClient(ctx context.Context, region, endpoint string) (*ssm.Client, error) {
+	cfg, err := config.LoadDefaultConfig(ctx,
+		config.WithRegion(region),
+		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider("test", "secret", "")),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("load config: %w", err)
+	}
+	return ssm.NewFromConfig(cfg, func(o *ssm.Options) {
 		o.BaseEndpoint = aws.String(endpoint)
 	}), nil
 }

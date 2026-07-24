@@ -11,10 +11,11 @@ Runnable smoke test using **AWS SDK for Go v2** against a local Simulith endpoin
 
 ```bash
 cd runtime/examples/go
-go run .                    # dynamodb + sqs smoke
+go run .                    # dynamodb + sqs + ssm smoke
 go run . -dynamodb          # DynamoDB Music workflow only
 go run . -sqs               # SQS message loop only
-go run . -seed              # Demo table + demo-queue (after simulith seed)
+go run . -ssm               # SSM parameter path workflow only
+go run . -seed              # Demo table + demo-queue + SSM (after simulith seed)
 ```
 
 Optional environment:

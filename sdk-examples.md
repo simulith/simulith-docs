@@ -1,6 +1,6 @@
 # SDK examples — Simulith runtime
 
-Copy-paste **AWS SDK** examples for MVP **DynamoDB** and **SQS** against Simulith. For **Lambda**, use AWS CLI patterns in [lambda.md](lambda.md) (SDK setup is the same endpoint + static credentials).
+Copy-paste **AWS SDK** examples for MVP **DynamoDB**, **SQS**, and **SSM Parameter Store** against Simulith. For **Lambda**, use AWS CLI patterns in [lambda.md](lambda.md) (SDK setup is the same endpoint + static credentials).
 
 > **New to Simulith?** Complete the [Quickstart](quickstart.md) first (run server, optional seed). For CLI equivalents see [AWS CLI examples](aws-cli-examples.md).
 
@@ -45,7 +45,8 @@ Install dependencies (see [`examples/go/go.mod`](examples/go/go.mod)):
 go get github.com/aws/aws-sdk-go-v2/config \
        github.com/aws/aws-sdk-go-v2/credentials \
        github.com/aws/aws-sdk-go-v2/service/dynamodb \
-       github.com/aws/aws-sdk-go-v2/service/sqs
+       github.com/aws/aws-sdk-go-v2/service/sqs \
+       github.com/aws/aws-sdk-go-v2/service/ssm
 ```
 
 ### Client setup
@@ -180,11 +181,38 @@ Queue URLs follow: `http://127.0.0.1:4566/000000000000/{queueName}`.
 
 See [sqs.md](sqs.md) for protocol notes and error codes.
 
+### SSM — parameter path workflow
+
+SSM uses **AWS JSON 1.1** (`AmazonSSM.*`). Same `BaseEndpoint` pattern as DynamoDB:
+
+```go
+import "github.com/aws/aws-sdk-go-v2/service/ssm"
+
+_, err = ssmClient.PutParameter(ctx, &ssm.PutParameterInput{
+    Name:      aws.String("/app/sdk-demo/log-level"),
+    Type:      aws.String("String"),
+    Value:     aws.String("info"),
+    Overwrite: aws.Bool(true),
+})
+
+pathOut, err := ssmClient.GetParametersByPath(ctx, &ssm.GetParametersByPathInput{
+    Path:      aws.String("/app/sdk-demo"),
+    Recursive: aws.Bool(true),
+})
+
+got, err := ssmClient.GetParameter(ctx, &ssm.GetParameterInput{
+    Name: aws.String("/app/sdk-demo/log-level"),
+})
+```
+
+See [ssm.md](ssm.md) · CLI equivalent: [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/).
+
 ### Run the Go example
 
 ```bash
 cd runtime/examples/go
-go run .              # dynamodb + sqs smoke
+go run .              # dynamodb + sqs + ssm smoke
+go run . -ssm         # SSM path workflow only
 go run . -seed        # after simulith seed
 ```
 
@@ -195,7 +223,7 @@ go run . -seed        # after simulith seed
 Install dependencies:
 
 ```bash
-npm install @aws-sdk/client-dynamodb @aws-sdk/client-sqs
+npm install @aws-sdk/client-dynamodb @aws-sdk/client-sqs @aws-sdk/client-ssm
 ```
 
 ### Client setup
@@ -203,6 +231,7 @@ npm install @aws-sdk/client-dynamodb @aws-sdk/client-sqs
 ```javascript
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { SQSClient } from "@aws-sdk/client-sqs";
+import { SSMClient } from "@aws-sdk/client-ssm";
 
 const clientConfig = {
   region: process.env.AWS_DEFAULT_REGION ?? "us-east-1",
@@ -215,6 +244,7 @@ const clientConfig = {
 
 const dynamodb = new DynamoDBClient(clientConfig);
 const sqs = new SQSClient(clientConfig);
+const ssm = new SSMClient(clientConfig);
 ```
 
 ### DynamoDB — CreateTable
@@ -327,12 +357,45 @@ await sqs.send(
 );
 ```
 
+### SSM — parameter path workflow
+
+```javascript
+import {
+  GetParameterCommand,
+  GetParametersByPathCommand,
+  PutParameterCommand,
+} from "@aws-sdk/client-ssm";
+
+await ssm.send(
+  new PutParameterCommand({
+    Name: "/app/sdk-demo/log-level",
+    Type: "String",
+    Value: "info",
+    Overwrite: true,
+  }),
+);
+
+const byPath = await ssm.send(
+  new GetParametersByPathCommand({
+    Path: "/app/sdk-demo",
+    Recursive: true,
+  }),
+);
+
+await ssm.send(
+  new GetParameterCommand({ Name: "/app/sdk-demo/log-level" }),
+);
+```
+
+See [ssm.md](ssm.md) · CLI: [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/).
+
 ### Run the Node.js example
 
 ```bash
 cd runtime/examples/nodejs
 npm install
-npm start             # dynamodb + sqs smoke
+npm start             # dynamodb + sqs + ssm smoke
+node index.mjs --ssm  # SSM path workflow only
 node index.mjs --seed # after simulith seed
 ```
 
@@ -373,6 +436,7 @@ client_kwargs = {
 
 dynamodb = boto3.client("dynamodb", **client_kwargs)
 sqs = boto3.client("sqs", **client_kwargs)
+ssm = boto3.client("ssm", **client_kwargs)
 ```
 
 ### DynamoDB — CreateTable
@@ -449,12 +513,30 @@ Queue URLs follow: `http://127.0.0.1:4566/000000000000/{queueName}`.
 
 See [sqs.md](sqs.md) for protocol notes and error codes.
 
+### SSM — parameter path workflow
+
+```python
+ssm.put_parameter(
+    Name="/app/sdk-demo/log-level",
+    Type="String",
+    Value="info",
+    Overwrite=True,
+)
+
+by_path = ssm.get_parameters_by_path(Path="/app/sdk-demo", Recursive=True)
+
+ssm.get_parameter(Name="/app/sdk-demo/log-level")
+```
+
+See [ssm.md](ssm.md) · CLI: [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/).
+
 ### Run the Python example
 
 ```bash
 cd runtime/examples/python
 python -m pip install -r requirements.txt
-python main.py              # dynamodb + sqs smoke
+python main.py              # dynamodb + sqs + ssm smoke
+python main.py --ssm        # SSM path workflow only
 python main.py --seed       # after simulith seed
 ```
 
@@ -462,7 +544,7 @@ python main.py --seed       # after simulith seed
 
 ## Seeded data
 
-After [`simulith seed`](seed.md) (Demo table + `demo-queue`):
+After [`simulith seed`](seed.md) (Demo table + `demo-queue` + SSM `/app/demo/*`):
 
 **Go:**
 
@@ -477,6 +559,10 @@ out, err := ddb.GetItem(ctx, &dynamodb.GetItemInput{
 queueURL := endpoint + "/000000000000/demo-queue"
 recvOut, err := sqsClient.ReceiveMessage(ctx, &sqs.ReceiveMessageInput{
     QueueUrl: aws.String(queueURL),
+})
+
+paramOut, err := ssmClient.GetParameter(ctx, &ssm.GetParameterInput{
+    Name: aws.String("/app/demo/api-url"),
 })
 ```
 
@@ -494,6 +580,10 @@ const queueUrl = `${endpoint}/000000000000/demo-queue`;
 const received = await sqs.send(
   new ReceiveMessageCommand({ QueueUrl: queueUrl }),
 );
+
+await ssm.send(
+  new GetParameterCommand({ Name: "/app/demo/api-url" }),
+);
 ```
 
 **Python:**
@@ -503,9 +593,11 @@ got = dynamodb.get_item(TableName="Demo", Key={"Id": {"S": "1"}})
 
 queue_url = f"{endpoint.rstrip('/')}/000000000000/demo-queue"
 received = sqs.receive_message(QueueUrl=queue_url)
+
+ssm.get_parameter(Name="/app/demo/api-url")
 ```
 
-Expected: item name `Alice` (Id `1`); message body `hello from seed`.
+Expected: item name `Alice` (Id `1`); message body `hello from seed`; SSM `/app/demo/api-url` value `http://localhost:8080`.
 
 CLI equivalent: [aws-cli-examples.md — Seeded data](aws-cli-examples.md#seeded-data).
 
@@ -520,7 +612,7 @@ CLI equivalent: [aws-cli-examples.md — Seeded data](aws-cli-examples.md#seeded
 | SQS FIFO queues | Not supported |
 | SQS long polling | Short poll only |
 | SQS SendMessageBatch / DeleteMessageBatch | Available |
-| SSM Parameter Store | CLI/Terraform examples; runnable SDK samples (Go/Node/Python) deferred — see [ssm.md](ssm.md), [terraform-integration.md](terraform-integration.md), [examples/terraform/ssm/](examples/terraform/ssm/) |
+| SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; runnable SDK in [`examples/go/`](examples/go/), [`nodejs/`](examples/nodejs/), [`python/`](examples/python/) (`--ssm`); CLI [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/) |
 
 Full deviation tables:
 

@@ -91,6 +91,37 @@ def run_sqs(endpoint: str, region: str) -> None:
     )
 
 
+SSM_PARAM_PATH = "/app/sdk-demo"
+SSM_PARAM_LOG_LEVEL = "/app/sdk-demo/log-level"
+SSM_PARAM_REGION = "/app/sdk-demo/region"
+
+
+def run_ssm(endpoint: str, region: str) -> None:
+    ssm = boto3.client("ssm", **client_kwargs(endpoint, region))
+
+    for name, value in [
+        (SSM_PARAM_LOG_LEVEL, "info"),
+        (SSM_PARAM_REGION, "us-east-1"),
+    ]:
+        ssm.put_parameter(
+            Name=name,
+            Type="String",
+            Value=value,
+            Overwrite=True,
+        )
+
+    by_path = ssm.get_parameters_by_path(Path=SSM_PARAM_PATH, Recursive=True)
+    if len(by_path.get("Parameters") or []) < 2:
+        raise RuntimeError(f"get parameters by path: expected >=2 under {SSM_PARAM_PATH}")
+
+    got = ssm.get_parameter(Name=SSM_PARAM_LOG_LEVEL)
+    if got["Parameter"]["Value"] != "info":
+        raise RuntimeError(f"get parameter: unexpected value {got['Parameter']['Value']}")
+
+    for name in (SSM_PARAM_LOG_LEVEL, SSM_PARAM_REGION):
+        ssm.delete_parameter(Name=name)
+
+
 def run_seed(endpoint: str, region: str) -> None:
     ddb = boto3.client("dynamodb", **client_kwargs(endpoint, region))
     got = ddb.get_item(TableName="Demo", Key={"Id": {"S": "1"}})
@@ -103,6 +134,11 @@ def run_seed(endpoint: str, region: str) -> None:
     if not received.get("Messages"):
         raise RuntimeError("receive seed message: empty (run simulith seed first)")
 
+    ssm = boto3.client("ssm", **client_kwargs(endpoint, region))
+    param = ssm.get_parameter(Name="/app/demo/api-url")
+    if not param.get("Parameter", {}).get("Value"):
+        raise RuntimeError("get seed parameter: empty (run simulith seed first)")
+
 
 def fatal(step: str, err: BaseException) -> None:
     print(f"{step}: {err}", file=sys.stderr)
@@ -114,10 +150,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Simulith boto3 SDK smoke")
     parser.add_argument("--dynamodb", action="store_true", help="DynamoDB Music workflow only")
     parser.add_argument("--sqs", action="store_true", help="SQS message loop only")
+    parser.add_argument("--ssm", action="store_true", help="SSM parameter path workflow only")
     parser.add_argument("--seed", action="store_true", help="Demo table + demo-queue (after simulith seed)")
     args = parser.parse_args()
 
-    run_all = not (args.dynamodb or args.sqs or args.seed)
+    run_all = not (args.dynamodb or args.sqs or args.ssm or args.seed)
     endpoint = env_or("SIMULITH_ENDPOINT", "http://127.0.0.1:4566")
     region = env_or("AWS_DEFAULT_REGION", "us-east-1")
 
@@ -134,6 +171,13 @@ def main() -> None:
             print("sqs: ok")
         except Exception as e:
             fatal("sqs", e)
+
+    if run_all or args.ssm:
+        try:
+            run_ssm(endpoint, region)
+            print("ssm: ok")
+        except Exception as e:
+            fatal("ssm", e)
 
     if run_all or args.seed:
         try:

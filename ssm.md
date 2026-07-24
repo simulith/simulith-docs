@@ -40,7 +40,7 @@ Not implemented yet: full ParameterFilters, labels, real AWS KMS encryption.
 
 ## PutParameter
 
-Copy-paste CLI: **[aws-cli-examples.md — SSM](aws-cli-examples.md#ssm-parameter-store)**. Runnable scripts: [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/).
+Copy-paste CLI: **[aws-cli-examples.md — SSM](aws-cli-examples.md#ssm-parameter-store)**. Runnable scripts: [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/). SDK smoke: [`examples/go/`](examples/go/), [`examples/nodejs/`](examples/nodejs/), [`examples/python/`](examples/python/) (`--ssm`) — [sdk-examples.md](sdk-examples.md).
 
 Required on create: `Name` (must start with `/`; leading/trailing spaces are trimmed), `Value`, `Type` (`String`, `StringList`, or `SecureString`).
 
