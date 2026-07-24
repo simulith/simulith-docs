@@ -9,3 +9,13 @@ output "parameter_names" {
 output "parameter_count" {
   value = length(local.parameter_defs)
 }
+
+output "parameters_by_path_names" {
+  description = "Names under ssm_prefix from GetParametersByPath (Terraform refresh)"
+  value       = data.aws_ssm_parameters_by_path.store.names
+}
+
+output "parameters_by_path_count" {
+  description = "Count from GetParametersByPath — should match parameter_count after apply"
+  value       = length(data.aws_ssm_parameters_by_path.store.names)
+}

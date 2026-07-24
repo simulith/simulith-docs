@@ -86,6 +86,25 @@ aws ssm get-parameters-by-path --path /SIMULITH/DEV --recursive \
 
 **Console:** open SSM → path prefix `/SIMULITH/DEV` → Refresh. This example creates **27** parameters; the Console paginates `GetParametersByPath` (10 per page).
 
+## GetParametersByPath (Terraform refresh)
+
+The module includes `data "aws_ssm_parameters_by_path"` on [`path-data.tf`](path-data.tf). After apply, outputs should match managed parameters:
+
+```bash
+terraform output parameter_count
+terraform output parameters_by_path_count
+terraform output -json parameters_by_path_names | head
+```
+
+CLI equivalent (Git Bash: `export MSYS2_ARG_CONV_EXCL="*"` first):
+
+```bash
+aws ssm get-parameters-by-path --path /SIMULITH/DEV --recursive \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Standalone CLI walkthrough: [`../../../aws-cli/ssm/`](../../../aws-cli/ssm/).
+
 ## Destroy
 
 ```bash

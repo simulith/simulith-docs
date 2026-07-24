@@ -1,10 +1,12 @@
-# Optional: read parameters under a path prefix (requires simulith seed for /app/demo/*).
+# Optional: read parameters under a path prefix.
 #
+# **Shipped in the parameters module:** see [`parameters/path-data.tf`](parameters/path-data.tf)
+# and outputs `parameters_by_path_names` / `parameters_by_path_count`.
+#
+# Minimal demo (/app/demo from seed):
 # 1. Run: simulith seed
-# 2. Copy this file to path-data.tf (or merge into main.tf) in this directory.
-# 3. Add the data block below and an output; run terraform init && terraform apply.
-#
-# Uses GetParametersByPath on refresh (SML-030).
+# 2. Copy this file to path-data.tf in runtime/examples/terraform/ssm/ (root module)
+# 3. terraform init && terraform apply
 
 data "aws_ssm_parameters_by_path" "demo" {
   path      = "/app/demo"

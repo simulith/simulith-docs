@@ -20,7 +20,7 @@ runtime/examples/terraform/
 └── dynamodb-sqs/           ← table + queue fan-out
 ```
 
-**Honest integration examples:** [`../aws-cli/lambda/`](../aws-cli/lambda/) · [`../aws-cli/secretsmanager/`](../aws-cli/secretsmanager/) · [`../aws-cli/dynamodb-sqs/`](../aws-cli/dynamodb-sqs/) · [`../aws-cli/s3/`](../aws-cli/s3/) · Lambda env in [`lambda/README`](lambda/README.md) · secret → env in [`secretsmanager-lambda/README`](secretsmanager-lambda/README.md) · fan-out in [`dynamodb-sqs/README`](dynamodb-sqs/README.md) · S3 lifecycle in [`../aws-cli/s3/`](../aws-cli/s3/)
+**Honest integration examples:** [`../aws-cli/lambda/`](../aws-cli/lambda/) · [`../aws-cli/secretsmanager/`](../aws-cli/secretsmanager/) · [`../aws-cli/dynamodb-sqs/`](../aws-cli/dynamodb-sqs/) · [`../aws-cli/s3/`](../aws-cli/s3/) · [`../aws-cli/ssm/`](../aws-cli/ssm/) · Lambda env in [`lambda/README`](lambda/README.md) · secret → env in [`secretsmanager-lambda/README`](secretsmanager-lambda/README.md) · fan-out in [`dynamodb-sqs/README`](dynamodb-sqs/README.md) · S3 lifecycle in [`../aws-cli/s3/`](../aws-cli/s3/) · SSM path in [`ssm/parameters/README`](ssm/parameters/README.md)
 
 Each subdirectory with `main.tf` is a **standalone** module: `cd` into it, then `terraform init && apply`.
 

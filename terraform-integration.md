@@ -275,6 +275,7 @@ Use **`-parallelism=1`** for the SSM example (apply and destroy), the **API Gate
 | Secrets Manager → Lambda env | [`secretsmanager-lambda/`](examples/terraform/secretsmanager-lambda/) | [`aws-cli/secretsmanager/`](examples/aws-cli/secretsmanager/) | `aws_secretsmanager_secret_version` data source → `environment.variables`; re-apply after secret rotation |
 | DynamoDB + SQS fan-out | [`dynamodb-sqs/`](examples/terraform/dynamodb-sqs/) | [`aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/) | PutItem + SendMessage dual-write; no DynamoDB Streams |
 | S3 object lifecycle | [`s3/`](examples/terraform/s3/) | [`aws-cli/s3/`](examples/aws-cli/s3/) | put/head/get/list/copy/delete-objects via `s3api` |
+| SSM parameters path | [`ssm/parameters/`](examples/terraform/ssm/parameters/) | [`aws-cli/ssm/`](examples/aws-cli/ssm/) | `aws_ssm_parameters_by_path` refresh + GetParametersByPath CLI |
 
 **Smoke (local CI / validation):**
 
@@ -285,6 +286,7 @@ maintainer workflow (private monorepo) --module lambda
 maintainer workflow (private monorepo) --module secretsmanager-lambda
 maintainer workflow (private monorepo) --module dynamodb-sqs
 maintainer workflow (private monorepo) --module s3
+maintainer workflow (private monorepo) --module ssm-path
 ```
 
 Backlog: .

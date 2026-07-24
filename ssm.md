@@ -40,7 +40,7 @@ Not implemented yet: full ParameterFilters, labels, real AWS KMS encryption.
 
 ## PutParameter
 
-Copy-paste CLI: **[aws-cli-examples.md — SSM](aws-cli-examples.md#ssm-parameter-store)**.
+Copy-paste CLI: **[aws-cli-examples.md — SSM](aws-cli-examples.md#ssm-parameter-store)**. Runnable scripts: [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/).
 
 Required on create: `Name` (must start with `/`; leading/trailing spaces are trimmed), `Value`, `Type` (`String`, `StringList`, or `SecureString`).
 

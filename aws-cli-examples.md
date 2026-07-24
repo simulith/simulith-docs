@@ -410,6 +410,8 @@ aws sqs receive-message \
 
 Use JSON 1.1 targets (`AmazonSSM.*`). See [ssm.md](ssm.md).
 
+**Runnable scripts:** [`examples/aws-cli/ssm/`](examples/aws-cli/ssm/) — put-parameter → get-parameters-by-path → get-parameter.
+
 **Git Bash on Windows:** `--name /app/demo/api-url` is rewritten to `C:/Program Files/Git/app/demo/api-url` (see `aws … --debug`). Fix: `export MSYS2_ARG_CONV_EXCL="*"` or `export MSYS_NO_PATHCONV=1` in that shell before SSM commands. See [quickstart troubleshooting](quickstart.md#troubleshooting).
 
 ### PutParameter
