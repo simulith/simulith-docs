@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.46.0] - 2026-07-25
+
+### Features
+
+- ****: Lambda Python layers PYTHONPATH
+
 ## [0.45.0] - 2026-07-24
 
 ### Features

@@ -157,6 +157,8 @@ Share dependencies across functions via layer zips. Layer API uses `/2018-10-31/
 
 **Node.js layout:** zip must contain `nodejs/node_modules/<package>/…`. Simulith sets `NODE_PATH` so `require()` resolves from layer modules.
 
+**Python layout:** zip must contain `python/lib/python3.12/site-packages/<module>.py` (or other `python3.*` under `python/lib/…/site-packages`). Simulith sets `PYTHONPATH` so `import` resolves from layer modules.
+
 ```bash
 # Build a layer zip (nodejs)
 mkdir -p /tmp/layer/nodejs/node_modules/my-lib
@@ -187,7 +189,20 @@ aws lambda get-layer-version --layer-name my-deps --version-number 1 --endpoint-
 aws lambda delete-layer-version --layer-name my-deps --version-number 1 --endpoint-url $ENDPOINT
 ```
 
-**Limits:** `AddLayerVersionPermission` not implemented (open local access). Python layer `PYTHONPATH` not implemented (nodejs first).
+```bash
+# Build a layer zip (python3.12)
+mkdir -p /tmp/py-layer/python/lib/python3.12/site-packages
+printf 'def ok():\n    return True\n' > /tmp/py-layer/python/lib/python3.12/site-packages/my_lib.py
+cd /tmp/py-layer && zip -r layer.zip python
+
+aws lambda publish-layer-version \
+  --layer-name py-deps \
+  --zip-file fileb:///tmp/py-layer/layer.zip \
+  --compatible-runtimes python3.12 \
+  --endpoint-url $ENDPOINT
+```
+
+**Limits:** `AddLayerVersionPermission` not implemented (open local access).
 
 ## SQS event source mapping
 
@@ -268,7 +283,7 @@ Default values: region `us-east-1`, accountId `000000000000`.
 
 - **InvocationType: Event** (async HTTP invoke) — **supported** (202 + background run). ESM poller still uses sync invoke internally.
 - **Function URLs** — **supported** via `/2021-10-31/functions/<name>/url` (create/get/delete + HTTP invoke on same path; `AuthType: NONE` default).
-- **Lambda Layers** — **supported** via `/2018-10-31/layers/…` (publish/list/get/delete; `Layers` on CreateFunction; nodejs `NODE_PATH`).
+- **Lambda Layers** — **supported** via `/2018-10-31/layers/…` (publish/list/get/delete; `Layers` on CreateFunction; nodejs `NODE_PATH`, python `PYTHONPATH`).
 - **Go / provided runtimes** — **supported** (`provided`, `provided.al2`, `provided.al2023`; `bootstrap` binary in zip). Java and other custom runtimes not supported.
 - **Docker runtime image** — does not bundle `node` or `python3`; invoke works when binaries are on PATH (local dev) or image is extended. Provided/Go invoke needs no extra host runtime.
 - **Code.S3Bucket / Code.S3Key** — not supported. Use `Code.ZipFile` (base64).

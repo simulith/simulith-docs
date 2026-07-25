@@ -188,7 +188,7 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_
 
 **Shipped:** async invoke (`InvocationType: Event`) and Function URLs.
 
-**Shipped:** Lambda Layers (`PublishLayerVersion`, layer CRUD, `Layers` on CreateFunction, nodejs `NODE_PATH` on invoke).
+**Shipped:** Lambda Layers (`PublishLayerVersion`, layer CRUD, `Layers` on CreateFunction, nodejs `NODE_PATH` on invoke). **:** python `PYTHONPATH` on invoke.
 
 ### Tier A reference set (7 ops)
 
