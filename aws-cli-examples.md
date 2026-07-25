@@ -562,9 +562,9 @@ aws secretsmanager delete-secret \
 
 ## Lambda
 
-Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Invoke** requires `node` or `python3` on the same PATH as the Simulith process — the default Docker image does not include them. See [lambda.md](lambda.md).
+Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).
 
-**Runnable scripts (AWS-derived):** [`examples/aws-cli/lambda/`](examples/aws-cli/lambda/) — create → update-function-configuration → invoke.
+**Runnable scripts (AWS-derived):** [`examples/aws-cli/lambda/`](examples/aws-cli/lambda/) — create → update-function-configuration → invoke (Node.js). [`examples/aws-cli/lambda-go/`](examples/aws-cli/lambda-go/) — same flow for **Go `provided.al2023`** (requires `go` to build bootstrap; no Node on invoke).
 
 ```bash
 # Create a zip from a Node.js handler

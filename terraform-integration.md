@@ -271,6 +271,7 @@ Use **`-parallelism=1`** for the SSM example (apply and destroy), the **API Gate
 | Pattern | Terraform | AWS CLI | Notes |
 | --- | --- | --- | --- |
 | Lambda create + config patch + invoke | [`lambda/`](examples/terraform/lambda/) | [`aws-cli/lambda/`](examples/aws-cli/lambda/) | Re-apply after changing `environment_variables` → `UpdateFunctionConfiguration` |
+| Lambda Go (`provided.al2023`) | — | [`aws-cli/lambda-go/`](examples/aws-cli/lambda-go/) | Build `bootstrap` with `go`; invoke without Node |
 | API Gateway → Lambda HTTP | [`apigateway/`](examples/terraform/apigateway/) | — | `curl $(terraform output -raw invoke_url)` after apply |
 | Secrets Manager → Lambda env | [`secretsmanager-lambda/`](examples/terraform/secretsmanager-lambda/) | [`aws-cli/secretsmanager/`](examples/aws-cli/secretsmanager/) | `aws_secretsmanager_secret_version` data source → `environment.variables`; re-apply after secret rotation |
 | DynamoDB + SQS fan-out | [`dynamodb-sqs/`](examples/terraform/dynamodb-sqs/) | [`aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/) | PutItem + SendMessage dual-write; no DynamoDB Streams |
