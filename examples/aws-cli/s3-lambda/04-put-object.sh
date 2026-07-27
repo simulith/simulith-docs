@@ -7,11 +7,15 @@ set -euo pipefail
 : "${BUCKET_NAME:=s3-lambda-demo-bucket}"
 : "${OBJECT_KEY:=in/demo.txt}"
 
-echo "hello from s3-lambda demo" | aws s3api put-object \
-  --bucket "$BUCKET_NAME" \
-  --key "$OBJECT_KEY" \
-  --body - \
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BODY_FILE="${SCRIPT_DIR}/.build/put-object-body.txt"
+mkdir -p "${SCRIPT_DIR}/.build"
+echo "hello from s3-lambda demo" > "$BODY_FILE"
+
+aws s3 cp "$BODY_FILE" "s3://${BUCKET_NAME}/${OBJECT_KEY}" \
   --endpoint-url "$AWS_ENDPOINT" \
   --region "$AWS_DEFAULT_REGION"
+
+rm -f "$BODY_FILE"
 
 echo "Uploaded s3://${BUCKET_NAME}/${OBJECT_KEY}"

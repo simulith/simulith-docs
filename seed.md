@@ -25,8 +25,8 @@ simulith seed [--config path] [--file path] [--no-reset]
 | DynamoDB | table `Demo` | Hash key `Id`; items `1/Alice`, `2/Bob` |
 | SQS | queue `demo-queue` | One message `hello from seed` |
 | SSM | `/app/demo/api-url`, `/app/demo/env` | String parameters for local app config |
-| S3 | bucket `demo-bucket` | `readme.txt` (`hello from seed`), `config/app.json` |
-| Lambda | function `demo-fn` | Node.js echo handler; ESM to `demo-queue` |
+| S3 | bucket `demo-bucket` | `readme.txt`, `config/app.json`; **notification** → `demo-fn` on `uploads/` prefix |
+| Lambda | function `demo-fn` | Node.js echo handler; ESM to `demo-queue`; **S3 ObjectCreated** target for `demo-bucket` |
 | API Gateway | REST API `demo-api` (`demoapi001`) | Stage `dev` → `{proxy+}` AWS_PROXY to `demo-fn` |
 | Secrets Manager | secret `demo-secret` | Plain `SecretString` `hello from seed` |
 
@@ -38,6 +38,15 @@ HTTP smoke after seed:
 
 ```bash
 curl "http://127.0.0.1:4566/restapis/demoapi001/dev/_user_request_/hello"
+```
+
+S3 → Lambda after seed (requires `node` on PATH, runtime running):
+
+```bash
+echo "trigger" | aws s3api put-object \
+  --bucket demo-bucket --key uploads/smoke.txt --body - \
+  --endpoint-url http://127.0.0.1:4566 --region us-east-1
+# Check Simulith runtime logs for async demo-fn invoke (S3 Records event)
 ```
 
 ## Workflow
@@ -104,6 +113,16 @@ More CLI examples: [aws-cli-examples.md](aws-cli-examples.md#seeded-data). SDK: 
     "buckets": [
       {
         "name": "demo-bucket",
+        "notification": {
+          "lambdaFunctionConfigurations": [
+            {
+              "id": "seed-demo-bucket-uploads",
+              "functionName": "demo-fn",
+              "events": ["s3:ObjectCreated:*"],
+              "filterPrefix": "uploads/"
+            }
+          ]
+        },
         "objects": [
           {
             "key": "readme.txt",
@@ -144,7 +163,7 @@ Notes:
 - **`queueUrl`** — optional; defaults to `http://{host}:{port}/000000000000/{name}` from config
 - **`messages`** — `messageId` and `md5_body` generated at apply time
 - **`ssm.parameters`** — `name`, `type`, `value` required; `version` (default 1), `lastModified` (default now UTC), `tags`, `dataType` optional. Applied via store layer (not HTTP PutParameter).
-- **`s3.buckets`** — `name` required; optional `objects` with `key`, `body`, optional `contentType`. Applied via store layer (`CreateBucket` + `PutObject`).
+- **`s3.buckets`** — `name` required; optional `objects` with `key`, `body`, optional `contentType`; optional `notification.lambdaFunctionConfigurations` with `functionName` or `lambdaFunctionArn`, `events` (default `s3:ObjectCreated:*`), optional `filterPrefix` / `filterSuffix`, optional `id`. Notification applied **after** Lambda functions in the fixture (store layer).
 - **`lambda.functions`** — `name`, `handlerSource` (Node.js module body) required; zip built at apply time and written under `LambdaDataDir`. Optional `runtime`, `handler`, `role`, `timeout`, `memorySize`, `environment`.
 - **`lambda.eventSourceMappings`** — `uuid`, `functionName`, `eventSourceArn` (SQS ARN) required; target queue must exist in fixture (apply after SQS). Optional `batchSize`, `enabled`.
 - **`apigateway.restApis`** — `id`, `name` required; optional `description`, `proxyFunction` (default `demo-fn`), `stageName` (default `dev`). Seeds `{proxy+}` AWS_PROXY integration and deployment.

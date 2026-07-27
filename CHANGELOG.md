@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.52.0] - 2026-07-27
+
+### Features
+
+- ****: Seed demo S3 bucket notification to demo-fn
+
 ## [0.51.0] - 2026-07-27
 
 ### Features

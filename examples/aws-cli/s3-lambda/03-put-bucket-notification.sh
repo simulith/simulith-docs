@@ -10,7 +10,9 @@ set -euo pipefail
 ACCOUNT_ID="${AWS_ACCOUNT_ID:-000000000000}"
 LAMBDA_ARN="arn:aws:lambda:${AWS_DEFAULT_REGION}:${ACCOUNT_ID}:function:${FUNCTION_NAME}"
 
-NOTIF="${TMPDIR:-/tmp}/s3-notification-$$.json"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+mkdir -p "${SCRIPT_DIR}/.build"
+NOTIF="${SCRIPT_DIR}/.build/s3-notification-$$.json"
 cat > "$NOTIF" <<EOF
 {
   "LambdaFunctionConfigurations": [
@@ -30,9 +32,18 @@ cat > "$NOTIF" <<EOF
 }
 EOF
 
+NOTIF_FILE="$NOTIF"
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*)
+    if command -v cygpath >/dev/null 2>&1; then
+      NOTIF_FILE="$(cygpath -w "$NOTIF" | tr '\\' '/')"
+    fi
+    ;;
+esac
+
 aws s3api put-bucket-notification-configuration \
   --bucket "$BUCKET_NAME" \
-  --notification-configuration "file://${NOTIF}" \
+  --notification-configuration "file://${NOTIF_FILE}" \
   --endpoint-url "$AWS_ENDPOINT" \
   --region "$AWS_DEFAULT_REGION"
 
