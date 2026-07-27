@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.49.0] - 2026-07-27
+
+### Features
+
+- ****: S3 bucket notifications configuration
+
 ## [0.48.0] - 2026-07-27
 
 ### Features

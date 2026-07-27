@@ -136,9 +136,11 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 | UploadPart | available | — | `partNumber` 1–10000 |
 | CompleteMultipartUpload | available | — | Assembles parts; multipart ETag |
 | AbortMultipartUpload | available | — | Cleans in-progress upload |
+| GetBucketNotificationConfiguration | available | — | GET `?notification` |
+| PutBucketNotificationConfiguration | available | — | LambdaFunctionConfiguration only |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
 
-**Not in matrix (gap):** versioning, CORS, SSE-KMS, S3 Select, ListParts.
+**Not in matrix (gap):** object-create dispatch to Lambda, SNS/SQS targets, versioning, CORS, SSE-KMS, S3 Select, ListParts.
 
 ---
 
