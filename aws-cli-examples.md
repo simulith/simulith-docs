@@ -658,6 +658,23 @@ See [s3.md](s3.md) for limits (no multipart, path-style).
 
 ---
 
+## S3 → Lambda notification
+
+Object-create trigger → async Lambda. **Runnable scripts:** [`examples/aws-cli/s3-lambda/`](examples/aws-cli/s3-lambda/). Requires **Node.js** on PATH.
+
+```bash
+export FUNCTION_NAME=s3-event-fn BUCKET_NAME=s3-lambda-demo-bucket
+export MARKER_DIR=/tmp/simulith-s3-lambda-demo OBJECT_KEY=in/demo.txt
+
+cd runtime/examples/aws-cli/s3-lambda
+./01-create-function.sh && ./02-create-bucket.sh && ./03-put-bucket-notification.sh
+./04-put-object.sh && ./05-wait-marker.sh
+```
+
+Terraform: [`examples/terraform/s3-lambda/`](examples/terraform/s3-lambda/).
+
+---
+
 ## Seeded data
 
 After [`simulith seed`](seed.md) (Demo table + `demo-queue` + SSM `/app/demo/*`):

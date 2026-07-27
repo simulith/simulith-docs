@@ -244,6 +244,8 @@ aws s3 cp ./local.txt s3://my-bucket/in/local.txt --endpoint-url $ENDPOINT
 
 **Limits:** Lambda targets only; `s3:ObjectCreated:*`, `Put`, and `CompleteMultipartUpload` events; missing function is logged and skipped (S3 request still succeeds).
 
+**Integration example:** [`examples/aws-cli/s3-lambda/`](examples/aws-cli/s3-lambda/) · Terraform [`examples/terraform/s3-lambda/`](examples/terraform/s3-lambda/).
+
 ## Default seed (`demo-fn`)
 
 After `simulith seed` or Console **Seed demo data**, function **`demo-fn`** (Node.js 20.x echo handler) and an SQS event source mapping to `demo-queue` are loaded. Fixture format: [seed.md](seed.md).

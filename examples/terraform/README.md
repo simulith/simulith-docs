@@ -18,9 +18,10 @@ runtime/examples/terraform/
 ├── secretsmanager/     ← aws_secretsmanager_secret + secret_version
 └── secretsmanager-lambda/  ← secret data source → Lambda environment
 └── dynamodb-sqs/           ← table + queue fan-out
+└── s3-lambda/              ← bucket notification → Lambda
 ```
 
-**Honest integration examples:** [`../aws-cli/lambda/`](../aws-cli/lambda/) · [`../aws-cli/secretsmanager/`](../aws-cli/secretsmanager/) · [`../aws-cli/dynamodb-sqs/`](../aws-cli/dynamodb-sqs/) · [`../aws-cli/s3/`](../aws-cli/s3/) · [`../aws-cli/ssm/`](../aws-cli/ssm/) · Lambda env in [`lambda/README`](lambda/README.md) · secret → env in [`secretsmanager-lambda/README`](secretsmanager-lambda/README.md) · fan-out in [`dynamodb-sqs/README`](dynamodb-sqs/README.md) · S3 lifecycle in [`../aws-cli/s3/`](../aws-cli/s3/) · SSM path in [`ssm/parameters/README`](ssm/parameters/README.md)
+**Honest integration examples:** [`../aws-cli/lambda/`](../aws-cli/lambda/) · [`../aws-cli/secretsmanager/`](../aws-cli/secretsmanager/) · [`../aws-cli/dynamodb-sqs/`](../aws-cli/dynamodb-sqs/) · [`../aws-cli/s3/`](../aws-cli/s3/) · [`../aws-cli/s3-lambda/`](../aws-cli/s3-lambda/) · [`../aws-cli/ssm/`](../aws-cli/ssm/) · Lambda env in [`lambda/README`](lambda/README.md) · secret → env in [`secretsmanager-lambda/README`](secretsmanager-lambda/README.md) · fan-out in [`dynamodb-sqs/README`](dynamodb-sqs/README.md) · S3 lifecycle in [`../aws-cli/s3/`](../aws-cli/s3/) · S3→Lambda in [`s3-lambda/README`](s3-lambda/README.md) · SSM path in [`ssm/parameters/README`](ssm/parameters/README.md)
 
 Each subdirectory with `main.tf` is a **standalone** module: `cd` into it, then `terraform init && apply`.
 
@@ -43,6 +44,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`secretsmanager/`](secretsmanager/) | Green | Green | 2 resources; `endpoints { secretsmanager }`; `-parallelism=1`; [README](secretsmanager/README.md) |
 | [`secretsmanager-lambda/`](secretsmanager-lambda/) | Green | Green | 3 resources + data source; `endpoints { secretsmanager, lambda }`; `-parallelism=1`; [README](secretsmanager-lambda/README.md) |
 | [`dynamodb-sqs/`](dynamodb-sqs/) | Green | Green | 1 table + 1 queue; `endpoints { dynamodb, sqs }`; destroy ~60–90s; [README](dynamodb-sqs/README.md) |
+| [`s3-lambda/`](s3-lambda/) | Green | Green | 1 bucket + 1 Lambda + notification; `endpoints { s3, lambda }`; `-parallelism=1`; [README](s3-lambda/README.md) |
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 
