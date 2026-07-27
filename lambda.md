@@ -228,6 +228,22 @@ aws lambda delete-event-source-mapping --uuid <uuid> --endpoint-url $ENDPOINT
 
 **Limits:** SQS ARNs only; `BatchSize` capped at 10; async `InvocationType: Event` not used (poller invokes synchronously). Requires `node`/`python3` on PATH for the target function.
 
+## S3 object-create notifications
+
+When a bucket has `PutBucketNotificationConfiguration` with `LambdaFunctionConfiguration`, Simulith **async-invokes** matching functions after successful `PutObject` or `CompleteMultipartUpload`. Event payload uses the standard S3 `Records[]` JSON shape. Prefix/suffix filters from the notification config are honored.
+
+```bash
+# Configure notification (see runtime/docs/s3.md)
+aws s3api put-bucket-notification-configuration \
+  --bucket my-bucket \
+  --notification-configuration file://notification.json \
+  --endpoint-url $ENDPOINT
+
+aws s3 cp ./local.txt s3://my-bucket/in/local.txt --endpoint-url $ENDPOINT
+```
+
+**Limits:** Lambda targets only; `s3:ObjectCreated:*`, `Put`, and `CompleteMultipartUpload` events; missing function is logged and skipped (S3 request still succeeds).
+
 ## Default seed (`demo-fn`)
 
 After `simulith seed` or Console **Seed demo data**, function **`demo-fn`** (Node.js 20.x echo handler) and an SQS event source mapping to `demo-queue` are loaded. Fixture format: [seed.md](seed.md).

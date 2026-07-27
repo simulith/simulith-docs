@@ -140,7 +140,7 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 | PutBucketNotificationConfiguration | available | — | LambdaFunctionConfiguration only |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
 
-**Not in matrix (gap):** object-create dispatch to Lambda, SNS/SQS targets, versioning, CORS, SSE-KMS, S3 Select, ListParts.
+**Not in matrix (gap):** SNS/SQS notification targets, versioning, CORS, SSE-KMS, S3 Select, ListParts.
 
 ---
 
