@@ -410,7 +410,8 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 | S3 `aws_s3_bucket` | **Available** — `CreateBucket`, `HeadBucket`, `GetBucketLocation/Versioning/ACL/Accelerate`, stub config reads; `s3_use_path_style = true` required |
 | S3 `aws_s3_object` | **Available** — `PutObject`, `HeadObject`, `DeleteObject`; single-part only |
 | S3 `force_destroy` | **Available** — clears objects before `DeleteBucket` on destroy |
-| S3 multipart / versioning / ACL writes | Not supported |
+| S3 versioning / ACL writes | Not supported |
+| S3 multipart upload | Available (CLI/SDK); not used by default Terraform `aws_s3_object` |
 | Lambda `aws_lambda_function` + SQS ESM | **Available** — green path [`lambda/`](examples/terraform/lambda/) |
 | IAM / VPC | Out of scope |
 

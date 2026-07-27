@@ -132,9 +132,13 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 | DeleteObject | available | yes (`delete-object`) | Idempotent (204) |
 | CopyObject | available | — | Same/cross-bucket via `x-amz-copy-source` |
 | DeleteObjects | available | — | Batch up to 1000 keys (`POST ?delete`) |
+| CreateMultipartUpload | available | — | POST `?uploads` |
+| UploadPart | available | — | `partNumber` 1–10000 |
+| CompleteMultipartUpload | available | — | Assembles parts; multipart ETag |
+| AbortMultipartUpload | available | — | Cleans in-progress upload |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
 
-**Not in matrix (gap):** multipart upload, versioning, CORS, SSE-KMS, S3 Select.
+**Not in matrix (gap):** versioning, CORS, SSE-KMS, S3 Select, ListParts.
 
 ---
 

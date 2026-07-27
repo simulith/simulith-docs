@@ -153,14 +153,13 @@ Guide: [s3.md](s3.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
-CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, CopyObject, DeleteObjects (batch), ListObjectsV2 (prefix, max-keys, continuation-token).
+CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, CopyObject, DeleteObjects (batch), ListObjectsV2 (prefix, max-keys, continuation-token), **multipart upload**.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Multipart upload | P3 | FW-S3-007 |
-| Multipart upload, versioning | P3 | FW-S3-020, FW-S3-021 |
+| Versioning | P3 | FW-S3-021 |
 
 ### Tier A reference set (9 ops)
 

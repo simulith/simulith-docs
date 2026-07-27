@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.48.0] - 2026-07-27
+
+### Features
+
+- ****: S3 multipart upload
+
 ## [0.47.0] - 2026-07-25
 
 ### Features

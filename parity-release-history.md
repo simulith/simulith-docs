@@ -4,7 +4,7 @@ Time series of **API ops available** and **verify coverage** from [aws-parity-ov
 
 > Snapshots are recorded automatically at each product release.
 
-Last updated: 2026-07-25.
+Last updated: 2026-07-27.
 
 ## Summary table
 
@@ -27,6 +27,7 @@ Last updated: 2026-07-25.
 | v0.44.0 | 2026-07-24 | 77 | 48/48 | 9/9 | 7 |
 | v0.46.0 | 2026-07-25 | 77 | 48/48 | 9/9 | 7 |
 | v0.47.0 | 2026-07-25 | 77 | 48/48 | 9/9 | 7 |
+| v0.48.0 | 2026-07-27 | 77 | 48/48 | 9/9 | 7 |
 
 ## Notes
 
