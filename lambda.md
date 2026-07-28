@@ -73,7 +73,7 @@ aws lambda delete-function --function-name my-fn --endpoint-url $ENDPOINT
 
 ## InvokeFunction (sync)
 
-Requires **`node`** or **`python3`** on the host PATH for interpreted runtimes (not included in the default Docker runtime image). **Go / custom (`provided*`)** runtimes run a **`bootstrap`** executable from the deployment zip (no host runtime required); build for your host OS when testing locally (Linux binary when deploying to AWS).
+Requires **`node`**, **`python3`**, or **`java`** on the host PATH for interpreted runtimes (not included in the default Docker runtime image). **Go / custom (`provided*`)** runtimes run a **`bootstrap`** executable from the deployment zip (no host runtime required); build for your host OS when testing locally (Linux binary when deploying to AWS).
 
 ```bash
 # Invoke (RequestResponse — default)
@@ -107,7 +107,37 @@ aws lambda update-function-configuration \
   --endpoint-url $ENDPOINT
 ```
 
-Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`), `provided` / `provided.al2` / `provided.al2023` (runs `bootstrap` binary from zip). `Environment.Variables` from CreateFunction or UpdateFunctionConfiguration are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
+Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`), `java11` / `java17` / `java21` (uses `java`; handler `ClassName::methodName`), `provided` / `provided.al2` / `provided.al2023` (runs `bootstrap` binary from zip). `Environment.Variables` from CreateFunction or UpdateFunctionConfiguration are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
+
+### Java (java11 / java17 / java21)
+
+Handler format: `com.example.App::handleRequest` (AWS Java convention). Deployment zip must contain compiled `.class` files (and `java/lib/…` for layer deps). Simulith runs an embedded bootstrap via `java -cp`.
+
+```bash
+# Minimal handler (default package)
+cat > /tmp/App.java <<'EOF'
+import java.util.HashMap;
+import java.util.Map;
+public class App {
+  public Map<String, Object> handleRequest(Map<String, Object> event) {
+    Map<String, Object> out = new HashMap<>();
+    out.put("message", "hello from java");
+    return out;
+  }
+}
+EOF
+cd /tmp && javac App.java && zip function.zip App.class
+
+aws lambda create-function \
+  --function-name my-java-fn \
+  --runtime java17 \
+  --handler App::handleRequest \
+  --role arn:aws:iam::000000000000:role/r \
+  --zip-file fileb:///tmp/function.zip \
+  --endpoint-url $ENDPOINT
+
+aws lambda invoke --function-name my-java-fn --payload '{}' --endpoint-url $ENDPOINT /tmp/out.json
+```
 
 ### Go (provided.al2023)
 
@@ -304,8 +334,9 @@ Default values: region `us-east-1`, accountId `000000000000`.
 - **InvocationType: Event** (async HTTP invoke) — **supported** (202 + background run). ESM poller still uses sync invoke internally.
 - **Function URLs** — **supported** via `/2021-10-31/functions/<name>/url` (create/get/delete + HTTP invoke on same path; `AuthType: NONE` default).
 - **Lambda Layers** — **supported** via `/2018-10-31/layers/…` (publish/list/get/delete; `Layers` on CreateFunction; nodejs `NODE_PATH`, python `PYTHONPATH`).
-- **Go / provided runtimes** — **supported** (`provided`, `provided.al2`, `provided.al2023`; `bootstrap` binary in zip). Java and other custom runtimes not supported.
-- **Docker runtime image** — does not bundle `node` or `python3`; invoke works when binaries are on PATH (local dev) or image is extended. Provided/Go invoke needs no extra host runtime.
+- **Go / provided runtimes** — **supported** (`provided`, `provided.al2`, `provided.al2023`; `bootstrap` binary in zip).
+- **Java runtimes** — **supported** (`java11`, `java17`, `java21`; subprocess + embedded bootstrap; requires `java` on PATH).
+- **Docker runtime image** — does not bundle `node`, `python3`, or `java`; invoke works when binaries are on PATH (local dev) or image is extended. Provided/Go invoke needs no extra host runtime.
 - **Code.S3Bucket / Code.S3Key** — not supported. Use `Code.ZipFile` (base64).
 - **Runtime validation** — Simulith accepts any runtime string. AWS enforces a specific list.
 - **Zip size limits** — no limit enforced in this version. AWS limits 50 MB compressed / 250 MB uncompressed.

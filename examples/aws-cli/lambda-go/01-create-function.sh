@@ -29,7 +29,23 @@ ZIP="${BUILD_DIR}/function.zip"
 
 rm -f "$BOOTSTRAP" "$ZIP"
 go build -o "$BOOTSTRAP" .
-zip -q -j "$ZIP" "$BOOTSTRAP"
+if command -v zip >/dev/null 2>&1; then
+  zip -q -j "$ZIP" "$BOOTSTRAP"
+elif command -v python >/dev/null 2>&1; then
+  python -c "import zipfile, sys; z=zipfile.ZipFile(sys.argv[1], 'w'); z.write(sys.argv[2], sys.argv[3]); z.close()" "$ZIP" "$BOOTSTRAP" "$BOOTSTRAP_NAME"
+else
+  echo "zip or python required to package bootstrap"
+  exit 1
+fi
+
+ZIP_FILE="$ZIP"
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*)
+    if command -v cygpath >/dev/null 2>&1; then
+      ZIP_FILE="$(cygpath -w "$ZIP" | tr '\\' '/')"
+    fi
+    ;;
+esac
 
 ROLE_ARN="${LAMBDA_ROLE_ARN:-arn:aws:iam::000000000000:role/simulith-cli-demo}"
 
@@ -43,7 +59,7 @@ aws lambda create-function \
   --runtime provided.al2023 \
   --handler bootstrap \
   --role "$ROLE_ARN" \
-  --zip-file "fileb://${ZIP}" \
+  --zip-file "fileb://${ZIP_FILE}" \
   --timeout 3 \
   --endpoint-url "$AWS_ENDPOINT" \
   --region "$AWS_DEFAULT_REGION"
