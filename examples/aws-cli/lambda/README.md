@@ -55,6 +55,7 @@ aws lambda delete-function --function-name "$FUNCTION_NAME" --endpoint-url "$AWS
 - Dummy IAM role ARN only (no `aws_iam_role`)
 - Node.js zip inline; no layers, VPC, or aliases
 - Go bootstrap: [`../lambda-go/`](../lambda-go/)
+- Java handler: [`../lambda-java/`](../lambda-java/)
 - See [lambda.md](../../../lambda.md) and [compatibility-matrix.md](../../../compatibility-matrix.md)
 
 ## Related

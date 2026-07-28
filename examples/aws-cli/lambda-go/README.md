@@ -64,4 +64,5 @@ aws lambda delete-function --function-name "$FUNCTION_NAME" --endpoint-url "$AWS
 ## Related
 
 - Node.js CLI demo: [`../lambda/`](../lambda/)
+- Java CLI demo: [`../lambda-java/`](../lambda-java/)
 - Terraform module: [`../../terraform/lambda/`](../../terraform/lambda/)

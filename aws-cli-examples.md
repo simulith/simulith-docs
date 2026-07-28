@@ -564,7 +564,7 @@ aws secretsmanager delete-secret \
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).
 
-**Runnable scripts (AWS-derived):** [`examples/aws-cli/lambda/`](examples/aws-cli/lambda/) — create → update-function-configuration → invoke (Node.js). [`examples/aws-cli/lambda-go/`](examples/aws-cli/lambda-go/) — same flow for **Go `provided.al2023`** (requires `go` to build bootstrap; no Node on invoke).
+**Runnable scripts (AWS-derived):** [`examples/aws-cli/lambda/`](examples/aws-cli/lambda/) — create → update-function-configuration → invoke (Node.js). [`examples/aws-cli/lambda-go/`](examples/aws-cli/lambda-go/) — same flow for **Go `provided.al2023`** (requires `go` to build bootstrap; no Node on invoke). [`examples/aws-cli/lambda-java/`](examples/aws-cli/lambda-java/) — **Java `java17`** (`App::handleRequest`; requires `java`/`javac` to compile handler).
 
 ```bash
 # Create a zip from a Node.js handler

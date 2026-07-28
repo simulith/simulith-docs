@@ -160,6 +160,8 @@ For local Simulith on Windows/macOS, build without `GOOS=linux` so the binary ma
 
 **Runnable CLI example:** [`examples/aws-cli/lambda-go/`](examples/aws-cli/lambda-go/) — build `bootstrap`, create-function, invoke, update-configuration.
 
+**Java CLI example:** [`examples/aws-cli/lambda-java/`](examples/aws-cli/lambda-java/) — compile `App.class`, `App::handleRequest`, invoke (requires `java`/`javac` on PATH).
+
 ## Function URLs
 
 HTTP invoke without API Gateway. Management API uses `/2021-10-31/functions/{name}/url`; the returned `FunctionUrl` is the same path on `localhost` for local dev.
