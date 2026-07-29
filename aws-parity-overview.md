@@ -5,7 +5,7 @@ Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 +
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-28..
+Last updated: 2026-07-29..
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
@@ -22,7 +22,7 @@ Last updated: 2026-07-28..
 | **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
 | **API Gateway** | 4 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
 | **Secrets Manager** | 4 | 2 / 2 scenarios | — | **~5%** (4 / ~80) |
-| **Cognito** | 23 | — | — | **~8%** (23 / ~300) |
+| **Cognito** | 23 | 2 / 2 scenarios | — | **~8%** (23 / ~300) |
 | **SES** | 12 | — | — | **~4%** (12 / ~300) |
 | **EventBridge** | 9 | — | — | **~3%** (9 / ~300) |
 | **Total** | **102** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
@@ -241,14 +241,14 @@ Guide: [cognito.md](cognito.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/).
+CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| verify cognito | P1 |  |
 | Lambda triggers | P2 |  |
+| Console panel | P1 |  |
 
 ---
 
@@ -289,11 +289,11 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 
 ## What to do next (priority)
 
-**Next depth:** Cognito/SES/EventBridge verify; Console panels. Product messaging / docs sync stories as needed.
+**Next depth:** SES/EventBridge verify; Cognito/SES/EventBridge Console panels.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | Cognito / SES / EventBridge verify + Console | , , , FW-*-004 |
+| **Depth** | SES / EventBridge verify + Console | , , FW-*-004 |
 | **Breadth** | PutEvents (later) |  |
 
 ---

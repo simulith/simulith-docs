@@ -8,7 +8,7 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-07-28..
+Last updated: 2026-07-29..
 
 ## Summary
 
@@ -219,26 +219,26 @@ Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secret
 
 ## Cognito (Identity Provider)
 
-Guide: [cognito.md](cognito.md) · Verify: planned
+Guide: [cognito.md](cognito.md) · Verify: `simulith verify cognito`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateUserPool | available | no |  |
-| DescribeUserPool | available | no | |
+| CreateUserPool | available | yes (`user-pool-client-lifecycle`) |  |
+| DescribeUserPool | available | yes (`user-pool-client-lifecycle`) | |
 | ListUserPools | available | no | |
-| DeleteUserPool | available | no | Cascades clients/groups/domain |
+| DeleteUserPool | available | yes (`user-pool-client-lifecycle`) | Cascades clients/groups/domain |
 | UpdateUserPool | available | no | Config merge |
-| CreateUserPoolClient | available | no | |
+| CreateUserPoolClient | available | yes (`user-pool-client-lifecycle`) | |
 | DescribeUserPoolClient | available | no | |
-| ListUserPoolClients | available | no | |
-| DeleteUserPoolClient | available | no | |
+| ListUserPoolClients | available | yes (`user-pool-client-lifecycle`) | |
+| DeleteUserPoolClient | available | yes (`user-pool-client-lifecycle`) | |
 | CreateGroup / GetGroup / ListGroups / DeleteGroup | available | no | |
 | CreateUserPoolDomain / Describe / Delete | available | no | Metadata only |
-| JWKS GET `/{poolId}/.well-known/jwks.json` | available | no | RSA per pool |
-| AdminCreateUser / AdminGetUser | available | no |  |
-| AdminSetUserPassword / AdminConfirmSignUp | available | no | |
+| JWKS GET `/{poolId}/.well-known/jwks.json` | available | yes (`admin-auth-jwks`) | RSA per pool |
+| AdminCreateUser / AdminGetUser | available | yes (`admin-auth-jwks`) |  |
+| AdminSetUserPassword / AdminConfirmSignUp | available | yes (`admin-auth-jwks`) | AdminSetUserPassword |
 | AdminEnableUser / AdminDisableUser | available | no | |
-| AdminInitiateAuth | available | no | ADMIN_USER_PASSWORD_AUTH → RS256 JWT |
+| AdminInitiateAuth | available | yes (`admin-auth-jwks`) | ADMIN_USER_PASSWORD_AUTH → RS256 JWT |
 
 ---
 
@@ -281,7 +281,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
-| Cognito | — | — |
+| Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | — | — |
 | EventBridge | — | — |
 
@@ -294,6 +294,7 @@ simulith verify s3 --skip-aws
 simulith verify lambda --skip-aws
 simulith verify apigateway --skip-aws
 simulith verify secretsmanager --skip-aws
+simulith verify cognito --skip-aws
 ```
 
 ---

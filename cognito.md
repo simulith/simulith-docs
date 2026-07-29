@@ -37,7 +37,17 @@ Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url 
 - Domain is metadata only (no real CloudFront)
 - `UpdateUserPool` merges JSON config; not full AWS parity
 
-## Example (AWS CLI)
+## Verify
+
+```bash
+simulith verify cognito --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify cognito                     # AWS parity (requires AWS credentials)
+simulith verify cognito --filter admin-auth  # subset by scenario name prefix
+```
+
+Scenarios: `user-pool-client-lifecycle`, `admin-auth-jwks`.
+
+## Terraform
 
 ```bash
 export AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_DEFAULT_REGION=us-east-1

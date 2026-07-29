@@ -301,6 +301,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Lambda | `simulith verify lambda --skip-aws` | 9 |
 | API Gateway | `simulith verify apigateway --skip-aws` | 4 |
 | Secrets Manager | `simulith verify secretsmanager --skip-aws` | 2 |
+| Cognito | `simulith verify cognito --skip-aws` | 2 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH.
 
@@ -319,6 +320,7 @@ runtime/artifacts/
   verify-lambda.json
   verify-apigateway.json
   verify-secretsmanager.json
+  verify-cognito.json
 ```
 
 Download from the PR **Checks** tab → **Parity smoke** → **Artifacts**.
