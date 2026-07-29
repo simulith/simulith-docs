@@ -22,7 +22,8 @@ Last updated: 2026-07-22..
 | **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
 | **API Gateway** | 4 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
 | **Secrets Manager** | 4 | 2 / 2 scenarios | — | **~5%** (4 / ~80) |
-| **Total** | **77** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **Cognito** | 23 | — | — | **~8%** (23 / ~300) |
+| **Total** | **93** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
@@ -232,14 +233,31 @@ See [secretsmanager.md](secretsmanager.md) for limits.
 
 ---
 
+## Cognito
+
+Guide: [cognito.md](cognito.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/).
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| verify cognito | P1 |  |
+| Lambda triggers | P2 |  |
+
+---
+
 ## What to do next (priority)
 
-**Secrets Manager B4:** complete. Seed demo secret **`demo-secret`** in default fixture.
+**Next breadth:** SES, EventBridge — the product backlog, the product backlog. Cognito verify.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
+| **Breadth** | SES, EventBridge; Cognito verify | , ,  |
 | **Depth** | Lambda / API Gateway / Secrets Manager P3 | Per-service the product backlog Deferred |
-| **Product** | Vision, docs mirror, landing | the product backlog |
 
 ---
 

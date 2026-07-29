@@ -14,7 +14,7 @@ Last updated: 2026-07-17..
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 7 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager) |
+| Services in matrix | 8 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito) |
 | Operations **available** locally | 79 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
@@ -217,6 +217,31 @@ Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secret
 
 ---
 
+## Cognito (Identity Provider)
+
+Guide: [cognito.md](cognito.md) · Verify: planned
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateUserPool | available | no |  |
+| DescribeUserPool | available | no | |
+| ListUserPools | available | no | |
+| DeleteUserPool | available | no | Cascades clients/groups/domain |
+| UpdateUserPool | available | no | Config merge |
+| CreateUserPoolClient | available | no | |
+| DescribeUserPoolClient | available | no | |
+| ListUserPoolClients | available | no | |
+| DeleteUserPoolClient | available | no | |
+| CreateGroup / GetGroup / ListGroups / DeleteGroup | available | no | |
+| CreateUserPoolDomain / Describe / Delete | available | no | Metadata only |
+| JWKS GET `/{poolId}/.well-known/jwks.json` | available | no | RSA per pool |
+| AdminCreateUser / AdminGetUser | available | no |  |
+| AdminSetUserPassword / AdminConfirmSignUp | available | no | |
+| AdminEnableUser / AdminDisableUser | available | no | |
+| AdminInitiateAuth | available | no | ADMIN_USER_PASSWORD_AUTH → RS256 JWT |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -230,6 +255,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
+| Cognito | — | — |
 
 ```bash
 simulith verify dynamodb --skip-aws

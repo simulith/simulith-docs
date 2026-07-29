@@ -1,0 +1,5 @@
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:4566"
+aws_region            = "us-east-1"
+pool_name             = "simulith-cognito-tf"
+client_name           = "simulith-app-tf"

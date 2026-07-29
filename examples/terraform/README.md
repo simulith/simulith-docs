@@ -16,6 +16,7 @@ runtime/examples/terraform/
 ├── lambda/             ← aws_lambda_function + aws_sqs_queue + event source mapping
 ├── apigateway/         ← RestApi + Lambda AWS_PROXY + stage + permission
 ├── secretsmanager/     ← aws_secretsmanager_secret + secret_version
+├── cognito/            ← aws_cognito_user_pool + client + group
 └── secretsmanager-lambda/  ← secret data source → Lambda environment
 └── dynamodb-sqs/           ← table + queue fan-out
 └── s3-lambda/              ← bucket notification → Lambda
