@@ -27,7 +27,15 @@ Compatible with AWS CLI (`aws ses`) and SDKs when using `--endpoint-url http://l
 - No real SMTP / internet delivery
 - Domain identity / DKIM not implemented
 - Configuration sets, bounce/complaint simulation deferred
-- `simulith verify ses` planned
+## Verify
+
+```bash
+simulith verify ses --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify ses                     # AWS parity (identity/template; send is Simulith smoke)
+simulith verify ses --filter identity   # subset by scenario name prefix
+```
+
+Scenarios: `identity-template-lifecycle`, `send-templated-email`.
 
 ## Example (AWS CLI)
 

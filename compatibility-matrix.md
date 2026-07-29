@@ -244,14 +244,14 @@ Guide: [cognito.md](cognito.md) · Verify: `simulith verify cognito`
 
 ## SES (Simple Email Service)
 
-Guide: [ses.md](ses.md) · Verify: planned
+Guide: [ses.md](ses.md) · Verify: `simulith verify ses`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| VerifyEmailIdentity / DeleteIdentity / ListIdentities | available | no | Auto-verified locally |
-| GetIdentityVerificationAttributes | available | no | |
-| CreateTemplate / Get / Update / Delete / ListTemplates | available | no | |
-| SendEmail / SendTemplatedEmail / SendRawEmail | available | no | Captured in local outbox |
+| VerifyEmailIdentity / DeleteIdentity / ListIdentities | available | yes (`identity-template-lifecycle`) | Auto-verified locally |
+| GetIdentityVerificationAttributes | available | yes (`identity-template-lifecycle`) | |
+| CreateTemplate / Get / Update / Delete / ListTemplates | available | yes (`identity-template-lifecycle`) | Update/List not in default scenarios |
+| SendEmail / SendTemplatedEmail / SendRawEmail | available | yes (`send-templated-email`) | Outbox; AWS send skipped (sandbox) |
 
 ---
 
@@ -282,7 +282,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
-| SES | — | — |
+| SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | — | — |
 
 ```bash
@@ -295,6 +295,7 @@ simulith verify lambda --skip-aws
 simulith verify apigateway --skip-aws
 simulith verify secretsmanager --skip-aws
 simulith verify cognito --skip-aws
+simulith verify ses --skip-aws
 ```
 
 ---
