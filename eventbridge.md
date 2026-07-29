@@ -27,7 +27,15 @@ Compatible with AWS CLI (`aws events`) and SDKs when using `--endpoint-url http:
 - No custom event buses / PutEvents
 - Cron is a local approximation (≈1 minute), not full AWS cron semantics
 - Non-Lambda targets are skipped
-- `simulith verify eventbridge` planned
+## Verify
+
+```bash
+simulith verify eventbridge --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify eventbridge                     # AWS parity (rule CRUD; schedule fire is Simulith smoke)
+simulith verify eventbridge --filter schedule   # subset by scenario name prefix
+```
+
+Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PATH).
 
 ## Example (AWS CLI)
 

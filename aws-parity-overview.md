@@ -274,13 +274,12 @@ Guide: [eventbridge.md](eventbridge.md) · Backlog: the product backlog
 
 ### Implemented
 
-PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTargets, RemoveTargets, ListTargetsByRule; schedule poller → Lambda InvokeSync. Terraform green path [`examples/terraform/eventbridge/`](examples/terraform/eventbridge/).
+PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTargets, RemoveTargets, ListTargetsByRule; schedule poller → Lambda InvokeSync. Terraform green path [`examples/terraform/eventbridge/`](examples/terraform/eventbridge/). **`simulith verify eventbridge`** (2 scenarios).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| verify eventbridge | P1 |  |
 | PutEvents / custom buses | P2 |  |
 | Console panel | P1 |  |
 

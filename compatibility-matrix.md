@@ -257,14 +257,14 @@ Guide: [ses.md](ses.md) · Verify: `simulith verify ses`
 
 ## EventBridge (CloudWatch Events)
 
-Guide: [eventbridge.md](eventbridge.md) · Verify: planned
+Guide: [eventbridge.md](eventbridge.md) · Verify: `simulith verify eventbridge`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| PutRule / DeleteRule / DescribeRule / ListRules | available | no | Default bus; schedule only |
-| EnableRule / DisableRule | available | no | |
-| PutTargets / RemoveTargets / ListTargetsByRule | available | no | Lambda ARN targets |
-| Schedule → Lambda Invoke | available | no | `rate(...)`; `cron(...)` ≈ 1m |
+| PutRule / DeleteRule / DescribeRule / ListRules | available | yes (`rule-target-lifecycle`) | Default bus; schedule only |
+| EnableRule / DisableRule | available | yes (`rule-target-lifecycle`) | |
+| PutTargets / RemoveTargets / ListTargetsByRule | available | yes (`rule-target-lifecycle`) | Lambda ARN targets |
+| Schedule → Lambda Invoke | available | yes (`schedule-lambda-invoke`) | `rate(...)`; `cron(...)` ≈ 1m; needs `node` |
 
 ---
 
@@ -283,7 +283,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
-| EventBridge | — | — |
+| EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -296,6 +296,7 @@ simulith verify apigateway --skip-aws
 simulith verify secretsmanager --skip-aws
 simulith verify cognito --skip-aws
 simulith verify ses --skip-aws
+simulith verify eventbridge --skip-aws
 ```
 
 ---
