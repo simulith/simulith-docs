@@ -5,7 +5,7 @@ Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 +
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-22..
+Last updated: 2026-07-28..
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
@@ -24,7 +24,8 @@ Last updated: 2026-07-22..
 | **Secrets Manager** | 4 | 2 / 2 scenarios | — | **~5%** (4 / ~80) |
 | **Cognito** | 23 | — | — | **~8%** (23 / ~300) |
 | **SES** | 12 | — | — | **~4%** (12 / ~300) |
-| **Total** | **93** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **EventBridge** | 9 | — | — | **~3%** (9 / ~300) |
+| **Total** | **102** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
@@ -268,14 +269,32 @@ VerifyEmailIdentity, DeleteIdentity, ListIdentities, GetIdentityVerificationAttr
 
 ---
 
+## EventBridge
+
+Guide: [eventbridge.md](eventbridge.md) · Backlog: the product backlog
+
+### Implemented
+
+PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTargets, RemoveTargets, ListTargetsByRule; schedule poller → Lambda InvokeSync. Terraform green path [`examples/terraform/eventbridge/`](examples/terraform/eventbridge/).
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| verify eventbridge | P1 |  |
+| PutEvents / custom buses | P2 |  |
+| Console panel | P1 |  |
+
+---
+
 ## What to do next (priority)
 
-**Next breadth:** EventBridge schedule — the product backlog. Cognito/SES verify; SES Console.
+**Next depth:** Cognito/SES/EventBridge verify; Console panels. Product messaging / docs sync stories as needed.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Breadth** | EventBridge; Cognito/SES verify | , ,  |
-| **Depth** | Lambda / API Gateway / Secrets Manager P3 | Per-service the product backlog Deferred |
+| **Depth** | Cognito / SES / EventBridge verify + Console | , , , FW-*-004 |
+| **Breadth** | PutEvents (later) |  |
 
 ---
 

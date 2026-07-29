@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.58.0] - 2026-07-29
+
+### Features
+
+- ****: EventBridge schedule → Lambda invoke
+
 ## [0.57.0] - 2026-07-29
 
 ### Features

@@ -18,6 +18,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | Secrets Manager | [`secretsmanager/`](examples/terraform/secretsmanager/) | Yes — secret + version |
 | Cognito | [`cognito/`](examples/terraform/cognito/) | Yes — user pool + client + group |
 | SES | [`ses/`](examples/terraform/ses/) | Yes — email identity + template |
+| EventBridge | [`eventbridge/`](examples/terraform/eventbridge/) | Yes — rate rule + Lambda target |
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md). **Honest integration examples** (AWS-derived Terraform + CLI): [below](#honest-integration-examples).
 
@@ -253,6 +254,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`secretsmanager/`](examples/terraform/secretsmanager/) | Green | Green | CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, DeleteSecret — `-parallelism=1` |
 | [`cognito/`](examples/terraform/cognito/) | Green | Green | User pool + client + group; JWKS at `/{poolId}/.well-known/jwks.json` |
 | [`ses/`](examples/terraform/ses/) | Green | Green | Email identity + template; Send* outbox local |
+| [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 

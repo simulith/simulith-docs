@@ -18,6 +18,7 @@ runtime/examples/terraform/
 ├── secretsmanager/     ← aws_secretsmanager_secret + secret_version
 ├── cognito/            ← aws_cognito_user_pool + client + group
 ├── ses/                ← aws_ses_email_identity + template
+├── eventbridge/        ← rate rule → Lambda target
 └── secretsmanager-lambda/  ← secret data source → Lambda environment
 └── dynamodb-sqs/           ← table + queue fan-out
 └── s3-lambda/              ← bucket notification → Lambda

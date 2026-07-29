@@ -8,14 +8,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-07-17..
+Last updated: 2026-07-28..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 9 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES) |
-| Operations **available** locally | 79 |
+| Services in matrix | 10 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge) |
+| Operations **available** locally | 88 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -255,6 +255,19 @@ Guide: [ses.md](ses.md) · Verify: planned
 
 ---
 
+## EventBridge (CloudWatch Events)
+
+Guide: [eventbridge.md](eventbridge.md) · Verify: planned
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| PutRule / DeleteRule / DescribeRule / ListRules | available | no | Default bus; schedule only |
+| EnableRule / DisableRule | available | no | |
+| PutTargets / RemoveTargets / ListTargetsByRule | available | no | Lambda ARN targets |
+| Schedule → Lambda Invoke | available | no | `rate(...)`; `cron(...)` ≈ 1m |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -270,6 +283,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
 | Cognito | — | — |
 | SES | — | — |
+| EventBridge | — | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
