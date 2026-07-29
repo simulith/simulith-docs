@@ -14,7 +14,7 @@ Last updated: 2026-07-17..
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 8 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito) |
+| Services in matrix | 9 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES) |
 | Operations **available** locally | 79 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
@@ -242,6 +242,19 @@ Guide: [cognito.md](cognito.md) · Verify: planned
 
 ---
 
+## SES (Simple Email Service)
+
+Guide: [ses.md](ses.md) · Verify: planned
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| VerifyEmailIdentity / DeleteIdentity / ListIdentities | available | no | Auto-verified locally |
+| GetIdentityVerificationAttributes | available | no | |
+| CreateTemplate / Get / Update / Delete / ListTemplates | available | no | |
+| SendEmail / SendTemplatedEmail / SendRawEmail | available | no | Captured in local outbox |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -256,6 +269,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
 | Cognito | — | — |
+| SES | — | — |
 
 ```bash
 simulith verify dynamodb --skip-aws

@@ -23,6 +23,7 @@ Last updated: 2026-07-22..
 | **API Gateway** | 4 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
 | **Secrets Manager** | 4 | 2 / 2 scenarios | — | **~5%** (4 / ~80) |
 | **Cognito** | 23 | — | — | **~8%** (23 / ~300) |
+| **SES** | 12 | — | — | **~4%** (12 / ~300) |
 | **Total** | **93** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
@@ -250,13 +251,30 @@ CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool;
 
 ---
 
+## SES
+
+Guide: [ses.md](ses.md) · Backlog: the product backlog
+
+### Implemented
+
+VerifyEmailIdentity, DeleteIdentity, ListIdentities, GetIdentityVerificationAttributes; CreateTemplate / GetTemplate / UpdateTemplate / DeleteTemplate / ListTemplates; SendEmail / SendTemplatedEmail / SendRawEmail (local outbox). Terraform green path [`examples/terraform/ses/`](examples/terraform/ses/).
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| verify ses | P1 |  |
+| Console outbox panel | P1 |  |
+
+---
+
 ## What to do next (priority)
 
-**Next breadth:** SES, EventBridge — the product backlog, the product backlog. Cognito verify.
+**Next breadth:** EventBridge schedule — the product backlog. Cognito/SES verify; SES Console.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Breadth** | SES, EventBridge; Cognito verify | , ,  |
+| **Breadth** | EventBridge; Cognito/SES verify | , ,  |
 | **Depth** | Lambda / API Gateway / Secrets Manager P3 | Per-service the product backlog Deferred |
 
 ---

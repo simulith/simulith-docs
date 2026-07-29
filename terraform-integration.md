@@ -17,6 +17,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | API Gateway | [`apigateway/`](examples/terraform/apigateway/) | Yes — REST API + Lambda proxy + stage |
 | Secrets Manager | [`secretsmanager/`](examples/terraform/secretsmanager/) | Yes — secret + version |
 | Cognito | [`cognito/`](examples/terraform/cognito/) | Yes — user pool + client + group |
+| SES | [`ses/`](examples/terraform/ses/) | Yes — email identity + template |
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md). **Honest integration examples** (AWS-derived Terraform + CLI): [below](#honest-integration-examples).
 
@@ -251,6 +252,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`apigateway/`](examples/terraform/apigateway/) | Green | Green | RestApi CRUD reads/deletes, resource/method/integration, deployment/stage, Lambda AddPermission/RemovePermission/GetPolicy — `-parallelism=1` |
 | [`secretsmanager/`](examples/terraform/secretsmanager/) | Green | Green | CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, DeleteSecret — `-parallelism=1` |
 | [`cognito/`](examples/terraform/cognito/) | Green | Green | User pool + client + group; JWKS at `/{poolId}/.well-known/jwks.json` |
+| [`ses/`](examples/terraform/ses/) | Green | Green | Email identity + template; Send* outbox local |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 
