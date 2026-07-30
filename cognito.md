@@ -47,6 +47,12 @@ simulith verify cognito --filter admin-auth  # subset by scenario name prefix
 
 Scenarios: `user-pool-client-lifecycle`, `admin-auth-jwks`.
 
+## Console
+
+Panel **Cognito** (`/cognito`) — list user pools, inspect app clients and groups, open JWKS URL. .
+
+Inspect-only (create/delete via CLI or Terraform). Seed demo pool is .
+
 ## Terraform
 
 ```bash

@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -68,6 +68,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 8. Open **API Gateway** — list REST APIs, load stage, copy invoke URL, HTTP smoke invoke, delete API.
 9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
+11. Open **Cognito** — list user pools, inspect clients and groups, open JWKS URL.
 10. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
 11. Click **Reset local state** — clears all panels.
 
@@ -121,8 +122,9 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi | Create/deploy UI deferred; seeded `demo-api` via **Seed** |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
+| **Cognito** | ListUserPools, DescribeUserPool, ListUserPoolClients, ListGroups; JWKS link | Create/delete UI deferred; seed demo pool →  |
 
-Full gap analysis: [console.md](console.md).
+Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 
 ### DynamoDB JSON document mode
 

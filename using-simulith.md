@@ -65,7 +65,7 @@ Your app / CLI / Terraform
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
 
-When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**) for documented deviations before assuming a bug.
+When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**, **[eventbridge.md](eventbridge.md)**) for documented deviations before assuming a bug.
 
 ---
 
@@ -117,7 +117,7 @@ Best for **exploration**, demos, and users who prefer a GUI.
 
 1. Open **http://localhost:9080**
 2. **Seed demo data** on the dashboard (or load seed via CLI — [seed.md](seed.md))
-3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, and **Lambda** panels (`demo-fn` after Seed)
+3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, **Lambda**, and **EventBridge** panels (`demo-fn` and `demo-rule` after Seed)
 4. **Lambda panel:** list, config, invoke with JSON — sync invoke needs `node`/`python3` on the runtime host PATH — [lambda.md](lambda.md)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 

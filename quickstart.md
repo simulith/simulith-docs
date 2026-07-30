@@ -101,7 +101,7 @@ Expected: `{"status":"ok"}`.
 
 ## 2. Demo data
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, and Secrets Manager secret `demo-secret`. Details: [seed.md](seed.md).
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, Secrets Manager secret `demo-secret`, and EventBridge rule `demo-rule` (`rate(5 minutes)` → `demo-fn`). Details: [seed.md](seed.md).
 
 **Console (Option A):** Dashboard → **Seed demo data** (runtime must be healthy).
 
@@ -142,7 +142,7 @@ aws sqs receive-message \
   --region us-east-1
 ```
 
-Expected: table metadata for `Demo`; message body `hello from seed`; SSM parameter `/app/demo/api-url` value `http://localhost:8080`; Lambda `demo-fn` listed after seed.
+Expected: table metadata for `Demo`; message body `hello from seed`; SSM parameter `/app/demo/api-url` value `http://localhost:8080`; Lambda `demo-fn` and EventBridge `demo-rule` listed after seed.
 
 ```bash
 aws ssm get-parameter --name /app/demo/api-url \

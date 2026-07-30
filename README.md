@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `1db25b3` on 2026-07-30.
+Generated from monorepo commit `7294991` on 2026-07-30.
 
 ## Start here
 
@@ -42,6 +42,7 @@ Generated from monorepo commit `1db25b3` on 2026-07-30.
 | [Lambda](lambda.md) | Functions, invoke, SQS ESM; seeded demo-fn |
 | [API Gateway](apigateway.md) | REST API CRUD (management API) |
 | [Secrets Manager](secretsmanager.md) | Secret CRUD (MVP subset) |
+| [EventBridge](eventbridge.md) | Schedule rules → Lambda; seeded demo-rule |
 
 ## Compatibility
 
@@ -49,6 +50,7 @@ Generated from monorepo commit `1db25b3` on 2026-07-30.
 | --- | --- |
 | [Compatibility matrix](compatibility-matrix.md) | Operation × verify coverage |
 | [AWS parity overview](aws-parity-overview.md) | API summary by service |
+| [Console parity overview](console-parity-overview.md) | Console UI vs AWS Console |
 | [Parity release history](parity-release-history.md) | Ops/verify series per release |
 | [Compatibility / verify](compatibility.md) | `simulith verify` and reports |
 | [Trust bundle](trust-bundle.md) | Enterprise evaluation package |

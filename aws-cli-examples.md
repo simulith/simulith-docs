@@ -560,6 +560,40 @@ aws secretsmanager delete-secret \
 
 ---
 
+## EventBridge
+
+Schedule rules that invoke Lambda locally. See [eventbridge.md](eventbridge.md). Default seed includes rule `demo-rule` → `demo-fn`.
+
+**Terraform green path:** [`examples/terraform/eventbridge/`](examples/terraform/eventbridge/).
+
+```bash
+aws events put-rule \
+  --name tick \
+  --schedule-expression "rate(1 minute)" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws events put-targets \
+  --rule tick \
+  --targets "Id"="1","Arn"="arn:aws:lambda:us-east-1:000000000000:function:demo-fn" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws events list-rules \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws events list-targets-by-rule \
+  --rule tick \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws events delete-rule \
+  --name tick \
+  --force \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify eventbridge --skip-aws` (see [compatibility.md](compatibility.md)).
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).
@@ -723,6 +757,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; Terraform [`examples/terraform/ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
 | Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
 | Secrets Manager | CreateSecret, PutSecretValue, GetSecretValue, DeleteSecret; see [secretsmanager.md](secretsmanager.md) |
+| EventBridge | PutRule / PutTargets / ListRules (schedule → Lambda); see [eventbridge.md](eventbridge.md) |
 | S3 | Put/Get/Head/List/Copy/DeleteObject(s); see [s3.md](s3.md) |
 
 Full deviation tables:

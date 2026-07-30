@@ -241,14 +241,14 @@ Guide: [cognito.md](cognito.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios).
+CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios). Console panel `/cognito`.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
 | Lambda triggers | P2 |  |
-| Console panel | P1 |  |
+| Console panel | P1 | **Shipped ** |
 
 ---
 
@@ -287,11 +287,11 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 
 ## What to do next (priority)
 
-**Next depth:** Cognito/SES Console panels; EventBridge docs sync.
+**Next depth:** Cognito messaging/seed/docs; SES Console panel and public messaging.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | Cognito / SES Console; EventBridge docs sync | , ,  |
+| **Depth** | Cognito messaging/seed/docs; SES Console + messaging | –008,  |
 | **Breadth** | PutEvents (later) |  |
 
 ---
