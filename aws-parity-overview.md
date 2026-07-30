@@ -23,8 +23,8 @@ Last updated: 2026-07-29..
 | **API Gateway** | 4 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
 | **Secrets Manager** | 4 | 2 / 2 scenarios | — | **~5%** (4 / ~80) |
 | **Cognito** | 23 | 2 / 2 scenarios | — | **~8%** (23 / ~300) |
-| **SES** | 12 | — | — | **~4%** (12 / ~300) |
-| **EventBridge** | 9 | — | — | **~3%** (9 / ~300) |
+| **SES** | 12 | 2 / 2 scenarios | — | **~4%** (12 / ~300) |
+| **EventBridge** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
 | **Total** | **102** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
@@ -281,17 +281,17 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 | Gap | Priority | Backlog |
 | --- | --- | --- |
 | PutEvents / custom buses | P2 |  |
-| Console panel | P1 |  |
+| Console panel | P1 | **Shipped ** |
 
 ---
 
 ## What to do next (priority)
 
-**Next depth:** SES/EventBridge verify; Cognito/SES/EventBridge Console panels.
+**Next depth:** Cognito/SES Console panels; EventBridge product messaging / seed / docs sync.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | SES / EventBridge verify + Console | , , FW-*-004 |
+| **Depth** | Cognito / SES Console; EventBridge P2 surfaces | , , + |
 | **Breadth** | PutEvents (later) |  |
 
 ---

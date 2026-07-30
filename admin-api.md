@@ -143,6 +143,40 @@ Empty queue: `"messages": []`.
 
 ---
 
+### `GET /_simulith/v1/eventbridge/rules`
+
+**Peek** EventBridge schedule rules from SQLite — includes **`lastInvokedAt`** (updated by the schedule poller), which AWS `ListRules` / `DescribeRule` do not return.
+
+**Response 200:**
+
+```json
+{
+  "status": "ok",
+  "rules": [
+    {
+      "name": "tick",
+      "arn": "arn:aws:events:us-east-1:000000000000:rule/tick",
+      "scheduleExpression": "rate(1 minute)",
+      "state": "ENABLED",
+      "description": "",
+      "eventBusName": "default",
+      "lastInvokedAt": "2026-07-30T12:00:00Z",
+      "createdAt": "2026-07-30T11:00:00Z",
+      "targets": [
+        {
+          "id": "1",
+          "arn": "arn:aws:lambda:us-east-1:000000000000:function:demo-fn"
+        }
+      ]
+    }
+  ]
+}
+```
+
+No rules: `"rules": []`.
+
+---
+
 ## Examples (curl)
 
 Runtime on `:4566`:
@@ -159,6 +193,8 @@ curl -s -X POST http://127.0.0.1:4566/_simulith/v1/snapshot \
   --data-binary @snapshot.json
 
 curl -s "http://127.0.0.1:4566/_simulith/v1/sqs/messages?queueName=demo-queue"
+
+curl -s http://127.0.0.1:4566/_simulith/v1/eventbridge/rules
 ```
 
 Via Console nginx proxy (`:9080`):

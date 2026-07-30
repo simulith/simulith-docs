@@ -37,6 +37,10 @@ simulith verify eventbridge --filter schedule   # subset by scenario name prefix
 
 Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PATH).
 
+## Console
+
+Panel **EventBridge** (`/eventbridge`) — list rules, targets, and last invoke via admin peek (`GET /_simulith/v1/eventbridge/rules`). .
+
 ## Example (AWS CLI)
 
 ```bash
