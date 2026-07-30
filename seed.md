@@ -29,6 +29,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | Lambda | function `demo-fn` | Node.js echo handler; ESM to `demo-queue`; **S3 ObjectCreated** target for `demo-bucket` |
 | API Gateway | REST API `demo-api` (`demoapi001`) | Stage `dev` → `{proxy+}` AWS_PROXY to `demo-fn` |
 | Secrets Manager | secret `demo-secret` | Plain `SecretString` `hello from seed` |
+| EventBridge | rule `demo-rule` | `rate(5 minutes)` → Lambda target `demo-fn` |
 
 Example fixture source: seeds/default.json (embedded copy in the runtime).
 
@@ -61,7 +62,7 @@ aws ssm get-parameter --name /app/demo/api-url --endpoint-url http://127.0.0.1:4
 
 On **Git Bash (Windows)**, set `export MSYS2_ARG_CONV_EXCL="*"` before SSM CLI commands, or use [PowerShell](quickstart.md). See [quickstart troubleshooting](quickstart.md#troubleshooting).
 
-Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, and Secrets Manager — same scope as `simulith reset` — then re-applies the fixture).
+Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, and EventBridge — same scope as `simulith reset` — then re-applies the fixture).
 
 More CLI examples: [aws-cli-examples.md](aws-cli-examples.md#seeded-data). SDK: [sdk-examples.md](sdk-examples.md#seeded-data).
 
@@ -168,7 +169,8 @@ Notes:
 - **`lambda.eventSourceMappings`** — `uuid`, `functionName`, `eventSourceArn` (SQS ARN) required; target queue must exist in fixture (apply after SQS). Optional `batchSize`, `enabled`.
 - **`apigateway.restApis`** — `id`, `name` required; optional `description`, `proxyFunction` (default `demo-fn`), `stageName` (default `dev`). Seeds `{proxy+}` AWS_PROXY integration and deployment.
 - **`secretsmanager.secrets`** — `name`, `secretString` required; optional `description`, `createdAt`. Applied via store layer with fixed seed suffix/version for idempotent apply.
-- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, or `secretsmanager` sections are allowed
+- **`eventbridge.rules`** — `name`, `scheduleExpression` (`rate(...)` / `cron(...)`) required; optional `state` (default `ENABLED`), `description`, `eventBusName`, `createdAt`. Targets: `id` required; `functionName` (resolved to Lambda ARN; function must exist) or `arn`; optional `input`. Applied **after** Lambda.
+- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, or `eventbridge` sections are allowed
 
 ## Out of scope (MVP)
 - YAML fixtures — JSON only
@@ -183,3 +185,4 @@ Notes:
 - [ssm.md](ssm.md) — Parameter Store Put/Get
 - [s3.md](s3.md) — bucket/object storage
 - [lambda.md](lambda.md) — function storage and invoke
+- [eventbridge.md](eventbridge.md) — schedule rules and targets

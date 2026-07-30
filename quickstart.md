@@ -19,6 +19,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | Lambda | Function CRUD, sync invoke, SQS ESM — [lambda.md](lambda.md) |
 | API Gateway | REST API CRUD + stage invoke — [apigateway.md](apigateway.md) |
 | Secrets Manager | Secret CRUD + GetSecretValue — [secretsmanager.md](secretsmanager.md) |
+| EventBridge | Schedule rules → Lambda — [eventbridge.md](eventbridge.md) |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 

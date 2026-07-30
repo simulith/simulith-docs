@@ -41,6 +41,8 @@ Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PA
 
 Panel **EventBridge** (`/eventbridge`) — list rules, targets, and last invoke via admin peek (`GET /_simulith/v1/eventbridge/rules`). .
 
+Default **Seed** includes schedule rule **`demo-rule`** (`rate(5 minutes)`) targeting **`demo-fn`**. .
+
 ## Example (AWS CLI)
 
 ```bash

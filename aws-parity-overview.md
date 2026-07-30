@@ -287,11 +287,11 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 
 ## What to do next (priority)
 
-**Next depth:** Cognito/SES Console panels; EventBridge product messaging / seed / docs sync.
+**Next depth:** Cognito/SES Console panels; EventBridge docs sync.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | Cognito / SES Console; EventBridge P2 surfaces | , , + |
+| **Depth** | Cognito / SES Console; EventBridge docs sync | , ,  |
 | **Breadth** | PutEvents (later) |  |
 
 ---
