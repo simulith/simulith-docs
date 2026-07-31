@@ -31,6 +31,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | Secrets Manager | secret `demo-secret` | Plain `SecretString` `hello from seed` |
 | EventBridge | rule `demo-rule` | `rate(5 minutes)` → Lambda target `demo-fn` |
 | Cognito | pool `demo-pool` | client `demo-client` + group `admin` (JWKS enabled) |
+| SES | identity `demo@simulith.local` | template `demo-template` + sample outbox message |
 
 Example fixture source: seeds/default.json (embedded copy in the runtime).
 
@@ -172,7 +173,10 @@ Notes:
 - **`secretsmanager.secrets`** — `name`, `secretString` required; optional `description`, `createdAt`. Applied via store layer with fixed seed suffix/version for idempotent apply.
 - **`eventbridge.rules`** — `name`, `scheduleExpression` (`rate(...)` / `cron(...)`) required; optional `state` (default `ENABLED`), `description`, `eventBusName`, `createdAt`. Targets: `id` required; `functionName` (resolved to Lambda ARN; function must exist) or `arn`; optional `input`. Applied **after** Lambda.
 - **`cognito.userPools`** — `id`, `name` required; optional `createdAt`. Nested `clients` (`clientId`, `clientName`) and `groups` (`groupName`, optional `description`). JWKS keys generated at apply time. Applied **after** EventBridge.
-- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, or `cognito` sections are allowed
+- **`ses.identities`** — `email` required; optional `createdAt`. Auto-verified (`Success`). Applied **after** Cognito.
+- **`ses.templates`** — `name` required; optional `subject`, `htmlPart`, `textPart`, `createdAt`, `updatedAt`. Applied after identities in the SES block.
+- **`ses.outboxMessages`** — `source`, `toAddresses` required; optional `templateName` (must exist), `templateData`, `subject`, `htmlBody`, `textBody`, `rawData`, `messageId`, `createdAt`. Captured Send* rows for Console inspect.
+- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, or `ses` sections are allowed
 
 ## Out of scope (MVP)
 - YAML fixtures — JSON only

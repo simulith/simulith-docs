@@ -26,7 +26,11 @@ Compatible with AWS CLI (`aws ses`) and SDKs when using `--endpoint-url http://l
 
 Panel **SES** (`/ses`) — list identities (verification status), templates, and captured outbox messages. Outbox via admin peek `GET /_simulith/v1/ses/outbox`.
 
-Inspect-only create/delete (CLI / Terraform for identities and templates). Seed demo SES is .
+Inspect-only create/delete (CLI / Terraform for identities and templates).
+
+## Default seed (`demo@simulith.local` / `demo-template`)
+
+After `simulith seed` or Console **Seed demo data**, identity **`demo@simulith.local`**, template **`demo-template`**, and one sample outbox message are loaded. . Fixture format: [seed.md](seed.md).
 
 ## Limits
 

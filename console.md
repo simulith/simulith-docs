@@ -59,7 +59,7 @@ docker compose -f docker-compose.yml -f docker-compose.console.yml up --build
 Default Console host port is **9080** (not 8080) to avoid conflicts with other local services. Override: `SIMULITH_CONSOLE_PORT=8080 docker compose ...`.
 
 1. Open the Console dashboard — expect **Connected** when runtime is healthy.
-2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM, API Gateway `demo-api`, Secrets Manager `demo-secret`, EventBridge `demo-rule` → `demo-fn`, Cognito `demo-pool`).
+2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM, API Gateway `demo-api`, Secrets Manager `demo-secret`, EventBridge `demo-rule` → `demo-fn`, Cognito `demo-pool`, SES `demo@simulith.local` + `demo-template`).
 3. Open **DynamoDB** — browse, create tables, put/edit/delete items (Simple strings or **JSON document** for Map/List).
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
@@ -69,7 +69,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
 11. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients and groups, open JWKS URL.
-12. Open **SES** — list identities and templates; inspect captured outbox messages.
+12. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), and seeded outbox after **Seed**.
 13. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
 14. Click **Reset local state** — clears all panels.
 
@@ -125,7 +125,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
 | **Cognito** | ListUserPools, DescribeUserPool, ListUserPoolClients, ListGroups; JWKS link | Create/delete UI deferred; seeded `demo-pool` + `demo-client` + group `admin` via **Seed** |
-| **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seed demo →  |
+| **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 
