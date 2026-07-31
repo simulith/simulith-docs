@@ -177,6 +177,20 @@ Guide: [console.md](console.md) · API: [cognito.md](cognito.md)
 
 ---
 
+## SES panel
+
+Guide: [console.md](console.md) · API: [ses.md](ses.md) · Peek: [admin-api.md](admin-api.md#get-_simulithv1sesoutbox)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| List identities | **ListIdentities** + verification status | — |
+| List templates | **ListTemplates** | — |
+| Sent / captured mail | Admin **`/_simulith/v1/ses/outbox`** (local outbox) | Not an AWS SES API |
+| Create / delete identity or template | Not in UI | CLI / Terraform (`examples/terraform/ses`) |
+| Real SMTP delivery | Not in UI | Explicitly out of scope (capture only) |
+
+---
+
 ## Verify panel
 
 Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) · CI artifacts: [compatibility.md § CI](compatibility.md#continuous-integration-github-actions)

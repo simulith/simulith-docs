@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -69,8 +69,9 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
 11. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients and groups, open JWKS URL.
-12. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
-13. Click **Reset local state** — clears all panels.
+12. Open **SES** — list identities and templates; inspect captured outbox messages.
+13. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
+14. Click **Reset local state** — clears all panels.
 
 Console README: [`../../console/README.md`](console.md).
 
@@ -105,6 +106,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | `POST` | `/_simulith/v1/snapshot` | Import snapshot JSON |
 | `GET` | `/_simulith/v1/sqs/messages?queueName=` | Peek messages (non-destructive) |
 | `GET` | `/_simulith/v1/eventbridge/rules` | Peek schedule rules + lastInvokedAt |
+| `GET` | `/_simulith/v1/ses/outbox` | Peek captured SES messages |
 
 **Security:** local development only — no authentication in the Console. Do not expose admin routes on untrusted networks without a gateway.
 
@@ -123,6 +125,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
 | **Cognito** | ListUserPools, DescribeUserPool, ListUserPoolClients, ListGroups; JWKS link | Create/delete UI deferred; seeded `demo-pool` + `demo-client` + group `admin` via **Seed** |
+| **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seed demo →  |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 

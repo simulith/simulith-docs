@@ -117,7 +117,7 @@ Best for **exploration**, demos, and users who prefer a GUI.
 
 1. Open **http://localhost:9080**
 2. **Seed demo data** on the dashboard (or load seed via CLI — [seed.md](seed.md))
-3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, **Lambda**, **EventBridge**, and **Cognito** panels (`demo-fn` and `demo-rule` after Seed; Cognito pools via CLI/Terraform until seed ships)
+3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, **Lambda**, **EventBridge**, and **Cognito** panels (`demo-fn`, `demo-rule`, and `demo-pool` after Seed)
 4. **Lambda panel:** list, config, invoke with JSON — sync invoke needs `node`/`python3` on the runtime host PATH — [lambda.md](lambda.md)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 

@@ -9,7 +9,7 @@ Simulith emulates **SES Classic** AWS Query on the same port as other services (
 - **SigV4 service name:** `ses`
 - **Protocol:** AWS Query (`Action=…`, `application/x-www-form-urlencoded`, XML responses)
 - **API version:** `2010-12-01`
-- **Delivery:** messages are stored in a local outbox (inspect via store / future Console panel)
+- **Delivery:** messages are stored in a local outbox (Console **SES** panel + admin peek)
 
 Compatible with AWS CLI (`aws ses`) and SDKs when using `--endpoint-url http://localhost:4566`.
 
@@ -22,11 +22,18 @@ Compatible with AWS CLI (`aws ses`) and SDKs when using `--endpoint-url http://l
 | CreateTemplate / GetTemplate / UpdateTemplate / DeleteTemplate / ListTemplates | ✓ |
 | SendEmail / SendTemplatedEmail / SendRawEmail | ✓ → outbox |
 
+## Console
+
+Panel **SES** (`/ses`) — list identities (verification status), templates, and captured outbox messages. Outbox via admin peek `GET /_simulith/v1/ses/outbox`.
+
+Inspect-only create/delete (CLI / Terraform for identities and templates). Seed demo SES is .
+
 ## Limits
 
 - No real SMTP / internet delivery
 - Domain identity / DKIM not implemented
 - Configuration sets, bounce/complaint simulation deferred
+
 ## Verify
 
 ```bash
@@ -73,5 +80,7 @@ endpoints {
 
 ## Related
 
+- [console.md](console.md) — SES panel
+- [admin-api.md](admin-api.md) — outbox peek
 - Backlog:
 - Study:

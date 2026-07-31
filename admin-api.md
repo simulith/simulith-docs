@@ -177,6 +177,35 @@ No rules: `"rules": []`.
 
 ---
 
+### `GET /_simulith/v1/ses/outbox`
+
+**Peek** captured SES messages from the local outbox (no SMTP). Optional query `limit` (default 50, max 200). Newest first.
+
+**Response 200:**
+
+```json
+{
+  "status": "ok",
+  "messages": [
+    {
+      "messageId": "msg-…",
+      "source": "otp@example.com",
+      "destinations": ["user@example.com"],
+      "subject": "Your code 123456",
+      "textBody": "Code: 123456",
+      "htmlBody": "",
+      "templateName": "otp",
+      "templateData": "{\"code\":\"123456\"}",
+      "createdAt": "2026-07-31T12:00:00Z"
+    }
+  ]
+}
+```
+
+Empty outbox: `"messages": []`.
+
+---
+
 ## Examples (curl)
 
 Runtime on `:4566`:

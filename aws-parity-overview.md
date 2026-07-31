@@ -241,14 +241,14 @@ Guide: [cognito.md](cognito.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios). Console panel `/cognito`.
+CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios). Console panel `/cognito`. Default seed pool **`demo-pool`**. Product messaging + docs sync.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
 | Lambda triggers | P2 |  |
-| Console panel | P1 | **Shipped ** |
+| Console / seed / messaging | P1–P2 | **Shipped**  / 175 / 176 / 177 |
 
 ---
 
@@ -287,11 +287,12 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 
 ## What to do next (priority)
 
-**Next depth:** Cognito seed/docs sync; SES Console panel and public messaging.
+**Next depth:** SES Console panel and public messaging; Cognito Lambda triggers (later).
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | Cognito seed/docs; SES Console + messaging | –008,  |
+| **Depth** | SES Console + messaging |  |
+| **Depth** | Cognito Lambda triggers (later) |  |
 | **Breadth** | PutEvents (later) |  |
 
 ---

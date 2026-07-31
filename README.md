@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Generated from monorepo commit `a22b9cf` on 2026-07-31.
+Generated from monorepo commit `34d5634` on 2026-07-31.
 
 ## Start here
 
@@ -43,7 +43,7 @@ Generated from monorepo commit `a22b9cf` on 2026-07-31.
 | [API Gateway](apigateway.md) | REST API CRUD (management API) |
 | [Secrets Manager](secretsmanager.md) | Secret CRUD (MVP subset) |
 | [EventBridge](eventbridge.md) | Schedule rules → Lambda; seeded demo-rule |
-| [Cognito](cognito.md) | User Pool + Admin* + JWKS; Console inspect |
+| [Cognito](cognito.md) | User Pool + Admin* + JWKS; seeded demo-pool |
 
 ## Compatibility
 

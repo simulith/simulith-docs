@@ -594,6 +594,33 @@ Verify: `simulith verify eventbridge --skip-aws` (see [compatibility.md](compati
 
 ---
 
+## Cognito
+
+User Pool + Admin* + JWKS locally. See [cognito.md](cognito.md). Default seed includes pool `demo-pool` / client `demo-client` / group `admin`.
+
+**Terraform green path:** [`examples/terraform/cognito/`](examples/terraform/cognito/).
+
+```bash
+aws cognito-idp create-user-pool \
+  --pool-name local-pool \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+# Capture UserPool.Id from the response, then:
+aws cognito-idp list-user-pools \
+  --max-results 10 \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws cognito-idp describe-user-pool \
+  --user-pool-id us-east-1_XXXXXXXXX \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+# JWKS (no SigV4): GET http://127.0.0.1:4566/{userPoolId}/.well-known/jwks.json
+```
+
+Verify: `simulith verify cognito --skip-aws` (see [compatibility.md](compatibility.md)).
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).
@@ -758,6 +785,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
 | Secrets Manager | CreateSecret, PutSecretValue, GetSecretValue, DeleteSecret; see [secretsmanager.md](secretsmanager.md) |
 | EventBridge | PutRule / PutTargets / ListRules (schedule → Lambda); see [eventbridge.md](eventbridge.md) |
+| Cognito | User Pool + Admin* + JWKS; see [cognito.md](cognito.md) |
 | S3 | Put/Get/Head/List/Copy/DeleteObject(s); see [s3.md](s3.md) |
 
 Full deviation tables:
