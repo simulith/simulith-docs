@@ -51,7 +51,9 @@ Scenarios: `user-pool-client-lifecycle`, `admin-auth-jwks`.
 
 Panel **Cognito** (`/cognito`) — list user pools, inspect app clients and groups, open JWKS URL. .
 
-Inspect-only (create/delete via CLI or Terraform). Seed demo pool is .
+Default **Seed** includes User Pool **`demo-pool`** (`us-east-1_demopool1`), app client **`demo-client`**, and group **`admin`**. .
+
+Inspect-only create/delete in Console (CLI / Terraform for custom pools).
 
 ## Terraform
 

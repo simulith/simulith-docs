@@ -30,6 +30,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | API Gateway | REST API `demo-api` (`demoapi001`) | Stage `dev` → `{proxy+}` AWS_PROXY to `demo-fn` |
 | Secrets Manager | secret `demo-secret` | Plain `SecretString` `hello from seed` |
 | EventBridge | rule `demo-rule` | `rate(5 minutes)` → Lambda target `demo-fn` |
+| Cognito | pool `demo-pool` | client `demo-client` + group `admin` (JWKS enabled) |
 
 Example fixture source: seeds/default.json (embedded copy in the runtime).
 
@@ -170,7 +171,8 @@ Notes:
 - **`apigateway.restApis`** — `id`, `name` required; optional `description`, `proxyFunction` (default `demo-fn`), `stageName` (default `dev`). Seeds `{proxy+}` AWS_PROXY integration and deployment.
 - **`secretsmanager.secrets`** — `name`, `secretString` required; optional `description`, `createdAt`. Applied via store layer with fixed seed suffix/version for idempotent apply.
 - **`eventbridge.rules`** — `name`, `scheduleExpression` (`rate(...)` / `cron(...)`) required; optional `state` (default `ENABLED`), `description`, `eventBusName`, `createdAt`. Targets: `id` required; `functionName` (resolved to Lambda ARN; function must exist) or `arn`; optional `input`. Applied **after** Lambda.
-- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, or `eventbridge` sections are allowed
+- **`cognito.userPools`** — `id`, `name` required; optional `createdAt`. Nested `clients` (`clientId`, `clientName`) and `groups` (`groupName`, optional `description`). JWKS keys generated at apply time. Applied **after** EventBridge.
+- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, or `cognito` sections are allowed
 
 ## Out of scope (MVP)
 - YAML fixtures — JSON only
@@ -186,3 +188,4 @@ Notes:
 - [s3.md](s3.md) — bucket/object storage
 - [lambda.md](lambda.md) — function storage and invoke
 - [eventbridge.md](eventbridge.md) — schedule rules and targets
+- [cognito.md](cognito.md) — User Pool + Admin* + JWKS

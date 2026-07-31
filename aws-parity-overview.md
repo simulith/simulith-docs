@@ -287,11 +287,11 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 
 ## What to do next (priority)
 
-**Next depth:** Cognito messaging/seed/docs; SES Console panel and public messaging.
+**Next depth:** Cognito seed/docs sync; SES Console panel and public messaging.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | Cognito messaging/seed/docs; SES Console + messaging | –008,  |
+| **Depth** | Cognito seed/docs; SES Console + messaging | –008,  |
 | **Breadth** | PutEvents (later) |  |
 
 ---

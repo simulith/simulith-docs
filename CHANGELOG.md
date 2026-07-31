@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.65.0] - 2026-07-31
+
+### Features
+
+- ****: Cognito seed demo user pool
+
 ## [0.64.0] - 2026-07-30
 
 ### Features
