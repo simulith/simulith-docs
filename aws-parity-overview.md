@@ -258,7 +258,7 @@ Guide: [ses.md](ses.md) · Backlog: the product backlog
 
 ### Implemented
 
-VerifyEmailIdentity, DeleteIdentity, ListIdentities, GetIdentityVerificationAttributes; CreateTemplate / GetTemplate / UpdateTemplate / DeleteTemplate / ListTemplates; SendEmail / SendTemplatedEmail / SendRawEmail (local outbox). Terraform green path [`examples/terraform/ses/`](examples/terraform/ses/). **`simulith verify ses`** (2 scenarios). Console panel `/ses`. Default seed identity **`demo@simulith.local`** + template **`demo-template`**.
+VerifyEmailIdentity, DeleteIdentity, ListIdentities, GetIdentityVerificationAttributes; CreateTemplate / GetTemplate / UpdateTemplate / DeleteTemplate / ListTemplates; SendEmail / SendTemplatedEmail / SendRawEmail (local outbox). Terraform green path [`examples/terraform/ses/`](examples/terraform/ses/). **`simulith verify ses`** (2 scenarios). Console panel `/ses`. Default seed identity **`demo@simulith.local`** + template **`demo-template`**. Product messaging + docs sync.
 
 ### Notable gaps (tracked)
 
@@ -266,6 +266,7 @@ VerifyEmailIdentity, DeleteIdentity, ListIdentities, GetIdentityVerificationAttr
 | --- | --- | --- |
 | Seed demo identity/template | P2 | **Shipped ** |
 | Public messaging (landing/Hub) | P2 | **Shipped ** |
+| Public docs sync (mirror smoke) | P2 | **Shipped ** |
 
 ---
 
@@ -288,11 +289,10 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 
 ## What to do next (priority)
 
-**Next depth:** SES docs sync; Cognito Lambda triggers (later).
+**Next depth:** Cognito Lambda triggers.
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | SES docs sync |  |
 | **Depth** | Cognito Lambda triggers (later) |  |
 | **Breadth** | PutEvents (later) |  |
 

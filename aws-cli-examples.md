@@ -621,6 +621,36 @@ Verify: `simulith verify cognito --skip-aws` (see [compatibility.md](compatibili
 
 ---
 
+## SES
+
+Email identity, templates, and Send* with local outbox capture. See [ses.md](ses.md). Default seed includes `demo@simulith.local` / `demo-template`. No real SMTP.
+
+**Terraform green path:** [`examples/terraform/ses/`](examples/terraform/ses/).
+
+```bash
+aws ses verify-email-identity \
+  --email-address demo@simulith.local \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws ses create-template \
+  --cli-input-json '{"Template":{"TemplateName":"otp","SubjectPart":"Your code {{code}}","TextPart":"Code: {{code}}","HtmlPart":"<p>{{code}}</p>"}}' \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws ses list-identities \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws ses send-templated-email \
+  --source demo@simulith.local \
+  --destination ToAddresses=user@example.com \
+  --template otp \
+  --template-data '{"code":"123456"}' \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify ses --skip-aws` (see [compatibility.md](compatibility.md)). Inspect captured mail in Console **SES** panel or `GET /_simulith/v1/ses/outbox`.
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).
@@ -786,6 +816,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | Secrets Manager | CreateSecret, PutSecretValue, GetSecretValue, DeleteSecret; see [secretsmanager.md](secretsmanager.md) |
 | EventBridge | PutRule / PutTargets / ListRules (schedule → Lambda); see [eventbridge.md](eventbridge.md) |
 | Cognito | User Pool + Admin* + JWKS; see [cognito.md](cognito.md) |
+| SES | Identity/template/Send* (local outbox); see [ses.md](ses.md) |
 | S3 | Put/Get/Head/List/Copy/DeleteObject(s); see [s3.md](s3.md) |
 
 Full deviation tables:
