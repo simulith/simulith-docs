@@ -241,13 +241,13 @@ Guide: [cognito.md](cognito.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios). Console panel `/cognito`. Default seed pool **`demo-pool`**. Product messaging + docs sync.
+CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). **Lambda triggers** PreSignUp + PostConfirmation on admin lifecycle. Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios). Console panel `/cognito`. Default seed pool **`demo-pool`**. Product messaging + docs sync.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Lambda triggers | P2 |  |
+| SignUp / ConfirmSignUp public APIs | P2 | follow-up |
 | Console / seed / messaging | P1–P2 | **Shipped**  / 175 / 176 / 177 |
 
 ---
@@ -289,11 +289,10 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 
 ## What to do next (priority)
 
-**Next depth:** Cognito Lambda triggers.
+**Next depth:** Cognito SignUp / ConfirmSignUp APIs (optional follow-up).
 
 | Priority | Theme | Backlog |
 | --- | --- | --- |
-| **Depth** | Cognito Lambda triggers (later) |  |
 | **Breadth** | PutEvents (later) |  |
 
 ---
