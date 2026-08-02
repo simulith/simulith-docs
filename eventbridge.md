@@ -17,16 +17,19 @@ Compatible with AWS CLI (`aws events`) and SDKs when using `--endpoint-url http:
 
 | Operation | Status |
 | --- | --- |
-| PutRule / DeleteRule / DescribeRule / ListRules | ✓ (schedule expressions) |
+| PutRule / DeleteRule / DescribeRule / ListRules | ✓ (schedule or event pattern) |
 | EnableRule / DisableRule | ✓ |
 | PutTargets / RemoveTargets / ListTargetsByRule | ✓ (Lambda ARNs) |
+| PutEvents → pattern rules → Lambda Invoke | ✓ default bus |
 | Schedule poller → Lambda Invoke | ✓ `rate(...)`; `cron(...)` ≈ every minute |
 
 ## Limits
 
-- No custom event buses / PutEvents
+- No custom event buses — **default bus only** for PutRule / PutEvents
+- Event pattern matching is a documented subset (exact `source`, `detail-type`, `detail` fields)
 - Cron is a local approximation (≈1 minute), not full AWS cron semantics
 - Non-Lambda targets are skipped
+
 ## Verify
 
 ```bash
@@ -58,6 +61,21 @@ aws events put-targets --endpoint-url "$EP" \
 ```
 
 Scheduled event payload shape: `source=aws.events`, `detail-type=Scheduled Event`.
+
+### PutEvents (event-pattern rules)
+
+```bash
+aws events put-rule --endpoint-url "$EP" \
+  --name orders \
+  --event-pattern '{"source":["my.app"],"detail-type":["OrderCreated"]}'
+
+aws events put-targets --endpoint-url "$EP" \
+  --rule orders \
+  --targets "Id"="1","Arn"="arn:aws:lambda:us-east-1:000000000000:function:demo"
+
+aws events put-events --endpoint-url "$EP" \
+  --entries Source=my.app,DetailType=OrderCreated,Detail='{"orderId":"42"}'
+```
 
 ## Terraform
 
