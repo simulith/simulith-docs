@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.76.0] - 2026-08-03
+
+### Features
+
+- ****: Lambda VPC RDS reachability
+
 ## [0.75.0] - 2026-08-03
 
 ### Features

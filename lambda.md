@@ -99,7 +99,7 @@ aws lambda update-function-code \
   --zip-file fileb:///tmp/function.zip \
   --endpoint-url $ENDPOINT
 
-# UpdateFunctionConfiguration (env, timeout, memory, layers, handler, runtime)
+# UpdateFunctionConfiguration (env, timeout, memory, layers, handler, runtime, VpcConfig)
 aws lambda update-function-configuration \
   --function-name my-fn \
   --timeout 30 \
@@ -108,6 +108,10 @@ aws lambda update-function-configuration \
 ```
 
 Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3`), `java11` / `java17` / `java21` (uses `java`; handler `ClassName::methodName`), `provided` / `provided.al2` / `provided.al2023` (runs `bootstrap` binary from zip). `Environment.Variables` from CreateFunction or UpdateFunctionConfiguration are injected into the subprocess. `Timeout` (seconds) kills slow handlers.
+
+### VpcConfig
+
+`CreateFunction` and `UpdateFunctionConfiguration` accept `VpcConfig` with `SubnetIds` and `SecurityGroupIds`. Metadata only locally — invoke runs on the host and can reach RDS Proxy at `127.0.0.1:<port>`. Example: [`examples/terraform/lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/).
 
 ### Java (java11 / java17 / java21)
 

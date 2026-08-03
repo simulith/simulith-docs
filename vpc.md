@@ -39,7 +39,7 @@ provider "aws" {
 
 ## Limits
 
-- Metadata / logical routing only — no real ENI, NAT traffic, or packet forwarding
+- Metadata / logical routing only — no real ENI or network namespace isolation
 - Interface VPC endpoints (Secrets Manager) deferred
 - **`simulith verify vpc`** not yet shipped
 

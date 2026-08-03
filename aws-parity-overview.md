@@ -179,7 +179,7 @@ Guide: [lambda.md](lambda.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction (sync + async Event), UpdateFunctionCode, **SQS Event Source Mapping** (Create/List/Get/Delete + background poll), **Function URLs**, **Lambda Layers** (publish/list/get/delete + `Layers` on CreateFunction). Default seed includes **`demo-fn`**.
+CreateFunction, ListFunctions, GetFunction, DeleteFunction, InvokeFunction (sync + async Event), UpdateFunctionCode, **UpdateFunctionConfiguration** (`VpcConfig` subnets + security groups), **SQS Event Source Mapping** (Create/List/Get/Delete + background poll), **Function URLs**, **Lambda Layers** (publish/list/get/delete + `Layers` on CreateFunction). Default seed includes **`demo-fn`**.
 
 Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_layer_versions`). Function zip at `{data-dir}/lambda/{name}/code.zip`; layer zips at `{data-dir}/lambda/layers/{name}/{version}/code.zip`.
 
@@ -194,6 +194,8 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_
 **Shipped:** async invoke (`InvocationType: Event`) and Function URLs.
 
 **Shipped:** Lambda Layers (`PublishLayerVersion`, layer CRUD, `Layers` on CreateFunction, nodejs `NODE_PATH` on invoke). **:** python `PYTHONPATH` on invoke.
+
+**Shipped:** `VpcConfig` on CreateFunction / UpdateFunctionConfiguration; invoke reachability to RDS Proxy endpoint (`127.0.0.1:<port>`) when VpcConfig set. Terraform [`examples/terraform/lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/). No real ENI — metadata + host-network invoke path.
 
 ### Tier A reference set (7 ops)
 
@@ -296,14 +298,13 @@ Guide: [vpc.md](vpc.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. Terraform green-path example [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/).
+CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green-path examples [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/) + [`lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
 | `simulith verify vpc` | P1 |  |
-| Lambda VpcConfig / ENI | P1 |  |
 | Console panel | P1 |  |
 | Interface VPC endpoints | P3 |  |
 

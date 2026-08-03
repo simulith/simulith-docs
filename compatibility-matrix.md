@@ -156,7 +156,7 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
 | DeleteFunction | available | yes (`function-crud-lifecycle`) | 204; removes metadata + zip from disk |
 | InvokeFunction | available | yes (`invoke-sync-payload`) | Sync subprocess; skips if `node` not on PATH; `java*` uses host `java`; `provided*` runs zip `bootstrap` |
 | UpdateFunctionCode | available | yes (`update-function-code`) | Replaces zip on disk; updates CodeSize / CodeSha256 |
-| UpdateFunctionConfiguration | available | — | Partial JSON patch: Environment, Timeout, MemorySize, Handler, Runtime, Role, Description, Layers |
+| UpdateFunctionConfiguration | available | — | Partial JSON patch: Environment, Timeout, MemorySize, Handler, Runtime, Role, Description, Layers, **VpcConfig** |
 | CreateEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | SQS ARNs only; BatchSize capped at 10 |
 | ListEventSourceMappings | available | yes (`esm-sqs-lifecycle`) | Filter by FunctionName |
 | GetEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | UUID path |
