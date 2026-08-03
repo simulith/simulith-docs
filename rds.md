@@ -1,6 +1,6 @@
 # RDS Postgres sidecar — Simulith
 
-Local Amazon RDS emulation via **AWS JSON 1.1** with a **Postgres 15 Docker sidecar** per DB instance.  / .
+Local Amazon RDS emulation via **AWS JSON 1.1** with a **Postgres 15 Docker sidecar** per DB instance and **RDS Proxy TCP relay**.  / ,  / .
 
 ## Overview
 
@@ -24,6 +24,12 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, and `
 | CreateDBInstance | **Postgres only** — starts Docker sidecar |
 | DescribeDBInstances | Returns endpoint `127.0.0.1:<hostPort>` |
 | DeleteDBInstance | Stops/removes sidecar container |
+| CreateDBProxy | POSTGRESQL proxy metadata |
+| DescribeDBProxies | Returns endpoint `127.0.0.1:<proxyPort>` after target registration |
+| DeleteDBProxy | Stops TCP relay and deletes proxy |
+| RegisterDBProxyTargets | Links proxy to DB instance; starts TCP relay |
+| DeregisterDBProxyTargets | Removes target; stops relay when last target gone |
+| ModifyDBProxyTargetGroup | Stub (connection pool config ignored locally) |
 
 ## Local connectivity
 
@@ -34,11 +40,16 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, and `
 
 Connect with `psql -h 127.0.0.1 -p <port> -U <MasterUsername> -d <DBName>`.
 
+**RDS Proxy:** after `RegisterDBProxyTargets`, connect to the proxy endpoint (`127.0.0.1:<proxyPort>`) — TCP relay forwards to the instance sidecar. Auth secret ARNs are metadata only in v1 (no live Secrets Manager fetch).
+
 **Requires Docker** on PATH for real sidecar lifecycle. Unit tests use a mock sidecar.
 
 ## Terraform
 
-Green-path example (loyaleasy-min subset): [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/).
+Green-path examples:
+
+- Instance subset: [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/)
+- Proxy subset: [`examples/terraform/rds/proxy-min/`](examples/terraform/rds/proxy-min/)
 
 ```hcl
 provider "aws" {
@@ -53,6 +64,7 @@ Combine with [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/lo
 ## Limits
 
 - Postgres engine only in v1
-- No RDS Proxy, snapshots, or multi-AZ
+- No snapshots or multi-AZ
+- RDS Proxy: no connection pooling semantics; TLS not terminated locally
 - Subnet groups store subnet IDs without validating against EC2 DescribeSubnets
 - Parameter group parameters are accepted by Terraform but not applied to the sidecar

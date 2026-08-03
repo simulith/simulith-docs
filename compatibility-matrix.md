@@ -291,6 +291,9 @@ Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
 | CreateDBSubnetGroup / Describe / Delete | available | no |  |
 | CreateDBParameterGroup / Describe / Delete | available | no | Minimal stub |
 | CreateDBInstance / Describe / Delete | available | no | Postgres 15 Docker sidecar |
+| CreateDBProxy / Describe / Delete | available | no |  |
+| RegisterDBProxyTargets / DeregisterDBProxyTargets | available | no | TCP relay to instance |
+| ModifyDBProxyTargetGroup | available | no | Stub (pool config ignored) |
 
 ---
 

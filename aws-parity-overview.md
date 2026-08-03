@@ -26,9 +26,9 @@ Last updated: 2026-08-03..
 | **SES** | 12 | 2 / 2 scenarios | — | **~4%** (12 / ~300) |
 | **EventBridge** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
 | **VPC (EC2)** | 33 | — | — | **~11%** (33 / ~300) |
-| **RDS** | 9 | — | — | **~3%** (9 / ~300) |
+| **RDS** | 15 | — | — | **~5%** (15 / ~300) |
 | **IAM** | 9 | — | — | **~3%** (9 / ~300) |
-| **Total** | **153** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **Total** | **159** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
@@ -315,14 +315,13 @@ Guide: [rds.md](rds.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**). Endpoint `127.0.0.1:<hostPort>`. Terraform green-path [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/). SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`.
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green-path [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/). SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
 | `simulith verify rds` | P1 |  |
-| RDS Proxy | P1 |  |
 | MySQL / MariaDB engines | P3 | — |
 | Console panel | P2 |  |
 
