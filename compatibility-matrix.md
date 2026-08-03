@@ -14,8 +14,8 @@ Last updated: 2026-08-03..
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 12 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS) |
-| Operations **available** locally | 97 |
+| Services in matrix | 13 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM) |
+| Operations **available** locally | 106 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -291,6 +291,18 @@ Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
 | CreateDBSubnetGroup / Describe / Delete | available | no |  |
 | CreateDBParameterGroup / Describe / Delete | available | no | Minimal stub |
 | CreateDBInstance / Describe / Delete | available | no | Postgres 15 Docker sidecar |
+
+---
+
+## IAM
+
+Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateRole / GetRole / DeleteRole | available | no |  |
+| CreatePolicy / GetPolicy / DeletePolicy | available | no | Managed policy subset |
+| AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | no | RDS Proxy role attach |
 
 ---
 

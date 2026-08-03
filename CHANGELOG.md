@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.74.0] - 2026-08-03
+
+### Features
+
+- ****: IAM roles for RDS Proxy
+
 ## [0.73.0] - 2026-08-03
 
 ### Features
