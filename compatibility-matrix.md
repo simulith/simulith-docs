@@ -8,14 +8,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-07-29..
+Last updated: 2026-08-03..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 10 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge) |
-| Operations **available** locally | 88 |
+| Services in matrix | 12 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS) |
+| Operations **available** locally | 97 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -265,6 +265,32 @@ Guide: [eventbridge.md](eventbridge.md) · Verify: `simulith verify eventbridge`
 | EnableRule / DisableRule | available | yes (`rule-target-lifecycle`) | |
 | PutTargets / RemoveTargets / ListTargetsByRule | available | yes (`rule-target-lifecycle`) | Lambda ARN targets |
 | Schedule → Lambda Invoke | available | yes (`schedule-lambda-invoke`) | `rate(...)`; `cron(...)` ≈ 1m; needs `node` |
+| PutEvents (default bus) | available | no | ; verify deferred |
+
+---
+
+## VPC (EC2 networking)
+
+Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateVpc / DescribeVpcs / DeleteVpc | available | no |  |
+| CreateSubnet / DescribeSubnets / DeleteSubnet | available | no | |
+| CreateSecurityGroup + ingress/egress | available | no | |
+| IGW / route tables / gateway endpoints | available | no | Metadata routing |
+
+---
+
+## RDS (Postgres sidecar)
+
+Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateDBSubnetGroup / Describe / Delete | available | no |  |
+| CreateDBParameterGroup / Describe / Delete | available | no | Minimal stub |
+| CreateDBInstance / Describe / Delete | available | no | Postgres 15 Docker sidecar |
 
 ---
 

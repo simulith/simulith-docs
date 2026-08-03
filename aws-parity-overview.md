@@ -5,7 +5,7 @@ Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 +
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-07-29..
+Last updated: 2026-08-03..
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
@@ -25,7 +25,10 @@ Last updated: 2026-07-29..
 | **Cognito** | 23 | 2 / 2 scenarios | — | **~8%** (23 / ~300) |
 | **SES** | 12 | 2 / 2 scenarios | — | **~4%** (12 / ~300) |
 | **EventBridge** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
-| **Total** | **102** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **VPC (EC2)** | 33 | — | — | **~11%** (33 / ~300) |
+| **RDS** | 9 | — | — | **~3%** (9 / ~300) |
+| **IAM** | 9 | — | — | **~3%** (9 / ~300) |
+| **Total** | **153** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
@@ -284,6 +287,62 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 | --- | --- | --- |
 | Custom event buses | P3 |  |
 | Console panel | P1 | **Shipped ** |
+
+---
+
+## VPC (EC2 networking)
+
+Guide: [vpc.md](vpc.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. Terraform green-path example [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/).
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| `simulith verify vpc` | P1 |  |
+| Lambda VpcConfig / ENI | P1 |  |
+| Console panel | P1 |  |
+| Interface VPC endpoints | P3 |  |
+
+---
+
+## RDS (Postgres sidecar)
+
+Guide: [rds.md](rds.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**). Endpoint `127.0.0.1:<hostPort>`. Terraform green-path [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/). SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| `simulith verify rds` | P1 |  |
+| RDS Proxy | P1 |  |
+| MySQL / MariaDB engines | P3 | — |
+| Console panel | P2 |  |
+
+---
+
+## IAM
+
+Guide: [iam.md](iam.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/loyaleasy-min/`](examples/terraform/iam/loyaleasy-min/). SQLite `iam_*`. SigV4 `iam` Query API.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| `simulith verify iam` | P1 |  |
+| Console panel | P1 |  |
+| Product messaging / docs sync | P2 |  /  |
 
 ---
 
