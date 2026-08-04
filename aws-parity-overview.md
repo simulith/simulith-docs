@@ -25,7 +25,7 @@ Last updated: 2026-08-04..
 | **Cognito** | 23 | 2 / 2 scenarios | — | **~8%** (23 / ~300) |
 | **SES** | 12 | 2 / 2 scenarios | — | **~4%** (12 / ~300) |
 | **EventBridge** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
-| **VPC (EC2)** | 33 | — | — | **~11%** (33 / ~300) |
+| **VPC (EC2)** | 33 | 2 / 2 scenarios | — | **~11%** (33 / ~300) |
 | **RDS** | 15 | — | — | **~5%** (15 / ~300) |
 | **IAM** | 9 | — | — | **~3%** (9 / ~300) |
 | **KMS** | 6 | — | — | **~2%** (6 / ~300) |
@@ -299,13 +299,12 @@ Guide: [vpc.md](vpc.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green-path examples [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/) + [`lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/).
+CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green-path examples [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/) + [`lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/). **`simulith verify vpc`** (2 scenarios).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| `simulith verify vpc` | P1 |  |
 | Console panel | P1 |  |
 | Interface VPC endpoints | P3 |  |
 

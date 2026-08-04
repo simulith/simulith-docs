@@ -290,10 +290,11 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateVpc / DescribeVpcs / DeleteVpc | available | no |  |
-| CreateSubnet / DescribeSubnets / DeleteSubnet | available | no | |
-| CreateSecurityGroup + ingress/egress | available | no | |
+| CreateVpc / DescribeVpcs / DeleteVpc | available | yes |  |
+| CreateSubnet / DescribeSubnets / DeleteSubnet | available | yes | |
+| CreateSecurityGroup + ingress/egress | available | yes | |
 | IGW / route tables / gateway endpoints | available | no | Metadata routing |
+| Lambda VpcConfig | available | yes | ; invoke scenario in verify vpc |
 
 ---
 
@@ -341,6 +342,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
+| VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -355,6 +357,7 @@ simulith verify cognito --skip-aws
 simulith verify ses --skip-aws
 simulith verify eventbridge --skip-aws
 simulith verify rds --skip-aws
+simulith verify vpc --skip-aws
 ```
 
 ---

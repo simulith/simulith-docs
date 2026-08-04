@@ -41,7 +41,16 @@ provider "aws" {
 
 - Metadata / logical routing only — no real ENI or network namespace isolation
 - Interface VPC endpoints (Secrets Manager) deferred
-- **`simulith verify vpc`** not yet shipped
+
+## Verify
+
+```bash
+simulith verify vpc --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
+simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
+```
+
+Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`. Lambda invoke scenario skips when `node` is not on PATH.
 
 ## Related
 
