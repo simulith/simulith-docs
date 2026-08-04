@@ -26,7 +26,7 @@ Compatible with AWS CLI (`aws secretsmanager`) and AWS SDKs when using `--endpoi
 
 ## Limits
 
-- Plain `SecretString` only (no binary secrets, KMS keys, or rotation)
+- Optional `KmsKeyId` on CreateSecret when KMS CMK exists; no binary secrets or rotation
 - No recovery window — `ForceDeleteWithoutRecovery` deletes immediately
 - `ListSecrets` pagination stub (returns full list)
 - Distinct from SSM SecureString — use this API for Terraform `aws_secretsmanager_secret`

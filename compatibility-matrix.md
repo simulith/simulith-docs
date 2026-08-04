@@ -14,7 +14,7 @@ Last updated: 2026-08-03..
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 13 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM) |
+| Services in matrix | 14 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS) |
 | Operations **available** locally | 106 |
 | Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
@@ -210,10 +210,25 @@ Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secret
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateSecret | available | yes (`secret-crud-lifecycle`) | Plain `SecretString` only |
+| CreateSecret | available | yes (`secret-crud-lifecycle`) | Plain `SecretString`; optional `KmsKeyId` |
 | GetSecretValue | available | yes (`secret-crud-lifecycle`, `get-secret-value`) | By name or ARN |
 | ListSecrets | available | yes (`secret-crud-lifecycle`) | Full list (no pagination) |
 | DeleteSecret | available | yes (`secret-crud-lifecycle`) | Immediate delete with `ForceDeleteWithoutRecovery` |
+
+---
+
+## KMS
+
+Guide: [kms.md](kms.md) · Verify: —
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateKey | available | no |  — symmetric CMK |
+| DescribeKey | available | no | Key ID, ARN, or alias |
+| CreateAlias | available | no | `alias/...` |
+| ListAliases | available | no | Optional `KeyId` filter |
+| Encrypt | available | no | Mock envelope ciphertext |
+| Decrypt | available | no | Round-trip with Encrypt |
 
 ---
 
@@ -288,11 +303,11 @@ Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateDBSubnetGroup / Describe / Delete | available | no |  |
-| CreateDBParameterGroup / Describe / Delete | available | no | Minimal stub |
-| CreateDBInstance / Describe / Delete | available | no | Postgres 15 Docker sidecar |
-| CreateDBProxy / Describe / Delete | available | no |  |
-| RegisterDBProxyTargets / DeregisterDBProxyTargets | available | no | TCP relay to instance |
+| CreateDBSubnetGroup / Describe / Delete | available | yes |  |
+| CreateDBParameterGroup / Describe / Delete | available | yes | Minimal stub |
+| CreateDBInstance / Describe / Delete | available | yes | Postgres 15 Docker sidecar |
+| CreateDBProxy / Describe / Delete | available | yes |  |
+| RegisterDBProxyTargets / DeregisterDBProxyTargets | available | yes | TCP relay to instance |
 | ModifyDBProxyTargetGroup | available | no | Stub (pool config ignored) |
 
 ---
@@ -325,6 +340,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
+| RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -338,6 +354,7 @@ simulith verify secretsmanager --skip-aws
 simulith verify cognito --skip-aws
 simulith verify ses --skip-aws
 simulith verify eventbridge --skip-aws
+simulith verify rds --skip-aws
 ```
 
 ---

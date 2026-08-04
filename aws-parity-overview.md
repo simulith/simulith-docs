@@ -5,7 +5,7 @@ Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 +
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-08-03..
+Last updated: 2026-08-04..
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
@@ -28,7 +28,8 @@ Last updated: 2026-08-03..
 | **VPC (EC2)** | 33 | — | — | **~11%** (33 / ~300) |
 | **RDS** | 15 | — | — | **~5%** (15 / ~300) |
 | **IAM** | 9 | — | — | **~3%** (9 / ~300) |
-| **Total** | **159** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **KMS** | 6 | — | — | **~2%** (6 / ~300) |
+| **Total** | **165** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
@@ -316,15 +317,32 @@ Guide: [rds.md](rds.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green-path [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/). SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`.
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green-path [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/). SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| `simulith verify rds` | P1 |  |
 | MySQL / MariaDB engines | P3 | — |
 | Console panel | P2 |  |
+
+---
+
+## KMS
+
+Guide: [kms.md](kms.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateKey / DescribeKey; CreateAlias / ListAliases; Encrypt / Decrypt (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. Terraform green-path [`examples/terraform/kms/loyaleasy-min/`](examples/terraform/kms/loyaleasy-min/). SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| `simulith verify kms` | P1 |  |
+| Console panel | P1 |  |
+| Grants / rotation / multi-Region | P3 | — |
 
 ---
 

@@ -304,8 +304,9 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Cognito | `simulith verify cognito --skip-aws` | 2 |
 | SES | `simulith verify ses --skip-aws` | 2 |
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
+| RDS | `simulith verify rds --skip-aws` | 2 |
 
-No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH.
+No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.
 
 **Extended DynamoDB scenarios** (`--filter extended`, 13 total) are **not** part of the default PR job — they add time and overlap with default smoke coverage goals; run them locally or set `VERIFY_DDB_EXTENDED=true` when invoking the script below.
 
@@ -325,6 +326,7 @@ runtime/artifacts/
   verify-cognito.json
   verify-ses.json
   verify-eventbridge.json
+  verify-rds.json
 ```
 
 Download from the PR **Checks** tab → **Parity smoke** → **Artifacts**.
@@ -361,6 +363,8 @@ The **`Parity smoke (Docker)`** job in `.github/workflows/ci.yml` validates the 
 | SSM | `artifacts/verify-docker-ssm.json` |
 | S3 | `artifacts/verify-docker-s3.json` |
 | Lambda | `artifacts/verify-docker-lambda.json` |
+
+RDS verify runs in the **host-runtime** Parity smoke job only (`verify-rds.json`) — the shipped Docker image does not include docker for Postgres sidecars.
 
 Download **`parity-verify-docker-reports`** from the PR Checks tab. The job **fails** when verify or compose health checks fail.
 

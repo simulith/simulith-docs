@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.78.0] - 2026-08-04
+
+### Features
+
+- ****: simulith verify rds
+
+## [0.77.0] - 2026-08-04
+
+### Features
+
+- ****: KMS CMK encrypt/decrypt
+
 ## [0.76.0] - 2026-08-03
 
 ### Features

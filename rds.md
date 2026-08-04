@@ -61,6 +61,16 @@ provider "aws" {
 
 Combine with [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/) for VPC + subnet + security group resources.
 
+## Verify
+
+```bash
+simulith verify rds --skip-aws          # Simulith-only smoke (2 scenarios; needs Docker)
+simulith verify rds                     # AWS parity (parameter group describe in scenario 1)
+simulith verify rds --filter db-instance  # subset by scenario name prefix
+```
+
+Scenarios: `db-instance-lifecycle`, `db-proxy-tcp-connect`. **Docker must be available on the Simulith runtime host** (where `simulith start` runs), not only on the verify client. Scenarios skip when docker is missing or the sidecar cannot start (e.g. Simulith inside a container without DinD).
+
 ## Limits
 
 - Postgres engine only in v1
