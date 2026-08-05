@@ -48,8 +48,8 @@ Connect with `psql -h 127.0.0.1 -p <port> -U <MasterUsername> -d <DBName>`.
 
 Green-path examples:
 
-- Instance subset: [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/)
-- Proxy subset: [`examples/terraform/rds/proxy-min/`](examples/terraform/rds/proxy-min/)
+- Instance subset: [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) — `terraform apply` + **`terraform destroy`**; embedded VPC; Docker required
+- Proxy subset: [`examples/terraform/rds/proxy-min/`](examples/terraform/rds/proxy-min/) — apply local; formal destroy path pending
 
 ```hcl
 provider "aws" {

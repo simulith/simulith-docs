@@ -52,6 +52,10 @@ simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
 
 Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`. Lambda invoke scenario skips when `node` is not on PATH.
 
+## Console
+
+Panel **`/vpc`**: list VPCs, subnets, and security group ingress/egress rules via Describe* APIs. See [console.md](console.md).
+
 ## Related
 
 - RDS + Lambda VPC: [`lambda.md`](lambda.md), [`rds.md`](rds.md)

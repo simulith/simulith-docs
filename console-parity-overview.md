@@ -191,6 +191,20 @@ Guide: [console.md](console.md) · API: [ses.md](ses.md) · Peek: [admin-api.md]
 
 ---
 
+## VPC panel
+
+Guide: [console.md](console.md) · API: [vpc.md](vpc.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| List VPCs | **DescribeVpcs** — VPC selector | — |
+| View subnets | **DescribeSubnets** (filtered by VPC) | — |
+| Security groups + rules | **DescribeSecurityGroups** — ingress/egress summary | — |
+| Create / delete VPC resources | Not in UI | CLI / Terraform (`examples/terraform/vpc/network-min`) |
+| Real ENI / network isolation | Not in UI | Metadata path only (see vpc.md) |
+
+---
+
 ## Verify panel
 
 Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) · CI artifacts: [compatibility.md § CI](compatibility.md#continuous-integration-github-actions)
