@@ -53,14 +53,14 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`secretsmanager-lambda/`](secretsmanager-lambda/) | Green | Green | 3 resources + data source; `endpoints { secretsmanager, lambda }`; `-parallelism=1`; [README](secretsmanager-lambda/README.md) |
 | [`dynamodb-sqs/`](dynamodb-sqs/) | Green | Green | 1 table + 1 queue; `endpoints { dynamodb, sqs }`; destroy ~60–90s; [README](dynamodb-sqs/README.md) |
 | [`s3-lambda/`](s3-lambda/) | Green | Green | 1 bucket + 1 Lambda + notification; `endpoints { s3, lambda }`; `-parallelism=1`; [README](s3-lambda/README.md) |
+| [`vpc/network-min/`](vpc/network-min/) | Green | Green | VPC + subnet + SG + gateway endpoints; `-parallelism=1`; [README](vpc/network-min/README.md) |
 
 ### B7+ examples (apply local — formal green path pending FW-*-003)
 
-Runnable modules with documented limits. **`terraform destroy`** coverage is tracked per ****, ****, ****, **** — use module READMEs until those stories close.
+Runnable modules with documented limits. **`terraform destroy`** coverage is tracked per ****, ****, **** — use module READMEs until those stories close.
 
 | Module | Apply | Destroy | Notes |
 | --- | --- | --- | --- |
-| [`vpc/network-min/`](vpc/network-min/) | Local | TBD | VPC + subnet + SG; [README](vpc/network-min/README.md) |
 | [`rds/postgres-min/`](rds/postgres-min/) | Local | TBD | Postgres sidecar — **Docker required**; [README](rds/postgres-min/README.md) |
 | [`rds/proxy-min/`](rds/proxy-min/) | Local | TBD | RDS Proxy + sidecar; Docker required |
 | [`iam/proxy-roles-min/`](iam/proxy-roles-min/) | Local | TBD | IAM role/policy for RDS Proxy |

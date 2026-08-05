@@ -27,7 +27,7 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 
 ## Terraform
 
-Green-path example: [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/).
+Green-path example: [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) — `terraform apply` + **`terraform destroy`**.
 
 ```hcl
 provider "aws" {

@@ -12,3 +12,5 @@ terraform destroy -var-file=terraform.tfvars -auto-approve
 ```
 
 Single-root example (no remote state S3) for local validation.
+
+**Green path:** `terraform apply -parallelism=1` then **`terraform destroy -parallelism=1`** — no `simulith reset` required.
