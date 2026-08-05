@@ -205,6 +205,19 @@ Guide: [console.md](console.md) · API: [vpc.md](vpc.md)
 
 ---
 
+## RDS panel
+
+Guide: [console.md](console.md) · API: [rds.md](rds.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| List DB instances | **DescribeDBInstances** — instance selector | — |
+| Instance detail + endpoint | Engine, status, subnet group, sidecar host:port | — |
+| Create / delete DB instances | Not in UI | CLI / Terraform (`examples/terraform/rds/postgres-min`) |
+| RDS Proxy targets | Not in UI | CLI / Terraform `proxy-min` |
+
+---
+
 ## Verify panel
 
 Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) · CI artifacts: [compatibility.md § CI](compatibility.md#continuous-integration-github-actions)

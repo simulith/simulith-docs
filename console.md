@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -127,6 +127,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Cognito** | ListUserPools, DescribeUserPool, ListUserPoolClients, ListGroups; JWKS link | Create/delete UI deferred; seeded `demo-pool` + `demo-client` + group `admin` via **Seed** |
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
+| **RDS** | DescribeDBInstances (status, engine, sidecar endpoint) | Create/delete UI deferred; Postgres sidecar requires Docker; use Terraform `rds/postgres-min` |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 

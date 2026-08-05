@@ -61,6 +61,10 @@ provider "aws" {
 
 Combine with [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) for VPC + subnet + security group resources.
 
+## Console
+
+Read-only panel at **`/rds`** — **DescribeDBInstances** lists Postgres instances with status and sidecar endpoint (`127.0.0.1:<port>`). See [console.md](console.md) and [console-parity-overview.md](console-parity-overview.md).
+
 ## Verify
 
 ```bash

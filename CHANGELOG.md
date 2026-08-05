@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.83.0] - 2026-08-05
+
+### Features
+
+- ****: Console RDS panel
+
 ## [0.82.0] - 2026-08-05
 
 ### Features
