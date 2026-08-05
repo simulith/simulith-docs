@@ -15,7 +15,7 @@ variable "simulith_endpoint" {
 
 variable "project_name" {
   type    = string
-  default = "loyaleasy"
+  default = "demoapp"
 }
 
 variable "environment" {
@@ -25,7 +25,7 @@ variable "environment" {
 
 variable "secret_arn" {
   type    = string
-  default = "arn:aws:secretsmanager:us-east-1:000000000000:secret:loyaleasy-dev-db"
+  default = "arn:aws:secretsmanager:us-east-1:000000000000:secret:demo-dev-db"
 }
 
 variable "kms_key_arn" {

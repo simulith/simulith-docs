@@ -123,7 +123,7 @@ Provider routes **apigateway** and **lambda** endpoints to Simulith. Use **`-par
 
 ## Out of scope (follow-up stories)
 
-- Cognito user pool authorizer (native) — use Lambda REQUEST authorizer validating Cognito JWT (loyaleasy pattern).
+- Cognito user pool authorizer (native) — use Lambda REQUEST authorizer validating Cognito JWT (common production pattern).
 - API keys / usage plans, custom domains.
 
 Console panel: **shipped**  /  — [`console/README.md`](console.md), [`runtime/docs/console.md`](console.md).

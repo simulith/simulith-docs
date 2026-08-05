@@ -75,7 +75,7 @@ Terraform **auto-loads only** `terraform.tfvars` and `*.auto.tfvars`. Named file
 | Simulith (Docker all-in-one) | `default` | `terraform.tfvars` or `dev.tfvars` |
 | Simulith (`:4566`) | `default` | `*.native.example` → local tfvars |
 | AWS dev | `aws` | `terraform.aws-dev.tfvars` (DDB, SQS) · `dev.aws.tfvars` (SSM parameters) |
-| AWS prod (SSM Loyaleasy) | `aws` | `prod.tfvars` (SSM parameters) |
+| AWS prod (SSM parameters) | `aws` | `prod.tfvars` (SSM parameters) |
 
 > **Pitfall:** `terraform workspace select aws` + bare `terraform apply` still loads **`terraform.tfvars`** if present — usually Simulith settings. Always pass the AWS `-var-file`.
 
@@ -255,6 +255,17 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`cognito/`](examples/terraform/cognito/) | Green | Green | User pool + client + group; JWKS at `/{poolId}/.well-known/jwks.json` |
 | [`ses/`](examples/terraform/ses/) | Green | Green | Email identity + template; Send* outbox local |
 | [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
+
+### B7+ modules (apply local — formal green path pending)
+
+| Module | Apply | Destroy | Simulith APIs used |
+| --- | --- | --- | --- |
+| [`vpc/network-min/`](examples/terraform/vpc/network-min/) | Local | TBD | VPC, subnet, SG CRUD |
+| [`rds/postgres-min/`](examples/terraform/rds/postgres-min/) | Local | TBD | DB subnet group, DB instance (Postgres sidecar) |
+| [`rds/proxy-min/`](examples/terraform/rds/proxy-min/) | Local | TBD | DB proxy + target registration |
+| [`iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/) | Local | TBD | Role, policy, attach |
+| [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Local | TBD | CreateKey, alias, Encrypt/Decrypt |
+| [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) | Local | TBD | Lambda VpcConfig + RDS proxy reachability |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
 

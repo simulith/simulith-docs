@@ -1,4 +1,4 @@
-# Minimum loyaleasy proxydb subset on Simulith (SML-194).
+# Minimum RDS Proxy subset on Simulith.
 # Includes embedded VPC/RDS/IAM plus RDS Proxy + target.
 
 locals {
@@ -85,7 +85,7 @@ resource "aws_db_subnet_group" "subnet" {
   subnet_ids = [aws_subnet.database_subnet_1.id, aws_subnet.database_subnet_2.id]
 }
 
-resource "aws_db_instance" "loyaleasy_db" {
+resource "aws_db_instance" "postgres_db" {
   identifier     = local.name_prefix
   engine         = "postgres"
   engine_version = "15.13"
@@ -172,5 +172,5 @@ resource "aws_db_proxy_default_target_group" "default" {
 resource "aws_db_proxy_target" "db" {
   db_proxy_name          = aws_db_proxy.proxy.name
   target_group_name      = aws_db_proxy_default_target_group.default.name
-  db_instance_identifier = aws_db_instance.loyaleasy_db.identifier
+  db_instance_identifier = aws_db_instance.postgres_db.identifier
 }

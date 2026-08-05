@@ -15,7 +15,7 @@ output "rds_proxy_sg" {
 
 output "postgres_db_endpoint" {
   description = "Direct DB instance endpoint"
-  value       = aws_db_instance.loyaleasy_db.endpoint
+  value       = aws_db_instance.postgres_db.endpoint
 }
 
 output "rds_proxy_role_arn" {

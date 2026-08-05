@@ -1,6 +1,6 @@
-# loyaleasy-min RDS on Simulith
+# postgres-min RDS on Simulith
 
-Minimum Terraform subset mirroring `postgresdb/database.tf` for local green-path validation.
+Minimum Terraform subset for a Postgres instance with embedded VPC/subnet/security group — local green-path validation.
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ Minimum Terraform subset mirroring `postgresdb/database.tf` for local green-path
 ## Apply
 
 ```bash
-cd runtime/examples/terraform/rds/loyaleasy-min
+cd runtime/examples/terraform/rds/postgres-min
 terraform init
 terraform apply
 ```
@@ -20,7 +20,7 @@ terraform apply
 ```bash
 terraform output postgres_db_endpoint
 terraform output postgres_db_port
-psql -h "$(terraform output -raw postgres_db_endpoint)" -p "$(terraform output -raw postgres_db_port)" -U loyaleasy -d loyaleasy
+psql -h "$(terraform output -raw postgres_db_endpoint)" -p "$(terraform output -raw postgres_db_port)" -U demoapp -d demoapp
 ```
 
 ## Destroy

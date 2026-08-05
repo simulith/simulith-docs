@@ -1,4 +1,4 @@
-# Cognito User Pool + App Client — green path on Simulith (SML-170).
+# Cognito User Pool + App Client — green path on Simulith.
 #
 #   terraform apply -var-file=terraform.tfvars -auto-approve
 #   terraform destroy -var-file=terraform.tfvars -auto-approve

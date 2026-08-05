@@ -1,4 +1,4 @@
-# Platform parameters — SSM Parameter Store (Simulith twin of Loyaleasy Cloud Posse module).
+# Platform parameters — SSM Parameter Store (Cloud Posse pattern on Simulith).
 #
 # https://docs.cloudposse.com/modules/library/aws/ssm-parameter-store/
 #
@@ -17,7 +17,7 @@
 | --- | --- | --- | --- |
 | **Simulith local** | `default` | `dev.tfvars` | `/SIMULITH/DEV/` |
 | **Real AWS dev** | `aws` | `dev.aws.tfvars` | `/SIMULITH/DEV/` |
-| **Real AWS Loyaleasy prod** | `aws` | `prod.tfvars` | `/LOYALEASY/PROD/` |
+| **Real AWS prod** | `aws` | `prod.tfvars` | `/DEMOAPP/PROD/` |
 
 The workspace name only isolates Terraform **state** — it does **not** switch the provider endpoint. That comes from `use_simulith_endpoint` in the var file.
 
@@ -64,7 +64,7 @@ aws ssm get-parameters-by-path --path /SIMULITH/DEV --recursive --region us-east
 
 Do **not** use `//SIMULITH/DEV` (double slash sends a different name). PowerShell/CMD need no extra export. See [aws-cli-examples.md — SSM](../../../../aws-cli-examples.md#ssm-parameter-store).
 
-## Run (real AWS — Loyaleasy prod)
+## Run (real AWS prod)
 
 Requires remote state keys: `{project_name}-proxy-state`, `-subnets-state`, `-secrets-state`, `-cognito-state`, `-ses-state`.
 

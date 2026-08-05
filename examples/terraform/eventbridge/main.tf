@@ -1,4 +1,4 @@
-# EventBridge rate rule → Lambda — green path on Simulith (SML-173).
+# EventBridge rate rule → Lambda — green path on Simulith.
 
 data "archive_file" "lambda" {
   type        = "zip"

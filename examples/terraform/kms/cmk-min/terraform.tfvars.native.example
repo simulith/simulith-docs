@@ -1,4 +1,4 @@
 use_simulith_endpoint = false
 aws_region            = "us-east-1"
-project_name          = "loyaleasy"
+project_name          = "demoapp"
 environment           = "dev"

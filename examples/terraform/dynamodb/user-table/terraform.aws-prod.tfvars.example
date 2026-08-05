@@ -5,7 +5,7 @@
 #   terraform apply -var-file=terraform.aws-prod.tfvars
 #
 # Before destroy: disable deletion protection (environment=dev + re-apply, or AWS Console).
-project_name          = "loyaleasy-prod"
+project_name          = "demoapp-prod"
 environment           = "prod"
 use_simulith_endpoint = false
 aws_region            = "us-east-1"

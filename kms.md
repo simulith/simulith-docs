@@ -1,6 +1,6 @@
 # KMS (Key Management Service)
 
-Simulith implements a **minimal CMK slice** for loyaleasy `secrets/` Terraform and Secrets Manager integration.
+Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integration.
 
 ## Protocol
 
@@ -28,7 +28,7 @@ Simulith implements a **minimal CMK slice** for loyaleasy `secrets/` Terraform a
 
 ## Terraform
 
-Green path: [`examples/terraform/kms/loyaleasy-min/`](examples/terraform/kms/loyaleasy-min/).
+Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/).
 
 ## Backlog
 

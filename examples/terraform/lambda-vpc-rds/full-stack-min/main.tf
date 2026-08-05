@@ -1,5 +1,5 @@
-# Loyaleasy-min: VPC + RDS Proxy + Lambda VpcConfig (SML-195 / FW-VPC-010).
-# Subset of transaction-api pattern: Lambda in proxy subnets reaches RDS_PROXY_ENDPOINT.
+# VPC + RDS Proxy + Lambda VpcConfig — full-stack local example.
+# Lambda in proxy subnets reaches RDS proxy endpoint on invoke.
 
 locals {
   name_prefix = "${var.project_name}-${var.environment}"

@@ -19,7 +19,7 @@ DynamoDB table for Cognito-synced user records. **One module** for Simulith loca
 
 Default **`environment=dev`** disables PITR and deletion protection so `terraform destroy` works on Simulith.
 
-Table name: **`${var.project_name}_user`** (e.g. `loyaleasy_user`, `simulith_dev_user`).
+Table name: **`${var.project_name}_user`** (e.g. `demoapp_user`, `simulith_dev_user`).
 
 > **Important:** Terraform, the AWS CLI, and the Console must use the **same** Simulith instance. See [terraform-integration.md — Endpoint matrix](../../../../terraform-integration.md#endpoint-matrix).
 
@@ -186,7 +186,7 @@ terraform output table_name
 
 ## 3. Seed sample users (`user.json`)
 
-[`user.json`](user.json) holds four sample users for **`BatchWriteItem`**. The top-level JSON key must match **`terraform output table_name`** (default example uses `loyaleasy_user`; adjust if `project_name` differs).
+[`user.json`](user.json) holds four sample users for **`BatchWriteItem`**. The top-level JSON key must match **`terraform output table_name`** (default example uses `demoapp_user`; adjust if `project_name` differs).
 
 Set the CLI endpoint to match your Simulith path (same as Terraform):
 

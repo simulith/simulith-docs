@@ -22,9 +22,9 @@ variable "aws_region" {
 }
 
 variable "project_name" {
-  description = "Platform / project prefix for table name (e.g. loyaleasy → loyaleasy_user)"
+  description = "Platform / project prefix for table name (e.g. demoapp → demoapp_user)"
   type        = string
-  default     = "loyaleasy"
+  default     = "demoapp"
 }
 
 variable "environment" {

@@ -94,7 +94,7 @@ EP=http://localhost:4566
 
 POOL=$(aws cognito-idp create-user-pool \
   --endpoint-url "$EP" \
-  --pool-name loyaleasy-local \
+  --pool-name demo-local \
   --query 'UserPool.Id' --output text)
 
 CLIENT=$(aws cognito-idp create-user-pool-client \
@@ -140,4 +140,3 @@ endpoints {
 ## Related
 
 - Backlog:
-- Study:

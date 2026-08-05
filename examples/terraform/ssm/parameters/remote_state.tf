@@ -1,4 +1,4 @@
-# Prod-shaped remote state reads (same keys as Loyaleasy AWS stacks).
+# Prod-shaped remote state reads (reference layout for multi-stack setups).
 # Disabled when use_remote_state = false (Simulith local green path).
 
 data "terraform_remote_state" "proxydb" {

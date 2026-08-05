@@ -26,7 +26,7 @@ Last updated: 2026-08-04..
 | **SES** | 12 | 2 / 2 scenarios | — | **~4%** (12 / ~300) |
 | **EventBridge** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
 | **VPC (EC2)** | 33 | 2 / 2 scenarios | — | **~11%** (33 / ~300) |
-| **RDS** | 15 | — | — | **~5%** (15 / ~300) |
+| **RDS** | 15 | 2 / 2 scenarios | — | **~5%** (15 / ~300) |
 | **IAM** | 9 | — | — | **~3%** (9 / ~300) |
 | **KMS** | 6 | — | — | **~2%** (6 / ~300) |
 | **Total** | **165** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
@@ -196,7 +196,7 @@ Metadata in SQLite (`lambda_functions`, `lambda_event_source_mappings`, `lambda_
 
 **Shipped:** Lambda Layers (`PublishLayerVersion`, layer CRUD, `Layers` on CreateFunction, nodejs `NODE_PATH` on invoke). **:** python `PYTHONPATH` on invoke.
 
-**Shipped:** `VpcConfig` on CreateFunction / UpdateFunctionConfiguration; invoke reachability to RDS Proxy endpoint (`127.0.0.1:<port>`) when VpcConfig set. Terraform [`examples/terraform/lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/). No real ENI — metadata + host-network invoke path.
+**Shipped:** `VpcConfig` on CreateFunction / UpdateFunctionConfiguration; invoke reachability to RDS Proxy endpoint (`127.0.0.1:<port>`) when VpcConfig set. Terraform [`examples/terraform/lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/). No real ENI — metadata + host-network invoke path.
 
 ### Tier A reference set (7 ops)
 
@@ -299,7 +299,7 @@ Guide: [vpc.md](vpc.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green-path examples [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/) + [`lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/). **`simulith verify vpc`** (2 scenarios).
+CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green-path examples [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) + [`lambda-vpc-rds/postgres-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/). **`simulith verify vpc`** (2 scenarios).
 
 ### Notable gaps (tracked)
 
@@ -316,7 +316,7 @@ Guide: [rds.md](rds.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green-path [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/). SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green-path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/). SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
 
 ### Notable gaps (tracked)
 
@@ -333,7 +333,7 @@ Guide: [kms.md](kms.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateKey / DescribeKey; CreateAlias / ListAliases; Encrypt / Decrypt (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. Terraform green-path [`examples/terraform/kms/loyaleasy-min/`](examples/terraform/kms/loyaleasy-min/). SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
+CreateKey / DescribeKey; CreateAlias / ListAliases; Encrypt / Decrypt (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. Terraform green-path [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/). SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
 
 ### Notable gaps (tracked)
 
@@ -351,7 +351,7 @@ Guide: [iam.md](iam.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/loyaleasy-min/`](examples/terraform/iam/loyaleasy-min/). SQLite `iam_*`. SigV4 `iam` Query API.
+CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). SQLite `iam_*`. SigV4 `iam` Query API.
 
 ### Notable gaps (tracked)
 

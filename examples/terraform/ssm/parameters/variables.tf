@@ -27,11 +27,11 @@ variable "use_remote_state" {
 
 variable "remote_state_bucket" {
   type    = string
-  default = "loyaleasy-terraform-state"
+  default = "demoapp-terraform-state"
 }
 
 ################################################################################
-# Required variables (same names as original Loyaleasy module)
+# Required variables (Cloud Posse ssm-parameter-store pattern)
 ################################################################################
 
 variable "env" {
@@ -66,7 +66,7 @@ variable "secret_password" {
 }
 
 ################################################################################
-# Optional variables (defaults aligned with original Loyaleasy parameters module)
+# Optional variables (defaults aligned with the reference parameters module)
 ################################################################################
 
 variable "shared_infrastructure_account_id" {
@@ -109,13 +109,13 @@ variable "region" {
 variable "jwt_issuer" {
   type        = string
   description = "JWT issuer claim (iss)."
-  default     = "https://loyaleasy.com/auth"
+  default     = "https://demoapp.example/auth"
 }
 
 variable "jwt_audience" {
   type        = string
   description = "JWT audience claim (aud)."
-  default     = "loyaleasy-api"
+  default     = "demoapp-api"
 }
 
 variable "project_name" {

@@ -1,4 +1,4 @@
-# Minimum loyaleasy VPC layout on Simulith (SML-191).
+# Minimum VPC layout on Simulith.
 # Mirrors infrastructure/vpc + a single database subnet + RDS security group.
 
 locals {

@@ -15,7 +15,7 @@ variable "simulith_endpoint" {
 
 variable "project_name" {
   type    = string
-  default = "loyaleasy"
+  default = "demoapp"
 }
 
 variable "environment" {
@@ -25,7 +25,7 @@ variable "environment" {
 
 variable "user_database" {
   type    = string
-  default = "loyaleasy"
+  default = "demoapp"
 }
 
 variable "password_database" {

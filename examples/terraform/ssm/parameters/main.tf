@@ -1,4 +1,4 @@
-# Simulith-compatible twin of Loyaleasy Cloud Posse ssm-parameter-store.
+# Simulith-compatible SSM parameter store example (Cloud Posse pattern).
 # https://docs.cloudposse.com/modules/library/aws/ssm-parameter-store/
 #
 # terraform plan  -var-file=dev.tfvars

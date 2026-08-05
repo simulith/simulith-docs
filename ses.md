@@ -87,4 +87,3 @@ endpoints {
 - [console.md](console.md) — SES panel
 - [admin-api.md](admin-api.md) — outbox peek
 - Backlog:
-- Study:

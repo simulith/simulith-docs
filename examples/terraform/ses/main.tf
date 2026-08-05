@@ -1,4 +1,4 @@
-# SES identity + template — green path on Simulith (SML-172).
+# SES identity + template — green path on Simulith.
 
 resource "aws_ses_email_identity" "otp" {
   email = var.email_identity

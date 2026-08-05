@@ -111,7 +111,7 @@ Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3
 
 ### VpcConfig
 
-`CreateFunction` and `UpdateFunctionConfiguration` accept `VpcConfig` with `SubnetIds` and `SecurityGroupIds`. Metadata only locally — invoke runs on the host and can reach RDS Proxy at `127.0.0.1:<port>`. Example: [`examples/terraform/lambda-vpc-rds/loyaleasy-min/`](examples/terraform/lambda-vpc-rds/loyaleasy-min/).
+`CreateFunction` and `UpdateFunctionConfiguration` accept `VpcConfig` with `SubnetIds` and `SecurityGroupIds`. Metadata only locally — invoke runs on the host and can reach RDS Proxy at `127.0.0.1:<port>`. Example: [`examples/terraform/lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/).
 
 ### Java (java11 / java17 / java21)
 

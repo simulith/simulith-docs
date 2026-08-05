@@ -48,7 +48,7 @@ Connect with `psql -h 127.0.0.1 -p <port> -U <MasterUsername> -d <DBName>`.
 
 Green-path examples:
 
-- Instance subset: [`examples/terraform/rds/loyaleasy-min/`](examples/terraform/rds/loyaleasy-min/)
+- Instance subset: [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/)
 - Proxy subset: [`examples/terraform/rds/proxy-min/`](examples/terraform/rds/proxy-min/)
 
 ```hcl
@@ -59,7 +59,7 @@ provider "aws" {
 }
 ```
 
-Combine with [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/) for VPC + subnet + security group resources.
+Combine with [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) for VPC + subnet + security group resources.
 
 ## Verify
 

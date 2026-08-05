@@ -8,7 +8,7 @@
 #   go run ./cmd/simulith start
 #   or: docker compose -f docker-compose.all-in-one.yml -f docker-compose.all-in-one.runtime-port.yml up
 #   → use terraform.tfvars.native.example instead
-project_name          = "loyaleasy"
+project_name          = "demoapp"
 environment           = "dev"
 use_simulith_endpoint = true
 simulith_endpoint     = "http://127.0.0.1:9080/runtime"

@@ -1,6 +1,6 @@
 # IAM — Simulith
 
-Local Amazon IAM emulation via the **IAM Query API** for loyaleasy RDS Proxy roles.  / .
+Local Amazon IAM emulation via the **IAM Query API** for RDS Proxy roles.
 
 ## Overview
 
@@ -22,7 +22,7 @@ Compatible with Terraform `aws_iam_role`, `aws_iam_policy`, and `aws_iam_role_po
 
 ## Terraform
 
-Green-path example (proxydb IAM subset): [`examples/terraform/iam/loyaleasy-min/`](examples/terraform/iam/loyaleasy-min/).
+Green-path example (RDS Proxy IAM subset): [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/).
 
 ```hcl
 provider "aws" {

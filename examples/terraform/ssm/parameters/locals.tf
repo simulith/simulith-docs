@@ -1,9 +1,9 @@
 locals {
-  # Same locals as original Loyaleasy module (Cloud Posse ssm-parameter-store).
+  # Same locals as Cloud Posse ssm-parameter-store pattern.
   environment = var.env == "DEV" ? "dev" : lower(var.env)
   name_prefix = "${var.project_name}-${local.environment}"
 
-  # Original hardcodes /LOYALEASY/${var.env}/; Simulith uses /SIMULITH/${var.env}/ when project_name=simulith
+  # Original hardcodes /APP/${var.env}/; Simulith uses /SIMULITH/${var.env}/ when project_name=simulith
   ssm_prefix = "/${upper(var.project_name)}/${var.env}"
 
   database_secret      = var.use_remote_state ? data.terraform_remote_state.secrets[0].outputs.secret_name : var.database_secret_override

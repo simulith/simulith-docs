@@ -27,7 +27,7 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 
 ## Terraform
 
-Green-path example (loyaleasy-min subset): [`examples/terraform/vpc/loyaleasy-min/`](examples/terraform/vpc/loyaleasy-min/).
+Green-path example: [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/).
 
 ```hcl
 provider "aws" {
@@ -54,5 +54,4 @@ Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`. Lambda in
 
 ## Related
 
-- Backlog:
-- loyaleasy audit:
+- RDS + Lambda VPC: [`lambda.md`](lambda.md), [`rds.md`](rds.md)

@@ -1,6 +1,6 @@
 # Lambda VPC + RDS Proxy green path
 
-Deploys VPC, RDS Postgres + Proxy, and a Lambda with `vpc_config` (transaction-api pattern).
+Deploys VPC, RDS Postgres + Proxy, and a Lambda with `vpc_config`.
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ Deploys VPC, RDS Postgres + Proxy, and a Lambda with `vpc_config` (transaction-a
 ## Apply
 
 ```bash
-cd runtime/examples/terraform/lambda-vpc-rds/loyaleasy-min
+cd runtime/examples/terraform/lambda-vpc-rds/full-stack-min
 terraform init
 terraform apply -auto-approve
 ```
@@ -27,5 +27,5 @@ Expect `{"connected":true,"endpoint":"127.0.0.1:..."}`.
 
 ## Related
 
-- [`../rds/proxy-min/`](../../rds/proxy-min/) — proxy only
-- [`../vpc/loyaleasy-min/`](../../vpc/loyaleasy-min/) — VPC only
+- [`../../rds/proxy-min/`](../../rds/proxy-min/) — proxy only
+- [`../../vpc/network-min/`](../../vpc/network-min/) — VPC only

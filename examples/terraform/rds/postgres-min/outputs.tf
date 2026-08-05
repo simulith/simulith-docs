@@ -5,20 +5,20 @@ output "postgres_db_sg_id" {
 
 output "postgres_db_endpoint" {
   description = "PostgreSQL endpoint hostname (127.0.0.1 on Simulith)"
-  value       = aws_db_instance.loyaleasy_db.endpoint
+  value       = aws_db_instance.postgres_db.endpoint
 }
 
 output "postgres_db_port" {
   description = "Mapped host port for local psql"
-  value       = aws_db_instance.loyaleasy_db.port
+  value       = aws_db_instance.postgres_db.port
 }
 
 output "postgres_db_arn" {
   description = "DB instance ARN"
-  value       = aws_db_instance.loyaleasy_db.arn
+  value       = aws_db_instance.postgres_db.arn
 }
 
 output "postgres_db_id" {
   description = "DB instance identifier"
-  value       = aws_db_instance.loyaleasy_db.id
+  value       = aws_db_instance.postgres_db.id
 }

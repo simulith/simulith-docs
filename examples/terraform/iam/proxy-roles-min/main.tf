@@ -1,4 +1,4 @@
-# Minimum loyaleasy IAM subset for RDS Proxy (SML-193) — proxydb role + policy only.
+# Minimum IAM subset for RDS Proxy — role + policy only.
 
 locals {
   name_prefix = "${var.project_name}-${var.environment}"

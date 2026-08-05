@@ -22,6 +22,10 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | EventBridge | Schedule rules → Lambda — [eventbridge.md](eventbridge.md) |
 | Cognito | User Pool + Admin* + JWKS — [cognito.md](cognito.md) |
 | SES | Identity, templates, Send* (local outbox) — [ses.md](ses.md) |
+| VPC | VPC/subnet/SG, Lambda VpcConfig — [vpc.md](vpc.md) |
+| RDS | Postgres sidecar + proxy (Docker on runtime host) — [rds.md](rds.md) |
+| IAM | Roles/policies subset (RDS Proxy) — [iam.md](iam.md) |
+| KMS | CMK encrypt/decrypt; Secrets Manager `KmsKeyId` — [kms.md](kms.md) |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 
@@ -165,10 +169,7 @@ For more CLI operations, see **[AWS CLI examples](aws-cli-examples.md)**. This q
 | `simulith seed` | Load demo fixture | [seed.md](seed.md) |
 | `simulith reset` | Clear DynamoDB + SQS + SSM + S3 + Lambda state | [persistence.md](persistence.md) |
 | `simulith snapshot save\|restore` | Export/import full state (DDB/SQS/SSM only in v1) | [snapshot.md](snapshot.md) |
-| `simulith verify dynamodb` | Compare DynamoDB against real AWS | [compatibility.md](compatibility.md) |
-| `simulith verify ssm` | Compare SSM against real AWS | [compatibility.md](compatibility.md) |
-| `simulith verify s3` | Compare S3 against real AWS | [compatibility.md](compatibility.md) |
-| `simulith verify lambda` | Compare Lambda against real AWS | [compatibility.md](compatibility.md) |
+| `simulith verify <service>` | AWS parity smoke — `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `cognito`, `ses`, `eventbridge`, `rds`, `vpc` (add `--skip-aws` for CI-style) | [compatibility.md](compatibility.md) |
 | `simulith report` | HTML report from verify JSON | [compatibility.md](compatibility.md) |
 
 ---

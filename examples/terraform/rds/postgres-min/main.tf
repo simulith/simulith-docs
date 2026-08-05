@@ -1,5 +1,5 @@
-# Minimum loyaleasy RDS layout on Simulith (SML-192).
-# Includes embedded VPC/subnet/SG (same shape as vpc/loyaleasy-min) plus RDS resources.
+# Minimum Postgres RDS layout on Simulith.
+# Includes embedded VPC/subnet/SG (same shape as vpc/network-min) plus RDS resources.
 
 locals {
   environment = var.environment
@@ -68,7 +68,7 @@ resource "aws_db_subnet_group" "subnet" {
   description = "Subnet group for ${var.project_name} PostgreSQL database"
 }
 
-resource "aws_db_parameter_group" "loyaleasy_postgres" {
+resource "aws_db_parameter_group" "postgres_params" {
   name   = "${local.name_prefix}-postgres-params"
   family = "postgres15"
 
@@ -78,7 +78,7 @@ resource "aws_db_parameter_group" "loyaleasy_postgres" {
   }
 }
 
-resource "aws_db_instance" "loyaleasy_db" {
+resource "aws_db_instance" "postgres_db" {
   identifier     = local.name_prefix
   engine         = "postgres"
   engine_version = "15.13"
@@ -94,7 +94,7 @@ resource "aws_db_instance" "loyaleasy_db" {
 
   db_subnet_group_name   = aws_db_subnet_group.subnet.name
   vpc_security_group_ids = [aws_security_group.database_security_group.id]
-  parameter_group_name   = aws_db_parameter_group.loyaleasy_postgres.name
+  parameter_group_name   = aws_db_parameter_group.postgres_params.name
   publicly_accessible    = false
   port                   = 5432
 

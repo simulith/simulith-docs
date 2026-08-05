@@ -1,6 +1,6 @@
 # RDS Proxy green path
 
-Minimum loyaleasy `proxydb/` subset: IAM role + RDS instance + RDS Proxy + target.
+Minimum subset: IAM role + RDS instance + RDS Proxy + target.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Connect via proxy endpoint output:
 
 ```bash
 # Endpoint is host:port (e.g. 127.0.0.1:25432)
-psql "postgresql://loyaleasy:local-dev-password@$(terraform output -raw rds_proxy_endpoint)/loyaleasy"
+psql "postgresql://demoapp:local-dev-password@$(terraform output -raw rds_proxy_endpoint)/demoapp"
 ```
 
 ## Destroy
@@ -28,4 +28,4 @@ psql "postgresql://loyaleasy:local-dev-password@$(terraform output -raw rds_prox
 terraform destroy -auto-approve
 ```
 
-See also: [`../loyaleasy-min/`](../loyaleasy-min/) (RDS instance only), [`../../iam/loyaleasy-min/`](../../iam/loyaleasy-min/) (IAM only).
+See also: [`../postgres-min/`](../postgres-min/) (RDS instance only), [`../../iam/proxy-roles-min/`](../../iam/proxy-roles-min/) (IAM only).
