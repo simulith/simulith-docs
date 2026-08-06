@@ -32,8 +32,9 @@ simulith seed [--config path] [--file path] [--no-reset]
 | EventBridge | rule `demo-rule` | `rate(5 minutes)` → Lambda target `demo-fn` |
 | Cognito | pool `demo-pool` | client `demo-client` + group `admin` (JWKS enabled) |
 | SES | identity `demo@simulith.local` | template `demo-template` + sample outbox message |
+| RDS | instance `demo-db` | Postgres 15 sidecar (`demoapp` / `local-dev-password`; **Docker required** on runtime host) |
 
-Example fixture source: seeds/default.json (embedded copy in the runtime).
+When **docker** is not on the Simulith runtime host PATH (e.g. `simulith seed` inside the shipped container image), RDS instances are **skipped with a warning** — other seed fixtures still apply. Same constraint as [`simulith verify rds`](rds.md#verify). seeds/default.json (embedded copy in the runtime).
 
 **Lambda / API Gateway invoke after seed** requires `node` or `python3` on the Simulith runtime host PATH (same as Console panel invoke).
 

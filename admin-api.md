@@ -64,7 +64,7 @@ Runtime admin status (Console dashboard).
 
 ### `POST /_simulith/v1/seed`
 
-Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, and EventBridge state, then applies the default profile (includes `demo-fn`, `demo-api`, `demo-secret`, `demo-rule`, `demo-pool`, `demo-template` — [seed.md](seed.md)).
+Load the **built-in demo fixture** (same as `simulith seed`). Pre-clears DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, RDS sidecars, and EventBridge state, then applies the default profile (includes `demo-fn`, `demo-api`, `demo-secret`, `demo-rule`, `demo-pool`, `demo-template`, `demo-db` — [seed.md](seed.md)).
 
 **Response 200:**
 

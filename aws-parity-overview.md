@@ -315,14 +315,13 @@ Guide: [rds.md](rds.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local). **Console panel `/rds`**. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local). **Console panel `/rds`**. Default seed instance **`demo-db`**. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
 | MySQL / MariaDB engines | P3 | — |
-| RDS Proxy Console panel | P2 | — |
 
 ---
 

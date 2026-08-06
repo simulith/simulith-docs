@@ -61,6 +61,14 @@ provider "aws" {
 
 Combine with [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) for VPC + subnet + security group resources.
 
+## Default seed (`demo-db`)
+
+After `simulith seed` or Console **Seed demo data**, Postgres instance **`demo-db`** is created with sidecar endpoint `127.0.0.1:<port>`, database `demoapp`, user `demoapp`, password `local-dev-password`.  / . **Docker required** on the Simulith runtime host. Fixture format: [seed.md](seed.md).
+
+```bash
+psql "postgresql://demoapp:local-dev-password@127.0.0.1:<port>/demoapp"
+```
+
 ## Console
 
 Read-only panel at **`/rds`** — **DescribeDBInstances** lists Postgres instances with status and sidecar endpoint (`127.0.0.1:<port>`). See [console.md](console.md) and [console-parity-overview.md](console-parity-overview.md).

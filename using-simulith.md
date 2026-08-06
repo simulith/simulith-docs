@@ -1,6 +1,6 @@
 # Using Simulith — local development vs AWS
 
-You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, and SES locally, and how that compares to real AWS.
+You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, and RDS locally, and how that compares to real AWS.
 
 > **Installation:** not covered here — see [quickstart](quickstart.md) or [Docker Hub overviews](https://hub.docker.com/r/simulith/simulith).
 
@@ -59,13 +59,13 @@ Your app / CLI / Terraform
 | **Account ID** | Your 12-digit account | Fixed **`000000000000`** in ARNs and queue URLs |
 | **Data storage** | AWS-managed, multi-AZ | **SQLite** under `/app/.simulith` in Docker (mount a volume to persist) — [persistence.md](persistence.md) |
 | **Billing / quotas** | AWS pricing and service limits | None — limited by disk and documented API subset |
-| **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda**, **API Gateway** (REST subset), **Secrets Manager**, **EventBridge** (schedule), **Cognito** (User Pool), **SES** (identity/template/Send*) — [aws-parity-overview.md](aws-parity-overview.md) |
+| **Services (available)** | Full catalogs | **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, **Lambda**, **API Gateway** (REST subset), **Secrets Manager**, **EventBridge** (schedule), **Cognito** (User Pool), **SES** (identity/template/Send*), **VPC**, **RDS** (Postgres sidecar + proxy) — [aws-parity-overview.md](aws-parity-overview.md) |
 | **API coverage** | Complete per service | **Subset** — 54 verify scenarios across DynamoDB, SQS, SSM, S3, and Lambda — [compatibility-matrix.md](compatibility-matrix.md) |
 | **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
 
-When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**, **[eventbridge.md](eventbridge.md)**, **[cognito.md](cognito.md)**, **[ses.md](ses.md)**) for documented deviations before assuming a bug.
+When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**, **[eventbridge.md](eventbridge.md)**, **[cognito.md](cognito.md)**, **[ses.md](ses.md)**, **[vpc.md](vpc.md)**, **[rds.md](rds.md)**) for documented deviations before assuming a bug.
 
 ---
 
@@ -117,7 +117,7 @@ Best for **exploration**, demos, and users who prefer a GUI.
 
 1. Open **http://localhost:9080**
 2. **Seed demo data** on the dashboard (or load seed via CLI — [seed.md](seed.md))
-3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, **Lambda**, **EventBridge**, **Cognito**, and **SES** panels (`demo-fn`, `demo-rule`, `demo-pool`, and `demo-template` after Seed)
+3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, **Lambda**, **EventBridge**, **Cognito**, **SES**, **VPC**, and **RDS** panels (`demo-fn`, `demo-rule`, `demo-pool`, `demo-template`, and `demo-db` after Seed)
 4. **Lambda panel:** list, config, invoke with JSON — sync invoke needs `node`/`python3` on the runtime host PATH — [lambda.md](lambda.md)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 

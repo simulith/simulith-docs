@@ -23,7 +23,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | Cognito | User Pool + Admin* + JWKS — [cognito.md](cognito.md) |
 | SES | Identity, templates, Send* (local outbox) — [ses.md](ses.md) |
 | VPC | VPC/subnet/SG, Lambda VpcConfig — [vpc.md](vpc.md) |
-| RDS | Postgres sidecar + proxy (Docker on runtime host) — [rds.md](rds.md) |
+| RDS | Postgres sidecar + proxy; verify, Terraform green path, Console `/rds` (Docker on runtime host) — [rds.md](rds.md) |
 | IAM | Roles/policies subset (RDS Proxy) — [iam.md](iam.md) |
 | KMS | CMK encrypt/decrypt; Secrets Manager `KmsKeyId` — [kms.md](kms.md) |
 
@@ -107,7 +107,7 @@ Expected: `{"status":"ok"}`.
 
 ## 2. Demo data
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, Secrets Manager secret `demo-secret`, EventBridge rule `demo-rule` (`rate(5 minutes)` → `demo-fn`), Cognito User Pool `demo-pool` (client `demo-client`, group `admin`), and SES identity `demo@simulith.local` with template `demo-template`. Details: [seed.md](seed.md).
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, Secrets Manager secret `demo-secret`, EventBridge rule `demo-rule` (`rate(5 minutes)` → `demo-fn`), Cognito User Pool `demo-pool` (client `demo-client`, group `admin`), SES identity `demo@simulith.local` with template `demo-template`, and RDS Postgres instance `demo-db` (Docker required on runtime host). Details: [seed.md](seed.md).
 
 **Console (Option A):** Dashboard → **Seed demo data** (runtime must be healthy).
 
@@ -148,7 +148,7 @@ aws sqs receive-message \
   --region us-east-1
 ```
 
-Expected: table metadata for `Demo`; message body `hello from seed`; SSM parameter `/app/demo/api-url` value `http://localhost:8080`; Lambda `demo-fn`, EventBridge `demo-rule`, Cognito `demo-pool`, and SES `demo-template` listed after seed.
+Expected: table metadata for `Demo`; message body `hello from seed`; SSM parameter `/app/demo/api-url` value `http://localhost:8080`; Lambda `demo-fn`, EventBridge `demo-rule`, Cognito `demo-pool`, SES `demo-template`, and RDS `demo-db` listed after seed.
 
 ```bash
 aws ssm get-parameter --name /app/demo/api-url \
