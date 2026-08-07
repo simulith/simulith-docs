@@ -17,9 +17,10 @@ resource "aws_kms_alias" "app_cmk" {
 }
 
 resource "aws_secretsmanager_secret" "db" {
-  name        = "${local.name_prefix}/database"
-  description = "Database credentials for local stack"
-  kms_key_id  = aws_kms_key.app_cmk.arn
+  name                    = "${local.name_prefix}/database"
+  description             = "Database credentials for local stack"
+  kms_key_id              = aws_kms_key.app_cmk.arn
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "db" {

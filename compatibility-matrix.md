@@ -211,7 +211,7 @@ Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secret
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
 | CreateSecret | available | yes (`secret-crud-lifecycle`) | Plain `SecretString`; optional `KmsKeyId` |
-| GetSecretValue | available | yes (`secret-crud-lifecycle`, `get-secret-value`) | By name or ARN |
+| GetSecretValue | available | yes (`secret-crud-lifecycle`, `get-secret-value`) | By name or ARN; includes `VersionStages` for Terraform |
 | ListSecrets | available | yes (`secret-crud-lifecycle`) | Full list (no pagination) |
 | DeleteSecret | available | yes (`secret-crud-lifecycle`) | Immediate delete with `ForceDeleteWithoutRecovery` |
 
@@ -225,10 +225,13 @@ Guide: [kms.md](kms.md) · Verify: `simulith verify kms`
 | --- | --- | --- | --- |
 | CreateKey | available | yes (`cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip`) |  — symmetric CMK |
 | DescribeKey | available | yes (`cmk-alias-lifecycle`) | Key ID, ARN, or alias |
+| GetKeyPolicy | available | — | Default policy stub
 | CreateAlias | available | yes (`cmk-alias-lifecycle`) | `alias/...` |
 | ListAliases | available | yes (`cmk-alias-lifecycle`) | Optional `KeyId` filter |
 | Encrypt | available | yes (`encrypt-decrypt-roundtrip`) | Mock envelope ciphertext |
 | Decrypt | available | yes (`encrypt-decrypt-roundtrip`) | Round-trip with Encrypt |
+| DeleteAlias | available | — |  — Terraform destroy |
+| ScheduleKeyDeletion | available | — |  — Terraform destroy |
 
 ---
 

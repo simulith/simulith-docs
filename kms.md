@@ -15,10 +15,15 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 | --- | --- |
 | `CreateKey` | Symmetric CMK (`SYMMETRIC_DEFAULT`, `ENCRYPT_DECRYPT`) |
 | `DescribeKey` | By key ID, ARN, or `alias/...` |
+| `GetKeyPolicy` | Default no-op policy for Terraform read-after-create |
+| `GetKeyRotationStatus` | Returns `KeyRotationEnabled: false` |
+| `ListResourceTags` | Empty tag list |
 | `CreateAlias` | `alias/<name>` → target key |
 | `ListAliases` | Optional filter by `KeyId` |
 | `Encrypt` | Base64 plaintext in → `CiphertextBlob` (mock envelope) |
 | `Decrypt` | Base64 ciphertext in → base64 plaintext |
+| `DeleteAlias` | Remove alias before key deletion |
+| `ScheduleKeyDeletion` | Delete CMK after aliases removed |
 
 ## Behaviour notes
 
@@ -28,7 +33,7 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 
 ## Terraform
 
-Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/).
+Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — `terraform apply` and `terraform destroy` with `-parallelism=1`.
 
 ## Backlog
 

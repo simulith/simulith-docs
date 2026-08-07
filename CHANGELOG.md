@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.89.0] - 2026-08-07
+
+### Features
+
+- ****: Terraform green path KMS
+
 ## [0.88.0] - 2026-08-07
 
 ### Features

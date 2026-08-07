@@ -337,7 +337,7 @@ Guide: [kms.md](kms.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateKey / DescribeKey; CreateAlias / ListAliases; Encrypt / Decrypt (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. Terraform green-path [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/). **`simulith verify kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
+CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decrypt; ScheduleKeyDeletion (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. **Terraform green path** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — apply + destroy. **`simulith verify kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
 
 ### Notable gaps (tracked)
 

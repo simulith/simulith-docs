@@ -1,4 +1,4 @@
-use_simulith_endpoint = false
+use_simulith_endpoint = true
 aws_region            = "us-east-1"
 project_name          = "demoapp"
 environment           = "dev"

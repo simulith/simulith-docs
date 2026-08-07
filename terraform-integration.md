@@ -257,6 +257,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
 | [`vpc/network-min/`](examples/terraform/vpc/network-min/) | Green | Green | VPC, IGW, route tables, gateway endpoints, subnet, SG — `-parallelism=1` |
 | [`rds/postgres-min/`](examples/terraform/rds/postgres-min/) | Green | Green | Embedded VPC + DB subnet group, parameter group, Postgres sidecar instance — `-parallelism=1`; **Docker required** |
+| [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret — `-parallelism=1` |
 
 ### B7+ modules (apply local — formal green path pending)
 
@@ -264,7 +265,6 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | --- | --- | --- | --- |
 | [`rds/proxy-min/`](examples/terraform/rds/proxy-min/) | Local | TBD | DB proxy + target registration |
 | [`iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/) | Local | TBD | Role, policy, attach |
-| [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Local | TBD | CreateKey, alias, Encrypt/Decrypt |
 | [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) | Local | TBD | Lambda VpcConfig + RDS proxy reachability |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
@@ -308,6 +308,7 @@ maintainer workflow (private monorepo) --module dynamodb-sqs
 maintainer workflow (private monorepo) --module s3
 maintainer workflow (private monorepo) --module s3-lambda
 maintainer workflow (private monorepo) --module ssm-path
+maintainer workflow (private monorepo) --module kms-cmk-min
 ```
 
 Backlog: .

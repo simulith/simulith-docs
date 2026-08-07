@@ -2,6 +2,8 @@
 
 Minimum CMK + alias + Secrets Manager secret with `kms_key_id`.
 
+**Green path:** `terraform apply` and `terraform destroy` with `-parallelism=1` against Simulith on `:4566`.
+
 ## Prerequisites
 
 1. Simulith running on `:4566`
