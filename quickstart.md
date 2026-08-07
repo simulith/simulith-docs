@@ -22,7 +22,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | EventBridge | Schedule rules → Lambda — [eventbridge.md](eventbridge.md) |
 | Cognito | User Pool + Admin* + JWKS — [cognito.md](cognito.md) |
 | SES | Identity, templates, Send* (local outbox) — [ses.md](ses.md) |
-| VPC | VPC/subnet/SG, Lambda VpcConfig — [vpc.md](vpc.md) |
+| VPC | VPC/subnet/SG, Lambda VpcConfig; verify, Terraform green path, Console `/vpc` — [vpc.md](vpc.md) |
 | RDS | Postgres sidecar + proxy; verify, Terraform green path, Console `/rds` (Docker on runtime host) — [rds.md](rds.md) |
 | IAM | Roles/policies subset (RDS Proxy) — [iam.md](iam.md) |
 | KMS | CMK encrypt/decrypt; Secrets Manager `KmsKeyId` — [kms.md](kms.md) |

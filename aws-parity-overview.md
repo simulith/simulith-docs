@@ -299,12 +299,15 @@ Guide: [vpc.md](vpc.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green path [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) + [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) (apply local). **Console panel `/vpc`**. **`simulith verify vpc`** (2 scenarios).
+CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green path [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) + [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) (apply local). **Console panel `/vpc`**. Public docs sync. **`simulith verify vpc`** (2 scenarios).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
+| Public messaging (landing/Hub) | P2 | **Shipped ** |
+| Seed demo VPC | P2 |  |
+| Public docs sync (mirror smoke) | P2 | **Shipped ** |
 | Interface VPC endpoints | P3 |  |
 
 ---
@@ -315,12 +318,15 @@ Guide: [rds.md](rds.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local). **Console panel `/rds`**. Default seed instance **`demo-db`**. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local). **Console panel `/rds`**. Default seed instance **`demo-db`**. Product messaging + docs sync. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
+| Seed demo instance | P2 | **Shipped ** |
+| Public messaging (landing/Hub) | P2 | **Shipped ** |
+| Public docs sync (mirror smoke) | P2 | **Shipped ** |
 | MySQL / MariaDB engines | P3 | — |
 
 ---

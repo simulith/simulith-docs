@@ -651,6 +651,43 @@ Verify: `simulith verify ses --skip-aws` (see [compatibility.md](compatibility.m
 
 ---
 
+## VPC
+
+VPC, subnet, and security group metadata via the **EC2 Query API**. See [vpc.md](vpc.md). Lambda **VpcConfig** + RDS Proxy reachability on invoke. No real ENI isolation locally.
+
+**Terraform green path:** [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) (apply + destroy).
+
+```bash
+aws ec2 describe-vpcs \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws ec2 create-vpc \
+  --cidr-block 10.0.0.0/16 \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify vpc --skip-aws` (see [compatibility.md](compatibility.md)). Console **VPC** panel lists resources at `/vpc`.
+
+---
+
+## RDS
+
+Postgres sidecar instances + RDS Proxy TCP relay. See [rds.md](rds.md). Default seed includes **`demo-db`**. **Docker required** on the Simulith runtime host for sidecar lifecycle.
+
+**Terraform green path:** [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) (apply + destroy).
+
+```bash
+aws rds describe-db-instances \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+# After simulith seed (demo-db sidecar must be running):
+# psql "postgresql://demoapp:local-dev-password@127.0.0.1:<port>/demoapp"
+```
+
+Verify: `simulith verify rds --skip-aws` (see [compatibility.md](compatibility.md)). Console **RDS** panel lists instances at `/rds`.
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).
@@ -817,6 +854,8 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | EventBridge | PutRule / PutTargets / ListRules (schedule → Lambda); see [eventbridge.md](eventbridge.md) |
 | Cognito | User Pool + Admin* + JWKS; see [cognito.md](cognito.md) |
 | SES | Identity/template/Send* (local outbox); see [ses.md](ses.md) |
+| VPC | VPC/subnet/SG metadata (EC2 API); see [vpc.md](vpc.md) |
+| RDS | Postgres sidecar + proxy; see [rds.md](rds.md) |
 | S3 | Put/Get/Head/List/Copy/DeleteObject(s); see [s3.md](s3.md) |
 
 Full deviation tables:
