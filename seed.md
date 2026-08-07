@@ -32,6 +32,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | EventBridge | rule `demo-rule` | `rate(5 minutes)` → Lambda target `demo-fn` |
 | Cognito | pool `demo-pool` | client `demo-client` + group `admin` (JWKS enabled) |
 | SES | identity `demo@simulith.local` | template `demo-template` + sample outbox message |
+| VPC | `demo-vpc` + `demo-database-subnet` | Postgres SG `demo-postgres-sg` (10.0.0.0/16 → 5432) |
 | RDS | instance `demo-db` | Postgres 15 sidecar (`demoapp` / `local-dev-password`; **Docker required** on runtime host) |
 
 When **docker** is not on the Simulith runtime host PATH (e.g. `simulith seed` inside the shipped container image), RDS instances are **skipped with a warning** — other seed fixtures still apply. Same constraint as [`simulith verify rds`](rds.md#verify). seeds/default.json (embedded copy in the runtime).
@@ -65,7 +66,7 @@ aws ssm get-parameter --name /app/demo/api-url --endpoint-url http://127.0.0.1:4
 
 On **Git Bash (Windows)**, set `export MSYS2_ARG_CONV_EXCL="*"` before SSM CLI commands, or use [PowerShell](quickstart.md). See [quickstart troubleshooting](quickstart.md#troubleshooting).
 
-Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, and EventBridge — same scope as `simulith reset` — then re-applies the fixture).
+Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EC2/VPC, RDS, and EventBridge — same scope as `simulith reset` — then re-applies the fixture).
 
 More CLI examples: [aws-cli-examples.md](aws-cli-examples.md#seeded-data). SDK: [sdk-examples.md](sdk-examples.md#seeded-data).
 
@@ -177,7 +178,11 @@ Notes:
 - **`ses.identities`** — `email` required; optional `createdAt`. Auto-verified (`Success`). Applied **after** Cognito.
 - **`ses.templates`** — `name` required; optional `subject`, `htmlPart`, `textPart`, `createdAt`, `updatedAt`. Applied after identities in the SES block.
 - **`ses.outboxMessages`** — `source`, `toAddresses` required; optional `templateName` (must exist), `templateData`, `subject`, `htmlBody`, `textBody`, `rawData`, `messageId`, `createdAt`. Captured Send* rows for Console inspect.
-- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, or `ses` sections are allowed
+- **`vpc.vpcs`** — `cidrBlock` required; optional fixed `id`, `enableDnsSupport` (default true), `enableDnsHostnames` (default false), `tags`. Creates main route table automatically.
+- **`vpc.subnets`** — `vpcId`, `cidrBlock` required; optional fixed `id`, `availabilityZone` (default `{region}a`), `mapPublicIpOnLaunch`, `tags`. VPC must exist in fixture (applied first).
+- **`vpc.securityGroups`** — `groupName`, `vpcId` required; optional fixed `id`, `description`, `tags`, `ingressRules` / `egressRules` (`ipProtocol`, `fromPort`, `toPort`, `cidrIpv4`, `sourceGroupId`, `description`). Applied after subnets.
+- **`rds.*`** — subnet groups, parameter groups, Postgres instances (see [rds.md](rds.md)); applied **after** VPC when subnets are referenced.
+- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, `ses`, `vpc`, or `rds` sections are allowed
 
 ## Out of scope (MVP)
 - YAML fixtures — JSON only

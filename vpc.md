@@ -56,6 +56,10 @@ Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`. Lambda in
 
 Panel **`/vpc`**: list VPCs, subnets, and security group ingress/egress rules via Describe* APIs. See [console.md](console.md).
 
+## Seed
+
+Default fixture includes **`demo-vpc`** (`10.0.0.0/16`), **`demo-database-subnet`** (`10.0.1.0/24`), and **`demo-postgres-sg`** — applied on `simulith seed` before RDS. See [seed.md](seed.md).
+
 ## Related
 
 - RDS + Lambda VPC: [`lambda.md`](lambda.md), [`rds.md`](rds.md)
