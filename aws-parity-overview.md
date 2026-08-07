@@ -2,42 +2,119 @@
 
 Consolidated view of **Simulith vs AWS** for **fourteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
+> **Important:** **Tier A %** = **`available / ref`** on a curated op list per service ([methodology](#tier-a-methodology-standard)) — the **reliable** progress metric. **Tier B** is **indicative only** ([methodology](#tier-b-indicative-not-audited)) — do not treat as precise AWS parity.
+
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-08-07..
+Last updated: 2026-08-07 (Tier A/B parity metrics clarified).
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
 ---
 
+## Which number should I use?
+
+| Question | Where to look | Reliable? |
+| --- | --- | --- |
+| Did we ship what we promised for POC / Terraform / workers? | **Tier A** — `% (available / ref)` in the table below | **Yes** — enumerated per service |
+| Does behavior match real AWS on curated paths? | **Verify** column + [`compatibility-matrix.md`](compatibility-matrix.md) | **Yes** — scenario-backed |
+| How much of the full AWS API catalog exists? | **AWS catalog scale** (Tier B) | **Indicative only** — see [Tier B methodology](#tier-b-indicative-not-audited) |
+| Are Console, seed, and public docs done? | [Expansion surfaces](#expansion-surfaces-service-readiness) | **Yes** — checklist |
+
+**Rule of thumb:** trust **Tier A + verify + matrix** for decisions; treat Tier B bands as rough context, not a sales percentage.
+
+---
+
 ## Executive summary
 
-| Service | API ops **available** | Verified vs AWS (`simulith verify`) | Tier A coverage* | Tier B coverage† |
+| Service | API ops **available** | Verified vs AWS (`simulith verify`) | Tier A coverage* | AWS catalog scale† |
 | --- | ---: | ---: | ---: | ---: |
-| **DynamoDB** | 17 | 17 / 17 (100%) | **100%** (17 / 17) | **~38%** (17 / ~45) |
-| **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | **~64%** (14 / ~22) |
-| **SSM** (Parameter Store) | 10 | 10 / 10 (100%) | **100%** (10 / 10) | **~83%** (10 / ~12) |
-| **S3** | 16 | 8 / 8 scenarios (100%) | **89%** (8 / 9 ref) | **~40%** (16 / ~40) |
-| **Lambda** | 22 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~29%** (22 / ~75) |
-| **API Gateway** | 14 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~18%** (14 / ~80) |
-| **Secrets Manager** | 4 | 2 / 2 scenarios | **100%** (4 / 4) | **~5%** (4 / ~80) |
-| **Cognito** | 16 | 2 / 2 scenarios | **Verify-led** ‡ | **~5%** (16 / ~300) |
-| **SES** | 4 | 2 / 2 scenarios | **Verify-led** ‡ | **~1%** (4 / ~300) |
-| **EventBridge** | 5 | 2 / 2 scenarios | **Verify-led** ‡ | **~2%** (5 / ~300) |
-| **VPC** | 5 | 2 / 2 scenarios | **Verify-led** ‡ | **~2%** (5 / ~300) |
-| **RDS** | 6 | 2 / 2 scenarios | **Verify-led** ‡ | **~2%** (6 / ~300) |
-| **IAM** | 3 | 2 / 2 scenarios | **Verify-led** ‡ | **~1%** (3 / ~300) |
-| **KMS** | 9 | 2 / 2 scenarios | **Verify-led** ‡ | **~3%** (9 / ~300) |
-| **Total** | **145** | 14 services with verify | — | — |
+| **DynamoDB** | 17 | 17 / 17 (100%) | **100%** (17 / 17) | medium (~38%‡) |
+| **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | medium–high (~64%‡) |
+| **SSM** (Parameter Store) | 10 | 10 / 10 (100%) | **90%** (9 / 10) | high (~83%‡) |
+| **S3** | 16 | 8 / 8 scenarios (100%) | **89%** (8 / 9 ref) | medium (~40%‡) |
+| **Lambda** | 22 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | low (~29%‡) |
+| **API Gateway** | 14 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | low (~18%‡) |
+| **Secrets Manager** | 4 | 2 / 2 scenarios | **100%** (4 / 4) | low (~5%‡) |
+| **Cognito** | 16 | 2 / 2 scenarios | **90%** (18 / 20) | **low subset** |
+| **SES** | 4 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
+| **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
+| **VPC** | 5 | 2 / 2 scenarios | **100%** (17 / 17) | **low subset** |
+| **RDS** | 6 | 2 / 2 scenarios | **100%** (15 / 15) | **low subset** |
+| **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
+| **KMS** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
+| **Total** | **145** | 14 services with verify | **~97%** Tier A (153 / 158 ref) | — |
 
-\* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
+\* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
-† **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
+† **AWS catalog scale (Tier B — indicative):** rough sense of Simulith vs the **full AWS API surface**. **Not CI-gated; denominators are manual estimates** (Foundation) or **not audited** (expansion → **low subset** only). See [Tier B methodology](#tier-b-indicative-not-audited).
 
-‡ **Verify-led (B5+):** formal Tier A reference sets live in the product backlog; until published, **`simulith verify` pass** is the parity signal ([`compatibility-matrix.md`](compatibility-matrix.md)).
+‡ Foundation / B1–B4 only: legacy **`~NN% (available / ~catalog)`** from a one-time manual pass (~45 DynamoDB ops, ~22 SQS, …). Treat as **order-of-magnitude**, not a contract.
+
+**How to read progress:** **Tier A** = committed eval/IaC ops shipped · **Verify** = curated scenarios vs real AWS · **Tier B** = rough catalog context only · [Expansion surfaces](#expansion-surfaces-service-readiness) = Terraform / Console / seed / docs.
 
 **Lambda expansion:** complete. **API Gateway B3:** complete. **Secrets Manager B4:** complete. Seed demo secret **`demo-secret`** in default fixture.
+
+---
+
+## Tier A methodology (standard)
+
+Same rules as Foundation (DynamoDB / SQS / SSM — `ROADMAP-COMMERCIAL-PARITY.md`) and expansion B1–B4 (S3 / Lambda / API Gateway / Secrets Manager).
+
+| Rule | Detail |
+| --- | --- |
+| **Unit** | Individual **AWS API operation names** (not matrix row groups, not Console flows) |
+| **Reference set** | Enumerated per service below; open gaps stay in the set with `FW-*` in the product backlog |
+| **Numerator** | Ops in the set marked **available** in [`compatibility-matrix.md`](compatibility-matrix.md) |
+| **Denominator** | Total ops in that service’s Tier A list (includes P2/P3 deferrals still counted, e.g. FIFO, `SignUp`) |
+| **Display** | **`NN% (available / ref)`** — e.g. **93% (14 / 15)** |
+| **≠ AWS parity** | Full AWS catalog → [Tier B](#tier-b-indicative-not-audited) (indicative bands only) |
+
+When shipping a **new service**, add the Tier A table to the product backlog and this overview in the same PR (`DOCUMENTATION-GOVERNANCE.md`). Tier B: label **low subset** until a catalog denominator is audited (optional future `FW-CMP-*`).
+
+---
+
+## Tier B (indicative — not audited)
+
+Tier B answers: **roughly how much of AWS’s full API catalog does Simulith cover?** Today this is **not** a reliable metric — document it for context only.
+
+| Issue | Detail |
+| --- | --- |
+| **No mechanical source** | Unlike Tier A, Tier B is **not** computed from [`compatibility-matrix.md`](compatibility-matrix.md) + Smithy in CI |
+| **Foundation / B1–B4** | Legacy **`~NN%`** used manual catalog guesses (~45 DynamoDB ops, ~22 SQS, ~12 SSM, ~40 S3, …) from a one-time review — **order-of-magnitude** |
+| **Expansion services** | Placeholder **`~300`** denominators were **never audited** — removed from the executive table; use **low subset** instead |
+| **Numerator inconsistency** | “API ops available” counts **matrix rows**, while Tier A counts **individual operation names** — Tier B % mixed both; do not reconcile |
+| **What to trust** | **Tier A `(available / ref)`**, **verify scenarios**, and the **compatibility matrix** — not Tier B % |
+
+**Future (optional):** script against vendored Smithy / AWS API models per service (`FW-CMP-*`) to replace bands with audited denominators — same rigor as Tier A.
+
+---
+
+## Expansion surfaces (service readiness)
+
+Per-service checklist beyond raw API counts — same **seven surfaces** as `SERVICE-EXPANSION-TEMPLATE.md`.
+
+| Service | Tier A API | Verify | Terraform | Console | Seed | Docs sync |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| **DynamoDB** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **SQS** | 93% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **SSM** | 90% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **S3** | 89% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Lambda** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **API Gateway** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Secrets Manager** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Cognito** | 90% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **SES** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **EventBridge** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **VPC** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **RDS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **IAM** | 100% | ✅ | ✅ | ⏳ | ⏳ | ⏳ |
+| **KMS** | 100% | ✅ | ✅ | ⏳ | ⏳ | ⏳ |
+
+**Legend:** ✅ shipped · ⏳ open in the product backlog. Tier A % uses [methodology above](#tier-a-methodology-standard) — this table is the seven-surface checklist only.
+
+**Tier A aggregate (158 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–KMS **90 / 92** · **Overall ~97% (153 / 158)**.
 
 ---
 
@@ -172,7 +249,9 @@ CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObje
 
 ### Tier A reference set (9 ops)
 
-9 **available** = **100%** Tier A S3 coverage (DeleteObjects batch is additional).
+CreateBucket, ListBuckets, DeleteBucket, PutObject, GetObject, HeadObject, DeleteObject, ListObjectsV2, **PutBucketVersioning** (FW-S3-021 P3).
+
+8 **available** = **89%** Tier A S3 (8 / 9). CopyObject / DeleteObjects / multipart are shipped extras outside this ref set.
 
 ---
 
@@ -258,6 +337,20 @@ CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool;
 | SignUp / ConfirmSignUp public APIs | P2 | follow-up |
 | Console / seed / messaging | P1–P2 | **Shipped**  / 175 / 176 / 177 |
 
+### Tier A reference set (20 ops)
+
+| Operation | Tier A | Status |
+| --- | ---: | --- |
+| CreateUserPool, DescribeUserPool, DeleteUserPool | ✓ | available |
+| CreateUserPoolClient, ListUserPoolClients, DeleteUserPoolClient | ✓ | available |
+| CreateGroup, GetGroup, ListGroups, DeleteGroup | ✓ | available |
+| JWKS `GET /.well-known/jwks.json` | ✓ | available |
+| AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp | ✓ | available |
+| AdminEnableUser, AdminDisableUser, AdminInitiateAuth | ✓ | available |
+| **SignUp**, **ConfirmSignUp** | ✓ | **gap** (P2 follow-up) |
+
+18 **available** = **90%** Tier A Cognito (18 / 20). Shipped extras (ListUserPools, UpdateUserPool, UserPoolDomain, Lambda triggers) are outside this ref set.
+
 ---
 
 ## SES
@@ -276,6 +369,12 @@ VerifyEmailIdentity, DeleteIdentity, ListIdentities, GetIdentityVerificationAttr
 | Public messaging (landing/Hub) | P2 | **Shipped ** |
 | Public docs sync (mirror smoke) | P2 | **Shipped ** |
 
+### Tier A reference set (12 ops)
+
+VerifyEmailIdentity, DeleteIdentity, ListIdentities, GetIdentityVerificationAttributes; CreateTemplate, GetTemplate, UpdateTemplate, DeleteTemplate, ListTemplates; SendEmail, SendTemplatedEmail, SendRawEmail.
+
+12 **available** = **100%** Tier A SES (12 / 12).
+
 ---
 
 ## EventBridge
@@ -292,6 +391,12 @@ PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTarget
 | --- | --- | --- |
 | Custom event buses | P3 |  |
 | Console panel | P1 | **Shipped ** |
+
+### Tier A reference set (10 ops)
+
+PutRule, DeleteRule, DescribeRule, ListRules, EnableRule, DisableRule, PutTargets, RemoveTargets, ListTargetsByRule, PutEvents.
+
+10 **available** = **100%** Tier A EventBridge (10 / 10). Custom event buses (`CreateEventBus`) remain P3.
 
 ---
 
@@ -312,6 +417,12 @@ CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute
 | Public docs sync (mirror smoke) | P2 | **Shipped ** |
 | Interface VPC endpoints | P3 |  |
 
+### Tier A reference set (17 ops)
+
+CreateVpc, DescribeVpcs, DeleteVpc; CreateSubnet, DescribeSubnets, DeleteSubnet; CreateSecurityGroup, DescribeSecurityGroups, AuthorizeSecurityGroupIngress, AuthorizeSecurityGroupEgress; CreateInternetGateway, AttachInternetGateway; CreateRouteTable, DescribeRouteTables, CreateRoute, AssociateRouteTable; CreateVpcEndpoint (gateway); Lambda **VpcConfig** on CreateFunction / UpdateFunctionConfiguration.
+
+17 **available** = **100%** Tier A VPC (17 / 17). Interface endpoints remain P3.
+
 ---
 
 ## RDS (Postgres sidecar)
@@ -331,6 +442,12 @@ CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBPara
 | Public docs sync (mirror smoke) | P2 | **Shipped ** |
 | MySQL / MariaDB engines | P3 | — |
 
+### Tier A reference set (15 ops)
+
+CreateDBSubnetGroup, DescribeDBSubnetGroups, DeleteDBSubnetGroup; CreateDBParameterGroup, DescribeDBParameterGroups, DeleteDBParameterGroup; CreateDBInstance, DescribeDBInstances, DeleteDBInstance; CreateDBProxy, DescribeDBProxies, DeleteDBProxy; RegisterDBProxyTargets, DeregisterDBProxyTargets; ModifyDBProxyTargetGroup (stub).
+
+15 **available** = **100%** Tier A RDS (15 / 15).
+
 ---
 
 ## KMS
@@ -348,6 +465,12 @@ CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decr
 | Console panel | P1 |  |
 | Grants / rotation / multi-Region | P3 | — |
 
+### Tier A reference set (9 ops)
+
+CreateKey, DescribeKey, CreateAlias, ListAliases, DeleteAlias, Encrypt, Decrypt, GetKeyPolicy, ScheduleKeyDeletion.
+
+9 **available** = **100%** Tier A KMS (9 / 9).
+
 ---
 
 ## IAM
@@ -364,6 +487,12 @@ CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; Atta
 | --- | --- | --- |
 | Console panel | P1 |  |
 | Product messaging / docs sync | P2 |  /  |
+
+### Tier A reference set (9 ops)
+
+CreateRole, GetRole, DeleteRole; CreatePolicy, GetPolicy, DeletePolicy; AttachRolePolicy, DetachRolePolicy, ListAttachedRolePolicies.
+
+9 **available** = **100%** Tier A IAM (9 / 9). Lambda execution roles are a **depth** story outside this ref set.
 
 ---
 
