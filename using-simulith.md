@@ -200,7 +200,7 @@ aws dynamodb describe-table --table-name Demo \
 | --- | --- | --- |
 | **Persist data** | Docker volume on `/app/.simulith` — [docker.md](docker.md#persistence) | Resources in your account |
 | **Clear everything** | Console **Reset**, `simulith reset`, or admin API | Delete stacks/resources |
-| **Snapshot / restore** | `simulith snapshot` — [snapshot.md](snapshot.md) | Backup services (out of MVP scope) |
+| **Snapshot / restore** | `simulith snapshot` — [snapshot.md](snapshot.md) | Backup services (out of scope today) |
 | **Seed fixtures** | `simulith seed` or Console button — [seed.md](seed.md) | Create resources manually or via IaC |
 
 Stop the server before host-side `simulith seed` against a Docker volume — see [quickstart troubleshooting](quickstart.md#troubleshooting).

@@ -1,6 +1,6 @@
 # SQS — Simulith runtime
 
-Local **Amazon SQS** emulation for the MVP Phase 5 subset.
+Local **Amazon SQS** emulation for the supported Phase 5 subset.
 
 ## Protocol
 
@@ -72,7 +72,7 @@ Optional parameters:
 - `MaxNumberOfMessages` (1–10, default 1)
 - `VisibilityTimeout` (0–43200 seconds, default 30)
 - `WaitTimeSeconds` (0–20, default: queue `ReceiveMessageWaitTimeSeconds` or `0`) — long poll; blocks until a message is available or wait expires
-- `MessageSystemAttributeNames` / `MessageAttributeNames` — MVP subset when requested
+- `MessageSystemAttributeNames` / `MessageAttributeNames` — supported subset when requested
 
 Long polling uses a **200ms SQLite poll interval** (documented deviation from AWS distributed sampling). Explicit `WaitTimeSeconds=0` is short poll even when the queue default is greater than zero.
 
@@ -107,7 +107,7 @@ Lists **stored** `QueueUrl` values for all queues in SQLite, ordered by queue na
 
 - `QueueNamePrefix` (optional) — filter by queue **name** prefix (SQL `LIKE prefix%`)
 - `MaxResults` (optional) — when set (1–1000), enables pagination with `NextToken`
-- `NextToken` (optional) — Simulith MVP uses a decimal **offset** string (not an opaque AWS token)
+- `NextToken` (optional) — Simulith uses a decimal **offset** string (not an opaque AWS token)
 
 When `MaxResults` is omitted, up to **1000** URLs are returned with no `NextToken`.
 
@@ -158,7 +158,7 @@ Updates persisted queue metadata for an existing queue. Supports **Query** (`Act
 - `QueueUrl` (required)
 - `Attribute.N.Name` / `Attribute.N.Value` (Query) or `Attributes` map (JSON)
 
-### Settable attributes (MVP)
+### Settable attributes
 
 | Attribute | Validation |
 | --- | --- |
@@ -184,7 +184,7 @@ Returns queue metadata for an existing queue. Supports **Query** (`Action=GetQue
 - `QueueUrl` (required)
 - `AttributeName.N` (Query) or `AttributeNames` (JSON) — use `All` or individual names below
 
-### Supported attributes (MVP)
+### Supported attributes
 
 | Attribute | Notes |
 | --- | --- |
@@ -201,9 +201,9 @@ Returns queue metadata for an existing queue. Supports **Query** (`Action=GetQue
 | `CreatedTimestamp` | Unix seconds from `created_at` |
 | `LastModifiedTimestamp` | Unix seconds from `updated_at` (falls back to `created_at`) |
 
-If no attribute names are requested, Simulith returns the **full MVP subset** above (Terraform-friendly; AWS returns empty when `AttributeNames` is omitted).
+If no attribute names are requested, Simulith returns the **full supported subset** above (Terraform-friendly; AWS returns empty when `AttributeNames` is omitted).
 
-## Deviations (MVP)
+## Deviations from AWS
 
 | Area | AWS | Simulith |
 | --- | --- | --- |
@@ -217,10 +217,10 @@ If no attribute names are requested, Simulith returns the **full MVP subset** ab
 | Stale receipt handle on delete | May succeed without deleting message | **Same** — 200 OK no-op when handle does not match latest stored handle |
 | Stale receipt handle on ChangeMessageVisibility | `ReceiptHandleIsInvalid` | **Same** — 404 when handle invalid or superseded |
 | Queue attributes | Full validation | Stored; minimal validation |
-| GetQueueAttributes empty names | Returns empty map | Returns **full MVP subset** |
+| GetQueueAttributes empty names | Returns empty map | Returns **full supported subset** |
 | GetQueueUrl | Returns **stored** URL from create/seed | Does not rebuild host from current request |
 | QueueOwnerAWSAccountId | Cross-account lookup | **Rejected** when account id ≠ local `000000000000` |
-| ListQueues | Prefix filter on **name**; returns **stored** URLs | MVP `NextToken` is decimal **offset** when `MaxResults` is set (not opaque AWS token) |
+| ListQueues | Prefix filter on **name**; returns **stored** URLs | Simulith `NextToken` is decimal **offset** when `MaxResults` is set (not opaque AWS token) |
 | DeleteQueue | May take up to 60s; 60s cooldown before recreate same name | **Tombstone window** (~60s default; `SIMULITH_SQS_DELETE_GRACE_SECONDS`); messages removed immediately; GQA/GQU during window; no exact recreate cooldown |
 | SetQueueAttributes | Propagation delay; full attribute surface | **Immediate** merge in SQLite; subset only; **RedrivePolicy stored only** (no automatic DLQ redrive) |
 
@@ -236,7 +236,7 @@ Service faults use AWS Query XML (`ErrorResponse` with `Code`, `Message`, `Type`
 ## Related
 
 - **DynamoDB + SQS fan-out:** [`examples/terraform/dynamodb-sqs/`](examples/terraform/dynamodb-sqs/) · CLI [`examples/aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/)
-- [compatibility-matrix.md](compatibility-matrix.md) — public MVP operation × verify coverage matrix
+- [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix
 - [compatibility.md](compatibility.md) — `simulith verify sqs` parity and smoke modes
 - [aws-cli-examples.md](aws-cli-examples.md) — AWS CLI cookbook
 

@@ -184,7 +184,7 @@ Notes:
 - **`rds.*`** — subnet groups, parameter groups, Postgres instances (see [rds.md](rds.md)); applied **after** VPC when subnets are referenced.
 - Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, `ses`, `vpc`, or `rds` sections are allowed
 
-## Out of scope (MVP)
+## Out of scope
 - YAML fixtures — JSON only
 - Seeding via live HTTP — store-direct apply only
 - Snapshot import — see [snapshot.md](snapshot.md)

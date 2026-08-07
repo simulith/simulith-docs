@@ -73,7 +73,7 @@ simulith start
 
 Re-export snapshots after Simulith schema upgrades if restore fails on older files.
 
-## Out of scope (MVP)
+## Out of scope
 
 - Binary SQLite file copy — JSON v1 only
 - S3 object bytes and Lambda deployment zips in snapshot — deferred

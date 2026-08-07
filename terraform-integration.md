@@ -22,7 +22,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md). **Honest integration examples** (AWS-derived Terraform + CLI): [below](#honest-integration-examples).
 
-Parity gaps and post-MVP backlog:  (DynamoDB, SQS, SSM).
+Parity gaps and expansion backlog:
 
 **Consolidated parity table (% by service, Terraform, Console):** [aws-parity-overview.md](aws-parity-overview.md).
 
@@ -132,7 +132,7 @@ There is **no Simulith-specific Terraform provider** — use `hashicorp/aws` wit
 
 ## DynamoDB — `aws_dynamodb_table`
 
-MVP: hash key only, on-demand billing. Mirrors the Music table from [AWS CLI examples](aws-cli-examples.md#dynamodb).
+Hash key only, on-demand billing. Mirrors the Music table from [AWS CLI examples](aws-cli-examples.md#dynamodb).
 
 ```hcl
 resource "aws_dynamodb_table" "music" {
@@ -147,7 +147,7 @@ resource "aws_dynamodb_table" "music" {
 }
 ```
 
-**GSI / LSI:** supported when defined at **CreateTable** — Query with `IndexName` (MVP subset). **User table green path:** [`dynamodb/user-table/`](examples/terraform/dynamodb/user-table/) — GSIs, tags, SSE, PITR metadata, deletion protection (`environment=prod`). **Avoid for MVP:** streams, TTL, real PITR restore.
+**GSI / LSI:** supported when defined at **CreateTable** — Query with `IndexName` (supported subset). **User table green path:** [`dynamodb/user-table/`](examples/terraform/dynamodb/user-table/) — GSIs, tags, SSE, PITR metadata, deletion protection (`environment=prod`). **Not supported:** streams, TTL, real PITR restore.
 
 See [dynamodb.md](dynamodb.md) for expression limits and AWS deviations.
 
@@ -319,7 +319,7 @@ Use [`simulith reset`](persistence.md) for **non-Terraform** experiments (CLI sm
 
 If destroy fails: check Simulith is running, endpoint matches the provider, and no other process holds the SQLite DB lock. **SQS:** wait up to ~90s on Simulith; if timeout at 3m, rebuild runtime (JSON `QueueDoesNotExist` for destroy waiter) or `terraform state rm aws_sqs_queue.<name>`. **SSM parameters:** use `-parallelism=1`; Console path `/SIMULITH/DEV` for Terraform-managed params.
 
-### Import existing resources (MVP)
+### Import existing resources
 
 **DynamoDB tables** — supported for tables that already exist locally (e.g. after `simulith seed` or a manual CreateTable):
 
@@ -336,7 +336,7 @@ terraform destroy # removes table when done
 
 **ListTables** supports discovery; import binds Terraform state to an existing table name.
 
-**SQS queues** — `terraform import aws_sqs_queue.<name> <queue-url>` may work when the queue exists; not validated as part of the MVP green-path examples — prefer apply with a new queue name.
+**SQS queues** — `terraform import aws_sqs_queue.<name> <queue-url>` may work when the queue exists; not validated as part of the documented green-path examples — prefer apply with a new queue name.
 
 **SSM parameters** — supported when the parameter already exists locally (CLI, seed, or manual PutParameter). Import ID is the **parameter name** (leading `/`):
 
@@ -409,14 +409,14 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 
 ---
 
-## MVP limitations (summary)
+## Known limitations (summary)
 
-| Area | Simulith MVP |
+| Area | Simulith |
 | --- | --- |
 | DynamoDB ListTables | **Available** — discovery; supports import workflow |
 | DynamoDB DeleteTable | **Available** — **`terraform destroy`** green on example modules |
-| DynamoDB `terraform import` | **Documented** for table name → `aws_dynamodb_table` (MVP) |
-| DynamoDB GSI / LSI | **Query with IndexName** when indexes defined at CreateTable or added via **UpdateTable** (MVP subset) |
+| DynamoDB `terraform import` | **Documented** for table name → `aws_dynamodb_table` |
+| DynamoDB GSI / LSI | **Query with IndexName** when indexes defined at CreateTable or added via **UpdateTable** (supported subset) |
 | DynamoDB UpdateTable | **Available** — billing, SSE, deletion protection, stream metadata, GSI add/update/delete |
 | DynamoDB streams / PITR restore / TTL | Not supported (PITR **metadata** APIs shipped for Terraform) |
 | SQS FIFO queues | Not supported |
@@ -425,9 +425,9 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 | Resource tags | **Available** — DynamoDB table tags via TagResource / ListTagsOfResource |
 | Parallel apply | Use `-parallelism=1` if applying DDB + SQS in one module (SQLite contention) |
 | SSM Parameter Store | Put/Get/Delete + GetParameters/GetParametersByPath; examples [`ssm/`](examples/terraform/ssm/); see [ssm.md](ssm.md) |
-| SSM DescribeParameters | **MVP** (Name Equals/BeginsWith) — Terraform `aws_ssm_parameter` refresh |
+| SSM DescribeParameters | **Supported filters** (Name Equals/BeginsWith) — Terraform `aws_ssm_parameter` refresh |
 | SSM DeleteParameters (batch) | **Available** — up to 10 names; partial `InvalidParameters` |
-| SSM terraform import | **Documented** — parameter name → `aws_ssm_parameter` (MVP) |
+| SSM terraform import | **Documented** — parameter name → `aws_ssm_parameter` |
 | S3 `aws_s3_bucket` | **Available** — `CreateBucket`, `HeadBucket`, `GetBucketLocation/Versioning/ACL/Accelerate`, stub config reads; `s3_use_path_style = true` required |
 | S3 `aws_s3_object` | **Available** — `PutObject`, `HeadObject`, `DeleteObject`; single-part only |
 | S3 `force_destroy` | **Available** — clears objects before `DeleteBucket` on destroy |
@@ -439,8 +439,8 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 Full deviation tables:
 
 - [dynamodb.md — Local behavior deviations](dynamodb.md#local-behavior-deviations)
-- [sqs.md — Deviations (MVP)](sqs.md#deviations-mvp)
-- [ssm.md — Deviations (MVP)](ssm.md#deviations-mvp)
+- [sqs.md — Deviations from AWS](sqs.md#deviations-from-aws)
+- [ssm.md — Deviations from AWS](ssm.md#deviations-from-aws)
 
 ---
 

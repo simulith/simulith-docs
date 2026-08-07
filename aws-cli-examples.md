@@ -1,6 +1,6 @@
 # AWS CLI examples — Simulith runtime
 
-Copy-paste **AWS CLI v2** commands for MVP **DynamoDB** and **SQS** against Simulith.
+Copy-paste **AWS CLI v2** commands for **DynamoDB** and **SQS** against Simulith.
 
 > **New to Simulith?** Complete the [Quickstart](quickstart.md) first (run server, optional seed, minimal smoke test).
 
@@ -55,7 +55,7 @@ Endpoint matrix (Terraform + Console): [terraform-integration.md — Endpoint ma
 
 ## DynamoDB
 
-MVP operations: CreateTable, DescribeTable, DeleteTable, ListTables, Put/Get/Update/DeleteItem, Query, Scan.
+Supported operations: CreateTable, DescribeTable, DeleteTable, ListTables, Put/Get/Update/DeleteItem, Query, Scan.
 
 ### Create a table
 
@@ -163,7 +163,7 @@ See [dynamodb.md](dynamodb.md) for expression limits, attribute types, and AWS d
 
 ## SQS
 
-MVP operations: CreateQueue, SendMessage, SendMessageBatch, ReceiveMessage, DeleteMessage, DeleteMessageBatch, ChangeMessageVisibility, ChangeMessageVisibilityBatch, GetQueueAttributes, GetQueueUrl.
+Supported operations: CreateQueue, SendMessage, SendMessageBatch, ReceiveMessage, DeleteMessage, DeleteMessageBatch, ChangeMessageVisibility, ChangeMessageVisibilityBatch, GetQueueAttributes, GetQueueUrl.
 
 Queue URLs follow: `http://127.0.0.1:4566/000000000000/{queueName}` (account `000000000000`).
 
@@ -839,9 +839,9 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 
 ---
 
-## MVP limitations (summary)
+## Known limitations (summary)
 
-| Area | Simulith MVP |
+| Area | Simulith |
 | --- | --- |
 | DynamoDB ListTables | **Available** — names from SQLite; default page size 100 |
 | DynamoDB GSI / LSI Query | Not supported |
@@ -861,7 +861,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 Full deviation tables:
 
 - [dynamodb.md — Local behavior deviations](dynamodb.md#local-behavior-deviations)
-- [sqs.md — Deviations (MVP)](sqs.md#deviations-mvp)
+- [sqs.md — Deviations from AWS](sqs.md#deviations-from-aws)
 
 ---
 

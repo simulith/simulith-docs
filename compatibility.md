@@ -1,6 +1,6 @@
 # Compatibility verification — Simulith runtime
 
-Measure behavioral parity between **Simulith** and **real AWS** for DynamoDB, SQS, and SSM.
+Measure behavioral parity between **Simulith** and **real AWS** for all **fourteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS).
 
 For a **public operation × verify coverage matrix**, see [compatibility-matrix.md](compatibility-matrix.md).
 
@@ -12,6 +12,17 @@ For **parity % over releases**, see [parity-release-history.md](parity-release-h
 simulith verify dynamodb
 simulith verify sqs
 simulith verify ssm
+simulith verify s3
+simulith verify lambda
+simulith verify apigateway
+simulith verify secretsmanager
+simulith verify cognito
+simulith verify ses
+simulith verify eventbridge
+simulith verify vpc
+simulith verify rds
+simulith verify iam
+simulith verify kms
 ```
 
 Each subcommand requires a running Simulith server (`simulith start` or Docker Compose).
@@ -222,7 +233,7 @@ Prerequisites:
 - AWS credentials configured
 - IAM: `sqs:CreateQueue`, `sqs:DeleteQueue`, `sqs:ListQueues`, `sqs:GetQueueUrl`, `sqs:GetQueueAttributes`, `sqs:SetQueueAttributes`, `sqs:SendMessage`, `sqs:SendMessageBatch`, `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:DeleteMessageBatch`, `sqs:PurgeQueue`, `sqs:ChangeMessageVisibility`
 - Simulith reachable at the configured endpoint
-- Standard queues only (MVP verify subset)
+- Standard queues only (verify subset)
 
 Queue names use a unique prefix (`simulith-verify-<timestamp>-*`). Each scenario deletes its queues on **both** AWS and Simulith when it finishes; a final sweep removes any that remain.
 

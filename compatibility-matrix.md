@@ -1,22 +1,22 @@
-# Compatibility matrix — Simulith MVP
+# Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on DynamoDB, SQS, SSM, S3, Lambda, and API Gateway (REST API management).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **fourteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS).
 
 **Public mirror (prospects, sales, Hub):** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
 **Consolidated summary (percentages, Terraform, Console):** [`aws-parity-overview.md`](aws-parity-overview.md).
 
-**Important:** **available** means the operation is implemented in the local runtime (often with MVP limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
+**Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-03..
+Last updated: 2026-08-07..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 14 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS) |
-| Operations **available** locally | 106 |
-| Default verify scenarios | DynamoDB 6, SQS 10, SSM 10, S3 6, Lambda 9 |
+| Operations **available** locally | 145 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -29,7 +29,7 @@ Run verification: [`compatibility.md`](compatibility.md).
 
 | Status | Meaning |
 | --- | --- |
-| **available** | HTTP handler shipped; see service doc for MVP limits |
+| **available** | HTTP handler shipped; see service doc for documented limits |
 | **partial** | Implemented with documented gaps vs AWS |
 | **gap** | Not implemented |
 
@@ -56,8 +56,8 @@ Guide: [dynamodb.md](dynamodb.md) · Verify: `simulith verify dynamodb` (6 defau
 | BatchGetItem | available | extended (`batch-get-item`, `projection-expression`) | Up to 100 keys; projection optional |
 | TransactWriteItems | available | extended (`transact-write-get-items`) | Put/Delete/Update/ConditionCheck |
 | TransactGetItems | available | extended (`transact-write-get-items`, `projection-expression`) | Ordered reads; projection optional |
-| GetItem | available | yes (`put-get-item`); extended (`projection-expression`) | ProjectionExpression MVP subset |
-| Query (base table) | available | yes (`query`); extended (`projection-expression`, `query-scan-1mb-pagination`) | KeyCondition MVP subset; 1 MB page cap |
+| GetItem | available | yes (`put-get-item`); extended (`projection-expression`) | ProjectionExpression supported subset |
+| Query (base table) | available | yes (`query`); extended (`projection-expression`, `query-scan-1mb-pagination`) | KeyCondition supported subset; 1 MB page cap |
 | Query (GSI / LSI) | available | extended (`query-gsi`) | Requires `IndexName` |
 | Scan | available | yes (`scan`); extended (`projection-expression`, `query-scan-1mb-pagination`, `parallel-scan`) | Parallel `Segment`/`TotalSegments` |
 | UpdateItem | available | yes (`update-item`); extended (`update-expression-add-delete`) | ADD/DELETE on numbers and sets |
@@ -108,7 +108,7 @@ Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (10 scenarios)
 | DeleteParameters | available | yes (`delete-parameters`) | Batch delete up to 10 names |
 | GetParameters | available | yes (`get-parameters-batch`) | Up to 10 names |
 | GetParametersByPath | available | yes (`get-parameters-by-path`) | |
-| DescribeParameters | available | yes (`describe-parameters`, `parameter-tier`) | Terraform refresh; MVP filters only |
+| DescribeParameters | available | yes (`describe-parameters`, `parameter-tier`) | Terraform refresh; supported filters only |
 | AddTagsToResource | available | yes (`parameter-tags`) | Parameter resources only |
 | RemoveTagsFromResource | available | yes (`parameter-tags`) | Parameter resources only |
 | ListTagsForResource | available | yes (`parameter-tags`) | Parameter resources only |
@@ -347,6 +347,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
+| KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws

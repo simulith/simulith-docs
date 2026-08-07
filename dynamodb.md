@@ -1,6 +1,6 @@
 # DynamoDB — Simulith runtime
 
-Local DynamoDB table metadata and item storage (Phase 3 MVP).
+Local DynamoDB table metadata and item storage (Foundation phase).
 
 ## Operations
 
@@ -14,19 +14,18 @@ Local DynamoDB table metadata and item storage (Phase 3 MVP).
 | TransactWriteItems | **Available** | Up to 100 actions; atomic all-or-nothing |
 | TransactGetItems | **Available** | Up to 100 keys; ordered `Responses` |
 | GetItem | **Available** | Point read; omits `Item` when missing |
-| Query | **Available** | Base table + GSI/LSI via `IndexName`; MVP KeyCondition + Filter |
+| Query | **Available** | Base table + GSI/LSI via `IndexName`; supported KeyCondition + Filter |
 | Scan | **Available** | Full table read; Filter + pagination + parallel `Segment`/`TotalSegments` |
-| UpdateItem | **Available** | MVP UpdateExpression (`SET`, `REMOVE`) + conditions |
-| DeleteItem | **Available** | Key delete with MVP ConditionExpression |
+| UpdateItem | **Available** | UpdateExpression (`SET`, `REMOVE`) + conditions |
+| DeleteItem | **Available** | Key delete with ConditionExpression |
 | DeleteTable | **Available** | Cascade delete items + table metadata |
-| UpdateTable | **Available** | MVP metadata updates (billing, SSE, deletion protection, GSI, stream) |
-| ListTables | **Available** | Names from `dynamodb_tables`; MVP pagination |
+| UpdateTable | **Available** | Metadata updates (billing, SSE, deletion protection, GSI, stream) |
+| ListTables | **Available** | Names from `dynamodb_tables`; cursor pagination |
 | TagResource / UntagResource / ListTagsOfResource | **Available** | Table ARN tags in metadata blob; merge on tag; CreateTable tags persisted |
 | DescribeContinuousBackups | **Available** | Continuous backups **ENABLED**; PITR status from stored flag |
 | UpdateContinuousBackups | **Available** | Toggle PITR metadata (Terraform `point_in_time_recovery`); no real restore |
 
-## Resource tags (MVP)
-
+## Resource tags
 - **TagResource** — merge tags by key on table ARN (`arn:aws:dynamodb:{region}:000000000000:table/{name}`)
 - **UntagResource** — remove listed tag keys
 - **ListTagsOfResource** — returns `Tags` array (empty `[]` when none)
@@ -34,8 +33,7 @@ Local DynamoDB table metadata and item storage (Phase 3 MVP).
 - Tags are **not** returned on DescribeTable (matches AWS)
 - Index/stream ARNs and tag limits not enforced yet
 
-## Query / Scan (MVP)
-
+## Query / Scan
 - **Base table** — Query without `IndexName`
 - **GSI / LSI** — Query with `IndexName` matching CreateTable metadata; KeyCondition uses index key attribute names; index keys read from item attributes (sparse GSI: items missing the GSI hash attribute are skipped)
 - **KeyConditionExpression** (Query): partition `=`; optional range `=`, comparisons, `BETWEEN`, `begins_with`
@@ -51,15 +49,13 @@ Local DynamoDB table metadata and item storage (Phase 3 MVP).
 
 Not supported yet: nested document paths in ProjectionExpression, full expression language.
 
-## ListTables (MVP)
-
+## ListTables
 - Returns table **names** sorted ascending from SQLite
 - **`Limit`** — optional; default **100**; valid range **1–100**
 - **`ExclusiveStartTableName`** — exclusive cursor; use **`LastEvaluatedTableName`** from the prior page
 - Empty account → `"TableNames":[]`
 
-## UpdateItem / DeleteItem (MVP)
-
+## UpdateItem / DeleteItem
 - **UpdateExpression**: `SET`, `REMOVE`, **`ADD`**, **`DELETE`**; `#names` and `:values` supported
 - **ConditionExpression** (UpdateItem, DeleteItem, PutItem): `attribute_exists`, `attribute_not_exists`, scalar comparisons, `AND`
 - **UpdateItem upsert**: creates item when key missing (unless condition prevents)
@@ -69,8 +65,7 @@ Not supported yet: nested document paths in ProjectionExpression, full expressio
 
 Not supported yet: `if_not_exists`, legacy `AttributeUpdates`/`Expected`, ReturnValues `UPDATED_*`.
 
-## BatchWriteItem (MVP)
-
+## BatchWriteItem
 - **RequestItems** — map of table name or ARN → up to **25** total `PutRequest` / `DeleteRequest` entries across all tables
 - **PutRequest** — same item validation as PutItem (no per-item conditions)
 - **DeleteRequest** — same key validation as DeleteItem (idempotent when missing; no conditions)
@@ -83,8 +78,7 @@ Not supported yet: per-item conditions, partial `UnprocessedItems` for capacity,
 
 **Cross-service fan-out:** [`examples/terraform/dynamodb-sqs/`](examples/terraform/dynamodb-sqs/) + CLI [`examples/aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/) — PutItem + SendMessage (no Streams).
 
-## BatchGetItem (MVP)
-
+## BatchGetItem
 - **RequestItems** — map of table name or ARN → `Keys` (up to **100** keys total across all tables)
 - Returns **`Responses`** with found items only; missing keys omitted (same as AWS)
 - **`UnprocessedKeys`: `{}`** on success (no throttling simulation)
@@ -93,8 +87,7 @@ Not supported yet: per-item conditions, partial `UnprocessedItems` for capacity,
 
 Not supported yet: partial `UnprocessedKeys`, `ReturnConsumedCapacity`.
 
-## TransactWriteItems / TransactGetItems (MVP)
-
+## TransactWriteItems / TransactGetItems
 - **TransactWriteItems** — up to **100** `TransactItems`; exactly one of Put, Delete, Update, or ConditionCheck per item
 - Validates all conditions first; applies all writes atomically or returns **`TransactionCanceledException`** with **`CancellationReasons`**
 - Duplicate table+key in one transaction → **`ValidationException`**
@@ -103,8 +96,7 @@ Not supported yet: partial `UnprocessedKeys`, `ReturnConsumedCapacity`.
 
 Not supported yet: `ClientRequestToken` idempotency, `ReturnValuesOnConditionCheckFailure`, `ReturnConsumedCapacity`.
 
-## UpdateTable (MVP)
-
+## UpdateTable
 - **BillingMode** / **ProvisionedThroughput** — switch or adjust provisioned settings on table metadata
 - **DeletionProtectionEnabled** — when `true`, **DeleteTable** returns `ValidationException`
 - **SSESpecification** — stores **SSEDescription** (`ENABLED` / KMS); no real encryption
@@ -171,13 +163,13 @@ Key attributes must use scalar types (`S`, `N`, or `B`) matching the table `Attr
 
 ## Local behavior deviations
 
-| AWS behavior | Simulith (MVP) |
+| AWS behavior | Simulith |
 | --- | --- |
 | CreateTable returns `CREATING`, later `ACTIVE` | Returns **`ACTIVE` immediately** |
 | DeleteTable async `DELETING` → eventual removal | **Immediate** delete; `DescribeTable` → `ResourceNotFoundException` |
 | UpdateTable async `UPDATING` | **Immediate** `ACTIVE`; metadata-only changes |
 | DeleteTable with deletion protection | **Blocked** — `ValidationException` |
-| ConditionExpression on PutItem | **Supported** (MVP subset) |
+| ConditionExpression on PutItem | **Supported** (supported subset) |
 | ConditionExpression failure | **`ConditionalCheckFailedException`** |
 | Legacy `AttributeUpdates` / `Expected` | **Not supported** — `ValidationException` |
 | ProjectionExpression on GetItem / Query / Scan / BatchGetItem / TransactGetItems | **Supported** — top-level attrs + `#names`; missing attrs omitted |
@@ -196,7 +188,7 @@ Key attributes must use scalar types (`S`, `N`, or `B`) matching the table `Attr
 
 ## Example (AWS CLI)
 
-Copy-paste commands for all MVP operations: **[aws-cli-examples.md](aws-cli-examples.md#dynamodb)**.
+Copy-paste commands for all documented operations: **[aws-cli-examples.md](aws-cli-examples.md#dynamodb)**.
 
 Quick sample:
 
@@ -222,5 +214,5 @@ Service faults use the runtime:
 - [aws-cli-examples.md](aws-cli-examples.md) — AWS CLI cookbook
 - `protocol.md` — AWS JSON wire format
 - `smithy-contracts.md` — Smithy model source
-- [compatibility-matrix.md](compatibility-matrix.md) — public MVP operation × verify coverage matrix
+- [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix
 - [compatibility.md](compatibility.md) — `simulith verify dynamodb` (default 6 scenarios; extended ListTables/DeleteTable/GSI/conditional via `--filter`)

@@ -1,10 +1,15 @@
 # SDK examples — Simulith runtime
 
-Copy-paste **AWS SDK** examples for MVP **DynamoDB**, **SQS**, and **SSM Parameter Store** against Simulith. For **Lambda**, use AWS CLI patterns in [lambda.md](lambda.md) (SDK setup is the same endpoint + static credentials).
+Copy-paste **AWS SDK** examples for **DynamoDB**, **SQS**, and **SSM Parameter Store** against Simulith. For **Lambda**, use AWS CLI patterns in [lambda.md](lambda.md) (SDK setup is the same endpoint + static credentials).
 
-> **New to Simulith?** Complete the [Quickstart](quickstart.md) first (run server, optional seed). For CLI equivalents see [AWS CLI examples](aws-cli-examples.md).
+## Scope
 
-This guide is the **canonical SDK reference**. Runnable samples live in [`examples/go/`](examples/go/), [`examples/nodejs/`](examples/nodejs/), and [`examples/python/`](examples/python/).
+| Service | SDK cookbook in this guide | Service guide |
+| --- | --- | --- |
+| DynamoDB, SQS, SSM | **Yes** — sections below | [dynamodb.md](dynamodb.md), [sqs.md](sqs.md), [ssm.md](ssm.md) |
+| S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS | **Deferred** — use CLI ([aws-cli-examples.md](aws-cli-examples.md)) or service docs | See [compatibility-matrix.md](compatibility-matrix.md) |
+
+Runnable SDK samples: [`examples/go/`](examples/go/), [`examples/nodejs/`](examples/nodejs/), [`examples/python/`](examples/python/) (Foundation trio today).
 
 ---
 
@@ -145,7 +150,7 @@ _, err = client.DeleteItem(ctx, &dynamodb.DeleteItemInput{
 })
 ```
 
-MVP includes `ListTables` — see [dynamodb.md](dynamodb.md#listtables-mvp).
+Simulith supports `ListTables` — see [dynamodb.md](dynamodb.md#listtables).
 
 See [dynamodb.md](dynamodb.md) for expression limits and AWS deviations.
 
@@ -491,7 +496,7 @@ dynamodb.delete_item(
 )
 ```
 
-MVP includes `ListTables` — see [dynamodb.md](dynamodb.md#listtables-mvp).
+Simulith supports `ListTables` — see [dynamodb.md](dynamodb.md#listtables).
 
 ### SQS — full message loop
 
@@ -603,9 +608,9 @@ CLI equivalent: [aws-cli-examples.md — Seeded data](aws-cli-examples.md#seeded
 
 ---
 
-## MVP limitations (summary)
+## Known limitations (summary)
 
-| Area | Simulith MVP |
+| Area | Simulith |
 | --- | --- |
 | DynamoDB ListTables | **Available** |
 | DynamoDB GSI / LSI Query | Not supported |
@@ -617,7 +622,7 @@ CLI equivalent: [aws-cli-examples.md — Seeded data](aws-cli-examples.md#seeded
 Full deviation tables:
 
 - [dynamodb.md — Local behavior deviations](dynamodb.md#local-behavior-deviations)
-- [sqs.md — Deviations (MVP)](sqs.md#deviations-mvp)
+- [sqs.md — Deviations from AWS](sqs.md#deviations-from-aws)
 
 ---
 

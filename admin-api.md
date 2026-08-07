@@ -8,7 +8,7 @@ Reserved HTTP routes under **`/_simulith/v1/`** for local developer and Console 
 
 ## Security
 
-- **Local development only** — no authentication in MVP.
+- **Local development only** — no authentication in local mode.
 - Do not expose `/_simulith/*` on untrusted networks without a gateway.
 - Console and Docker nginx proxy these paths on the same origin as the SPA.
 

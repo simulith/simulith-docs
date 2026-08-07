@@ -1,11 +1,11 @@
-# AWS parity overview — Simulith MVP
+# AWS parity overview — Simulith
 
-Consolidated view of **Simulith vs AWS** for shipped services (Foundation + S3 + Lambda + API Gateway + Secrets Manager expansion): what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for **fourteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-08-04..
+Last updated: 2026-08-07..
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
@@ -16,26 +16,28 @@ Last updated: 2026-08-04..
 | Service | API ops **available** | Verified vs AWS (`simulith verify`) | Tier A coverage* | Tier B coverage† |
 | --- | ---: | ---: | ---: | ---: |
 | **DynamoDB** | 17 | 17 / 17 (100%) | **100%** (17 / 17) | **~38%** (17 / ~45) |
-| **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | **~55%** (14 / ~22) |
-| **SSM** (Parameter Store) | 9 | 10 / 10 (100%) | **100%** (10 / 10) | **~58%** (9 / ~12) |
-| **S3** | 8 | 8 / 8 (100%) | **89%** (8 / 9) | **~20%** (8 / ~40) |
-| **Lambda** | 21 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~13%** (21 / ~75) |
-| **API Gateway** | 4 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~5%** (4 / ~80) |
-| **Secrets Manager** | 4 | 2 / 2 scenarios | — | **~5%** (4 / ~80) |
-| **Cognito** | 23 | 2 / 2 scenarios | — | **~8%** (23 / ~300) |
-| **SES** | 12 | 2 / 2 scenarios | — | **~4%** (12 / ~300) |
-| **EventBridge** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
-| **VPC (EC2)** | 33 | 2 / 2 scenarios | — | **~11%** (33 / ~300) |
-| **RDS** | 15 | 2 / 2 scenarios | — | **~5%** (15 / ~300) |
-| **IAM** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
-| **KMS** | 6 | — | — | **~2%** (6 / ~300) |
-| **Total** | **165** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
+| **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | **~64%** (14 / ~22) |
+| **SSM** (Parameter Store) | 10 | 10 / 10 (100%) | **100%** (10 / 10) | **~83%** (10 / ~12) |
+| **S3** | 16 | 8 / 8 scenarios (100%) | **89%** (8 / 9 ref) | **~40%** (16 / ~40) |
+| **Lambda** | 22 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | **~29%** (22 / ~75) |
+| **API Gateway** | 14 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | **~18%** (14 / ~80) |
+| **Secrets Manager** | 4 | 2 / 2 scenarios | **100%** (4 / 4) | **~5%** (4 / ~80) |
+| **Cognito** | 16 | 2 / 2 scenarios | **Verify-led** ‡ | **~5%** (16 / ~300) |
+| **SES** | 4 | 2 / 2 scenarios | **Verify-led** ‡ | **~1%** (4 / ~300) |
+| **EventBridge** | 5 | 2 / 2 scenarios | **Verify-led** ‡ | **~2%** (5 / ~300) |
+| **VPC** | 5 | 2 / 2 scenarios | **Verify-led** ‡ | **~2%** (5 / ~300) |
+| **RDS** | 6 | 2 / 2 scenarios | **Verify-led** ‡ | **~2%** (6 / ~300) |
+| **IAM** | 3 | 2 / 2 scenarios | **Verify-led** ‡ | **~1%** (3 / ~300) |
+| **KMS** | 9 | 2 / 2 scenarios | **Verify-led** ‡ | **~3%** (9 / ~300) |
+| **Total** | **145** | 14 services with verify | — | — |
 
 \* **Tier A — POC / IaC / worker patterns:** operations we **ship** plus **P2 backlog** items teams hit in real evals (batch APIs, purge, SSM batch delete, etc.). Source: this doc + service the product backlog.
 
 † **Tier B — full AWS API catalog (approx.):** share of the **documented AWS operation surface** for that service. Simulith intentionally implements a **subset**; low Tier B % is expected and not a product failure mode.
 
-**Lambda expansion:** MVP + P2 complete. **API Gateway B3:** complete. **Secrets Manager B4:** complete. Seed demo secret **`demo-secret`** in default fixture.
+‡ **Verify-led (B5+):** formal Tier A reference sets live in the product backlog; until published, **`simulith verify` pass** is the parity signal ([`compatibility-matrix.md`](compatibility-matrix.md)).
+
+**Lambda expansion:** complete. **API Gateway B3:** complete. **Secrets Manager B4:** complete. Seed demo secret **`demo-secret`** in default fixture.
 
 ---
 
@@ -43,7 +45,7 @@ Last updated: 2026-08-04..
 
 | Column | Meaning |
 | --- | --- |
-| **Available** | HTTP handler shipped — see service guide for MVP limits |
+| **Available** | HTTP handler shipped — see service guide for documented limits |
 | **Verify** | Curated scenario compares Simulith to real AWS |
 | **Gap** | Not implemented; often tracked as `FW-*` in future-work |
 | **Partial** | Works for Terraform/CLI subset with documented deviations |
@@ -103,7 +105,7 @@ Guide: [ssm.md](ssm.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
-PutParameter, GetParameter, DeleteParameter, **DeleteParameters**, GetParameters, GetParametersByPath, DescribeParameters (MVP filters), **AddTagsToResource**, **RemoveTagsFromResource**, **ListTagsForResource**.
+PutParameter, GetParameter, DeleteParameter, **DeleteParameters**, GetParameters, GetParametersByPath, DescribeParameters (supported filters), **AddTagsToResource**, **RemoveTagsFromResource**, **ListTagsForResource**.
 
 ### Notable gaps (tracked)
 
@@ -150,7 +152,7 @@ DynamoDB **import** for tables and SSM **import** for parameters are **documente
 
 **Full panel-by-panel analysis:** [`console.md`](console.md).
 
-Simulith Console ships MVP panels for DynamoDB, SQS, SSM, verify report import, and single-port workshop demo (~**92%** of reference Console flows — see [`console.md`](console.md)).
+Simulith Console ships panels through **RDS** plus verify import (~**52 / 52** reference flows — see [`console.md`](console.md)).
 
 ---
 

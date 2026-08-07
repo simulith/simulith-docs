@@ -1,6 +1,6 @@
 # SSM Parameter Store — Simulith runtime
 
-Local **AWS Systems Manager Parameter Store** emulation for the MVP subset (Put/Get/Delete single parameter, bulk read by names and path).
+Local **AWS Systems Manager Parameter Store** emulation for the supported subset (Put/Get/Delete single parameter, bulk read by names and path).
 
 ## Protocol
 
@@ -16,7 +16,7 @@ SSM uses **AWS JSON 1.1** (`application/x-amz-json-1.1` + `X-Amz-Target: AmazonS
 | DeleteParameters | **Available** | Up to 10 names; missing/invalid → `InvalidParameters` |
 | GetParameters | **Available** | Up to 10 names; `Parameters` sorted A–Z; missing → `InvalidParameters` |
 | GetParametersByPath | **Available** | Path prefix filter; `Recursive` default **false** (one level); pagination |
-| DescribeParameters | **Available** | MVP: `ParameterFilters` Name Equals/BeginsWith only; for Terraform refresh |
+| DescribeParameters | **Available** | Supported `ParameterFilters`: Name Equals/BeginsWith only; for Terraform refresh |
 | AddTagsToResource | **Available** | `ResourceType=Parameter`; merge tags by key |
 | RemoveTagsFromResource | **Available** | `ResourceType=Parameter` |
 | ListTagsForResource | **Available** | Parameter `TagList` sorted by key |
@@ -106,7 +106,7 @@ Response: `Parameters` for the current page (sorted by name). `NextToken` when m
 
 `WithDecryption` controls SecureString responses (see SecureString section).
 
-`ParameterFilters` are not supported in MVP.
+`ParameterFilters` beyond Name Equals/BeginsWith are not supported.
 
 ## Persistence
 
@@ -116,25 +116,25 @@ Parameters are stored in SQLite (`ssm_parameters`). See [persistence.md](persist
 
 Optional snapshot v1 `"ssm"` block is supported.
 
-## Deviations (MVP)
+## Deviations from AWS
 
-| Area | Simulith MVP |
+| Area | Simulith |
 | --- | --- |
 | SecureString | Mock local encryption at rest; `WithDecryption` returns plaintext; no AWS KMS |
 | Parameter history | Latest version only in API |
 | Tags | Accepted on Put (merged); **AddTagsToResource** / **RemoveTagsFromResource** / **ListTagsForResource** for parameters |
 | Tier / policies | **Standard tier** persisted; **4096-byte** value limit; **Advanced tier** and **parameter policies** rejected (explicit defer in docs) |
 | Post-delete name reuse delay | Not enforced (AWS: ~30s) |
-| DescribeParameters / ParameterFilters | **MVP subset** — Name Equals/BeginsWith only; other filter keys ignored |
+| DescribeParameters / ParameterFilters | **supported subset** — Name Equals/BeginsWith only; other filter keys ignored |
 | DeleteParameters (batch) | **Available** — up to 10 names per call |
-| GetParametersByPath at scale | Full-table name scan in memory (local MVP) |
+| GetParametersByPath at scale | Full-table name scan in memory (local store) |
 | NextToken format | Simulith offset token (not AWS-compatible) |
 
 ---
 
 ## Related
 
-- [compatibility-matrix.md](compatibility-matrix.md) — public MVP operation × verify coverage matrix
+- [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix
 - [compatibility.md](compatibility.md) — `simulith verify ssm` parity checks
 - [aws-cli-examples.md](aws-cli-examples.md)
 - [persistence.md](persistence.md)

@@ -8,9 +8,9 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 | Docker Hub | [simulith/simulith](https://hub.docker.com/r/simulith/simulith) · [simulith/console](https://hub.docker.com/r/simulith/console) |
 | This repo | `simulith/simulith-docs` — read-only mirror |
 
-> **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). Do not edit this mirror directly — see [CONTRIBUTING.md](CONTRIBUTING.md).
+> **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `65a9698` on 2026-08-07.
+Generated from monorepo commit `a09464c` on 2026-08-07.
 
 ## Start here
 
@@ -35,13 +35,13 @@ Generated from monorepo commit `65a9698` on 2026-08-07.
 
 | Guide | Purpose |
 | --- | --- |
-| [DynamoDB](dynamodb.md) | Tables and items (MVP subset) |
+| [DynamoDB](dynamodb.md) | Tables and items |
 | [SQS](sqs.md) | Queues and messages |
 | [SSM](ssm.md) | Parameter Store |
 | [S3](s3.md) | Buckets and objects |
 | [Lambda](lambda.md) | Functions, invoke, SQS ESM; seeded demo-fn |
 | [API Gateway](apigateway.md) | REST API CRUD (management API) |
-| [Secrets Manager](secretsmanager.md) | Secret CRUD (MVP subset) |
+| [Secrets Manager](secretsmanager.md) | Secret CRUD |
 | [EventBridge](eventbridge.md) | Schedule rules → Lambda; seeded demo-rule |
 | [Cognito](cognito.md) | User Pool + Admin* + JWKS; seeded demo-pool |
 | [SES](ses.md) | Identity, templates, Send* (local outbox); seeded demo-template |

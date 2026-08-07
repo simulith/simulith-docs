@@ -1,19 +1,19 @@
 # Console parity overview — Simulith Console vs AWS Console
 
-Consolidated view of **Simulith Console vs AWS Management Console** for DynamoDB, SQS, SSM, S3, Lambda, and API Gateway: what the **local web UI ships today**, what is **missing**, and **backlog IDs**.
+Consolidated view of **Simulith Console vs AWS Management Console** for all **shipped service panels** (Foundation through RDS): what the **local web UI ships today**, what is **missing**, and **backlog IDs**.
 
 > **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](console.md)
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension
 
-Last updated: 2026-07-21..
+Last updated: 2026-08-07 (Console panels through RDS — align with console.md).
 
 ---
 
 ## Executive summary
 
-Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. Scope: **DynamoDB, SQS, SSM, S3, Lambda, API Gateway** on localhost — no IAM, CloudWatch, or multi-region.
+Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, and Verify import — no IAM/KMS/CloudWatch UI yet (API-only).
 
-| Panel | MVP flows **in Console UI** | Reference set* | **Shipped** | Notes |
+| Panel | Shipped flows **in Console UI** | Reference set* | **Shipped** | Notes |
 | --- | --- | ---: | ---: | --- |
 | **Dashboard** | Health, seed, reset | 3 | **3 / 3 (100%)** | Parity metrics UI deferred |
 | **DynamoDB** | List/create/delete table; Scan; put/edit/delete item (Simple + JSON document) | 7 | **7 / 7 (100%)** | GSI wizard / expression builders → CLI |
@@ -22,10 +22,17 @@ Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AW
 | **S3** | List/create/delete bucket; list objects; upload/download/delete object | 6 | **6 / 6 (100%)** | CopyObject / batch delete UI deferred |
 | **Lambda** | List functions; view config; invoke JSON; delete function | 4 | **4 / 4 (100%)** | Create/update code UI deferred; ESM UI deferred |
 | **API Gateway** | List REST APIs; resources; stage URL; HTTP invoke; delete API | 5 | **5 / 5 (100%)** | Create resource/method UI deferred |
-| **Cross-cutting** | Same-origin proxy; admin peek; verify report import | 3 | **3 / 3 (100%)** | Snapshot UI deferred |
-| **Total (weighted)** | — | **33** | **~33 / 33 (~100%)** | Honest MVP subset |
+| **Secrets Manager** | List/create/delete secrets; reveal value | 4 | **4 / 4 (100%)** | Rotation UI deferred |
+| **EventBridge** | List schedule rules; inspect targets; last invoke (admin peek) | 3 | **3 / 3 (100%)** | PutEvents UI deferred |
+| **Cognito** | List pools; inspect clients/groups; JWKS link | 3 | **3 / 3 (100%)** | Hosted UI / sign-in deferred |
+| **SES** | Identity + template list; outbox after Seed | 3 | **3 / 3 (100%)** | Send form deferred |
+| **VPC** | List VPCs/subnets/SG; Lambda VpcConfig context | 3 | **3 / 3 (100%)** | ENI wizard deferred |
+| **RDS** | List DB instances; proxy endpoint hint | 2 | **2 / 2 (100%)** | Create instance UI deferred |
+| **Verify** | Import verify JSON report | 1 | **1 / 1 (100%)** | Run verify from CLI |
+| **Cross-cutting** | Same-origin proxy; admin peek | 2 | **2 / 2 (100%)** | Snapshot UI deferred |
+| **Total (weighted)** | — | **52** | **~52 / 52 (~100%)** | Documented subset |
 
-\* **Reference set** = flows a developer expects when comparing Simulith Console to AWS Console for **local MVP demos** (not every AWS Console screen or wizard).
+\* **Reference set** = flows a developer expects when comparing Simulith Console to AWS Console for **local development** (not every AWS Console screen or wizard).
 
 ---
 
@@ -68,7 +75,7 @@ Guide: [console.md](console.md) · API: [dynamodb.md](dynamodb.md)
 | Create / replace item | **Put item** — Simple strings or **JSON document** (Map/List) | — |
 | Edit item attributes | **Edit** — Simple scalars or **JSON document** (GetItem → PutItem) | Visual attribute-type editor — out of scope |
 | Delete item | **Delete item** + confirm | — |
-| Indexes, streams, metrics tabs | Not in UI | Out of scope for Console MVP |
+| Indexes, streams, metrics tabs | Not in UI | Out of scope for Console |
 
 ---
 
@@ -240,7 +247,7 @@ Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) 
 | Snapshot save/restore UI | CLI + admin API only | Optional UI (no FW yet) |
 | Verify / CI parity report in UI | **File upload** + scenario table (`/verify`) | Live verify run; GitHub URL fetch |
 | Single-port demo (one URL) | **`docker-compose.all-in-one.yml`** — Console on `:9080` only | Optional runtime-port overlay for `:4566` |
-| IAM, CloudWatch, X-Ray | Not in scope | Post-MVP services |
+| IAM, CloudWatch, X-Ray | Not in scope | Expansion services |
 
 ---
 
@@ -255,7 +262,7 @@ Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) 
 
 ## Active Console backlog (P2 product)
 
-Console MVP panels **~95%** shipped. **Fase 7b** ✅ complete. `ROADMAP-COMMERCIAL-PARITY.md`.
+Console panels **~95%** shipped. **Fase 7b** ✅ complete. `ROADMAP-COMMERCIAL-PARITY.md`.
 
 Full product backlog: the product backlog.
 

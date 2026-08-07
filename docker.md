@@ -72,7 +72,7 @@ Compose sets environment variables (recommended for Docker):
 | Variable | Compose value | Why |
 | --- | --- | --- |
 | `SIMULITH_HOST` | `0.0.0.0` | Required so port mapping reaches the process inside the container |
-| `SIMULITH_PORT` | `4566` | Default MVP port |
+| `SIMULITH_PORT` | `4566` | Default port |
 
 **Pitfall:** If you mount a `config.yaml` with `server.host: 127.0.0.1`, the runtime binds to loopback **inside** the container and `curl localhost:4566` from the host will fail. Fixes:
 
@@ -140,4 +140,4 @@ Create the directory on the host if needed. On Windows, ensure the path is share
 - [quickstart.md](quickstart.md) — onboarding
 - [README.md](README.md) — module overview
 - [`../dockerhub/README.md`](https://hub.docker.com/r/simulith/simulith) — Docker Hub repository overviews (source)
--  —
+-  — Docker support (Foundation phase)
