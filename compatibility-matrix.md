@@ -319,9 +319,9 @@ Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateRole / GetRole / DeleteRole | available | no |  |
-| CreatePolicy / GetPolicy / DeletePolicy | available | no | Managed policy subset |
-| AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | no | RDS Proxy role attach |
+| CreateRole / GetRole / DeleteRole | available | yes |  /  |
+| CreatePolicy / GetPolicy / DeletePolicy | available | yes | Managed policy subset |
+| AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | yes | RDS Proxy role attach |
 
 ---
 
@@ -343,6 +343,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability` | — |
+| IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -358,6 +359,7 @@ simulith verify ses --skip-aws
 simulith verify eventbridge --skip-aws
 simulith verify rds --skip-aws
 simulith verify vpc --skip-aws
+simulith verify iam --skip-aws
 ```
 
 ---

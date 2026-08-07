@@ -27,7 +27,7 @@ Last updated: 2026-08-04..
 | **EventBridge** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
 | **VPC (EC2)** | 33 | 2 / 2 scenarios | — | **~11%** (33 / ~300) |
 | **RDS** | 15 | 2 / 2 scenarios | — | **~5%** (15 / ~300) |
-| **IAM** | 9 | — | — | **~3%** (9 / ~300) |
+| **IAM** | 9 | 2 / 2 scenarios | — | **~3%** (9 / ~300) |
 | **KMS** | 6 | — | — | **~2%** (6 / ~300) |
 | **Total** | **165** | Foundation **48 / 48** ops · Lambda **9 / 9** scenarios | — | — |
 
@@ -355,13 +355,12 @@ Guide: [iam.md](iam.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). SQLite `iam_*`. SigV4 `iam` Query API.
+CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). **`simulith verify iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| `simulith verify iam` | P1 |  |
 | Console panel | P1 |  |
 | Product messaging / docs sync | P2 |  /  |
 

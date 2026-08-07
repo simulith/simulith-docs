@@ -306,6 +306,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
 | VPC | `simulith verify vpc --skip-aws` | 2 |
+| IAM | `simulith verify iam --skip-aws` | 2 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.
 

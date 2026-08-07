@@ -37,6 +37,16 @@ provider "aws" {
 - No IAM users, groups, or STS AssumeRole simulation
 - Console panel deferred
 
+## Verify
+
+```bash
+simulith verify iam --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify iam                     # AWS parity (GetRole / GetPolicy after create)
+simulith verify iam --filter rds-proxy  # subset by scenario name prefix
+```
+
+Scenarios: `rds-proxy-role-lifecycle`, `managed-policy-get`.
+
 ## Follow-on surfaces
 
 Verify, Console, Web messaging, simulith-docs sync — separate stories per expansion template.
