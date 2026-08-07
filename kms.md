@@ -33,3 +33,13 @@ Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/)
 ## Backlog
 
 See .
+
+## Verify
+
+```bash
+simulith verify kms --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify kms                     # AWS parity (CreateKey/DescribeKey metadata)
+simulith verify kms --filter cmk-alias  # subset by scenario name prefix
+```
+
+Scenarios: `cmk-alias-lifecycle` (CreateKey, DescribeKey by alias, CreateAlias, ListAliases), `encrypt-decrypt-roundtrip` (Encrypt/Decrypt round-trip per side; ciphertext is not cross-compared).

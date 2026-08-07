@@ -219,16 +219,16 @@ Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secret
 
 ## KMS
 
-Guide: [kms.md](kms.md) · Verify: —
+Guide: [kms.md](kms.md) · Verify: `simulith verify kms`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateKey | available | no |  — symmetric CMK |
-| DescribeKey | available | no | Key ID, ARN, or alias |
-| CreateAlias | available | no | `alias/...` |
-| ListAliases | available | no | Optional `KeyId` filter |
-| Encrypt | available | no | Mock envelope ciphertext |
-| Decrypt | available | no | Round-trip with Encrypt |
+| CreateKey | available | yes (`cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip`) |  — symmetric CMK |
+| DescribeKey | available | yes (`cmk-alias-lifecycle`) | Key ID, ARN, or alias |
+| CreateAlias | available | yes (`cmk-alias-lifecycle`) | `alias/...` |
+| ListAliases | available | yes (`cmk-alias-lifecycle`) | Optional `KeyId` filter |
+| Encrypt | available | yes (`encrypt-decrypt-roundtrip`) | Mock envelope ciphertext |
+| Decrypt | available | yes (`encrypt-decrypt-roundtrip`) | Round-trip with Encrypt |
 
 ---
 
@@ -360,6 +360,7 @@ simulith verify eventbridge --skip-aws
 simulith verify rds --skip-aws
 simulith verify vpc --skip-aws
 simulith verify iam --skip-aws
+simulith verify kms --skip-aws
 ```
 
 ---

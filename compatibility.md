@@ -307,6 +307,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | RDS | `simulith verify rds --skip-aws` | 2 |
 | VPC | `simulith verify vpc --skip-aws` | 2 |
 | IAM | `simulith verify iam --skip-aws` | 2 |
+| KMS | `simulith verify kms --skip-aws` | 2 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.
 
@@ -330,6 +331,8 @@ runtime/artifacts/
   verify-eventbridge.json
   verify-rds.json
   verify-vpc.json
+  verify-iam.json
+  verify-kms.json
 ```
 
 Download from the PR **Checks** tab → **Parity smoke** → **Artifacts**.
