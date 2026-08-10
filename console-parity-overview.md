@@ -5,13 +5,13 @@ Consolidated view of **Simulith Console vs AWS Management Console** for all **sh
 > **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](console.md)
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension
 
-Last updated: 2026-08-07 (Console panels through RDS — align with console.md).
+Last updated: 2026-08-10..
 
 ---
 
 ## Executive summary
 
-Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, and Verify import — no IAM/KMS/CloudWatch UI yet (API-only).
+Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, **KMS**, and Verify import — no IAM/CloudWatch UI yet (API-only).
 
 | Panel | Shipped flows **in Console UI** | Reference set* | **Shipped** | Notes |
 | --- | --- | ---: | ---: | --- |
@@ -28,9 +28,10 @@ Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AW
 | **SES** | Identity + template list; outbox after Seed | 3 | **3 / 3 (100%)** | Send form deferred |
 | **VPC** | List VPCs/subnets/SG; Lambda VpcConfig context | 3 | **3 / 3 (100%)** | ENI wizard deferred |
 | **RDS** | List DB instances; proxy endpoint hint | 2 | **2 / 2 (100%)** | Create instance UI deferred |
+| **KMS** | List aliases; describe key; create CMK + alias; encrypt/decrypt | 4 | **4 / 4 (100%)** | ScheduleKeyDeletion UI deferred |
 | **Verify** | Import verify JSON report | 1 | **1 / 1 (100%)** | Run verify from CLI |
 | **Cross-cutting** | Same-origin proxy; admin peek | 2 | **2 / 2 (100%)** | Snapshot UI deferred |
-| **Total (weighted)** | — | **52** | **~52 / 52 (~100%)** | Documented subset |
+| **Total (weighted)** | — | **56** | **~56 / 56 (~100%)** | Documented subset |
 
 \* **Reference set** = flows a developer expects when comparing Simulith Console to AWS Console for **local development** (not every AWS Console screen or wizard).
 
@@ -222,6 +223,19 @@ Guide: [console.md](console.md) · API: [rds.md](rds.md)
 | Instance detail + endpoint | Engine, status, subnet group, sidecar host:port | — |
 | Create / delete DB instances | Not in UI | CLI / Terraform (`examples/terraform/rds/postgres-min`) |
 | RDS Proxy targets | Not in UI | CLI / Terraform `proxy-min` |
+
+---
+
+## KMS panel
+
+Guide: [console.md](console.md) · API: [kms.md](kms.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| List keys / aliases | **ListAliases** — alias selector | Keys without aliases → create alias or CLI |
+| Key detail | **DescribeKey** by alias or key id | — |
+| Create CMK + alias | **CreateKey** + optional **CreateAlias** | ScheduleKeyDeletion UI deferred |
+| Encrypt / decrypt | Local round-trip (**Encrypt** / **Decrypt**) | Mock envelope — not AWS ciphertext |
 
 ---
 

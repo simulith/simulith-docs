@@ -39,6 +39,10 @@ Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/)
 
 See .
 
+## Console
+
+Panel **`/kms`**: list aliases, describe key, create CMK + optional alias, encrypt/decrypt round-trip. See [console.md](console.md).
+
 ## Verify
 
 ```bash

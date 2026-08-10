@@ -7,7 +7,7 @@ Consolidated view of **Simulith vs AWS** for **fourteen** shipped services: what
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-08-07 (Tier A/B parity metrics clarified).
+Last updated: 2026-08-10..
 
 > **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
 
@@ -110,9 +110,9 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **VPC** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **RDS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **IAM** | 100% | ✅ | ✅ | ⏳ | ⏳ | ⏳ |
-| **KMS** | 100% | ✅ | ✅ | ⏳ | ⏳ | ⏳ |
+| **KMS** | 100% | ✅ | ✅ | ✅ | ⏳ | ⏳ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog. Tier A % uses [methodology above](#tier-a-methodology-standard) — this table is the seven-surface checklist only.
+**Legend:** ✅ shipped · ⏳ open in the product backlog.
 
 **Tier A aggregate (158 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–KMS **90 / 92** · **Overall ~97% (153 / 158)**.
 
@@ -229,7 +229,7 @@ DynamoDB **import** for tables and SSM **import** for parameters are **documente
 
 **Full panel-by-panel analysis:** [`console.md`](console.md).
 
-Simulith Console ships panels through **RDS** plus verify import (~**52 / 52** reference flows — see [`console.md`](console.md)).
+Simulith Console ships panels through **KMS** plus verify import (~**56 / 56** reference flows — see [`console.md`](console.md)).
 
 ---
 
@@ -456,13 +456,13 @@ Guide: [kms.md](kms.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decrypt; ScheduleKeyDeletion (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. **Terraform green path** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — apply + destroy. **`simulith verify kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
+CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decrypt; ScheduleKeyDeletion (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. **Terraform green path** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — apply + destroy. **`simulith verify kms`**. **Console panel `/kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Console panel | P1 |  |
+| Seed demo key, product messaging, docs sync | P2 |  /  /  |
 | Grants / rotation / multi-Region | P3 | — |
 
 ### Tier A reference set (9 ops)
