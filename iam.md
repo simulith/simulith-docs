@@ -57,4 +57,4 @@ Scenarios: `rds-proxy-role-lifecycle`, `managed-policy-get`.
 
 ## Follow-on surfaces
 
-Verify, Console, product messaging, simulith-docs sync — separate stories per expansion template.
+Verify, Console, product messaging, seed, simulith-docs sync.

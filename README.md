@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `0014b7e` on 2026-08-10.
+Generated from monorepo commit `bb0e830` on 2026-08-10.
 
 ## Start here
 
@@ -47,8 +47,8 @@ Generated from monorepo commit `0014b7e` on 2026-08-10.
 | [SES](ses.md) | Identity, templates, Send* (local outbox); seeded demo-template |
 | [VPC](vpc.md) | VPC/subnet/SG, Lambda VpcConfig; verify + Terraform green path + Console  |
 | [RDS](rds.md) | Postgres sidecar + proxy; verify + Terraform green path + Console  (Docker required) |
-| [IAM](iam.md) | Roles/policies subset for RDS Proxy |
-| [KMS](kms.md) | CMK encrypt/decrypt; Secrets Manager  |
+| [IAM](iam.md) | Roles/policies subset for RDS Proxy; seeded demo-rds-proxy-role |
+| [KMS](kms.md) | CMK encrypt/decrypt; seeded alias/demo-key |
 
 ## Compatibility
 

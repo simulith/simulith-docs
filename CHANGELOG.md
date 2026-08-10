@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.93.0] - 2026-08-10
+
+### Features
+
+- ****: Route 53 hosted zone + records scaffold
+
 ## [0.92.0] - 2026-08-10
 
 ### Features

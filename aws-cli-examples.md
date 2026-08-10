@@ -688,6 +688,42 @@ Verify: `simulith verify rds --skip-aws` (see [compatibility.md](compatibility.m
 
 ---
 
+## IAM
+
+RDS Proxy role + managed policy subset via the **IAM Query API**. See [iam.md](iam.md). Default seed includes **`demo-rds-proxy-role`**.
+
+**Terraform green path:** [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/) (apply + destroy).
+
+```bash
+aws iam get-role --role-name demo-rds-proxy-role \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws iam list-attached-role-policies --role-name demo-rds-proxy-role \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify iam --skip-aws` (see [compatibility.md](compatibility.md)). Console **IAM** panel loads roles at `/iam`.
+
+---
+
+## KMS
+
+CMK encrypt/decrypt + aliases. See [kms.md](kms.md). Default seed includes alias **`alias/demo-key`**. Mock envelope — not AWS-identical ciphertext.
+
+**Terraform green path:** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) (apply + destroy).
+
+```bash
+aws kms list-aliases \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws kms encrypt --key-id alias/demo-key --plaintext "hello" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify kms --skip-aws` (see [compatibility.md](compatibility.md)). Console **KMS** panel lists aliases at `/kms`.
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).
@@ -856,6 +892,8 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | SES | Identity/template/Send* (local outbox); see [ses.md](ses.md) |
 | VPC | VPC/subnet/SG metadata (EC2 API); see [vpc.md](vpc.md) |
 | RDS | Postgres sidecar + proxy; see [rds.md](rds.md) |
+| IAM | RDS Proxy roles/policies; see [iam.md](iam.md) |
+| KMS | CMK + aliases; see [kms.md](kms.md) |
 | S3 | Put/Get/Head/List/Copy/DeleteObject(s); see [s3.md](s3.md) |
 
 Full deviation tables:

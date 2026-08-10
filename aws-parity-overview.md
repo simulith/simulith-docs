@@ -109,10 +109,10 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **EventBridge** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **VPC** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **RDS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **IAM** | 100% | ✅ | ✅ | ✅ | ✅ | ⏳ |
-| **KMS** | 100% | ✅ | ✅ | ✅ | ✅ | ⏳ |
+| **IAM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **KMS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog.
+**Legend:** ✅ shipped · ⏳ open in the product backlog (B10 edge runtime — **FW-R53-001** next).
 
 **Tier A aggregate (158 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–KMS **90 / 92** · **Overall ~97% (153 / 158)**.
 
@@ -462,7 +462,6 @@ CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decr
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Seed demo key, docs sync | P2 |  |
 | Grants / rotation / multi-Region | P3 | — |
 
 ### Tier A reference set (9 ops)
@@ -485,7 +484,6 @@ CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; Atta
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Seed demo role, docs sync | P2 |  |
 | Lambda execution roles (depth) | P1 |  |
 
 ### Tier A reference set (9 ops)
