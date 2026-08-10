@@ -37,6 +37,10 @@ provider "aws" {
 - No IAM users, groups, or STS AssumeRole simulation
 - No **ListRoles** API — Console loads roles by name
 
+## Seed
+
+Default fixture includes role **`demo-rds-proxy-role`** + policy **`demo-rds-proxy-policy`**. See [seed.md](seed.md).
+
 ## Console
 
 Panel **`/iam`**: load role by name, inspect trust policy and attached managed policies, create RDS Proxy role bundle. See [console.md](console.md).
@@ -53,4 +57,4 @@ Scenarios: `rds-proxy-role-lifecycle`, `managed-policy-get`.
 
 ## Follow-on surfaces
 
-Verify, Console, Web messaging, simulith-docs sync — separate stories per expansion template.
+Verify, Console, product messaging, simulith-docs sync — separate stories per expansion template.

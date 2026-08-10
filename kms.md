@@ -39,6 +39,10 @@ Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/)
 
 See .
 
+## Seed
+
+Default fixture includes CMK alias **`alias/demo-key`**. See [seed.md](seed.md).
+
 ## Console
 
 Panel **`/kms`**: list aliases, describe key, create CMK + optional alias, encrypt/decrypt round-trip. See [console.md](console.md).

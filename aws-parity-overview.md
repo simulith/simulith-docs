@@ -109,8 +109,8 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **EventBridge** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **VPC** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **RDS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **IAM** | 100% | ✅ | ✅ | ✅ | ⏳ | ⏳ |
-| **KMS** | 100% | ✅ | ✅ | ✅ | ⏳ | ⏳ |
+| **IAM** | 100% | ✅ | ✅ | ✅ | ✅ | ⏳ |
+| **KMS** | 100% | ✅ | ✅ | ✅ | ✅ | ⏳ |
 
 **Legend:** ✅ shipped · ⏳ open in the product backlog.
 
@@ -462,7 +462,7 @@ CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decr
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Seed demo key, product messaging, docs sync | P2 |  /  /  |
+| Seed demo key, docs sync | P2 |  |
 | Grants / rotation / multi-Region | P3 | — |
 
 ### Tier A reference set (9 ops)
@@ -485,7 +485,7 @@ CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; Atta
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Seed demo role, product messaging, docs sync | P2 |  /  /  |
+| Seed demo role, docs sync | P2 |  |
 | Lambda execution roles (depth) | P1 |  |
 
 ### Tier A reference set (9 ops)
