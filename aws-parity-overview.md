@@ -109,7 +109,7 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **EventBridge** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **VPC** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **RDS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **IAM** | 100% | ✅ | ✅ | ⏳ | ⏳ | ⏳ |
+| **IAM** | 100% | ✅ | ✅ | ✅ | ⏳ | ⏳ |
 | **KMS** | 100% | ✅ | ✅ | ✅ | ⏳ | ⏳ |
 
 **Legend:** ✅ shipped · ⏳ open in the product backlog.
@@ -229,7 +229,7 @@ DynamoDB **import** for tables and SSM **import** for parameters are **documente
 
 **Full panel-by-panel analysis:** [`console.md`](console.md).
 
-Simulith Console ships panels through **KMS** plus verify import (~**56 / 56** reference flows — see [`console.md`](console.md)).
+Simulith Console ships panels through **IAM** plus verify import (~**60 / 60** reference flows — see [`console.md`](console.md)).
 
 ---
 
@@ -479,14 +479,14 @@ Guide: [iam.md](iam.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). **`simulith verify iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
+CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). **`simulith verify iam`**. **Console panel `/iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Console panel | P1 |  |
-| Product messaging / docs sync | P2 |  /  |
+| Seed demo role, product messaging, docs sync | P2 |  /  /  |
+| Lambda execution roles (depth) | P1 |  |
 
 ### Tier A reference set (9 ops)
 

@@ -11,7 +11,7 @@ Last updated: 2026-08-10..
 
 ## Executive summary
 
-Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, **KMS**, and Verify import — no IAM/CloudWatch UI yet (API-only).
+Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, **IAM**, **KMS**, and Verify import — no CloudWatch UI yet.
 
 | Panel | Shipped flows **in Console UI** | Reference set* | **Shipped** | Notes |
 | --- | --- | ---: | ---: | --- |
@@ -28,10 +28,11 @@ Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AW
 | **SES** | Identity + template list; outbox after Seed | 3 | **3 / 3 (100%)** | Send form deferred |
 | **VPC** | List VPCs/subnets/SG; Lambda VpcConfig context | 3 | **3 / 3 (100%)** | ENI wizard deferred |
 | **RDS** | List DB instances; proxy endpoint hint | 2 | **2 / 2 (100%)** | Create instance UI deferred |
+| **IAM** | GetRole; attached policies; policy JSON; RDS Proxy bundle | 4 | **4 / 4 (100%)** | ListRoles API deferred — load by name |
 | **KMS** | List aliases; describe key; create CMK + alias; encrypt/decrypt | 4 | **4 / 4 (100%)** | ScheduleKeyDeletion UI deferred |
 | **Verify** | Import verify JSON report | 1 | **1 / 1 (100%)** | Run verify from CLI |
 | **Cross-cutting** | Same-origin proxy; admin peek | 2 | **2 / 2 (100%)** | Snapshot UI deferred |
-| **Total (weighted)** | — | **56** | **~56 / 56 (~100%)** | Documented subset |
+| **Total (weighted)** | — | **60** | **~60 / 60 (~100%)** | Documented subset |
 
 \* **Reference set** = flows a developer expects when comparing Simulith Console to AWS Console for **local development** (not every AWS Console screen or wizard).
 
@@ -226,6 +227,19 @@ Guide: [console.md](console.md) · API: [rds.md](rds.md)
 
 ---
 
+## IAM panel
+
+Guide: [console.md](console.md) · API: [iam.md](iam.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| Role detail | **GetRole** by name (load / session list) | **ListRoles** API not shipped — Terraform roles by name |
+| Attached managed policies | **ListAttachedRolePolicies** + **GetPolicy** document | Policy enforcement not simulated |
+| Create RDS Proxy role | **CreateRole** + **CreatePolicy** + **AttachRolePolicy** bundle | Delete/detach UI deferred |
+| Trust / permission JSON | Assume-role + policy document viewers | Users/groups out of scope |
+
+---
+
 ## KMS panel
 
 Guide: [console.md](console.md) · API: [kms.md](kms.md)
@@ -261,7 +275,7 @@ Guide: [console.md](console.md) · Schema: [compatibility.md](compatibility.md) 
 | Snapshot save/restore UI | CLI + admin API only | Optional UI (no FW yet) |
 | Verify / CI parity report in UI | **File upload** + scenario table (`/verify`) | Live verify run; GitHub URL fetch |
 | Single-port demo (one URL) | **`docker-compose.all-in-one.yml`** — Console on `:9080` only | Optional runtime-port overlay for `:4566` |
-| IAM, CloudWatch, X-Ray | Not in scope | Expansion services |
+| CloudWatch, X-Ray | Not in scope | Expansion services |
 
 ---
 

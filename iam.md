@@ -35,7 +35,11 @@ provider "aws" {
 
 - No policy enforcement against Secrets Manager/KMS at runtime (metadata only)
 - No IAM users, groups, or STS AssumeRole simulation
-- Console panel deferred
+- No **ListRoles** API — Console loads roles by name
+
+## Console
+
+Panel **`/iam`**: load role by name, inspect trust policy and attached managed policies, create RDS Proxy role bundle. See [console.md](console.md).
 
 ## Verify
 

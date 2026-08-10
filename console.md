@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, KMS, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -128,6 +128,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
 | **RDS** | DescribeDBInstances (status, engine, sidecar endpoint) | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
+| **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy document; create RDS Proxy role bundle | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
 | **KMS** | ListAliases, DescribeKey, CreateKey + alias, Encrypt/Decrypt round-trip | Mock envelope crypto; delete/schedule UI deferred; use Terraform `kms/cmk-min` |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
