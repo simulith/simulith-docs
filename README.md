@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `d7e6354` on 2026-08-11.
+Generated from monorepo commit `5840907` on 2026-08-11.
 
 ## Start here
 
@@ -45,8 +45,8 @@ Generated from monorepo commit `d7e6354` on 2026-08-11.
 | [EventBridge](eventbridge.md) | Schedule rules → Lambda; seeded demo-rule |
 | [Cognito](cognito.md) | User Pool + Admin* + JWKS; seeded demo-pool |
 | [SES](ses.md) | Identity, templates, Send* (local outbox); seeded demo-template |
-| [VPC](vpc.md) | VPC/subnet/SG, Lambda VpcConfig; verify + Terraform green path + Console  |
-| [RDS](rds.md) | Postgres sidecar + proxy; verify + Terraform green path + Console  (Docker required) |
+| [VPC](vpc.md) | VPC/subnet/SG, Lambda VpcConfig; verify + Terraform green path + Console `/vpc` |
+| [RDS](rds.md) | Postgres sidecar + proxy; verify + Terraform green path + Console `/rds` (Docker required) |
 | [IAM](iam.md) | Roles/policies subset for RDS Proxy; seeded demo-rds-proxy-role |
 | [KMS](kms.md) | CMK encrypt/decrypt; seeded alias/demo-key |
 
