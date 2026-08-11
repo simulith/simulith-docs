@@ -7,6 +7,14 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.94.0] - 2026-08-11
+
+### Features
+
+- ****: simulith verify route53
+
+- ****: Console Route 53 panel
+
 ## [0.93.0] - 2026-08-10
 
 ### Features
