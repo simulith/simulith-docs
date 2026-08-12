@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `4cd44b2` on 2026-08-12.
+Generated from monorepo commit `d0975a1` on 2026-08-12.
 
 ## Start here
 
@@ -50,6 +50,7 @@ Generated from monorepo commit `4cd44b2` on 2026-08-12.
 | [IAM](iam.md) | Roles/policies subset for RDS Proxy; seeded demo-rds-proxy-role |
 | [KMS](kms.md) | CMK encrypt/decrypt; seeded alias/demo-key |
 | [Route 53](route53.md) | Hosted zones + A/CNAME records; seeded demo.simulith.local |
+| [ACM](acm.md) | DNS-validated certificates; verify + Terraform green path + Console `/acm` |
 
 ## Compatibility
 

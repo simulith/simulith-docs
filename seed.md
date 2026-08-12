@@ -37,6 +37,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | KMS | CMK + alias `alias/demo-key` | Fixed demo key id for Console `/kms` |
 | IAM | role `demo-rds-proxy-role` | Managed policy `demo-rds-proxy-policy` (RDS Proxy trust + Secrets/KMS stub) |
 | Route 53 | hosted zone `demo.simulith.local` | `www` A → `127.0.0.1`, `cdn` CNAME → `www.demo.simulith.local` |
+| ACM | certificate `demo.simulith.local` | Fixed ARN `arn:aws:acm:us-east-1:000000000000:certificate/22222222-2222-4222-8222-222222222222` (ISSUED) |
 
 When **docker** is not on the Simulith runtime host PATH (e.g. `simulith seed` inside the shipped container image), RDS instances are **skipped with a warning** — other seed fixtures still apply. Same constraint as [`simulith verify rds`](rds.md#verify). seeds/default.json (embedded copy in the runtime).
 
@@ -188,7 +189,8 @@ Notes:
 - **`kms.keys`** — fixed `keyId`, optional `description`, optional `aliases` (e.g. `alias/demo-key`). Applied **after** RDS.
 - **`iam.roles`** — `name`, `assumeRolePolicyDocument` required; optional `description`, nested `policies` (`name`, `document`) created and attached. Applied **after** KMS.
 - **`route53.hostedZones`** — fixed `zoneId`, `name`, `callerReference`, optional `comment`, nested `recordSets` (`name`, `type` A/CNAME, `ttl`, `records`). Applied **after** IAM.
-- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, `ses`, `vpc`, `rds`, `kms`, `iam`, or `route53` sections are allowed
+- **`acm.certificates`** — fixed `certificateId`, `domainName`, `clientToken`, optional `subjectAlternativeNames`, `validationMethod` (DNS), `status` (default ISSUED). Applied **after** Route 53.
+- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, `ses`, `vpc`, `rds`, `kms`, `iam`, `route53`, or `acm` sections are allowed
 
 ## Out of scope
 - YAML fixtures — JSON only

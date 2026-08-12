@@ -26,6 +26,8 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | RDS | Postgres sidecar + proxy; verify, Terraform green path, Console `/rds` (Docker on runtime host) — [rds.md](rds.md) |
 | IAM | Roles/policies subset (RDS Proxy) — [iam.md](iam.md) |
 | KMS | CMK encrypt/decrypt; Secrets Manager `KmsKeyId` — [kms.md](kms.md) |
+| Route 53 | Hosted zones + A/CNAME records; verify, Terraform green path, Console `/route53` — [route53.md](route53.md) |
+| ACM | DNS-validated certificates; verify, Terraform green path, Console `/acm` — [acm.md](acm.md) |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 
