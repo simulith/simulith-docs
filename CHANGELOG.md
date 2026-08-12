@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.98.0] - 2026-08-12
+
+### Features
+
+- ****: simulith verify acm
+
 ## [0.97.0] - 2026-08-12
 
 ### Features
