@@ -744,6 +744,26 @@ Verify: `simulith verify route53 --skip-aws` (see [compatibility.md](compatibili
 
 ---
 
+## ACM
+
+DNS-validated certificates. See [acm.md](acm.md). Default seed includes **`demo.simulith.local`** certificate. Local validation stub — Simulith does not contact a real CA.
+
+**Terraform green path:** [`examples/terraform/acm/cert-min/`](examples/terraform/acm/cert-min/) (apply + destroy with `-parallelism=1`).
+
+```bash
+aws acm list-certificates \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws acm request-certificate \
+  --domain-name example.simulith.local \
+  --validation-method DNS \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify acm --skip-aws` (see [compatibility.md](compatibility.md)). Console **ACM** panel lists certificates at `/acm`.
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).

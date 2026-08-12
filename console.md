@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, and Verify.
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -131,6 +131,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy document; create RDS Proxy role bundle | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
 | **KMS** | ListAliases, DescribeKey, CreateKey + alias, Encrypt/Decrypt round-trip | Mock envelope crypto; delete/schedule UI deferred; use Terraform `kms/cmk-min` |
 | **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A UPSERT) | Local DNS stub — not a real resolver; CNAME/delete UI deferred |
+| **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate | Local validation stub — not a real CA; delete/tags UI deferred; seeded demo cert via **Seed** |
 
 Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
 

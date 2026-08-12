@@ -1,6 +1,6 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **fifteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **sixteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM).
 
 **Public mirror (prospects, sales, Hub):** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
@@ -8,15 +8,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-11..
+Last updated: 2026-08-12..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 15 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53) |
-| Operations **available** locally | 152 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2 |
+| Services in matrix | 16 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM) |
+| Operations **available** locally | 157 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2, ACM 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -344,6 +344,20 @@ Guide: [route53.md](route53.md) · Verify: `simulith verify route53`
 
 ---
 
+## ACM
+
+Guide: [acm.md](acm.md) · Verify: `simulith verify acm`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| RequestCertificate | available | yes (`certificate-request-describe-list`, `certificate-client-token-idempotency`) | DNS validation only; ClientToken idempotency |
+| DescribeCertificate | available | yes (`certificate-request-describe-list`) | Local validation stub → ISSUED |
+| ListCertificates | available | yes (`certificate-request-describe-list`) | Optional status filter |
+| DeleteCertificate | available | — | Terraform destroy |
+| ListTagsForCertificate | available | — | Empty tag list stub |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -365,6 +379,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |
+| ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -383,6 +398,7 @@ simulith verify vpc --skip-aws
 simulith verify iam --skip-aws
 simulith verify kms --skip-aws
 simulith verify route53 --skip-aws
+simulith verify acm --skip-aws
 ```
 
 ---

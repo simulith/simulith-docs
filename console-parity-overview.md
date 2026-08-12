@@ -5,13 +5,13 @@ Consolidated view of **Simulith Console vs AWS Management Console** for all **sh
 > **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](console.md)
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension
 
-Last updated: 2026-08-11..
+Last updated: 2026-08-12..
 
 ---
 
 ## Executive summary
 
-Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, **IAM**, **KMS**, **Route 53**, and Verify import — no CloudWatch UI yet.
+Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, **IAM**, **KMS**, **Route 53**, **ACM**, and Verify import — no CloudWatch UI yet.
 
 | Panel | Shipped flows **in Console UI** | Reference set* | **Shipped** | Notes |
 | --- | --- | ---: | ---: | --- |
@@ -31,9 +31,10 @@ Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AW
 | **IAM** | GetRole; attached policies; policy JSON; RDS Proxy bundle | 4 | **4 / 4 (100%)** | ListRoles API deferred — load by name |
 | **KMS** | List aliases; describe key; create CMK + alias; encrypt/decrypt | 4 | **4 / 4 (100%)** | ScheduleKeyDeletion UI deferred |
 | **Route 53** | List zones; create zone; UPSERT A record | 3 | **3 / 3 (100%)** | Local DNS stub; CNAME/delete UI deferred |
+| **ACM** | List certificates; request DNS-validated cert; describe metadata | 3 | **3 / 3 (100%)** | Local validation stub; delete/tags UI deferred |
 | **Verify** | Import verify JSON report | 1 | **1 / 1 (100%)** | Run verify from CLI |
 | **Cross-cutting** | Same-origin proxy; admin peek | 2 | **2 / 2 (100%)** | Snapshot UI deferred |
-| **Total (weighted)** | — | **63** | **~63 / 63 (~100%)** | Documented subset |
+| **Total (weighted)** | — | **66** | **~66 / 66 (~100%)** | Documented subset |
 
 \* **Reference set** = flows a developer expects when comparing Simulith Console to AWS Console for **local development** (not every AWS Console screen or wizard).
 
@@ -264,6 +265,19 @@ Guide: [console.md](console.md) · API: [route53.md](route53.md)
 | Create hosted zone | **CreateHostedZone** form | Private zone UI deferred |
 | Record sets | **ChangeResourceRecordSets** A UPSERT | CNAME / delete UI deferred |
 | DNS resolution | Not applicable | Local metadata stub only |
+
+---
+
+## ACM panel
+
+Guide: [console.md](console.md) · API: [acm.md](acm.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| Certificates list | **ListCertificates** — cert selector | — |
+| Request certificate | **RequestCertificate** (DNS validation) | Email validation deferred |
+| Certificate detail | **DescribeCertificate** — domain, status, validation options | — |
+| Validation | Local stub notice | Not a real CA or DNS resolver |
 
 ---
 

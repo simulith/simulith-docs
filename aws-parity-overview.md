@@ -1,13 +1,13 @@
 # AWS parity overview — Simulith
 
-Consolidated view of **Simulith vs AWS** for **fifteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for **sixteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Important:** **Tier A %** = **`available / ref`** on a curated op list per service ([methodology](#tier-a-methodology-standard)) — the **reliable** progress metric. **Tier B** is **indicative only** ([methodology](#tier-b-indicative-not-audited)) — do not treat as precise AWS parity.
 
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-08-11..
+Last updated: 2026-08-12..
 
 ---
 
@@ -43,7 +43,8 @@ Last updated: 2026-08-11..
 | **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **KMS** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
-| **Total** | **152** | 15 services with verify | **~97%** Tier A (160 / 165 ref) | — |
+| **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
+| **Total** | **157** | 16 services with verify | **~97%** Tier A (165 / 170 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -111,10 +112,11 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **IAM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **KMS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Route 53** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **ACM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog (B10 edge — **ACM** next).
+**Legend:** ✅ shipped · ⏳ open in the product backlog (B10 edge — **CloudFront** next).
 
-**Tier A aggregate (165 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–Route 53 **97 / 99** · **Overall ~97% (160 / 165)**.
+**Tier A aggregate (170 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–ACM **102 / 104** · **Overall ~97% (165 / 170)**.
 
 ---
 
@@ -492,6 +494,29 @@ CreateHostedZone / ListHostedZones / GetHostedZone / DeleteHostedZone; ChangeRes
 CreateHostedZone, ListHostedZones, GetHostedZone, DeleteHostedZone, ChangeResourceRecordSets, ListResourceRecordSets, GetChange.
 
 7 **available** = **100%** Tier A Route 53 (7 / 7).
+
+---
+
+## ACM
+
+Guide: [acm.md](acm.md) · Backlog: the product backlog
+
+### Implemented
+
+RequestCertificate / DescribeCertificate / ListCertificates / DeleteCertificate / ListTagsForCertificate (DNS validation subset). **Local validation stub** — first describe/list flips `PENDING_VALIDATION` → `ISSUED`; no real CA or DNS resolver. **Terraform green path** [`examples/terraform/acm/cert-min/`](examples/terraform/acm/cert-min/) — hosted zone + certificate + validation records + `aws_acm_certificate_validation`; apply + destroy. **`simulith verify acm`**. **Console panel `/acm`**. **Seed** demo cert **`demo.simulith.local`**. SQLite `acm_*`. SigV4 `acm` JSON 1.1.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| Email validation, imported certs, private CA | P2+ | + |
+| Cross-region replication | P3 | — |
+
+### Tier A reference set (5 ops)
+
+RequestCertificate, DescribeCertificate, ListCertificates, DeleteCertificate, ListTagsForCertificate.
+
+5 **available** = **100%** Tier A ACM (5 / 5).
 
 ---
 

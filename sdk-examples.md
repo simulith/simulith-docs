@@ -7,7 +7,7 @@ Copy-paste **AWS SDK** examples for **DynamoDB**, **SQS**, and **SSM Parameter S
 | Service | SDK cookbook in this guide | Service guide |
 | --- | --- | --- |
 | DynamoDB, SQS, SSM | **Yes** — sections below | [dynamodb.md](dynamodb.md), [sqs.md](sqs.md), [ssm.md](ssm.md) |
-| S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS | **Deferred** — use CLI ([aws-cli-examples.md](aws-cli-examples.md)) or service docs | See [compatibility-matrix.md](compatibility-matrix.md) |
+| S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM | **Deferred** — use CLI ([aws-cli-examples.md](aws-cli-examples.md)) or service docs | See [compatibility-matrix.md](compatibility-matrix.md) |
 
 Runnable SDK samples: [`examples/go/`](examples/go/), [`examples/nodejs/`](examples/nodejs/), [`examples/python/`](examples/python/) (Foundation trio today).
 
