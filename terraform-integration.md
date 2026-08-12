@@ -259,6 +259,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`rds/postgres-min/`](examples/terraform/rds/postgres-min/) | Green | Green | Embedded VPC + DB subnet group, parameter group, Postgres sidecar instance — `-parallelism=1`; **Docker required** |
 | [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret — `-parallelism=1` |
 | [`route53/zone-min/`](examples/terraform/route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records — `-parallelism=1`; `endpoints { route53 }` |
+| [`acm/cert-min/`](examples/terraform/acm/cert-min/) | Green | Green | ACM cert + Route 53 DNS validation — `-parallelism=1`; `endpoints { acm, route53 }` |
 
 ### B7+ modules (apply local — formal green path pending)
 
@@ -311,6 +312,7 @@ maintainer workflow (private monorepo) --module s3-lambda
 maintainer workflow (private monorepo) --module ssm-path
 maintainer workflow (private monorepo) --module kms-cmk-min
 maintainer workflow (private monorepo) --module route53-zone-min
+maintainer workflow (private monorepo) --module acm-cert-min
 ```
 
 Backlog: .

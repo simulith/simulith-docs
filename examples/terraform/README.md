@@ -24,6 +24,7 @@ runtime/examples/terraform/
 ├── iam/                ← proxy-roles-min (RDS Proxy role wiring)
 ├── kms/                ← cmk-min (CMK + alias)
 ├── route53/            ← zone-min (hosted zone + A/CNAME)
+├── acm/                ← cert-min (certificate + DNS validation)
 ├── lambda-vpc-rds/     ← full-stack-min (Lambda VpcConfig → RDS proxy)
 └── secretsmanager-lambda/  ← secret data source → Lambda environment
 └── dynamodb-sqs/           ← table + queue fan-out
@@ -58,6 +59,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Embedded VPC + Postgres sidecar; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
 | [`kms/cmk-min/`](kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret; `-parallelism=1`; [README](kms/cmk-min/README.md) |
 | [`route53/zone-min/`](route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records; `endpoints { route53 }`; `-parallelism=1`; [README](route53/zone-min/README.md) |
+| [`acm/cert-min/`](acm/cert-min/) | Green | Green | ACM certificate + Route 53 DNS validation; `endpoints { acm, route53 }`; `-parallelism=1`; [README](acm/cert-min/README.md) |
 
 ### B7+ examples (apply local — formal green path pending FW-*-003)
 

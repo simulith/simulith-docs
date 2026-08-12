@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.100.0] - 2026-08-12
+
+### Features
+
+- ****: Console ACM panel
+
+## [0.99.0] - 2026-08-12
+
+### Features
+
+- ****: Terraform green path ACM
+
 ## [0.98.0] - 2026-08-12
 
 ### Features
