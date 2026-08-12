@@ -724,6 +724,26 @@ Verify: `simulith verify kms --skip-aws` (see [compatibility.md](compatibility.m
 
 ---
 
+## Route 53
+
+Hosted zones + A/CNAME records. See [route53.md](route53.md). Default seed includes zone **`demo.simulith.local`** with **`www`** A and **`cdn`** CNAME. Local DNS stub — records are not served by a real resolver.
+
+**Terraform green path:** [`examples/terraform/route53/zone-min/`](examples/terraform/route53/zone-min/) (apply + destroy).
+
+```bash
+aws route53 list-hosted-zones \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws route53 change-resource-record-sets \
+  --hosted-zone-id ZONEID \
+  --change-batch file://change-batch.json \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify route53 --skip-aws` (see [compatibility.md](compatibility.md)). Console **Route 53** panel lists zones at `/route53`.
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).

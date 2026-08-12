@@ -1,6 +1,6 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **fourteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **fifteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53).
 
 **Public mirror (prospects, sales, Hub):** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
@@ -8,15 +8,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-07..
+Last updated: 2026-08-11..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 14 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS) |
-| Operations **available** locally | 145 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2 |
+| Services in matrix | 15 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53) |
+| Operations **available** locally | 152 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -328,6 +328,22 @@ Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
 
 ---
 
+## Route 53
+
+Guide: [route53.md](route53.md) · Verify: `simulith verify route53`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateHostedZone | available | yes (`hosted-zone-record-lifecycle`, `cname-record-upsert`) | Idempotent on `CallerReference` |
+| ListHostedZones | available | yes (`hosted-zone-record-lifecycle`) | Full list |
+| GetHostedZone | available | — | Zone + delegation stub |
+| ChangeResourceRecordSets | available | yes (`hosted-zone-record-lifecycle`, `cname-record-upsert`) | A/CNAME CREATE/UPSERT/DELETE |
+| ListResourceRecordSets | available | — | Start name/type filter |
+| DeleteHostedZone | available | — | Empty zones only |
+| GetChange | available | — | `INSYNC` stub |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -348,6 +364,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
+| Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -365,6 +382,7 @@ simulith verify rds --skip-aws
 simulith verify vpc --skip-aws
 simulith verify iam --skip-aws
 simulith verify kms --skip-aws
+simulith verify route53 --skip-aws
 ```
 
 ---

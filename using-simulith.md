@@ -65,7 +65,7 @@ Your app / CLI / Terraform
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
 
-When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**, **[eventbridge.md](eventbridge.md)**, **[cognito.md](cognito.md)**, **[ses.md](ses.md)**, **[vpc.md](vpc.md)**, **[rds.md](rds.md)**, **[iam.md](iam.md)**, **[kms.md](kms.md)**) for documented deviations before assuming a bug.
+When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**, **[eventbridge.md](eventbridge.md)**, **[cognito.md](cognito.md)**, **[ses.md](ses.md)**, **[vpc.md](vpc.md)**, **[rds.md](rds.md)**, **[iam.md](iam.md)**, **[kms.md](kms.md)**, **[route53.md](route53.md)**) for documented deviations before assuming a bug.
 
 ---
 

@@ -1,10 +1,8 @@
 # Compatibility verification — Simulith runtime
 
-Measure behavioral parity between **Simulith** and **real AWS** for all **fourteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS).
+Measure behavioral parity between **Simulith** and **real AWS** for all **fifteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53).
 
 For a **public operation × verify coverage matrix**, see [compatibility-matrix.md](compatibility-matrix.md).
-
-For **parity % over releases**, see [parity-release-history.md](parity-release-history.md).
 
 ## Commands
 
@@ -23,6 +21,7 @@ simulith verify vpc
 simulith verify rds
 simulith verify iam
 simulith verify kms
+simulith verify route53
 ```
 
 Each subcommand requires a running Simulith server (`simulith start` or Docker Compose).

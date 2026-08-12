@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `aac722f` on 2026-08-12.
+Generated from monorepo commit `840e2c7` on 2026-08-12.
 
 ## Start here
 
@@ -49,6 +49,7 @@ Generated from monorepo commit `aac722f` on 2026-08-12.
 | [RDS](rds.md) | Postgres sidecar + proxy; verify + Terraform green path + Console `/rds` (Docker required) |
 | [IAM](iam.md) | Roles/policies subset for RDS Proxy; seeded demo-rds-proxy-role |
 | [KMS](kms.md) | CMK encrypt/decrypt; seeded alias/demo-key |
+| [Route 53](route53.md) | Hosted zones + A/CNAME records; seeded demo.simulith.local |
 
 ## Compatibility
 
@@ -57,7 +58,6 @@ Generated from monorepo commit `aac722f` on 2026-08-12.
 | [Compatibility matrix](compatibility-matrix.md) | Operation × verify coverage |
 | [AWS parity overview](aws-parity-overview.md) | API summary by service |
 | [Console parity overview](console-parity-overview.md) | Console UI vs AWS Console |
-| [Parity release history](parity-release-history.md) | Ops/verify series per release |
 | [Compatibility / verify](compatibility.md) | `simulith verify` and reports |
 | [Trust bundle](trust-bundle.md) | Enterprise evaluation package |
 

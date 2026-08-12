@@ -1,15 +1,13 @@
 # AWS parity overview — Simulith
 
-Consolidated view of **Simulith vs AWS** for **fourteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for **fifteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Important:** **Tier A %** = **`available / ref`** on a curated op list per service ([methodology](#tier-a-methodology-standard)) — the **reliable** progress metric. **Tier B** is **indicative only** ([methodology](#tier-b-indicative-not-audited)) — do not treat as precise AWS parity.
 
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-08-10..
-
-> **Release history:** [`parity-release-history.md`](parity-release-history.md) — ops/verify series per release.
+Last updated: 2026-08-11..
 
 ---
 
@@ -44,7 +42,8 @@ Last updated: 2026-08-10..
 | **RDS** | 6 | 2 / 2 scenarios | **100%** (15 / 15) | **low subset** |
 | **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **KMS** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **145** | 14 services with verify | **~97%** Tier A (153 / 158 ref) | — |
+| **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
+| **Total** | **152** | 15 services with verify | **~97%** Tier A (160 / 165 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -111,10 +110,11 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **RDS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **IAM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **KMS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Route 53** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog (B10 edge runtime — **FW-R53-001** next).
+**Legend:** ✅ shipped · ⏳ open in the product backlog (B10 edge — **ACM** next).
 
-**Tier A aggregate (158 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–KMS **90 / 92** · **Overall ~97% (153 / 158)**.
+**Tier A aggregate (165 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–Route 53 **97 / 99** · **Overall ~97% (160 / 165)**.
 
 ---
 
@@ -469,6 +469,29 @@ CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decr
 CreateKey, DescribeKey, CreateAlias, ListAliases, DeleteAlias, Encrypt, Decrypt, GetKeyPolicy, ScheduleKeyDeletion.
 
 9 **available** = **100%** Tier A KMS (9 / 9).
+
+---
+
+## Route 53
+
+Guide: [route53.md](route53.md) · Backlog: the product backlog
+
+### Implemented
+
+CreateHostedZone / ListHostedZones / GetHostedZone / DeleteHostedZone; ChangeResourceRecordSets / ListResourceRecordSets / GetChange (A/CNAME subset). **Terraform green path** [`examples/terraform/route53/zone-min/`](examples/terraform/route53/zone-min/) — apply + destroy. **`simulith verify route53`**. **Console panel `/route53`**. SQLite `route53_*`. SigV4 `route53` REST/XML + JSON. **Local DNS stub** — records not served by a real resolver.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| Alias records, routing policies, health checks | P2+ | FW-R53-010+ |
+| Private zones + VPC association | P3 | — |
+
+### Tier A reference set (7 ops)
+
+CreateHostedZone, ListHostedZones, GetHostedZone, DeleteHostedZone, ChangeResourceRecordSets, ListResourceRecordSets, GetChange.
+
+7 **available** = **100%** Tier A Route 53 (7 / 7).
 
 ---
 
