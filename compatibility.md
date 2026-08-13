@@ -23,6 +23,7 @@ simulith verify iam
 simulith verify kms
 simulith verify route53
 simulith verify acm
+simulith verify cloudfront
 ```
 
 Each subcommand requires a running Simulith server (`simulith start` or Docker Compose).
