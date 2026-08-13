@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.102.0] - 2026-08-13
+
+### Features
+
+- ****: CloudFront distribution + OAC slice
+
 ## [0.101.0] - 2026-08-12
 
 ### Features
