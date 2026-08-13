@@ -260,6 +260,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret — `-parallelism=1` |
 | [`route53/zone-min/`](examples/terraform/route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records — `-parallelism=1`; `endpoints { route53 }` |
 | [`acm/cert-min/`](examples/terraform/acm/cert-min/) | Green | Green | ACM cert + Route 53 DNS validation — `-parallelism=1`; `endpoints { acm, route53 }` |
+| [`cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME — `-parallelism=1`; `endpoints { s3, cloudfront, route53 }` |
 
 ### B7+ modules (apply local — formal green path pending)
 
@@ -313,6 +314,7 @@ maintainer workflow (private monorepo) --module ssm-path
 maintainer workflow (private monorepo) --module kms-cmk-min
 maintainer workflow (private monorepo) --module route53-zone-min
 maintainer workflow (private monorepo) --module acm-cert-min
+maintainer workflow (private monorepo) --module cloudfront-cdn-min
 ```
 
 Backlog: .
