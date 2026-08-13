@@ -11,7 +11,7 @@ Last updated: 2026-08-12..
 
 ## Executive summary
 
-Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, **IAM**, **KMS**, **Route 53**, **ACM**, and Verify import — no CloudWatch UI yet.
+Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AWS Console. **Shipped panels:** DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, **IAM**, **KMS**, **Route 53**, **ACM**, **CloudFront**, and Verify import — no CloudWatch UI yet.
 
 | Panel | Shipped flows **in Console UI** | Reference set* | **Shipped** | Notes |
 | --- | --- | ---: | ---: | --- |
