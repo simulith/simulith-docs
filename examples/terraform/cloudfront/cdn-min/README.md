@@ -21,6 +21,8 @@ terraform apply -parallelism=1
 terraform destroy -parallelism=1
 ```
 
-**Endpoint:** set `simulith_endpoint` to your runtime URL (`http://127.0.0.1:4566` native, `http://127.0.0.1:9080/runtime` all-in-one).
+**Endpoint:** set `simulith_endpoint` to your runtime URL (`http://127.0.0.1:4566` native, `http://127.0.0.1:9080/runtime` all-in-one). Requires **Simulith v0.106+** (CloudFront `CreateDistributionWithTags`).
+
+**Green path E2E (demoapp `web/` subset):** S3 bucket + object → OAC → distribution → Route 53 zone + `cdn` CNAME. Full prod `web/` also uses ACM viewer cert (not in this module).
 
 Automated smoke: `maintainer workflow (private monorepo)`
