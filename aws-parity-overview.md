@@ -1,13 +1,13 @@
 # AWS parity overview — Simulith
 
-Consolidated view of **Simulith vs AWS** for **sixteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for **seventeen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Important:** **Tier A %** = **`available / ref`** on a curated op list per service ([methodology](#tier-a-methodology-standard)) — the **reliable** progress metric. **Tier B** is **indicative only** ([methodology](#tier-b-indicative-not-audited)) — do not treat as precise AWS parity.
 
 > **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
 > **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
 
-Last updated: 2026-08-12..
+Last updated: 2026-08-13..
 
 ---
 
@@ -44,7 +44,8 @@ Last updated: 2026-08-12..
 | **KMS** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
-| **Total** | **157** | 16 services with verify | **~97%** Tier A (165 / 170 ref) | — |
+| **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
+| **Total** | **166** | 17 services with verify | **~97%** Tier A (174 / 179 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -113,10 +114,11 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **KMS** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Route 53** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **ACM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **CloudFront** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog (B10 edge — **CloudFront** next).
+**Legend:** ✅ shipped · ⏳ open in the product backlog (post-B10 depth).
 
-**Tier A aggregate (170 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–ACM **102 / 104** · **Overall ~97% (165 / 170)**.
+**Tier A aggregate (179 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–CloudFront **111 / 113** · **Overall ~97% (174 / 179)**.
 
 ---
 
@@ -517,6 +519,27 @@ RequestCertificate / DescribeCertificate / ListCertificates / DeleteCertificate 
 RequestCertificate, DescribeCertificate, ListCertificates, DeleteCertificate, ListTagsForCertificate.
 
 5 **available** = **100%** Tier A ACM (5 / 5).
+
+---
+
+## CloudFront
+
+Guide: [cloudfront.md](cloudfront.md) · Backlog: the product backlog
+
+CreateOriginAccessControl / GetOriginAccessControl / CreateDistribution / GetDistribution / ListDistributions / GetDistributionConfig / UpdateDistribution / DeleteDistribution / DeleteOriginAccessControl. **Local CDN stub** — no edge caching. **Terraform green path** [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/). **`simulith verify cloudfront`**. **Console panel `/cloudfront`**. **Seed** demo OAC + distribution **`E0DEMOCF00001`**. SQLite `cloudfront_*`. SigV4 `cloudfront` REST/XML.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| Real edge caching / POP | P3 | Out of scope (local stub) |
+| Lambda@Edge, WAF, signed URLs | P3 | — |
+
+### Tier A reference set (9 ops)
+
+CreateOriginAccessControl, GetOriginAccessControl, CreateDistribution, GetDistribution, ListDistributions, GetDistributionConfig, UpdateDistribution, DeleteDistribution, DeleteOriginAccessControl.
+
+9 **available** = **100%** Tier A CloudFront (9 / 9).
 
 ---
 

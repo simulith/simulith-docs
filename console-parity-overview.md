@@ -5,7 +5,7 @@ Consolidated view of **Simulith Console vs AWS Management Console** for all **sh
 > **How to run Console:** [`console.md`](console.md) · App: [`../../console/`](console.md)
 > **API/runtime parity (% ops, verify):** [`aws-parity-overview.md`](aws-parity-overview.md) — different dimension
 
-Last updated: 2026-08-12..
+Last updated: 2026-08-13..
 
 ---
 
@@ -32,9 +32,10 @@ Simulith Console is a **local ops dashboard** (Docker + Vite), not a clone of AW
 | **KMS** | List aliases; describe key; create CMK + alias; encrypt/decrypt | 4 | **4 / 4 (100%)** | ScheduleKeyDeletion UI deferred |
 | **Route 53** | List zones; create zone; UPSERT A record | 3 | **3 / 3 (100%)** | Local DNS stub; CNAME/delete UI deferred |
 | **ACM** | List certificates; request DNS-validated cert; describe metadata | 3 | **3 / 3 (100%)** | Local validation stub; delete/tags UI deferred |
+| **CloudFront** | List distributions; get distribution + OAC; create OAC + distribution | 5 | **5 / 5 (100%)** | Local CDN stub; delete UI deferred |
 | **Verify** | Import verify JSON report | 1 | **1 / 1 (100%)** | Run verify from CLI |
 | **Cross-cutting** | Same-origin proxy; admin peek | 2 | **2 / 2 (100%)** | Snapshot UI deferred |
-| **Total (weighted)** | — | **66** | **~66 / 66 (~100%)** | Documented subset |
+| **Total (weighted)** | — | **71** | **~71 / 71 (~100%)** | Documented subset |
 
 \* **Reference set** = flows a developer expects when comparing Simulith Console to AWS Console for **local development** (not every AWS Console screen or wizard).
 
@@ -278,6 +279,19 @@ Guide: [console.md](console.md) · API: [acm.md](acm.md)
 | Request certificate | **RequestCertificate** (DNS validation) | Email validation deferred |
 | Certificate detail | **DescribeCertificate** — domain, status, validation options | — |
 | Validation | Local stub notice | Not a real CA or DNS resolver |
+
+---
+
+## CloudFront panel
+
+Guide: [console.md](console.md) · API: [cloudfront.md](cloudfront.md)
+
+| AWS Console flow | Simulith Console | Gap / backlog |
+| --- | --- | --- |
+| Distributions list | **ListDistributions** — distribution selector | — |
+| Distribution detail | **GetDistribution** + **GetOriginAccessControl** | — |
+| Create OAC + distribution | **CreateOriginAccessControl** + **CreateDistribution** forms | Delete UI deferred |
+| Edge caching | Not applicable | Local metadata stub only |
 
 ---
 

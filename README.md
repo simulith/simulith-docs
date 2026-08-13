@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `c6a6ef5` on 2026-08-13.
+Generated from monorepo commit `ea21aa2` on 2026-08-13.
 
 ## Start here
 
@@ -51,6 +51,7 @@ Generated from monorepo commit `c6a6ef5` on 2026-08-13.
 | [KMS](kms.md) | CMK encrypt/decrypt; seeded alias/demo-key |
 | [Route 53](route53.md) | Hosted zones + A/CNAME records; seeded demo.simulith.local |
 | [ACM](acm.md) | DNS-validated certificates; seeded demo.simulith.local cert; verify + Terraform + Console `/acm` |
+| [CloudFront](cloudfront.md) | OAC + distribution metadata (local CDN stub); verify + Terraform + Console `/cloudfront` |
 
 ## Compatibility
 

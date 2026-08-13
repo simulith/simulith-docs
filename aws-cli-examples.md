@@ -764,6 +764,25 @@ Verify: `simulith verify acm --skip-aws` (see [compatibility.md](compatibility.m
 
 ---
 
+## CloudFront
+
+OAC + distribution metadata. See [cloudfront.md](cloudfront.md). Default seed includes OAC **`E0DEMOOAC00001`** and distribution **`E0DEMOCF00001`**. Local CDN stub — no edge caching.
+
+**Terraform green path:** [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) (apply + destroy with `-parallelism=1`).
+
+```bash
+aws cloudfront list-distributions \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws cloudfront create-origin-access-control \
+  --origin-access-control-config file://oac-config.json \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify cloudfront --skip-aws` (see [compatibility.md](compatibility.md)). Console **CloudFront** panel lists distributions at `/cloudfront`.
+
+---
+
 ## Lambda
 
 Function CRUD, sync invoke, and SQS event source mapping are available locally (v0.15.0+; invoke v0.16.0+, ESM v0.17.0+). **Node/Python invoke** requires `node` or `python3` on the same PATH as the Simulith process. **Go / `provided*`** runs the `bootstrap` binary from the zip (build with `go` on the host; v0.45.0+). The default Docker image does not bundle Node/Python. See [lambda.md](lambda.md).

@@ -36,8 +36,9 @@ simulith seed [--config path] [--file path] [--no-reset]
 | RDS | instance `demo-db` | Postgres 15 sidecar (`demoapp` / `local-dev-password`; **Docker required** on runtime host) |
 | KMS | CMK + alias `alias/demo-key` | Fixed demo key id for Console `/kms` |
 | IAM | role `demo-rds-proxy-role` | Managed policy `demo-rds-proxy-policy` (RDS Proxy trust + Secrets/KMS stub) |
-| Route 53 | hosted zone `demo.simulith.local` | `www` A → `127.0.0.1`, `cdn` CNAME → `www.demo.simulith.local` |
+| Route 53 | hosted zone `demo.simulith.local` | `www` A → `127.0.0.1`, `cdn` CNAME → `d0democdn00001.cloudfront.net` |
 | ACM | certificate `demo.simulith.local` | Fixed ARN `arn:aws:acm:us-east-1:000000000000:certificate/22222222-2222-4222-8222-222222222222` (ISSUED) |
+| CloudFront | OAC `E0DEMOOAC00001` + distribution `E0DEMOCF00001` | S3 origin `demo-bucket`; domain `d0democdn00001.cloudfront.net` (Deployed) |
 
 When **docker** is not on the Simulith runtime host PATH (e.g. `simulith seed` inside the shipped container image), RDS instances are **skipped with a warning** — other seed fixtures still apply. Same constraint as [`simulith verify rds`](rds.md#verify). seeds/default.json (embedded copy in the runtime).
 
@@ -70,7 +71,7 @@ aws ssm get-parameter --name /app/demo/api-url --endpoint-url http://127.0.0.1:4
 
 On **Git Bash (Windows)**, set `export MSYS2_ARG_CONV_EXCL="*"` before SSM CLI commands, or use [PowerShell](quickstart.md). See [quickstart troubleshooting](quickstart.md#troubleshooting).
 
-Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EC2/VPC, RDS, IAM, KMS, Route 53, and EventBridge — same scope as `simulith reset` — then re-applies the fixture).
+Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EC2/VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, and EventBridge — same scope as `simulith reset` — then re-applies the fixture).
 
 More CLI examples: [aws-cli-examples.md](aws-cli-examples.md#seeded-data). SDK: [sdk-examples.md](sdk-examples.md#seeded-data).
 
@@ -190,7 +191,9 @@ Notes:
 - **`iam.roles`** — `name`, `assumeRolePolicyDocument` required; optional `description`, nested `policies` (`name`, `document`) created and attached. Applied **after** KMS.
 - **`route53.hostedZones`** — fixed `zoneId`, `name`, `callerReference`, optional `comment`, nested `recordSets` (`name`, `type` A/CNAME, `ttl`, `records`). Applied **after** IAM.
 - **`acm.certificates`** — fixed `certificateId`, `domainName`, `clientToken`, optional `subjectAlternativeNames`, `validationMethod` (DNS), `status` (default ISSUED). Applied **after** Route 53.
-- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, `ses`, `vpc`, `rds`, `kms`, `iam`, `route53`, or `acm` sections are allowed
+- **`cloudfront.originAccessControls`** — fixed `id`, `name`, optional `description`, `originType` (default s3), `signingBehavior` (default always), `signingProtocol` (default sigv4). Applied **after** ACM.
+- **`cloudfront.distributions`** — fixed `id`, `domainName`, `callerReference`, `originId`, `originDomainName`, `originAccessControlId`; optional `comment`, `defaultRootObject`, `enabled`, `targetOriginId`, `viewerProtocolPolicy`. OAC must exist in the same fixture. Applied after OAC rows in the CloudFront block.
+- Empty `dynamodb`, `sqs`, `ssm`, `s3`, `lambda`, `apigateway`, `secretsmanager`, `eventbridge`, `cognito`, `ses`, `vpc`, `rds`, `kms`, `iam`, `route53`, `acm`, or `cloudfront` sections are allowed
 
 ## Out of scope
 - YAML fixtures — JSON only

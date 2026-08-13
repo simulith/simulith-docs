@@ -28,6 +28,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | KMS | CMK encrypt/decrypt; Secrets Manager `KmsKeyId` — [kms.md](kms.md) |
 | Route 53 | Hosted zones + A/CNAME records; verify, Terraform green path, Console `/route53` — [route53.md](route53.md) |
 | ACM | DNS-validated certificates; verify, Terraform green path, Console `/acm` — [acm.md](acm.md) |
+| CloudFront | OAC + distribution metadata (local CDN stub); verify, Terraform green path, Console `/cloudfront` — [cloudfront.md](cloudfront.md) |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 

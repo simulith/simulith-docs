@@ -1,6 +1,6 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **sixteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **seventeen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront).
 
 **Public mirror (prospects, sales, Hub):** [simulith-docs/compatibility-matrix.md](https://github.com/simulith/simulith-docs/blob/main/compatibility-matrix.md)
 
@@ -8,15 +8,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-12..
+Last updated: 2026-08-13..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 16 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM) |
-| Operations **available** locally | 157 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2, ACM 2 |
+| Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
+| Operations **available** locally | 166 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -358,6 +358,24 @@ Guide: [acm.md](acm.md) · Verify: `simulith verify acm`
 
 ---
 
+## CloudFront
+
+Guide: [cloudfront.md](cloudfront.md) · Verify: `simulith verify cloudfront`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateOriginAccessControl | available | yes (`oac-create-get`) | S3 OAC subset |
+| GetOriginAccessControl | available | yes (`oac-create-get`) | By OAC id |
+| CreateDistribution | available | yes (`distribution-oac-lifecycle`) | S3 origin + OAC ref; Deployed immediately |
+| GetDistribution | available | yes (`distribution-oac-lifecycle`) | ETag header + config |
+| ListDistributions | available | yes (`distribution-oac-lifecycle`) | Summary list for Terraform refresh |
+| GetDistributionConfig | available | — | Config-only read |
+| UpdateDistribution | available | — | Disable-on-destroy; ETag / If-Match |
+| DeleteDistribution | available | — | Terraform destroy |
+| DeleteOriginAccessControl | available | — | Terraform destroy |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -380,6 +398,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency` | — |
+| CloudFront | `oac-create-get`, `distribution-oac-lifecycle` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -399,6 +418,7 @@ simulith verify iam --skip-aws
 simulith verify kms --skip-aws
 simulith verify route53 --skip-aws
 simulith verify acm --skip-aws
+simulith verify cloudfront --skip-aws
 ```
 
 ---
