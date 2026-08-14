@@ -64,7 +64,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`cloudfront/cdn-min/`](cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME; `endpoints { s3, cloudfront, route53 }`; `-parallelism=1`; [README](cloudfront/cdn-min/README.md) |
 | [`cloudfront/web-prod-min/`](cloudfront/web-prod-min/) | Green | Green | S3 + OAC + ACM viewer cert + distribution alias + Route 53; `endpoints { s3, cloudfront, route53, acm }`; `-parallelism=1`; [README](cloudfront/web-prod-min/README.md) |
 
-### B7+ examples (apply local — formal green path pending FW-*-003)
+### + examples (apply local — formal green path pending FW-*-003)
 
 Runnable modules with documented limits. **`terraform destroy`** coverage is tracked per **** — use module READMEs until those stories close.
 

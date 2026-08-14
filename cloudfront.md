@@ -1,6 +1,6 @@
 # CloudFront (Amazon CloudFront)
 
-Simulith implements a **minimal OAC + distribution slice** for web-stack Terraform workflows (demoapp `web/` anchor).
+Simulith implements a **minimal CloudFront slice** for local web-stack Terraform: Origin Access Control, distributions (including ACM viewer certificates), and Route 53 DNS.
 
 ## Protocol
 
@@ -24,7 +24,7 @@ Simulith implements a **minimal OAC + distribution slice** for web-stack Terrafo
 
 ## Terraform green path
 
-Module [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) — S3 origin + OAC + distribution + Route 53 CNAME. Use `-parallelism=1` and provider `endpoints { s3, cloudfront, route53 }`. See [terraform-integration.md](terraform-integration.md#green-path-iac).
+Module [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) — S3 + OAC + distribution + Route 53 CNAME. Module [`web-prod-min/`](examples/terraform/cloudfront/web-prod-min/) adds ACM viewer certificates. Use `-parallelism=1` and provider `endpoints { s3, cloudfront, route53, acm }` where needed. See [terraform-integration.md](terraform-integration.md#green-path-iac).
 
 ## Behaviour notes
 

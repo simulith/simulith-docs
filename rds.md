@@ -71,7 +71,7 @@ psql "postgresql://demoapp:local-dev-password@127.0.0.1:<port>/demoapp"
 
 ## Console
 
-Read-only panel at **`/rds`** — **DescribeDBInstances** lists Postgres instances with status and sidecar endpoint (`127.0.0.1:<port>`). See [console.md](console.md) and [console-parity-overview.md](console-parity-overview.md).
+Read-only panel at **`/rds`** — **DescribeDBInstances** lists Postgres instances with status and sidecar endpoint (`127.0.0.1:<port>`). See [console.md](console.md).
 
 ## Verify
 

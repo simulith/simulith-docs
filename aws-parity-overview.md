@@ -2,10 +2,11 @@
 
 Consolidated view of **Simulith vs AWS** for **seventeen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
+> **Audience:** evaluators comparing Simulith to AWS at scale. **Developers** can use [compatibility-matrix.md](compatibility-matrix.md) and service guides for day-to-day work.
+
 > **Important:** **Tier A %** = **`available / ref`** on a curated op list per service ([methodology](#tier-a-methodology-standard)) — the **reliable** progress metric. **Tier B** is **indicative only** ([methodology](#tier-b-indicative-not-audited)) — do not treat as precise AWS parity.
 
-> **Console vs AWS Console (UI):** [`console.md`](console.md) — separate dimension
-> **Operational detail (operation × verify):** [`compatibility-matrix.md`](compatibility-matrix.md)
+> **Console panels:** [console.md](console.md) · **Operation × verify:** [compatibility-matrix.md](compatibility-matrix.md)
 
 Last updated: 2026-08-13..
 
@@ -116,7 +117,7 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **ACM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **CloudFront** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog (post-B10 depth).
+**Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth).
 
 **Tier A aggregate (179 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–CloudFront **111 / 113** · **Overall ~97% (174 / 179)**.
 

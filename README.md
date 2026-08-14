@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `c7067d8` on 2026-08-14.
+Generated from monorepo commit `734fae4` on 2026-08-14.
 
 ## Start here
 
@@ -45,21 +45,20 @@ Generated from monorepo commit `c7067d8` on 2026-08-14.
 | [EventBridge](eventbridge.md) | Schedule rules → Lambda; seeded demo-rule |
 | [Cognito](cognito.md) | User Pool + Admin* + JWKS; seeded demo-pool |
 | [SES](ses.md) | Identity, templates, Send* (local outbox); seeded demo-template |
-| [VPC](vpc.md) | VPC/subnet/SG, Lambda VpcConfig; verify + Terraform green path + Console `/vpc` |
-| [RDS](rds.md) | Postgres sidecar + proxy; verify + Terraform green path + Console `/rds` (Docker required) |
-| [IAM](iam.md) | Roles/policies subset for RDS Proxy; seeded demo-rds-proxy-role |
-| [KMS](kms.md) | CMK encrypt/decrypt; seeded alias/demo-key |
-| [Route 53](route53.md) | Hosted zones + A/CNAME records; seeded demo.simulith.local |
-| [ACM](acm.md) | DNS-validated certificates; seeded demo.simulith.local cert; verify + Terraform + Console `/acm` |
-| [CloudFront](cloudfront.md) | OAC + distribution metadata (local CDN stub); verify + Terraform + Console `/cloudfront` |
+| [VPC](vpc.md) | VPC, subnets, security groups |
+| [RDS](rds.md) | PostgreSQL + RDS Proxy (Docker sidecar) |
+| [IAM](iam.md) | Roles and policies (RDS Proxy) |
+| [KMS](kms.md) | Customer master keys + encrypt/decrypt |
+| [Route 53](route53.md) | Hosted zones + DNS records |
+| [ACM](acm.md) | DNS-validated certificates |
+| [CloudFront](cloudfront.md) | OAC + distributions (local CDN metadata) |
 
 ## Compatibility
 
 | Guide | Purpose |
 | --- | --- |
-| [Compatibility matrix](compatibility-matrix.md) | Operation × verify coverage |
-| [AWS parity overview](aws-parity-overview.md) | API summary by service |
-| [Console parity overview](console-parity-overview.md) | Console UI vs AWS Console |
+| [Compatibility matrix](compatibility-matrix.md) | Operation × verify coverage — **start here** for limits |
+| [AWS parity overview](aws-parity-overview.md) | Deeper API summary by service (evaluators) |
 | [Compatibility / verify](compatibility.md) | `simulith verify` and reports |
 | [Trust bundle](trust-bundle.md) | Enterprise evaluation package |
 

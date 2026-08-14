@@ -134,7 +134,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate | Local validation stub — not a real CA; delete/tags UI deferred; seeded demo cert via **Seed** |
 | **CloudFront** | ListDistributions, GetDistribution, GetOriginAccessControl, CreateOriginAccessControl, CreateDistribution | Local CDN stub — no edge caching; delete UI deferred; use Terraform `cloudfront/cdn-min` |
 
-Full gap analysis: [console-parity-overview.md](console-parity-overview.md).
+Panel capabilities are documented in the **Service panels** section below.
 
 ### DynamoDB JSON document mode
 

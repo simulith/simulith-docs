@@ -22,13 +22,13 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | EventBridge | Schedule rules → Lambda — [eventbridge.md](eventbridge.md) |
 | Cognito | User Pool + Admin* + JWKS — [cognito.md](cognito.md) |
 | SES | Identity, templates, Send* (local outbox) — [ses.md](ses.md) |
-| VPC | VPC/subnet/SG, Lambda VpcConfig; verify, Terraform green path, Console `/vpc` — [vpc.md](vpc.md) |
-| RDS | Postgres sidecar + proxy; verify, Terraform green path, Console `/rds` (Docker on runtime host) — [rds.md](rds.md) |
-| IAM | Roles/policies subset (RDS Proxy) — [iam.md](iam.md) |
-| KMS | CMK encrypt/decrypt; Secrets Manager `KmsKeyId` — [kms.md](kms.md) |
-| Route 53 | Hosted zones + A/CNAME records; verify, Terraform green path, Console `/route53` — [route53.md](route53.md) |
-| ACM | DNS-validated certificates; verify, Terraform green path, Console `/acm` — [acm.md](acm.md) |
-| CloudFront | OAC + distribution metadata (local CDN stub); verify, Terraform green path, Console `/cloudfront` — [cloudfront.md](cloudfront.md) |
+| VPC | VPC, subnets, security groups — [vpc.md](vpc.md) |
+| RDS | PostgreSQL + RDS Proxy (Docker sidecar) — [rds.md](rds.md) |
+| IAM | Roles and policies (RDS Proxy) — [iam.md](iam.md) |
+| KMS | Customer master keys + encrypt/decrypt — [kms.md](kms.md) |
+| Route 53 | Hosted zones + DNS records — [route53.md](route53.md) |
+| ACM | DNS-validated certificates — [acm.md](acm.md) |
+| CloudFront | OAC + distributions (local CDN metadata) — [cloudfront.md](cloudfront.md) |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 
