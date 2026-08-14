@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.111.1] - 2026-08-14
+
+### Fixes
+
+- ****: Retry pushes to master instead of serializing story automation
+
 ## [0.111.0] - 2026-08-14
 
 ### Features

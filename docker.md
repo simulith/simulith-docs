@@ -65,6 +65,12 @@ docker run --rm -p 4566:4566 simulith:local
 
 CI runs `docker build` on every PR (`.github/workflows/ci.yml` job `Runtime`).
 
+Compose tags the runtime service `simulith-runtime:local` instead of the name it
+would derive from the project directory. The fixed tag lets CI prebuild the image
+against the shared layer cache; `scripts/ci-verify-smoke-docker.sh` then reuses it
+rather than rebuilding. Locally nothing changes — compose builds the image when it
+is missing, as before.
+
 ## Configuration in containers
 
 Compose sets environment variables (recommended for Docker):
