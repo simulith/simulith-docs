@@ -24,7 +24,7 @@ Simulith implements a **minimal CloudFront slice** for local web-stack Terraform
 
 ## Terraform green path
 
-Module [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) — S3 + OAC + distribution + Route 53 CNAME. Module [`web-prod-min/`](examples/terraform/cloudfront/web-prod-min/) adds ACM viewer certificates. Use `-parallelism=1` and provider `endpoints { s3, cloudfront, route53, acm }` where needed. See [terraform-integration.md](terraform-integration.md#green-path-iac).
+Module [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) — S3 + OAC + distribution + Route 53 CNAME. Module [`web-prod-min/`](examples/terraform/cloudfront/web-prod-min/) adds ACM viewer certificates, S3 public access block + bucket policy, and apex **A alias** (Simulith **v0.109.1+**). Use `-parallelism=1` and provider `endpoints { s3, cloudfront, route53, acm }` where needed. See [terraform-integration.md](terraform-integration.md#green-path-iac).
 
 ## Behaviour notes
 

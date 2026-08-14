@@ -25,8 +25,8 @@ runtime/examples/terraform/
 ├── kms/                ← cmk-min (CMK + alias)
 ├── route53/            ← zone-min (hosted zone + A/CNAME)
 ├── acm/                ← cert-min (certificate + DNS validation)
-├── cloudfront/         ← cdn-min (OAC + distribution + Route 53 CNAME); web-prod-min (+ ACM viewer cert)
-├── lambda-vpc-rds/     ← full-stack-min (Lambda VpcConfig → RDS proxy)
+├── cloudfront/         ← cdn-min (OAC + distribution + Route 53 CNAME); web-prod-min (+ ACM viewer, PAB/policy, apex alias)
+├── lambda-vpc-rds/     ← transaction-min (preferred); full-stack-min (legacy)
 └── secretsmanager-lambda/  ← secret data source → Lambda environment
 └── dynamodb-sqs/           ← table + queue fan-out
 └── s3-lambda/              ← bucket notification → Lambda
@@ -63,7 +63,8 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`route53/zone-min/`](route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records; `endpoints { route53 }`; `-parallelism=1`; [README](route53/zone-min/README.md) |
 | [`acm/cert-min/`](acm/cert-min/) | Green | Green | ACM certificate + Route 53 DNS validation; `endpoints { acm, route53 }`; `-parallelism=1`; [README](acm/cert-min/README.md) |
 | [`cloudfront/cdn-min/`](cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME; `endpoints { s3, cloudfront, route53 }`; `-parallelism=1`; [README](cloudfront/cdn-min/README.md) |
-| [`cloudfront/web-prod-min/`](cloudfront/web-prod-min/) | Green | Green | S3 + OAC + ACM viewer cert + distribution alias + Route 53; `endpoints { s3, cloudfront, route53, acm }`; `-parallelism=1`; [README](cloudfront/web-prod-min/README.md) |
+| [`cloudfront/web-prod-min/`](cloudfront/web-prod-min/) | Green | Green | S3 + PAB + bucket policy + OAC + ACM viewer + alias + Route 53; Simulith **v0.109.1+**; `-parallelism=1`; [README](cloudfront/web-prod-min/README.md) |
+| [`lambda-vpc-rds/transaction-min/`](lambda-vpc-rds/transaction-min/) | Green | Green | `postgres-min` module + Lambda VpcConfig probe; **Docker required**; Simulith **v0.111.0+**; `-parallelism=1`; [README](lambda-vpc-rds/transaction-min/README.md) |
 
 ### + examples (apply local — formal green path pending FW-*-003)
 
@@ -73,7 +74,7 @@ Runnable modules with documented limits. **`terraform destroy`** coverage is tra
 | --- | --- | --- | --- |
 | [`rds/proxy-min/`](rds/proxy-min/) | Local | TBD | RDS Proxy + sidecar; Docker required |
 | [`iam/proxy-roles-min/`](iam/proxy-roles-min/) | Local | TBD | IAM role/policy for RDS Proxy |
-| [`lambda-vpc-rds/full-stack-min/`](lambda-vpc-rds/full-stack-min/) | Local | TBD | Lambda VpcConfig → RDS proxy; Docker required |
+| [`lambda-vpc-rds/full-stack-min/`](lambda-vpc-rds/full-stack-min/) | Local | TBD | Legacy self-contained stack; prefer **`transaction-min/`** |
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 

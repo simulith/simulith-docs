@@ -1,0 +1,5 @@
+aws_region            = "us-east-1"
+simulith_endpoint     = "http://127.0.0.1:4566"
+use_simulith_endpoint = true
+project_name          = "demoapp"
+environment           = "dev"
