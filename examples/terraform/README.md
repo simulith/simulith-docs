@@ -20,7 +20,7 @@ runtime/examples/terraform/
 ├── ses/                ← aws_ses_email_identity + template
 ├── eventbridge/        ← rate rule → Lambda target
 ├── vpc/                ← aws_vpc + subnet + SG (network-min)
-├── rds/                ← postgres-min + proxy-min (Docker sidecar)
+├── rds/                ← postgres-min, proxy-min, postgres-min (Docker sidecar)
 ├── iam/                ← proxy-roles-min (RDS Proxy role wiring)
 ├── kms/                ← cmk-min (CMK + alias)
 ├── route53/            ← zone-min (hosted zone + A/CNAME)
@@ -58,6 +58,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`s3-lambda/`](s3-lambda/) | Green | Green | 1 bucket + 1 Lambda + notification; `endpoints { s3, lambda }`; `-parallelism=1`; [README](s3-lambda/README.md) |
 | [`vpc/network-min/`](vpc/network-min/) | Green | Green | VPC + subnet + SG + gateway endpoints; `-parallelism=1`; [README](vpc/network-min/README.md) |
 | [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Embedded VPC + Postgres sidecar; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
+| [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
 | [`kms/cmk-min/`](kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret; `-parallelism=1`; [README](kms/cmk-min/README.md) |
 | [`route53/zone-min/`](route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records; `endpoints { route53 }`; `-parallelism=1`; [README](route53/zone-min/README.md) |
 | [`acm/cert-min/`](acm/cert-min/) | Green | Green | ACM certificate + Route 53 DNS validation; `endpoints { acm, route53 }`; `-parallelism=1`; [README](acm/cert-min/README.md) |

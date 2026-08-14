@@ -7,11 +7,17 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.109.0] - 2026-08-14
+
+### Features
+
+- ****: Terraform green path postgres-min single root
+
 ## [0.108.0] - 2026-08-14
 
 ### Features
 
-- ****: Terraform green path demoapp-min single root
+- ****: Terraform green path postgres-min single root
 
 ## [0.107.0] - 2026-08-14
 
