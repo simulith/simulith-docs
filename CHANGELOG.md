@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.110.0] - 2026-08-14
+
+### Features
+
+- ****: Terraform web prod depth PAB policy apex alias
+
 ## [0.109.0] - 2026-08-14
 
 ### Features

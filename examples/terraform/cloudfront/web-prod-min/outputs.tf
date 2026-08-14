@@ -11,7 +11,7 @@ output "certificate_arn" {
 }
 
 output "cdn_fqdn" {
-  value = aws_route53_record.cdn.fqdn
+  value = local.apex_alias ? aws_route53_record.cdn_apex[0].fqdn : aws_route53_record.cdn_cname[0].fqdn
 }
 
 output "zone_id" {

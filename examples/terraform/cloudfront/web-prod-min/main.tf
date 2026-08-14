@@ -45,11 +45,48 @@ resource "aws_s3_bucket" "origin" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_public_access_block" "origin" {
+  bucket = aws_s3_bucket.origin.id
+
+  block_public_acls       = true
+  ignore_public_acls      = true
+  block_public_policy     = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_object" "index" {
   bucket       = aws_s3_bucket.origin.id
   key          = "index.html"
   content      = "<html><body>Simulith web prod green path</body></html>"
   content_type = "text/html"
+}
+
+data "aws_iam_policy_document" "origin" {
+  statement {
+    sid    = "AllowCloudFrontServicePrincipal"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.origin.arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.cdn.arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "origin" {
+  bucket = aws_s3_bucket.origin.id
+  policy = data.aws_iam_policy_document.origin.json
+
+  depends_on = [aws_s3_bucket_public_access_block.origin]
 }
 
 resource "aws_cloudfront_origin_access_control" "cdn" {
@@ -103,7 +140,27 @@ resource "aws_cloudfront_distribution" "cdn" {
   depends_on = [aws_acm_certificate_validation.cdn]
 }
 
-resource "aws_route53_record" "cdn" {
+locals {
+  apex_alias = var.domain_name == var.zone_name || var.domain_name == trimsuffix(var.zone_name, ".")
+}
+
+resource "aws_route53_record" "cdn_apex" {
+  count = local.apex_alias ? 1 : 0
+
+  zone_id = aws_route53_zone.app.zone_id
+  name    = var.domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.cdn.domain_name
+    zone_id                = aws_cloudfront_distribution.cdn.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cdn_cname" {
+  count = local.apex_alias ? 0 : 1
+
   zone_id = aws_route53_zone.app.zone_id
   name    = trimsuffix(replace(var.domain_name, ".${var.zone_name}", ""), ".")
   type    = "CNAME"

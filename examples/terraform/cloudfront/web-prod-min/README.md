@@ -12,9 +12,11 @@ Extends [`cdn-min/`](../cdn-min/) (default CloudFront cert) with patterns from [
 | `aws_acm_certificate` + `aws_acm_certificate_validation` | RequestCertificate, DescribeCertificate, DeleteCertificate |
 | `aws_route53_record` (validation) | ChangeResourceRecordSets |
 | `aws_s3_bucket` + `aws_s3_object` | CreateBucket, PutObject, DeleteObject, DeleteBucket |
+| `aws_s3_bucket_public_access_block` | PutPublicAccessBlock, GetPublicAccessBlock |
+| `aws_s3_bucket_policy` | PutBucketPolicy, GetBucketPolicy, DeleteBucketPolicy |
 | `aws_cloudfront_origin_access_control` | CreateOriginAccessControl, DeleteOriginAccessControl |
 | `aws_cloudfront_distribution` (aliases + ACM viewer cert) | CreateDistribution, UpdateDistribution, DeleteDistribution |
-| `aws_route53_record` (CNAME) | ChangeResourceRecordSets |
+| `aws_route53_record` (CNAME or apex A alias) | ChangeResourceRecordSets |
 
 ## Usage
 
@@ -25,8 +27,8 @@ terraform apply -parallelism=1
 terraform destroy -parallelism=1
 ```
 
-**Endpoint:** set `simulith_endpoint` to your runtime URL. Requires **Simulith v0.106.1+**.
+**Endpoint:** set `simulith_endpoint` to your runtime URL. Requires **Simulith v0.109.1+** (S3 bucket policy/PAB + Route 53 alias A for apex).
 
-**Out of scope (full prod `web/`):** S3 bucket policy / PAB, apex alias A/AAAA — optional backlog (study row 13).
+**DNS:** set `domain_name` equal to `zone_name` for apex **A alias**; otherwise a subdomain **CNAME** is created (default `cdn.<zone>`).
 
 Automated smoke: `maintainer workflow (private monorepo)`
