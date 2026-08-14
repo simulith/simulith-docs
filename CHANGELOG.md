@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.107.0] - 2026-08-14
+
+### Features
+
+- ****: Terraform green path web prod ACM viewer
+
 ## [0.106.1] - 2026-08-13
 
 ### Fixes

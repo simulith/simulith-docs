@@ -261,6 +261,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`route53/zone-min/`](examples/terraform/route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records — `-parallelism=1`; `endpoints { route53 }` |
 | [`acm/cert-min/`](examples/terraform/acm/cert-min/) | Green | Green | ACM cert + Route 53 DNS validation — `-parallelism=1`; `endpoints { acm, route53 }` |
 | [`cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME — `-parallelism=1`; `endpoints { s3, cloudfront, route53 }` |
+| [`cloudfront/web-prod-min/`](examples/terraform/cloudfront/web-prod-min/) | Green | Green | S3 + OAC + ACM viewer cert + distribution alias + Route 53 — `-parallelism=1`; `endpoints { s3, cloudfront, route53, acm }` |
 
 ### B7+ modules (apply local — formal green path pending)
 

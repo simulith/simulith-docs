@@ -1,0 +1,8 @@
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:9080/runtime"
+aws_region            = "us-east-1"
+project_name          = "demoapp"
+environment           = "dev"
+bucket_name           = "demoapp-dev-web-origin"
+zone_name             = "demoapp-dev-web.local"
+domain_name           = "cdn.demoapp-dev-web.local"
