@@ -27,6 +27,6 @@ terraform destroy -parallelism=1
 
 **Endpoint:** set `simulith_endpoint` to your runtime URL. Requires **Simulith v0.106.1+**.
 
-**Out of scope (full prod `web/`):** S3 bucket policy / PAB, apex alias A/AAAA — see demoapp study + follow-ups.
+**Out of scope (full prod `web/`):** S3 bucket policy / PAB, apex alias A/AAAA — optional backlog (study row 13).
 
 Automated smoke: `maintainer workflow (private monorepo)`
