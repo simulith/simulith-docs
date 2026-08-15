@@ -1,6 +1,6 @@
 # Route 53 (DNS)
 
-Simulith implements a **minimal hosted-zone slice** for demoapp `web/` Terraform and CLI workflows.
+Simulith implements a **minimal hosted-zone slice** for local Terraform and CLI DNS workflows.
 
 ## Protocol
 

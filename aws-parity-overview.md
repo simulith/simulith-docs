@@ -8,7 +8,7 @@ Consolidated view of **Simulith vs AWS** for **seventeen** shipped services: wha
 
 > **Console panels:** [console.md](console.md) · **Operation × verify:** [compatibility-matrix.md](compatibility-matrix.md)
 
-Last updated: 2026-08-13..
+Last updated: 2026-08-15..
 
 ---
 
@@ -32,7 +32,7 @@ Last updated: 2026-08-13..
 | **DynamoDB** | 17 | 17 / 17 (100%) | **100%** (17 / 17) | medium (~38%‡) |
 | **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | medium–high (~64%‡) |
 | **SSM** (Parameter Store) | 10 | 10 / 10 (100%) | **90%** (9 / 10) | high (~83%‡) |
-| **S3** | 16 | 8 / 8 scenarios (100%) | **89%** (8 / 9 ref) | medium (~40%‡) |
+| **S3** | 20 | 7 / 7 scenarios (100%) | **100%** (9 / 9 ref) | medium (~50%‡) |
 | **Lambda** | 22 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | low (~29%‡) |
 | **API Gateway** | 14 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | low (~18%‡) |
 | **Secrets Manager** | 4 | 2 / 2 scenarios | **100%** (4 / 4) | low (~5%‡) |
@@ -46,7 +46,7 @@ Last updated: 2026-08-13..
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **166** | 17 services with verify | **~97%** Tier A (174 / 179 ref) | — |
+| **Total** | **170** | 17 services with verify | **~98%** Tier A (175 / 179 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -102,7 +102,7 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **DynamoDB** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **SQS** | 93% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **SSM** | 90% | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **S3** | 89% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **S3** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Lambda** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **API Gateway** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **Secrets Manager** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -119,7 +119,7 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 
 **Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth).
 
-**Tier A aggregate (179 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **23 / 24** · Cognito–CloudFront **111 / 113** · **Overall ~97% (174 / 179)**.
+**Tier A aggregate (179 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **111 / 113** · **Overall ~98% (175 / 179)**.
 
 ---
 
@@ -244,19 +244,20 @@ Guide: [s3.md](s3.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
-CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, CopyObject, DeleteObjects (batch), ListObjectsV2 (prefix, max-keys, continuation-token), **multipart upload**.
+CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, CopyObject, DeleteObjects (batch), ListObjectsV2 (prefix, max-keys, continuation-token), **multipart upload**, bucket versioning / SSE-S3 / lifecycle / tagging config.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Versioning | P3 | FW-S3-021 |
+| Object version IDs / `ListObjectVersions` | P3 | FW-S3-021 remainder |
+| SSE-KMS | P3 | FW-S3-021 remainder |
 
 ### Tier A reference set (9 ops)
 
-CreateBucket, ListBuckets, DeleteBucket, PutObject, GetObject, HeadObject, DeleteObject, ListObjectsV2, **PutBucketVersioning** (FW-S3-021 P3).
+CreateBucket, ListBuckets, DeleteBucket, PutObject, GetObject, HeadObject, DeleteObject, ListObjectsV2, Put/Get bucket versioning.
 
-8 **available** = **89%** Tier A S3 (8 / 9). CopyObject / DeleteObjects / multipart are shipped extras outside this ref set.
+9 **available** = **100%** Tier A S3 (9 / 9). CopyObject / DeleteObjects / multipart / SSE-S3 / lifecycle / tagging are shipped extras outside this ref set.
 
 ---
 

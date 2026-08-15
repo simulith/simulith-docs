@@ -1,6 +1,6 @@
 # CloudFront web-prod-min — Terraform green path
 
-**demoapp `web/` prod subset:** S3 origin + OAC + ACM viewer certificate + CloudFront distribution with alias + Route 53 DNS validation and CNAME — apply/destroy against Simulith.
+**Web/CDN prod subset:** S3 origin + OAC + ACM viewer certificate + CloudFront distribution with alias + Route 53 DNS validation and CNAME — apply/destroy against Simulith.
 
 Extends [`cdn-min/`](../cdn-min/) (default CloudFront cert) with patterns from [`acm/cert-min/`](../../acm/cert-min/) (zone + cert + validation).
 

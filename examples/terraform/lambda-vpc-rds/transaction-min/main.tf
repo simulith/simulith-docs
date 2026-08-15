@@ -1,8 +1,7 @@
-# demoapp transaction-api subset — postgres-min module + Lambda VpcConfig probe.
-# Composes  single-root  with  Lambda→proxy reachability (no remote state).
+# VPC + RDS + Proxy module + Lambda VpcConfig probe (no remote state).
 
-module "postgres_min" {
-  source = "../../rds/postgres-min"
+module "vpc_rds_proxy" {
+  source = "../../rds/vpc-rds-proxy-min"
 
   aws_region            = var.aws_region
   use_simulith_endpoint = var.use_simulith_endpoint
@@ -30,13 +29,13 @@ resource "aws_lambda_function" "transaction_probe" {
   source_code_hash = data.archive_file.probe.output_base64sha256
 
   vpc_config {
-    subnet_ids         = module.postgres_min.proxy_subnet_ids
-    security_group_ids = [module.postgres_min.proxy_security_group_id]
+    subnet_ids         = module.vpc_rds_proxy.proxy_subnet_ids
+    security_group_ids = [module.vpc_rds_proxy.proxy_security_group_id]
   }
 
   environment {
     variables = {
-      RDS_PROXY_ENDPOINT = module.postgres_min.rds_proxy_endpoint
+      RDS_PROXY_ENDPOINT = module.vpc_rds_proxy.rds_proxy_endpoint
     }
   }
 }

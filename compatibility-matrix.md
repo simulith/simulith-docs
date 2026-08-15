@@ -6,15 +6,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-13..
+Last updated: 2026-08-15..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
-| Operations **available** locally | 166 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 6, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Operations **available** locally | 170 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 7, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -117,7 +117,7 @@ Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (10 scenarios)
 
 ## S3
 
-Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
+Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (7 scenarios)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
@@ -137,8 +137,12 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (6 scenarios)
 | GetBucketNotificationConfiguration | available | — | GET `?notification` |
 | PutBucketNotificationConfiguration | available | — | LambdaFunctionConfiguration only |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
+| PutBucketVersioning / GetBucketVersioning | available | yes (`bucket-state-config`) | Status only; no object version IDs |
+| PutBucketEncryption / GetBucketEncryption / DeleteBucketEncryption | available | yes (`bucket-state-config`) | SSE-S3 (`AES256`); 404 when unset |
+| PutBucketLifecycleConfiguration / Get / DeleteBucketLifecycle | available | yes (`bucket-state-config`) | Rules persisted; no expiry; TDMOS header for TF waiter |
+| PutBucketTagging / GetBucketTagging | available | yes (`bucket-state-config`) | 404 when unset |
 
-**Not in matrix (gap):** SNS/SQS notification targets, versioning, CORS, SSE-KMS, S3 Select, ListParts.
+**Not in matrix (gap):** SNS/SQS notification targets, `ListObjectVersions`, CORS, SSE-KMS, S3 Select, ListParts.
 
 ---
 
@@ -383,7 +387,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item` |
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
-| S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip` | — |
+| S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |

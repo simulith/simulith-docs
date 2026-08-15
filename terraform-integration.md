@@ -12,7 +12,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | DynamoDB (user table) | [`dynamodb/user-table/`](examples/terraform/dynamodb/user-table/) | Yes (PK only) |
 | SQS | [`sqs/`](examples/terraform/sqs/) | Yes |
 | SSM Parameter Store | [`ssm/`](examples/terraform/ssm/) | Yes |
-| S3 | [`s3/`](examples/terraform/s3/) | Yes — bucket + 2 objects |
+| S3 | [`s3/`](examples/terraform/s3/) · [`s3/terraform-state-min/`](examples/terraform/s3/terraform-state-min/) | Yes — bucket + objects; remote-state bootstrap |
 | Lambda | [`lambda/`](examples/terraform/lambda/) | Yes — function + SQS ESM; env vars + config update on re-apply |
 | API Gateway | [`apigateway/`](examples/terraform/apigateway/) | Yes — REST API + Lambda proxy + stage |
 | Secrets Manager | [`secretsmanager/`](examples/terraform/secretsmanager/) | Yes — secret + version |
@@ -257,12 +257,13 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
 | [`vpc/network-min/`](examples/terraform/vpc/network-min/) | Green | Green | VPC, IGW, route tables, gateway endpoints, subnet, SG — `-parallelism=1` |
 | [`rds/postgres-min/`](examples/terraform/rds/postgres-min/) | Green | Green | Embedded VPC + DB subnet group, parameter group, Postgres sidecar instance — `-parallelism=1`; **Docker required** |
+| [`rds/vpc-rds-proxy-min/`](examples/terraform/rds/vpc-rds-proxy-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy — `-parallelism=1`; **Docker required** |
 | [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret — `-parallelism=1` |
 | [`route53/zone-min/`](examples/terraform/route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records — `-parallelism=1`; `endpoints { route53 }` |
 | [`acm/cert-min/`](examples/terraform/acm/cert-min/) | Green | Green | ACM cert + Route 53 DNS validation — `-parallelism=1`; `endpoints { acm, route53 }` |
 | [`cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME — `-parallelism=1`; `endpoints { s3, cloudfront, route53 }` |
 | [`cloudfront/web-prod-min/`](examples/terraform/cloudfront/web-prod-min/) | Green | Green | S3 + PAB + bucket policy + OAC + ACM viewer cert + distribution alias + Route 53 (apex A alias or CNAME) — `-parallelism=1`; Simulith **v0.109.1+**; `endpoints { s3, cloudfront, route53, acm }` |
-| [`lambda-vpc-rds/transaction-min/`](examples/terraform/lambda-vpc-rds/transaction-min/) | Green | Green | Composes `rds/postgres-min` + Lambda VpcConfig probe — `-parallelism=1`; **Docker required**; Simulith **v0.111.0+** |
+| [`lambda-vpc-rds/transaction-min/`](examples/terraform/lambda-vpc-rds/transaction-min/) | Green | Green | Composes `rds/vpc-rds-proxy-min` + Lambda VpcConfig probe — `-parallelism=1`; **Docker required** |
 
 ### + modules (apply local — formal green path pending)
 
@@ -317,7 +318,12 @@ maintainer workflow (private monorepo) --module kms-cmk-min
 maintainer workflow (private monorepo) --module route53-zone-min
 maintainer workflow (private monorepo) --module acm-cert-min
 maintainer workflow (private monorepo) --module cloudfront-cdn-min
+maintainer workflow (private monorepo) --module s3-terraform-state-min
+maintainer workflow (private monorepo) --module rds-vpc-rds-proxy-min
+maintainer workflow (private monorepo) --module lambda-transaction-min
 ```
+
+`s3-terraform-state-min` apply waits ~55s on `aws_s3_bucket_lifecycle_configuration` (provider v5 polls 10 matching GETs). That is expected, not a hang.
 
 Backlog: .
 
@@ -439,7 +445,7 @@ Or use the [SDK examples](sdk-examples.md) with the same endpoint.
 | S3 `aws_s3_bucket` | **Available** — `CreateBucket`, `HeadBucket`, `GetBucketLocation/Versioning/ACL/Accelerate`, stub config reads; `s3_use_path_style = true` required |
 | S3 `aws_s3_object` | **Available** — `PutObject`, `HeadObject`, `DeleteObject`; single-part only |
 | S3 `force_destroy` | **Available** — clears objects before `DeleteBucket` on destroy |
-| S3 versioning / ACL writes | Not supported |
+| S3 object version IDs / ACL writes | Versioning **status** is stored; objects stay last-write-wins. ACL writes not supported. |
 | S3 multipart upload | Available (CLI/SDK); not used by default Terraform `aws_s3_object` |
 | Lambda `aws_lambda_function` + SQS ESM | **Available** — green path [`lambda/`](examples/terraform/lambda/) |
 | IAM / VPC | Out of scope |

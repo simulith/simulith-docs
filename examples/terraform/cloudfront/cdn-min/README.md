@@ -23,6 +23,6 @@ terraform destroy -parallelism=1
 
 **Endpoint:** set `simulith_endpoint` to your runtime URL (`http://127.0.0.1:4566` native, `http://127.0.0.1:9080/runtime` all-in-one). Requires **Simulith v0.106.1+** for full apply/destroy green path (v0.106.0+ for CreateDistribution).
 
-**Green path E2E (demoapp `web/` subset):** S3 bucket + object → OAC → distribution → Route 53 zone + `cdn` CNAME. For ACM viewer cert + alias, use [`web-prod-min/`](../web-prod-min/).
+**Green path E2E (web/CDN subset):** S3 bucket + object → OAC → distribution → Route 53 zone + `cdn` CNAME. For ACM viewer cert + alias, use [`web-prod-min/`](../web-prod-min/).
 
 Automated smoke: `maintainer workflow (private monorepo)`

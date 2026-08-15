@@ -20,7 +20,7 @@ runtime/examples/terraform/
 ├── ses/                ← aws_ses_email_identity + template
 ├── eventbridge/        ← rate rule → Lambda target
 ├── vpc/                ← aws_vpc + subnet + SG (network-min)
-├── rds/                ← postgres-min, proxy-min, postgres-min (Docker sidecar)
+├── rds/                ← postgres-min, proxy-min, vpc-rds-proxy-min (Docker sidecar)
 ├── iam/                ← proxy-roles-min (RDS Proxy role wiring)
 ├── kms/                ← cmk-min (CMK + alias)
 ├── route53/            ← zone-min (hosted zone + A/CNAME)
@@ -50,6 +50,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`ssm/`](ssm/) | Green | Green | Use `-parallelism=1` on apply and destroy; import documented |
 | [`ssm/parameters/`](ssm/parameters/) | Green | Green | 27× `/SIMULITH/DEV/*` locally; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` — [README](ssm/parameters/README.md) |
 | [`s3/`](s3/) | Green | Green | 1 bucket + 2 objects; `s3_use_path_style = true`; [README](s3/README.md) |
+| [`s3/terraform-state-min/`](s3/terraform-state-min/) | Green | — | Remote-state bootstrap (versioned bucket + DDB lock); [README](s3/terraform-state-min/README.md) |
 | [`lambda/`](lambda/) | Green | Green | 1 function + 1 queue + 1 ESM; **env vars** + in-place config update on re-apply |
 | [`apigateway/`](apigateway/) | Green | Green | 8 resources; `endpoints { apigateway, lambda }`; `-parallelism=1`; [README](apigateway/README.md) |
 | [`secretsmanager/`](secretsmanager/) | Green | Green | 2 resources; `endpoints { secretsmanager }`; `-parallelism=1`; [README](secretsmanager/README.md) |
@@ -58,13 +59,13 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`s3-lambda/`](s3-lambda/) | Green | Green | 1 bucket + 1 Lambda + notification; `endpoints { s3, lambda }`; `-parallelism=1`; [README](s3-lambda/README.md) |
 | [`vpc/network-min/`](vpc/network-min/) | Green | Green | VPC + subnet + SG + gateway endpoints; `-parallelism=1`; [README](vpc/network-min/README.md) |
 | [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Embedded VPC + Postgres sidecar; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
-| [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
+| [`rds/vpc-rds-proxy-min/`](rds/vpc-rds-proxy-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy; `-parallelism=1`; **Docker required**; [README](rds/vpc-rds-proxy-min/README.md) |
 | [`kms/cmk-min/`](kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret; `-parallelism=1`; [README](kms/cmk-min/README.md) |
 | [`route53/zone-min/`](route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records; `endpoints { route53 }`; `-parallelism=1`; [README](route53/zone-min/README.md) |
 | [`acm/cert-min/`](acm/cert-min/) | Green | Green | ACM certificate + Route 53 DNS validation; `endpoints { acm, route53 }`; `-parallelism=1`; [README](acm/cert-min/README.md) |
 | [`cloudfront/cdn-min/`](cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME; `endpoints { s3, cloudfront, route53 }`; `-parallelism=1`; [README](cloudfront/cdn-min/README.md) |
 | [`cloudfront/web-prod-min/`](cloudfront/web-prod-min/) | Green | Green | S3 + PAB + bucket policy + OAC + ACM viewer + alias + Route 53; Simulith **v0.109.1+**; `-parallelism=1`; [README](cloudfront/web-prod-min/README.md) |
-| [`lambda-vpc-rds/transaction-min/`](lambda-vpc-rds/transaction-min/) | Green | Green | `postgres-min` module + Lambda VpcConfig probe; **Docker required**; Simulith **v0.111.0+**; `-parallelism=1`; [README](lambda-vpc-rds/transaction-min/README.md) |
+| [`lambda-vpc-rds/transaction-min/`](lambda-vpc-rds/transaction-min/) | Green | Green | `vpc-rds-proxy-min` module + Lambda VpcConfig probe; **Docker required**; `-parallelism=1`; [README](lambda-vpc-rds/transaction-min/README.md) |
 
 ### + examples (apply local — formal green path pending FW-*-003)
 

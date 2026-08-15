@@ -27,7 +27,7 @@ Expect `{"connected":true,"endpoint":"127.0.0.1:..."}`.
 
 ## Related
 
-- [`../transaction-min/`](../transaction-min/) — **preferred:** composes `postgres-min` + Lambda
-- [`../../rds/postgres-min/`](../../rds/postgres-min/) —  single-root without Lambda
+- [`../transaction-min/`](../transaction-min/) — **preferred:** composes `vpc-rds-proxy-min` + Lambda
+- [`../../rds/vpc-rds-proxy-min/`](../../rds/vpc-rds-proxy-min/) — single-root VPC + RDS + Proxy without Lambda
 - [`../../rds/proxy-min/`](../../rds/proxy-min/) — proxy only
 - [`../../vpc/network-min/`](../../vpc/network-min/) — VPC only

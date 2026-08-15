@@ -3,7 +3,7 @@ output "lambda_function_name" {
 }
 
 output "rds_proxy_endpoint" {
-  value = module.postgres_min.rds_proxy_endpoint
+  value = module.vpc_rds_proxy.rds_proxy_endpoint
 }
 
 output "vpc_config_subnet_ids" {

@@ -1,14 +1,14 @@
-# Lambda + postgres-min — transaction probe green path
+# Lambda + vpc-rds-proxy-min — transaction probe green path
 
-**demoapp `transaction-api` subset:** compose [`../../rds/postgres-min/`](../../rds/postgres-min/) with a Lambda in proxy subnets that TCP-probes the RDS Proxy endpoint on invoke.
+Compose [`../../rds/vpc-rds-proxy-min/`](../../rds/vpc-rds-proxy-min/) with a Lambda in proxy subnets that TCP-probes the RDS Proxy endpoint on invoke.
 
-Replaces duplicating VPC/RDS/proxy in [`../full-stack-min/`](../full-stack-min/) when validating the prod chain end-to-end.
+Prefer this over duplicating VPC/RDS/proxy in [`../full-stack-min/`](../full-stack-min/).
 
 ## Resources
 
 | Layer | Terraform |
 | --- | --- |
-|  data plane | `module.postgres_min` → vpc, kms, secrets, rds, proxy |
+| Data plane | `module.vpc_rds_proxy` → vpc, kms, secrets, rds, proxy |
 | Lambda | `aws_lambda_function.transaction_probe` with `vpc_config` + `RDS_PROXY_ENDPOINT` |
 
 ## Prerequisites

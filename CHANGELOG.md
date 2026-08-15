@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.112.0] - 2026-08-15
+
+### Features
+
+- ****: Terraform remote-state bootstrap
+
 ## [0.111.2] - 2026-08-15
 
 ### Changed
@@ -30,7 +36,7 @@ Runtime and Console share a single version (one tag per release).
 
 ### Features
 
-- ****: Terraform green path Lambda postgres-min transaction probe
+- ****: Terraform green path Lambda vpc-rds-proxy-min transaction probe
 
 ## [0.110.0] - 2026-08-14
 
@@ -42,13 +48,13 @@ Runtime and Console share a single version (one tag per release).
 
 ### Features
 
-- ****: Terraform green path postgres-min single root
+- ****: Terraform green path vpc-rds-proxy-min single root
 
 ## [0.108.0] - 2026-08-14
 
 ### Features
 
-- ****: Terraform green path postgres-min single root
+- ****: Terraform green path vpc-rds-proxy-min single root
 
 ## [0.107.0] - 2026-08-14
 
