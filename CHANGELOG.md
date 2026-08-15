@@ -7,6 +7,19 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.111.2] - 2026-08-15
+
+### Changed
+
+- The published runtime image now packages the same binaries attached to this
+  release, instead of compiling its own copy inside the container. `simulith version` in the image and in the downloaded archive
+  can no longer disagree.
+
+### Documentation
+
+- Release pipeline: every GitHub Actions reference is pinned to a commit SHA
+  and kept current by grouped Dependabot updates.
+
 ## [0.111.1] - 2026-08-14
 
 ### Fixes
