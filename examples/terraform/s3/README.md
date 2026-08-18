@@ -2,7 +2,7 @@
 
 `aws_s3_bucket` + `aws_s3_object` **apply** and **destroy** work on Simulith and real AWS (provider calls **CreateBucket**, **PutObject**, **HeadObject**, **DeleteObject**, **DeleteBucket**).
 
-Remote-state bootstrap (versioned bucket + lock table): [`terraform-state-min/`](terraform-state-min/).
+Remote-state bootstrap (versioned bucket + lock table): [`terraform-state-min/`](terraform-state-min/). Multi-root apply + `terraform_remote_state`: [`multi-root-min/`](multi-root-min/).
 
 ## Prerequisites
 

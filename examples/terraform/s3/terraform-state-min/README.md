@@ -32,6 +32,8 @@ terraform destroy
 
 Automated smoke: `maintainer workflow (private monorepo)`
 
+Downstream apply that **writes** and **reads** remote state: [`../multi-root-min/`](../multi-root-min/) (`s3-multi-root-min`).
+
 ## Honest limits
 
 - Versioning **status** is persisted; objects stay last-write-wins (no `ListObjectVersions`).

@@ -12,7 +12,7 @@ runtime/examples/terraform/
 ├── ssm/
 │   ├── (root)          ← minimal /app/tf-demo/* demo
 │   └── parameters/     ← platform parameter paths; Simulith local uses `/SIMULITH/DEV/*`
-├── s3/                 ← aws_s3_bucket + aws_s3_object apply + destroy (s3_use_path_style)
+├── s3/                 ← bucket + objects; terraform-state-min; multi-root-min
 ├── lambda/             ← aws_lambda_function + aws_sqs_queue + event source mapping
 ├── apigateway/         ← RestApi + Lambda AWS_PROXY + stage + permission
 ├── secretsmanager/     ← aws_secretsmanager_secret + secret_version
@@ -51,6 +51,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`ssm/parameters/`](ssm/parameters/) | Green | Green | 27× `/SIMULITH/DEV/*` locally; `dev.tfvars` / `dev.aws.tfvars`; `-parallelism=1` — [README](ssm/parameters/README.md) |
 | [`s3/`](s3/) | Green | Green | 1 bucket + 2 objects; `s3_use_path_style = true`; [README](s3/README.md) |
 | [`s3/terraform-state-min/`](s3/terraform-state-min/) | Green | — | Remote-state bootstrap (versioned bucket + DDB lock); [README](s3/terraform-state-min/README.md) |
+| [`s3/multi-root-min/`](s3/multi-root-min/) | Green | Green* | Bootstrap + network root (`backend "s3"`) + dependent `terraform_remote_state`; downstream destroy green; bootstrap bucket destroy is **FW-S3-024** (same as terraform-state-min); [README](s3/multi-root-min/README.md) |
 | [`lambda/`](lambda/) | Green | Green | 1 function + 1 queue + 1 ESM; **env vars** + in-place config update on re-apply |
 | [`apigateway/`](apigateway/) | Green | Green | 8 resources; `endpoints { apigateway, lambda }`; `-parallelism=1`; [README](apigateway/README.md) |
 | [`secretsmanager/`](secretsmanager/) | Green | Green | 2 resources; `endpoints { secretsmanager }`; `-parallelism=1`; [README](secretsmanager/README.md) |

@@ -24,6 +24,7 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 | Routing | CreateRouteTable, DeleteRouteTable, DescribeRouteTables, CreateRoute, DeleteRoute, Associate/DisassociateRouteTable |
 | VPC endpoints | CreateVpcEndpoint, DescribeVpcEndpoints, ModifyVpcEndpoint, DeleteVpcEndpoints |
 | Tags | CreateTags, DescribeTags |
+| Network interfaces | DescribeNetworkInterfaces (empty stub — Terraform SG destroy) |
 
 ## Terraform
 
@@ -40,6 +41,8 @@ provider "aws" {
 ## Limits
 
 - Metadata / logical routing only — no real ENI or network namespace isolation
+- `DescribeNetworkInterfaces` returns an **empty set** so Terraform can destroy security groups
+- `DescribeVpcAttribute` `enableNetworkAddressUsageMetrics` is a **false stub**
 - Interface VPC endpoints (Secrets Manager) deferred
 
 ## Verify

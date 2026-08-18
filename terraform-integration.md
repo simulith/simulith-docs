@@ -12,7 +12,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | DynamoDB (user table) | [`dynamodb/user-table/`](examples/terraform/dynamodb/user-table/) | Yes (PK only) |
 | SQS | [`sqs/`](examples/terraform/sqs/) | Yes |
 | SSM Parameter Store | [`ssm/`](examples/terraform/ssm/) | Yes |
-| S3 | [`s3/`](examples/terraform/s3/) · [`s3/terraform-state-min/`](examples/terraform/s3/terraform-state-min/) | Yes — bucket + objects; remote-state bootstrap |
+| S3 | [`s3/`](examples/terraform/s3/) · [`s3/terraform-state-min/`](examples/terraform/s3/terraform-state-min/) · [`s3/multi-root-min/`](examples/terraform/s3/multi-root-min/) | Yes — bucket + objects; remote-state bootstrap; multi-root `terraform_remote_state` |
 | Lambda | [`lambda/`](examples/terraform/lambda/) | Yes — function + SQS ESM; env vars + config update on re-apply |
 | API Gateway | [`apigateway/`](examples/terraform/apigateway/) | Yes — REST API + Lambda proxy + stage |
 | Secrets Manager | [`secretsmanager/`](examples/terraform/secretsmanager/) | Yes — secret + version |
@@ -300,6 +300,7 @@ Use **`-parallelism=1`** for the SSM example (apply and destroy), the **API Gate
 | Secrets Manager → Lambda env | [`secretsmanager-lambda/`](examples/terraform/secretsmanager-lambda/) | [`aws-cli/secretsmanager/`](examples/aws-cli/secretsmanager/) | `aws_secretsmanager_secret_version` data source → `environment.variables`; re-apply after secret rotation |
 | DynamoDB + SQS fan-out | [`dynamodb-sqs/`](examples/terraform/dynamodb-sqs/) | [`aws-cli/dynamodb-sqs/`](examples/aws-cli/dynamodb-sqs/) | PutItem + SendMessage dual-write; no DynamoDB Streams |
 | S3 object lifecycle | [`s3/`](examples/terraform/s3/) | [`aws-cli/s3/`](examples/aws-cli/s3/) | put/head/get/list/copy/delete-objects via `s3api` |
+| S3 multi-root remote state | [`s3/multi-root-min/`](examples/terraform/s3/multi-root-min/) | — | Bootstrap → `backend "s3"` apply → `terraform_remote_state` |
 | S3 → Lambda notification | [`s3-lambda/`](examples/terraform/s3-lambda/) | [`aws-cli/s3-lambda/`](examples/aws-cli/s3-lambda/) | Bucket notification + PutObject → async Lambda |
 | SSM parameters path | [`ssm/parameters/`](examples/terraform/ssm/parameters/) | [`aws-cli/ssm/`](examples/aws-cli/ssm/) | `aws_ssm_parameters_by_path` refresh + GetParametersByPath CLI |
 
@@ -319,11 +320,26 @@ maintainer workflow (private monorepo) --module route53-zone-min
 maintainer workflow (private monorepo) --module acm-cert-min
 maintainer workflow (private monorepo) --module cloudfront-cdn-min
 maintainer workflow (private monorepo) --module s3-terraform-state-min
+maintainer workflow (private monorepo) --module s3-multi-root-min
 maintainer workflow (private monorepo) --module rds-vpc-rds-proxy-min
 maintainer workflow (private monorepo) --module lambda-transaction-min
 ```
 
-`s3-terraform-state-min` apply waits ~55s on `aws_s3_bucket_lifecycle_configuration` (provider v5 polls 10 matching GETs). That is expected, not a hang.
+`s3-terraform-state-min` apply waits ~55s on `aws_s3_bucket_lifecycle_configuration` (provider v5 polls 10 matching GETs). That is expected, not a hang. `s3-multi-root-min` includes that bootstrap plus two downstream roots.
+
+### Multi-root apply (S3 backend + remote state)
+
+**:** [`s3/multi-root-min/`](examples/terraform/s3/multi-root-min/) applies a **network** root whose state lives in the bootstrap bucket, then a **dependent** root that reads `vpc_id` via `data.terraform_remote_state`.
+
+Allowed delta vs AWS (endpoint / creds only):
+
+| Surface | How |
+| --- | --- |
+| `backend "s3"` | `terraform init -backend-config=endpoints=…` (no endpoints in `.tf`) |
+| AWS provider | `use_simulith_endpoint` in first-party examples, or a gitignored `*_override.tf` on unmodified roots |
+| `data.terraform_remote_state` | Must include endpoints in the data source (or an override). **`-backend-config` does not apply.** Follow-up: ****. |
+
+Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: **FW-S3-024** (object version IDs), **/021** (NAT / interface endpoints).
 
 Backlog: .
 

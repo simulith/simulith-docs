@@ -297,7 +297,7 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 | --- | --- | --- | --- |
 | CreateVpc / DescribeVpcs / DeleteVpc | available | yes |  |
 | CreateSubnet / DescribeSubnets / DeleteSubnet | available | yes | |
-| CreateSecurityGroup + ingress/egress | available | yes | |
+| CreateSecurityGroup + ingress/egress | available | yes | DeleteSecurityGroup: `DescribeNetworkInterfaces` empty stub |
 | IGW / route tables / gateway endpoints | available | no | Metadata routing |
 | Lambda VpcConfig | available | yes | ; invoke scenario in verify vpc |
 
