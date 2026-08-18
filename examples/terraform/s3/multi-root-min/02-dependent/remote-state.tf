@@ -1,5 +1,6 @@
-# Reads 01-network outputs. Endpoints are the Simulith delta:
-# terraform init -backend-config does not apply to this data source.
+# Production-shaped remote state: no endpoints in .tf.
+# Env: AWS_ENDPOINT_URL / AWS_ENDPOINT_URL_S3 / AWS_ENDPOINT_URL_DYNAMODB + creds.
+# Leftover overlay (no HashiCorp env): skip STS checks + path-style (IP endpoint).
 
 data "terraform_remote_state" "network" {
   backend = "s3"
@@ -12,13 +13,6 @@ data "terraform_remote_state" "network" {
     encrypt                     = true
     skip_credentials_validation = var.use_simulith_endpoint
     skip_requesting_account_id  = var.use_simulith_endpoint
-    skip_metadata_api_check     = var.use_simulith_endpoint
     use_path_style              = var.use_simulith_endpoint
-    access_key                  = var.use_simulith_endpoint ? "test" : null
-    secret_key                  = var.use_simulith_endpoint ? "secret" : null
-    endpoints = var.use_simulith_endpoint ? {
-      s3       = var.simulith_endpoint
-      dynamodb = var.simulith_endpoint
-    } : null
   }
 }

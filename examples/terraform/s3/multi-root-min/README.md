@@ -1,6 +1,6 @@
 # S3 multi-root-min — remote state between Terraform roots
 
-Generic **three-root** graph against Simulith. Names are `demo-*` / `demoapp`. This is the method bar from ****: apply a downstream root whose state lives in S3, then a second root that **reads** that state with `terraform_remote_state`.
+Generic **three-root** graph against Simulith. Names are `demo-*` / `demoapp`. Method bar from **** plus overlay-free remote state: apply a downstream root whose state lives in S3, then a second root that **reads** that state with `terraform_remote_state` (no `endpoints` in the data source).
 
 ```text
 terraform-state-min/     local state → versioned bucket + lock table
@@ -36,9 +36,15 @@ terraform init \
   -backend-config="secret_key=secret"
 terraform apply
 
-# 2 — dependent root reads vpc_id from remote state
+# 2 — dependent root reads vpc_id from remote state (env, not in-file endpoints)
 cd ../02-dependent
 cp terraform.tfvars.native.example terraform.tfvars
+export AWS_ENDPOINT_URL=http://127.0.0.1:4566
+export AWS_ENDPOINT_URL_S3="$AWS_ENDPOINT_URL"
+export AWS_ENDPOINT_URL_DYNAMODB="$AWS_ENDPOINT_URL"
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=secret
+export AWS_EC2_METADATA_DISABLED=true
 terraform init \
   -backend-config="endpoints={s3=\"http://127.0.0.1:4566\",dynamodb=\"http://127.0.0.1:4566\"}" \
   -backend-config="skip_credentials_validation=true" \
@@ -60,10 +66,11 @@ Automated smoke: `maintainer workflow (private monorepo)`
 | --- | --- | --- |
 | `backend "s3"` | `-backend-config` at `init` (no endpoints in `.tf`) | same |
 | AWS provider | `use_simulith_endpoint` | gitignored `*_override.tf` with `endpoints { … }` |
-| `data.terraform_remote_state` | endpoints in the data source when `use_simulith_endpoint` | **override the data source** — `terraform init -backend-config` does **not** apply here |
+| `data.terraform_remote_state` | Env for **endpoints** (`AWS_ENDPOINT_URL` / `_S3` / `_DYNAMODB` + creds). Leftover overlay: `skip_credentials_validation`, `skip_requesting_account_id`, `use_path_style` (no STS; IP hosts need path-style). `-backend-config` does **not** apply. | same env; leftover flags via gitignored override if the data source has none |
 
 ## Honest limits
 
 - Object writes are last-write-wins (no version IDs) — **FW-S3-024**. Terraform state still round-trips via PutObject/GetObject.
+- `terraform_remote_state` still needs `skip_credentials_validation`, `skip_requesting_account_id`, and `use_path_style` locally (no HashiCorp env; no STS; IP path-style).
 - Gateway / interface VPC endpoints, NAT traffic, 6-AZ layouts: not this module — **/021**, `network-min`.
-- This is not “Simulith = AWS hardware.” It is the **same Terraform graph shape** with endpoint injection.
+- This is not “Simulith = AWS hardware.” It is the **same Terraform graph shape** with endpoint/creds injection.

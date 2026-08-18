@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.114.0] - 2026-08-18
+
+### Features
+
+- ****: Overlay-free terraform_remote_state
+
 ## [0.113.0] - 2026-08-18
 
 ### Features
