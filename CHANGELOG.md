@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.119.0] - 2026-08-19
+
+### Features
+
+- ****: VPC NAT Gateway and IGW routes
+
 ## [0.118.0] - 2026-08-19
 
 ### Features

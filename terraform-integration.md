@@ -257,6 +257,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
 | [`vpc/network-min/`](examples/terraform/vpc/network-min/) | Green | Green | VPC, IGW, route tables, gateway endpoints, subnet, SG — `-parallelism=1` |
 | [`vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) | Green | Green | Interface Secrets Manager endpoint (stub ENI/DNS) — `-parallelism=1` |
+| [`vpc/nat-gateway-min/`](examples/terraform/vpc/nat-gateway-min/) | Green | Green | EIP + NAT Gateway + private default route — `-parallelism=1` |
 | [`rds/postgres-min/`](examples/terraform/rds/postgres-min/) | Green | Green | Embedded VPC + DB subnet group, parameter group, Postgres sidecar instance — `-parallelism=1`; **Docker required** |
 | [`rds/vpc-rds-proxy-min/`](examples/terraform/rds/vpc-rds-proxy-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy — `-parallelism=1`; **Docker required** |
 | [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret — `-parallelism=1` |
@@ -340,7 +341,7 @@ Allowed delta vs AWS (endpoint / creds only):
 | AWS provider | `use_simulith_endpoint` in first-party examples, or a gitignored `*_override.tf` on unmodified roots |
 | `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints`, skip_*, or `use_path_style` in `.tf`.** STS `GetCallerIdentity` is stubbed (account `000000000000`). Use a **hostname** that wildcard-resolves to loopback (`localhost` on macOS/Linux; `127.0.0.1.sslip.io` on Windows). A raw IP makes Terraform request `http://<bucket>.<ip>/`, which does not resolve. **`-backend-config` does not apply** to this data source. |
 
-Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: **/021** (NAT / interface endpoints).
+Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: **** (NACLs). Interface endpoints and NAT Gateway metadata shipped.
 
 Backlog: .
 

@@ -75,5 +75,5 @@ Automated smoke: `maintainer workflow (private monorepo)`
 
 - Object writes keep **one current version** per key (overwrite replaces the version ID) — Terraform state still round-trips via PutObject/GetObject.
 - `terraform_remote_state` needs a **hostname** endpoint (`localhost` / `127.0.0.1.sslip.io`), not `127.0.0.1`. There is no HashiCorp env for `use_path_style`. STS skip flags are gone; path-style in the data source is gone.
-- Gateway / interface VPC endpoints, NAT traffic, 6-AZ layouts: not this module — **/021**, `network-min`.
+- Gateway / interface VPC endpoints and NAT Gateway: not this module — see `network-min`, `interface-endpoint-min`, `nat-gateway-min`. 6-AZ layouts and NACLs remain out of this module.
 - This is not “Simulith = AWS hardware.” It is the **same Terraform graph shape** with endpoint/creds injection.
