@@ -42,11 +42,11 @@ Last updated: 2026-08-19..
 | **VPC** | 8 | 5 / 5 scenarios | **100%** (17 / 17) | **low subset** |
 | **RDS** | 6 | 2 / 2 scenarios | **100%** (15 / 15) | **low subset** |
 | **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **KMS** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
+| **KMS** | 11 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **174** | 17 services with verify | **~98%** Tier A (175 / 179 ref) | — |
+| **Total** | **176** | 17 services with verify | **~98%** Tier A (178 / 182 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -119,7 +119,7 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 
 **Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth).
 
-**Tier A aggregate (179 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **111 / 113** · **Overall ~98% (175 / 179)**.
+**Tier A aggregate (182 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **114 / 116** · **Overall ~98% (178 / 182)**.
 
 ---
 
@@ -461,19 +461,19 @@ Guide: [kms.md](kms.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decrypt; ScheduleKeyDeletion (mock symmetric envelope). Secrets Manager accepts `KmsKeyId` on CreateSecret. **Terraform green path** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — apply + destroy. **`simulith verify kms`**. **Console panel `/kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
+CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decrypt; ScheduleKeyDeletion (mock symmetric envelope); **EnableKeyRotation / DisableKeyRotation / GetKeyRotationStatus**. Secrets Manager accepts `KmsKeyId` on CreateSecret. **Terraform green path** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — apply + destroy with `enable_key_rotation`. **`simulith verify kms`**. **Console panel `/kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Grants / rotation / multi-Region | P3 | — |
+| Grants / multi-Region / AWS-identical key-material rotation | P3 | EnableKeyRotation is a stored flag |
 
-### Tier A reference set (9 ops)
+### Tier A reference set (12 ops)
 
-CreateKey, DescribeKey, CreateAlias, ListAliases, DeleteAlias, Encrypt, Decrypt, GetKeyPolicy, ScheduleKeyDeletion.
+CreateKey, DescribeKey, CreateAlias, ListAliases, DeleteAlias, Encrypt, Decrypt, GetKeyPolicy, ScheduleKeyDeletion, GetKeyRotationStatus, EnableKeyRotation, DisableKeyRotation.
 
-9 **available** = **100%** Tier A KMS (9 / 9).
+12 **available** = **100%** Tier A KMS (12 / 12).
 
 ---
 

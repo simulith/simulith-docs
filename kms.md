@@ -16,7 +16,8 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 | `CreateKey` | Symmetric CMK (`SYMMETRIC_DEFAULT`, `ENCRYPT_DECRYPT`) |
 | `DescribeKey` | By key ID, ARN, or `alias/...` |
 | `GetKeyPolicy` | Default no-op policy for Terraform read-after-create |
-| `GetKeyRotationStatus` | Returns `KeyRotationEnabled: false` |
+| `GetKeyRotationStatus` | Returns stored `KeyRotationEnabled` |
+| `EnableKeyRotation` / `DisableKeyRotation` | Persist rotation metadata only — no AWS-identical key-material rotation |
 | `ListResourceTags` | Empty tag list |
 | `CreateAlias` | `alias/<name>` → target key |
 | `ListAliases` | Optional filter by `KeyId` |
@@ -27,13 +28,13 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 
 ## Behaviour notes
 
-- **No CloudHSM / multi-Region / grants / rotation** — metadata and mock crypto only.
+- **No CloudHSM / multi-Region / grants / AWS-identical key rotation** — `EnableKeyRotation` is a stored flag so Terraform `enable_key_rotation` applies; ciphertext and key material do not rotate.
 - **Encrypt/Decrypt** use a Simulith-local envelope (`simulith-kms:v1:<keyId>:...`); suitable for local dev and Terraform apply, not AWS-identical ciphertext.
 - **Secrets Manager** accepts `KmsKeyId` on `CreateSecret` when the key exists; `DescribeSecret` returns `KmsKeyId`.
 
 ## Terraform
 
-Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — `terraform apply` and `terraform destroy` with `-parallelism=1`.
+Green path: [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — `terraform apply` and `terraform destroy` with `-parallelism=1`. `enable_key_rotation = true`.
 
 ## Backlog
 

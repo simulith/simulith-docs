@@ -62,7 +62,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`vpc/network-acl-min/`](vpc/network-acl-min/) | Green | Green | Custom Network ACL + subnet association; `-parallelism=1`; [README](vpc/network-acl-min/README.md) |
 | [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Embedded VPC + Postgres sidecar; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
 | [`rds/vpc-rds-proxy-min/`](rds/vpc-rds-proxy-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy; `-parallelism=1`; **Docker required**; [README](rds/vpc-rds-proxy-min/README.md) |
-| [`kms/cmk-min/`](kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret; `-parallelism=1`; [README](kms/cmk-min/README.md) |
+| [`kms/cmk-min/`](kms/cmk-min/) | Green | Green | CMK + alias + secret + `enable_key_rotation`; `-parallelism=1`; [README](kms/cmk-min/README.md) |
 | [`route53/zone-min/`](route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records; `endpoints { route53 }`; `-parallelism=1`; [README](route53/zone-min/README.md) |
 | [`acm/cert-min/`](acm/cert-min/) | Green | Green | ACM certificate + Route 53 DNS validation; `endpoints { acm, route53 }`; `-parallelism=1`; [README](acm/cert-min/README.md) |
 | [`cloudfront/cdn-min/`](cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME; `endpoints { s3, cloudfront, route53 }`; `-parallelism=1`; [README](cloudfront/cdn-min/README.md) |

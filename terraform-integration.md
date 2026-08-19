@@ -261,7 +261,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`vpc/network-acl-min/`](examples/terraform/vpc/network-acl-min/) | Green | Green | Custom Network ACL + subnet association — `-parallelism=1` |
 | [`rds/postgres-min/`](examples/terraform/rds/postgres-min/) | Green | Green | Embedded VPC + DB subnet group, parameter group, Postgres sidecar instance — `-parallelism=1`; **Docker required** |
 | [`rds/vpc-rds-proxy-min/`](examples/terraform/rds/vpc-rds-proxy-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy — `-parallelism=1`; **Docker required** |
-| [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret — `-parallelism=1` |
+| [`kms/cmk-min/`](examples/terraform/kms/cmk-min/) | Green | Green | CMK + alias + secret + `enable_key_rotation` — `-parallelism=1` |
 | [`route53/zone-min/`](examples/terraform/route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records — `-parallelism=1`; `endpoints { route53 }` |
 | [`acm/cert-min/`](examples/terraform/acm/cert-min/) | Green | Green | ACM cert + Route 53 DNS validation — `-parallelism=1`; `endpoints { acm, route53 }` |
 | [`cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME — `-parallelism=1`; `endpoints { s3, cloudfront, route53 }` |
@@ -342,7 +342,7 @@ Allowed delta vs AWS (endpoint / creds only):
 | AWS provider | `use_simulith_endpoint` in first-party examples, or a gitignored `*_override.tf` on unmodified roots |
 | `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints`, skip_*, or `use_path_style` in `.tf`.** STS `GetCallerIdentity` is stubbed (account `000000000000`). Use a **hostname** that wildcard-resolves to loopback (`localhost` on macOS/Linux; `127.0.0.1.sslip.io` on Windows). A raw IP makes Terraform request `http://<bucket>.<ip>/`, which does not resolve. **`-backend-config` does not apply** to this data source. |
 
-Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: packet NAT/IGW/NACL data plane (product out of scope). Interface endpoints, NAT Gateway, and Network ACL **metadata** shipped.
+Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: packet NAT/IGW/NACL data plane (product out of scope). Interface endpoints, NAT Gateway, and Network ACL **metadata** shipped. KMS `enable_key_rotation` shipped. Next unmodified-root candidate: RDS `ModifyDBParameterGroup` on production parameter blocks.
 
 Backlog: .
 

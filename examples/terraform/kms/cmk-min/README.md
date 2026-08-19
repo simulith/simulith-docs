@@ -1,6 +1,6 @@
 # Terraform — KMS cmk-min
 
-Minimum CMK + alias + Secrets Manager secret with `kms_key_id`.
+Minimum CMK + alias + Secrets Manager secret with `kms_key_id`. `enable_key_rotation = true` so unmodified `aws_kms_key` rotation applies.
 
 **Green path:** `terraform apply` and `terraform destroy` with `-parallelism=1` against Simulith on `:4566`.
 

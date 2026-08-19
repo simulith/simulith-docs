@@ -8,7 +8,9 @@ locals {
 }
 
 resource "aws_kms_key" "app_cmk" {
-  description = "${var.project_name} ${var.environment} CMK"
+  description             = "${var.project_name} ${var.environment} CMK"
+  enable_key_rotation     = true
+  deletion_window_in_days = 7
 }
 
 resource "aws_kms_alias" "app_cmk" {
