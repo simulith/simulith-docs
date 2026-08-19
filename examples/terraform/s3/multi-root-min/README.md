@@ -66,11 +66,11 @@ Automated smoke: `maintainer workflow (private monorepo)`
 | --- | --- | --- |
 | `backend "s3"` | `-backend-config` at `init` (no endpoints in `.tf`) | same |
 | AWS provider | `use_simulith_endpoint` | gitignored `*_override.tf` with `endpoints { … }` |
-| `data.terraform_remote_state` | Env for **endpoints** (`AWS_ENDPOINT_URL` / `_S3` / `_DYNAMODB` + creds). Leftover overlay: `skip_credentials_validation`, `skip_requesting_account_id`, `use_path_style` (no STS; IP hosts need path-style). `-backend-config` does **not** apply. | same env; leftover flags via gitignored override if the data source has none |
+| `data.terraform_remote_state` | Env for **endpoints** (`AWS_ENDPOINT_URL` / `_S3` / `_DYNAMODB` + creds). STS `GetCallerIdentity` is stubbed (no skip_*). Leftover overlay: `use_path_style` (IP hosts). `-backend-config` does **not** apply. | same env; leftover `use_path_style` via gitignored override if the data source has none |
 
 ## Honest limits
 
 - Object writes are last-write-wins (no version IDs) — **FW-S3-024**. Terraform state still round-trips via PutObject/GetObject.
-- `terraform_remote_state` still needs `skip_credentials_validation`, `skip_requesting_account_id`, and `use_path_style` locally (no HashiCorp env; no STS; IP path-style).
+- `terraform_remote_state` still needs `use_path_style` locally (no HashiCorp env; `127.0.0.1` virtual-hosted DNS). STS skip flags are gone.
 - Gateway / interface VPC endpoints, NAT traffic, 6-AZ layouts: not this module — **/021**, `network-min`.
 - This is not “Simulith = AWS hardware.” It is the **same Terraform graph shape** with endpoint/creds injection.

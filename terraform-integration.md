@@ -337,7 +337,7 @@ Allowed delta vs AWS (endpoint / creds only):
 | --- | --- |
 | `backend "s3"` | `terraform init -backend-config=endpoints=…` (no endpoints in `.tf`) |
 | AWS provider | `use_simulith_endpoint` in first-party examples, or a gitignored `*_override.tf` on unmodified roots |
-| `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints` in `.tf`.** Leftover overlay: `skip_credentials_validation`, `skip_requesting_account_id`, `use_path_style` (no STS `GetCallerIdentity`; `127.0.0.1` needs path-style; those flags have no env). **`-backend-config` does not apply.** |
+| `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints` or skip_* in `.tf`.** STS `GetCallerIdentity` is stubbed (account `000000000000`). Leftover overlay: `use_path_style` (`127.0.0.1` virtual-hosted DNS; no HashiCorp env). **`-backend-config` does not apply.** |
 
 Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: **FW-S3-024** (object version IDs), **/021** (NAT / interface endpoints).
 
