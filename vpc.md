@@ -4,7 +4,7 @@ Local Amazon VPC networking emulation via the **EC2 Query API**.  / .
 
 ## Overview
 
-Simulith emulates **VPC, subnet, security group, IGW, route table, NAT Gateway, EIP, gateway endpoint, and interface endpoint** resources on the same port as other services (default `:4566`).
+Simulith emulates **VPC, subnet, security group, IGW, route table, NAT Gateway, EIP, Network ACL, gateway endpoint, and interface endpoint** resources on the same port as other services (default `:4566`).
 
 - **SigV4 service name:** `ec2`
 - **Protocol:** AWS Query (`Action=…`, `application/x-www-form-urlencoded`, XML responses)
@@ -23,6 +23,7 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 | Internet gateway | CreateInternetGateway, Attach/DetachInternetGateway, DescribeInternetGateways, DeleteInternetGateway |
 | Elastic IP | AllocateAddress, DescribeAddresses, DisassociateAddress, ReleaseAddress |
 | NAT Gateway | CreateNatGateway, DescribeNatGateways, DeleteNatGateway |
+| Network ACL | CreateNetworkAcl, DescribeNetworkAcls, DeleteNetworkAcl, Create/DeleteNetworkAclEntry, ReplaceNetworkAclAssociation |
 | Routing | CreateRouteTable, DeleteRouteTable, DescribeRouteTables, CreateRoute (GatewayId or NatGatewayId), DeleteRoute, Associate/DisassociateRouteTable |
 | VPC endpoints | CreateVpcEndpoint, DescribeVpcEndpoints, ModifyVpcEndpoint, DeleteVpcEndpoints (Gateway + Interface metadata) |
 | Tags | CreateTags, DescribeTags |
@@ -35,6 +36,7 @@ Green-path examples:
 - [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) — gateway endpoints
 - [`examples/terraform/vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) — Interface Secrets Manager endpoint
 - [`examples/terraform/vpc/nat-gateway-min/`](examples/terraform/vpc/nat-gateway-min/) — EIP + NAT Gateway + private default route
+- [`examples/terraform/vpc/network-acl-min/`](examples/terraform/vpc/network-acl-min/) — custom Network ACL + subnet association
 
 ```hcl
 provider "aws" {
@@ -51,16 +53,17 @@ provider "aws" {
 - `DescribeVpcAttribute` `enableNetworkAddressUsageMetrics` is a **false stub**
 - Interface VPC endpoints are **metadata only** (subnet/SG/private DNS + stub DNS/ENI IDs). Packets do not traverse PrivateLink; clients still use the Simulith HTTP endpoint.
 - NAT Gateway and Elastic IPs are **metadata only** (stub ENI + documentation-range public IP). Packets are not NAT'd or forwarded via IGW; clients still use the Simulith HTTP endpoint.
+- Network ACLs are **metadata only**. Ingress/egress rules and subnet associations persist for Terraform; packets are not filtered.
 
 ## Verify
 
 ```bash
-simulith verify vpc --skip-aws          # Simulith-only smoke (4 scenarios)
+simulith verify vpc --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
 simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
 ```
 
-Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`. Lambda invoke scenario skips when `node` is not on PATH.
+Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle`. Lambda invoke scenario skips when `node` is not on PATH.
 
 ## Console
 

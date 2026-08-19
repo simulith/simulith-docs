@@ -13,8 +13,8 @@ Last updated: 2026-08-19..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
-| Operations **available** locally | 173 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 4, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Operations **available** locally | 174 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -302,6 +302,7 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 | IGW / route tables / gateway endpoints | available | no | Metadata routing |
 | Interface VPC endpoints | available | yes (`interface-vpc-endpoint-lifecycle`) | Stub ENI + DNS metadata; no PrivateLink data plane |
 | NAT Gateway + Elastic IP | available | yes (`nat-gateway-lifecycle`) | Stub ENI + documentation-range public IP; no NAT/IGW packet path |
+| Network ACLs | available | yes (`network-acl-lifecycle`) | Default + custom NACL metadata; rules are not enforced on packets |
 | Lambda VpcConfig | available | yes | ; invoke scenario in verify vpc |
 
 ---
@@ -398,7 +399,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
-| VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle` | — |
+| VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |

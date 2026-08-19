@@ -39,14 +39,14 @@ Last updated: 2026-08-19..
 | **Cognito** | 16 | 2 / 2 scenarios | **90%** (18 / 20) | **low subset** |
 | **SES** | 4 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
-| **VPC** | 7 | 4 / 4 scenarios | **100%** (17 / 17) | **low subset** |
+| **VPC** | 8 | 5 / 5 scenarios | **100%** (17 / 17) | **low subset** |
 | **RDS** | 6 | 2 / 2 scenarios | **100%** (15 / 15) | **low subset** |
 | **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **KMS** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **173** | 17 services with verify | **~98%** Tier A (175 / 179 ref) | — |
+| **Total** | **174** | 17 services with verify | **~98%** Tier A (175 / 179 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -412,7 +412,7 @@ Guide: [vpc.md](vpc.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; **Elastic IP** (AllocateAddress / Describe / Disassociate / Release); **NAT Gateway** (Create/Describe/Delete — stub ENI + documentation-range public IP; no packet NAT); route tables + routes (`GatewayId` or `NatGatewayId`) + associations; gateway VPC endpoints (S3/DynamoDB metadata); **Interface VPC endpoints** (subnet/SG/private DNS + stub ENI/DNS entries — no PrivateLink data plane); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green path [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) + [`vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) + [`vpc/nat-gateway-min/`](examples/terraform/vpc/nat-gateway-min/) + [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) (apply local). **Console panel `/vpc`**. Public docs sync. **`simulith verify vpc`** (4 scenarios).
+CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; **Elastic IP** (AllocateAddress / Describe / Disassociate / Release); **NAT Gateway** (Create/Describe/Delete — stub ENI + documentation-range public IP; no packet NAT); **Network ACLs** (default + custom metadata — no packet filter); route tables + routes (`GatewayId` or `NatGatewayId`) + associations; gateway VPC endpoints (S3/DynamoDB metadata); **Interface VPC endpoints** (subnet/SG/private DNS + stub ENI/DNS entries — no PrivateLink data plane); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green path [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) + [`vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) + [`vpc/nat-gateway-min/`](examples/terraform/vpc/nat-gateway-min/) + [`vpc/network-acl-min/`](examples/terraform/vpc/network-acl-min/) + [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) (apply local). **Console panel `/vpc`**. Public docs sync. **`simulith verify vpc`** (5 scenarios).
 
 ### Notable gaps (tracked)
 
@@ -426,7 +426,7 @@ CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute
 
 CreateVpc, DescribeVpcs, DeleteVpc; CreateSubnet, DescribeSubnets, DeleteSubnet; CreateSecurityGroup, DescribeSecurityGroups, AuthorizeSecurityGroupIngress, AuthorizeSecurityGroupEgress; CreateInternetGateway, AttachInternetGateway; CreateRouteTable, DescribeRouteTables, CreateRoute, AssociateRouteTable; CreateVpcEndpoint; Lambda **VpcConfig** on CreateFunction / UpdateFunctionConfiguration.
 
-17 **available** = **100%** Tier A VPC (17 / 17). NAT Gateway + EIP are shipped beyond this original ref set — metadata only; no packet path. NACLs remain P3.
+17 **available** = **100%** Tier A VPC (17 / 17). NAT Gateway + EIP and Network ACLs are shipped beyond this original ref set — metadata only; no packet path.
 
 ---
 

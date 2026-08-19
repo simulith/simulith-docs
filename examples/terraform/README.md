@@ -19,7 +19,7 @@ runtime/examples/terraform/
 ├── cognito/            ← aws_cognito_user_pool + client + group
 ├── ses/                ← aws_ses_email_identity + template
 ├── eventbridge/        ← rate rule → Lambda target
-├── vpc/                ← network-min; interface-endpoint-min; nat-gateway-min
+├── vpc/                ← network-min; interface-endpoint-min; nat-gateway-min; network-acl-min
 ├── rds/                ← postgres-min, proxy-min, vpc-rds-proxy-min (Docker sidecar)
 ├── iam/                ← proxy-roles-min (RDS Proxy role wiring)
 ├── kms/                ← cmk-min (CMK + alias)
@@ -59,6 +59,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`dynamodb-sqs/`](dynamodb-sqs/) | Green | Green | 1 table + 1 queue; `endpoints { dynamodb, sqs }`; destroy ~60–90s; [README](dynamodb-sqs/README.md) |
 | [`s3-lambda/`](s3-lambda/) | Green | Green | 1 bucket + 1 Lambda + notification; `endpoints { s3, lambda }`; `-parallelism=1`; [README](s3-lambda/README.md) |
 | [`vpc/network-min/`](vpc/network-min/) | Green | Green | VPC + subnet + SG + gateway endpoints; `-parallelism=1`; [README](vpc/network-min/README.md) |
+| [`vpc/network-acl-min/`](vpc/network-acl-min/) | Green | Green | Custom Network ACL + subnet association; `-parallelism=1`; [README](vpc/network-acl-min/README.md) |
 | [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Embedded VPC + Postgres sidecar; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
 | [`rds/vpc-rds-proxy-min/`](rds/vpc-rds-proxy-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy; `-parallelism=1`; **Docker required**; [README](rds/vpc-rds-proxy-min/README.md) |
 | [`kms/cmk-min/`](kms/cmk-min/) | Green | Green | CMK + alias + Secrets Manager secret; `-parallelism=1`; [README](kms/cmk-min/README.md) |
