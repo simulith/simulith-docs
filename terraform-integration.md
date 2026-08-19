@@ -329,7 +329,7 @@ maintainer workflow (private monorepo) --module lambda-transaction-min
 
 ### Multi-root apply (S3 backend + remote state)
 
-** + :** [`s3/multi-root-min/`](examples/terraform/s3/multi-root-min/) applies a **network** root whose state lives in the bootstrap bucket, then a **dependent** root that reads `vpc_id` via `data.terraform_remote_state` with **no in-file endpoints** (env only).
+** +  + :** [`s3/multi-root-min/`](examples/terraform/s3/multi-root-min/) applies a **network** root whose state lives in the bootstrap bucket, then a **dependent** root that reads `vpc_id` via `data.terraform_remote_state` with **no in-file endpoints** (env only).
 
 Allowed delta vs AWS (endpoint / creds only):
 
@@ -337,7 +337,7 @@ Allowed delta vs AWS (endpoint / creds only):
 | --- | --- |
 | `backend "s3"` | `terraform init -backend-config=endpoints=…` (no endpoints in `.tf`) |
 | AWS provider | `use_simulith_endpoint` in first-party examples, or a gitignored `*_override.tf` on unmodified roots |
-| `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints` or skip_* in `.tf`.** STS `GetCallerIdentity` is stubbed (account `000000000000`). Leftover overlay: `use_path_style` (`127.0.0.1` virtual-hosted DNS; no HashiCorp env). **`-backend-config` does not apply.** |
+| `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints`, skip_*, or `use_path_style` in `.tf`.** STS `GetCallerIdentity` is stubbed (account `000000000000`). Use a **hostname** that wildcard-resolves to loopback (`localhost` on macOS/Linux; `127.0.0.1.sslip.io` on Windows). A raw IP makes Terraform request `http://<bucket>.<ip>/`, which does not resolve. **`-backend-config` does not apply** to this data source. |
 
 Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: **FW-S3-024** (object version IDs), **/021** (NAT / interface endpoints).
 

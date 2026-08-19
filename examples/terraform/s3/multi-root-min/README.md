@@ -39,14 +39,17 @@ terraform apply
 # 2 — dependent root reads vpc_id from remote state (env, not in-file endpoints)
 cd ../02-dependent
 cp terraform.tfvars.native.example terraform.tfvars
-export AWS_ENDPOINT_URL=http://127.0.0.1:4566
+# Hostname, not a raw IP: Terraform virtual-hosts <bucket>.<host> when use_path_style is unset.
+export AWS_ENDPOINT_URL=http://localhost:4566
+# Windows (*.localhost often does not resolve):
+# export AWS_ENDPOINT_URL=http://127.0.0.1.sslip.io:4566
 export AWS_ENDPOINT_URL_S3="$AWS_ENDPOINT_URL"
 export AWS_ENDPOINT_URL_DYNAMODB="$AWS_ENDPOINT_URL"
 export AWS_ACCESS_KEY_ID=test
 export AWS_SECRET_ACCESS_KEY=secret
 export AWS_EC2_METADATA_DISABLED=true
 terraform init \
-  -backend-config="endpoints={s3=\"http://127.0.0.1:4566\",dynamodb=\"http://127.0.0.1:4566\"}" \
+  -backend-config="endpoints={s3=\"$AWS_ENDPOINT_URL\",dynamodb=\"$AWS_ENDPOINT_URL\"}" \
   -backend-config="skip_credentials_validation=true" \
   -backend-config="skip_requesting_account_id=true" \
   -backend-config="skip_metadata_api_check=true" \
@@ -66,11 +69,11 @@ Automated smoke: `maintainer workflow (private monorepo)`
 | --- | --- | --- |
 | `backend "s3"` | `-backend-config` at `init` (no endpoints in `.tf`) | same |
 | AWS provider | `use_simulith_endpoint` | gitignored `*_override.tf` with `endpoints { … }` |
-| `data.terraform_remote_state` | Env for **endpoints** (`AWS_ENDPOINT_URL` / `_S3` / `_DYNAMODB` + creds). STS `GetCallerIdentity` is stubbed (no skip_*). Leftover overlay: `use_path_style` (IP hosts). `-backend-config` does **not** apply. | same env; leftover `use_path_style` via gitignored override if the data source has none |
+| `data.terraform_remote_state` | Env for **endpoints** (`AWS_ENDPOINT_URL` / `_S3` / `_DYNAMODB` + creds) on a **hostname** (`localhost` or `127.0.0.1.sslip.io`). STS `GetCallerIdentity` is stubbed. **No `endpoints`, skip_*, or `use_path_style` in `.tf`.** `-backend-config` does **not** apply. | same env; hostname (not a raw IP) so virtual-hosted DNS works |
 
 ## Honest limits
 
 - Object writes are last-write-wins (no version IDs) — **FW-S3-024**. Terraform state still round-trips via PutObject/GetObject.
-- `terraform_remote_state` still needs `use_path_style` locally (no HashiCorp env; `127.0.0.1` virtual-hosted DNS). STS skip flags are gone.
+- `terraform_remote_state` needs a **hostname** endpoint (`localhost` / `127.0.0.1.sslip.io`), not `127.0.0.1`. There is no HashiCorp env for `use_path_style`. STS skip flags are gone; path-style in the data source is gone.
 - Gateway / interface VPC endpoints, NAT traffic, 6-AZ layouts: not this module — **/021**, `network-min`.
 - This is not “Simulith = AWS hardware.” It is the **same Terraform graph shape** with endpoint/creds injection.

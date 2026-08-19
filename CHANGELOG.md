@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.116.0] - 2026-08-19
+
+### Features
+
+- ****: Overlay-free remote state path-style
+
 ## [0.115.0] - 2026-08-19
 
 ### Features

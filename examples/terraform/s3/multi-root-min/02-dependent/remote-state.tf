@@ -1,6 +1,7 @@
-# Production-shaped remote state: no endpoints or skip_* in .tf.
+# Production-shaped remote state: no endpoints, skip_*, or use_path_style in .tf.
 # Env: AWS_ENDPOINT_URL / AWS_ENDPOINT_URL_S3 / AWS_ENDPOINT_URL_DYNAMODB + creds.
-# Leftover overlay (no HashiCorp env): path-style for IP endpoints.
+# Use a hostname that wildcard-resolves to loopback (localhost, or 127.0.0.1.sslip.io
+# on Windows). A raw IP makes Terraform request http://<bucket>.<ip>/ which does not resolve.
 
 data "terraform_remote_state" "network" {
   backend = "s3"
@@ -11,6 +12,5 @@ data "terraform_remote_state" "network" {
     region         = var.aws_region
     dynamodb_table = var.lock_table_name
     encrypt        = true
-    use_path_style = var.use_simulith_endpoint
   }
 }
