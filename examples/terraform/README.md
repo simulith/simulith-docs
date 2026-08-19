@@ -19,7 +19,7 @@ runtime/examples/terraform/
 ├── cognito/            ← aws_cognito_user_pool + client + group
 ├── ses/                ← aws_ses_email_identity + template
 ├── eventbridge/        ← rate rule → Lambda target
-├── vpc/                ← aws_vpc + subnet + SG (network-min)
+├── vpc/                ← network-min; interface-endpoint-min
 ├── rds/                ← postgres-min, proxy-min, vpc-rds-proxy-min (Docker sidecar)
 ├── iam/                ← proxy-roles-min (RDS Proxy role wiring)
 ├── kms/                ← cmk-min (CMK + alias)

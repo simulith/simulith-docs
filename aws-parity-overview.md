@@ -8,7 +8,7 @@ Consolidated view of **Simulith vs AWS** for **seventeen** shipped services: wha
 
 > **Console panels:** [console.md](console.md) · **Operation × verify:** [compatibility-matrix.md](compatibility-matrix.md)
 
-Last updated: 2026-08-15..
+Last updated: 2026-08-19..
 
 ---
 
@@ -32,21 +32,21 @@ Last updated: 2026-08-15..
 | **DynamoDB** | 17 | 17 / 17 (100%) | **100%** (17 / 17) | medium (~38%‡) |
 | **SQS** | 14 | 14 / 14 (100%) | **93%** (14 / 15) | medium–high (~64%‡) |
 | **SSM** (Parameter Store) | 10 | 10 / 10 (100%) | **90%** (9 / 10) | high (~83%‡) |
-| **S3** | 20 | 7 / 7 scenarios (100%) | **100%** (9 / 9 ref) | medium (~50%‡) |
+| **S3** | 21 | 8 / 8 scenarios (100%) | **100%** (9 / 9 ref) | medium (~50%‡) |
 | **Lambda** | 22 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | low (~29%‡) |
 | **API Gateway** | 14 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | low (~18%‡) |
 | **Secrets Manager** | 4 | 2 / 2 scenarios | **100%** (4 / 4) | low (~5%‡) |
 | **Cognito** | 16 | 2 / 2 scenarios | **90%** (18 / 20) | **low subset** |
 | **SES** | 4 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
-| **VPC** | 5 | 2 / 2 scenarios | **100%** (17 / 17) | **low subset** |
+| **VPC** | 6 | 3 / 3 scenarios | **100%** (17 / 17) | **low subset** |
 | **RDS** | 6 | 2 / 2 scenarios | **100%** (15 / 15) | **low subset** |
 | **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **KMS** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **170** | 17 services with verify | **~98%** Tier A (175 / 179 ref) | — |
+| **Total** | **172** | 17 services with verify | **~98%** Tier A (175 / 179 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -244,14 +244,14 @@ Guide: [s3.md](s3.md) · Backlog: the product backlog
 
 ### Implemented (functional)
 
-CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, CopyObject, DeleteObjects (batch), ListObjectsV2 (prefix, max-keys, continuation-token), **multipart upload**, bucket versioning / SSE-S3 / lifecycle / tagging config.
+CreateBucket (idempotent), ListBuckets, DeleteBucket (empty), PutObject, GetObject, HeadObject, DeleteObject, CopyObject, DeleteObjects (batch), ListObjectsV2 (prefix, max-keys, continuation-token), **ListObjectVersions**, **multipart upload**, bucket versioning / SSE-S3 / lifecycle / tagging config.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Object version IDs / `ListObjectVersions` | P3 | FW-S3-021 remainder |
-| SSE-KMS | P3 | FW-S3-021 remainder |
+| SSE-KMS | P3 | FW-S3-023 |
+| Noncurrent version history / delete markers | P3 | remainder after  |
 
 ### Tier A reference set (9 ops)
 
@@ -412,7 +412,7 @@ Guide: [vpc.md](vpc.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green path [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) + [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) (apply local). **Console panel `/vpc`**. Public docs sync. **`simulith verify vpc`** (2 scenarios).
+CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute; CreateSubnet / DescribeSubnets / DeleteSubnet; CreateSecurityGroup + ingress/egress rules; IGW attach/detach; route tables + routes + associations; gateway VPC endpoints (S3/DynamoDB metadata); **Interface VPC endpoints** (subnet/SG/private DNS + stub ENI/DNS entries — no PrivateLink data plane); CreateTags / DescribeTags. **Lambda `VpcConfig`** on CreateFunction / UpdateFunctionConfiguration; invoke reaches RDS Proxy endpoint when configured (metadata path — no real ENI). Terraform green path [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) + [`vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) + [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) (apply local). **Console panel `/vpc`**. Public docs sync. **`simulith verify vpc`** (3 scenarios).
 
 ### Notable gaps (tracked)
 
@@ -421,13 +421,12 @@ CreateVpc / DescribeVpcs / DeleteVpc / ModifyVpcAttribute / DescribeVpcAttribute
 | Public messaging (landing/Hub) | P2 | **Shipped ** |
 | Seed demo VPC | P2 |  |
 | Public docs sync (mirror smoke) | P2 | **Shipped ** |
-| Interface VPC endpoints | P3 |  |
 
 ### Tier A reference set (17 ops)
 
-CreateVpc, DescribeVpcs, DeleteVpc; CreateSubnet, DescribeSubnets, DeleteSubnet; CreateSecurityGroup, DescribeSecurityGroups, AuthorizeSecurityGroupIngress, AuthorizeSecurityGroupEgress; CreateInternetGateway, AttachInternetGateway; CreateRouteTable, DescribeRouteTables, CreateRoute, AssociateRouteTable; CreateVpcEndpoint (gateway); Lambda **VpcConfig** on CreateFunction / UpdateFunctionConfiguration.
+CreateVpc, DescribeVpcs, DeleteVpc; CreateSubnet, DescribeSubnets, DeleteSubnet; CreateSecurityGroup, DescribeSecurityGroups, AuthorizeSecurityGroupIngress, AuthorizeSecurityGroupEgress; CreateInternetGateway, AttachInternetGateway; CreateRouteTable, DescribeRouteTables, CreateRoute, AssociateRouteTable; CreateVpcEndpoint; Lambda **VpcConfig** on CreateFunction / UpdateFunctionConfiguration.
 
-17 **available** = **100%** Tier A VPC (17 / 17). Interface endpoints remain P3.
+17 **available** = **100%** Tier A VPC (17 / 17). NAT/IGW traffic remains P3.
 
 ---
 

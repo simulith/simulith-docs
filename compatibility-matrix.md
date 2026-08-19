@@ -6,15 +6,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-15..
+Last updated: 2026-08-19..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
-| Operations **available** locally | 170 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 7, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 2, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Operations **available** locally | 172 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 3, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -117,7 +117,7 @@ Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (10 scenarios)
 
 ## S3
 
-Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (7 scenarios)
+Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (8 scenarios)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
@@ -127,9 +127,9 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (7 scenarios)
 | PutObject | available | yes (`put-get-object`, `object-round-trip`, `list-objects-v2-prefix`) | Single-part; Content-Type from header |
 | GetObject | available | yes (`put-get-object`, `object-round-trip`) | Body + Content-Type, Content-Length, ETag |
 | HeadObject | available | yes (`head-object`) | Existence check; Content-Length |
-| DeleteObject | available | yes (`delete-object`) | Idempotent (204) |
+| DeleteObject | available | yes (`delete-object`) | Idempotent (204); `versionId` matches current object |
 | CopyObject | available | — | Same/cross-bucket via `x-amz-copy-source` |
-| DeleteObjects | available | — | Batch up to 1000 keys (`POST ?delete`) |
+| DeleteObjects | available | — | Batch up to 1000 keys (`POST ?delete`); honors VersionId |
 | CreateMultipartUpload | available | — | POST `?uploads` |
 | UploadPart | available | — | `partNumber` 1–10000 |
 | CompleteMultipartUpload | available | — | Assembles parts; multipart ETag |
@@ -137,12 +137,13 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (7 scenarios)
 | GetBucketNotificationConfiguration | available | — | GET `?notification` |
 | PutBucketNotificationConfiguration | available | — | LambdaFunctionConfiguration only |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
-| PutBucketVersioning / GetBucketVersioning | available | yes (`bucket-state-config`) | Status only; no object version IDs |
+| ListObjectVersions | available | yes (`list-object-versions`) | Current objects; last-write-wins (no noncurrent history) |
+| PutBucketVersioning / GetBucketVersioning | available | yes (`bucket-state-config`) | Status; Enabled assigns current-object version IDs |
 | PutBucketEncryption / GetBucketEncryption / DeleteBucketEncryption | available | yes (`bucket-state-config`) | SSE-S3 (`AES256`); 404 when unset |
 | PutBucketLifecycleConfiguration / Get / DeleteBucketLifecycle | available | yes (`bucket-state-config`) | Rules persisted; no expiry; TDMOS header for TF waiter |
 | PutBucketTagging / GetBucketTagging | available | yes (`bucket-state-config`) | 404 when unset |
 
-**Not in matrix (gap):** SNS/SQS notification targets, `ListObjectVersions`, CORS, SSE-KMS, S3 Select, ListParts.
+**Not in matrix (gap):** SNS/SQS notification targets, CORS, SSE-KMS, S3 Select, ListParts.
 
 ---
 
@@ -299,6 +300,7 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 | CreateSubnet / DescribeSubnets / DeleteSubnet | available | yes | |
 | CreateSecurityGroup + ingress/egress | available | yes | DeleteSecurityGroup: `DescribeNetworkInterfaces` empty stub |
 | IGW / route tables / gateway endpoints | available | no | Metadata routing |
+| Interface VPC endpoints | available | yes (`interface-vpc-endpoint-lifecycle`) | Stub ENI + DNS metadata; no PrivateLink data plane |
 | Lambda VpcConfig | available | yes | ; invoke scenario in verify vpc |
 
 ---
@@ -395,7 +397,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
-| VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability` | — |
+| VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |

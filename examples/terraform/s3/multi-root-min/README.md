@@ -59,7 +59,7 @@ terraform init \
 terraform apply
 ```
 
-Destroy **reverse** order: `02-dependent` → `01-network`. Leave `terraform-state-min` in place unless you empty the bucket first — `force_destroy` on a versioned bucket calls `ListObjectVersions` (**FW-S3-024**), so bootstrap destroy is not green (same as `terraform-state-min` itself).
+Destroy **reverse** order: `02-dependent` → `01-network` → `terraform-state-min`. Versioned bucket empty uses **ListObjectVersions**.
 
 Automated smoke: `maintainer workflow (private monorepo)`
 
@@ -73,7 +73,7 @@ Automated smoke: `maintainer workflow (private monorepo)`
 
 ## Honest limits
 
-- Object writes are last-write-wins (no version IDs) — **FW-S3-024**. Terraform state still round-trips via PutObject/GetObject.
+- Object writes keep **one current version** per key (overwrite replaces the version ID) — Terraform state still round-trips via PutObject/GetObject.
 - `terraform_remote_state` needs a **hostname** endpoint (`localhost` / `127.0.0.1.sslip.io`), not `127.0.0.1`. There is no HashiCorp env for `use_path_style`. STS skip flags are gone; path-style in the data source is gone.
 - Gateway / interface VPC endpoints, NAT traffic, 6-AZ layouts: not this module — **/021**, `network-min`.
 - This is not “Simulith = AWS hardware.” It is the **same Terraform graph shape** with endpoint/creds injection.

@@ -36,7 +36,7 @@ Downstream apply that **writes** and **reads** remote state: [`../multi-root-min
 
 ## Honest limits
 
-- Versioning **status** is persisted; objects stay last-write-wins (no `ListObjectVersions`).
+- Versioning **status** is persisted; **ListObjectVersions** returns the current object per key (overwrite replaces the version ID; no noncurrent history).
 - SSE-S3 is metadata; objects are not encrypted on disk.
 - Lifecycle rules are stored and returned; they do not expire objects.
 - AWS provider v5 waits ~1 minute after PutBucketLifecycle (10 consecutive matching GETs). Apply is not hung unless it exceeds ~3 minutes.

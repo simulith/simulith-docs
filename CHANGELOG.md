@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.118.0] - 2026-08-19
+
+### Features
+
+- ****: VPC interface endpoints
+
+## [0.117.0] - 2026-08-19
+
+### Features
+
+- ****: S3 object version IDs
+
 ## [0.116.0] - 2026-08-19
 
 ### Features

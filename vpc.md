@@ -4,7 +4,7 @@ Local Amazon VPC networking emulation via the **EC2 Query API**.  / .
 
 ## Overview
 
-Simulith emulates **VPC, subnet, security group, IGW, route table, and gateway endpoint** resources on the same port as other services (default `:4566`).
+Simulith emulates **VPC, subnet, security group, IGW, route table, gateway endpoint, and interface endpoint** resources on the same port as other services (default `:4566`).
 
 - **SigV4 service name:** `ec2`
 - **Protocol:** AWS Query (`Action=…`, `application/x-www-form-urlencoded`, XML responses)
@@ -22,13 +22,16 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 | Security group | CreateSecurityGroup, DeleteSecurityGroup, DescribeSecurityGroups, Authorize/Revoke SecurityGroupIngress/Egress |
 | Internet gateway | CreateInternetGateway, Attach/DetachInternetGateway, DescribeInternetGateways, DeleteInternetGateway |
 | Routing | CreateRouteTable, DeleteRouteTable, DescribeRouteTables, CreateRoute, DeleteRoute, Associate/DisassociateRouteTable |
-| VPC endpoints | CreateVpcEndpoint, DescribeVpcEndpoints, ModifyVpcEndpoint, DeleteVpcEndpoints |
+| VPC endpoints | CreateVpcEndpoint, DescribeVpcEndpoints, ModifyVpcEndpoint, DeleteVpcEndpoints (Gateway + Interface metadata) |
 | Tags | CreateTags, DescribeTags |
-| Network interfaces | DescribeNetworkInterfaces (empty stub — Terraform SG destroy) |
+| Network interfaces | DescribeNetworkInterfaces (stub ENIs for Interface endpoints; empty otherwise) |
 
 ## Terraform
 
-Green-path example: [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) — `terraform apply` + **`terraform destroy`**.
+Green-path examples:
+
+- [`examples/terraform/vpc/network-min/`](examples/terraform/vpc/network-min/) — gateway endpoints
+- [`examples/terraform/vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) — Interface Secrets Manager endpoint
 
 ```hcl
 provider "aws" {
@@ -41,19 +44,19 @@ provider "aws" {
 ## Limits
 
 - Metadata / logical routing only — no real ENI or network namespace isolation
-- `DescribeNetworkInterfaces` returns an **empty set** so Terraform can destroy security groups
+- `DescribeNetworkInterfaces` returns stub ENIs for Interface VPC endpoints (empty otherwise) so Terraform can read `subnet_configuration`. Security group destroy still works after the endpoint is deleted.
 - `DescribeVpcAttribute` `enableNetworkAddressUsageMetrics` is a **false stub**
-- Interface VPC endpoints (Secrets Manager) deferred
+- Interface VPC endpoints are **metadata only** (subnet/SG/private DNS + stub DNS/ENI IDs). Packets do not traverse PrivateLink; clients still use the Simulith HTTP endpoint. NAT/IGW traffic remains deferred.
 
 ## Verify
 
 ```bash
-simulith verify vpc --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify vpc --skip-aws          # Simulith-only smoke (3 scenarios)
 simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
 simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
 ```
 
-Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`. Lambda invoke scenario skips when `node` is not on PATH.
+Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`. Lambda invoke scenario skips when `node` is not on PATH.
 
 ## Console
 

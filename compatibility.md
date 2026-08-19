@@ -317,7 +317,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | SES | `simulith verify ses --skip-aws` | 2 |
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
-| VPC | `simulith verify vpc --skip-aws` | 2 |
+| VPC | `simulith verify vpc --skip-aws` | 3 |
 | IAM | `simulith verify iam --skip-aws` | 2 |
 | KMS | `simulith verify kms --skip-aws` | 2 |
 
