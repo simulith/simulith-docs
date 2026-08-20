@@ -1,11 +1,11 @@
 # RDS Postgres sidecar — Simulith
 
-Local Amazon RDS emulation via **AWS JSON 1.1** with a **Postgres 15 Docker sidecar** per DB instance and **RDS Proxy TCP relay**.  / ,  / .
+Local Amazon RDS emulation via **AWS JSON 1.1** (and **AWS Query** for the Terraform AWS provider) with a **Postgres 15 Docker sidecar** per DB instance and **RDS Proxy TCP relay**.  / ,  / ,  / ,  / .
 
 ## Overview
 
 - **SigV4 service name:** `rds`
-- **Protocol:** AWS JSON 1.1 (`Content-Type: application/x-amz-json-1.1`, `X-Amz-Target: AmazonRDSv2014-10-31.<Operation>`)
+- **Protocol:** AWS JSON 1.1 (`Content-Type: application/x-amz-json-1.1`, `X-Amz-Target: AmazonRDSv2014-10-31.<Operation>`). Terraform AWS provider v5 uses **AWS Query** (`Action=…`); Simulith accepts both.
 - **Persistence:** SQLite (`rds_db_*` tables)
 - **Sidecar:** `postgres:15-alpine` via Docker CLI (one container per instance)
 
@@ -18,18 +18,22 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, and `
 | CreateDBSubnetGroup | Subnet metadata only (no ENI placement) |
 | DescribeDBSubnetGroups | Filter by name optional |
 | DeleteDBSubnetGroup | Blocked when referenced by an instance |
-| CreateDBParameterGroup | Minimal stub (family + description) |
+| CreateDBParameterGroup | Family + description; parameters stored via Modify |
 | DescribeDBParameterGroups | |
 | DeleteDBParameterGroup | |
+| ModifyDBParameterGroup | Persist user `Parameters[]` (name/value/apply method). Sidecar does **not** apply them |
+| DescribeDBParameters | Returns stored user params (`Source=user`). No engine-default catalog |
 | CreateDBInstance | **Postgres only** — starts Docker sidecar |
-| DescribeDBInstances | Returns endpoint `127.0.0.1:<hostPort>` |
+| ModifyDBInstance | Persist backup/maintenance/deletion-protection/max storage/log export/PI flags. No real backups or PI |
+| DescribeDBInstances | Returns endpoint `127.0.0.1:<hostPort>` plus stored instance settings |
 | DeleteDBInstance | Stops/removes sidecar container |
 | CreateDBProxy | POSTGRESQL proxy metadata |
 | DescribeDBProxies | Returns endpoint `127.0.0.1:<proxyPort>` after target registration |
 | DeleteDBProxy | Stops TCP relay and deletes proxy |
 | RegisterDBProxyTargets | Links proxy to DB instance; starts TCP relay |
 | DeregisterDBProxyTargets | Removes target; stops relay when last target gone |
-| ModifyDBProxyTargetGroup | Stub (connection pool config ignored locally) |
+| ListTagsForResource | Empty TagList stub (Terraform read) |
+| AddTagsToResource / RemoveTagsFromResource | No-op stubs |
 
 ## Local connectivity
 
@@ -89,4 +93,5 @@ Scenarios: `db-instance-lifecycle`, `db-proxy-tcp-connect`. **Docker must be ava
 - No snapshots or multi-AZ
 - RDS Proxy: no connection pooling semantics; TLS not terminated locally
 - Subnet groups store subnet IDs without validating against EC2 DescribeSubnets
-- Parameter group parameters are accepted by Terraform but not applied to the sidecar
+- Parameter group **user** parameters are persisted for Terraform (`ModifyDBParameterGroup` / `DescribeDBParameters`) but **not** applied to the Postgres sidecar
+- Instance backup/maintenance/deletion-protection fields are persisted but **not** executed (no snapshots, PI, or CloudWatch log shipping)

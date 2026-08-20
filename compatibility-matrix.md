@@ -6,14 +6,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-19..
+Last updated: 2026-08-20..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
-| Operations **available** locally | 176 |
+| Operations **available** locally | 178 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -316,7 +316,9 @@ Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
 | CreateDBSubnetGroup / Describe / Delete | available | yes |  |
-| CreateDBParameterGroup / Describe / Delete | available | yes | Minimal stub |
+| CreateDBParameterGroup / Describe / Delete | available | yes | Metadata stub |
+| ModifyDBParameterGroup / DescribeDBParameters | available | no | User params persisted; not applied to sidecar |
+| ModifyDBInstance | available | no | Backup/maintenance/deletion-protection metadata |
 | CreateDBInstance / Describe / Delete | available | yes | Postgres 15 Docker sidecar |
 | CreateDBProxy / Describe / Delete | available | yes |  |
 | RegisterDBProxyTargets / DeregisterDBProxyTargets | available | yes | TCP relay to instance |

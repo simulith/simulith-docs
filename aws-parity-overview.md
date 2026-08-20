@@ -8,7 +8,7 @@ Consolidated view of **Simulith vs AWS** for **seventeen** shipped services: wha
 
 > **Console panels:** [console.md](console.md) · **Operation × verify:** [compatibility-matrix.md](compatibility-matrix.md)
 
-Last updated: 2026-08-19..
+Last updated: 2026-08-20..
 
 ---
 
@@ -40,13 +40,13 @@ Last updated: 2026-08-19..
 | **SES** | 4 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
 | **VPC** | 8 | 5 / 5 scenarios | **100%** (17 / 17) | **low subset** |
-| **RDS** | 6 | 2 / 2 scenarios | **100%** (15 / 15) | **low subset** |
+| **RDS** | 8 | 2 / 2 scenarios | **100%** (17 / 17) | **low subset** |
 | **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **KMS** | 11 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **176** | 17 services with verify | **~98%** Tier A (178 / 182 ref) | — |
+| **Total** | **178** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -119,7 +119,7 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 
 **Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth).
 
-**Tier A aggregate (182 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **114 / 116** · **Overall ~98% (178 / 182)**.
+**Tier A aggregate (184 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **116 / 118** · **Overall ~98% (180 / 184)**.
 
 ---
 
@@ -436,7 +436,7 @@ Guide: [rds.md](rds.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup (minimal stub); CreateDBInstance / DescribeDBInstances / DeleteDBInstance (**Postgres 15 Docker sidecar**); **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local). **Console panel `/rds`**. Default seed instance **`demo-db`**. Product messaging + docs sync. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup; **ModifyDBParameterGroup / DescribeDBParameters**; CreateDBInstance / **ModifyDBInstance** / DescribeDBInstances / DeleteDBInstance; **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local). **Console panel `/rds`**. Default seed instance **`demo-db`**. Product messaging + docs sync. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
 
 ### Notable gaps (tracked)
 
@@ -447,11 +447,11 @@ CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBPara
 | Public docs sync (mirror smoke) | P2 | **Shipped ** |
 | MySQL / MariaDB engines | P3 | — |
 
-### Tier A reference set (15 ops)
+### Tier A reference set (17 ops)
 
-CreateDBSubnetGroup, DescribeDBSubnetGroups, DeleteDBSubnetGroup; CreateDBParameterGroup, DescribeDBParameterGroups, DeleteDBParameterGroup; CreateDBInstance, DescribeDBInstances, DeleteDBInstance; CreateDBProxy, DescribeDBProxies, DeleteDBProxy; RegisterDBProxyTargets, DeregisterDBProxyTargets; ModifyDBProxyTargetGroup (stub).
+CreateDBSubnetGroup, DescribeDBSubnetGroups, DeleteDBSubnetGroup; CreateDBParameterGroup, DescribeDBParameterGroups, DeleteDBParameterGroup; ModifyDBParameterGroup, DescribeDBParameters; CreateDBInstance, ModifyDBInstance, DescribeDBInstances, DeleteDBInstance; CreateDBProxy, DescribeDBProxies, DeleteDBProxy; RegisterDBProxyTargets, DeregisterDBProxyTargets; ModifyDBProxyTargetGroup (stub).
 
-15 **available** = **100%** Tier A RDS (15 / 15).
+17 **available** = **100%** Tier A RDS (17 / 17). ModifyDBInstance is a shipped extra outside this original ref set.
 
 ---
 

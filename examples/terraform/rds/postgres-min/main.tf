@@ -73,8 +73,33 @@ resource "aws_db_parameter_group" "postgres_params" {
   family = "postgres15"
 
   parameter {
-    name  = "shared_preload_libraries"
-    value = "pg_stat_statements"
+    name         = "shared_preload_libraries"
+    value        = "pg_stat_statements"
+    apply_method = "pending-reboot"
+  }
+
+  parameter {
+    name         = "log_statement"
+    value        = "ddl"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_min_duration_statement"
+    value        = "1000"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_connections"
+    value        = "1"
+    apply_method = "immediate"
+  }
+
+  parameter {
+    name         = "log_disconnections"
+    value        = "1"
+    apply_method = "immediate"
   }
 }
 
@@ -99,4 +124,18 @@ resource "aws_db_instance" "postgres_db" {
   port                   = 5432
 
   skip_final_snapshot = true
+
+  backup_retention_period = 0
+  backup_window           = "03:00-04:00"
+  copy_tags_to_snapshot   = true
+
+  maintenance_window          = "Mon:00:00-Mon:01:00"
+  auto_minor_version_upgrade  = true
+  allow_major_version_upgrade = false
+
+  deletion_protection             = false
+  max_allocated_storage           = 20
+  monitoring_interval             = 0
+  enabled_cloudwatch_logs_exports = []
+  performance_insights_enabled    = false
 }

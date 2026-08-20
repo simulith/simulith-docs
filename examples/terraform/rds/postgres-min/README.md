@@ -2,7 +2,7 @@
 
 Minimum Terraform subset for a Postgres instance with embedded VPC/subnet/security group — local green-path validation.
 
-**Green path:** `terraform apply -parallelism=1` then **`terraform destroy -parallelism=1`** — no `simulith reset` required. **Docker required** for the Postgres sidecar.
+**Green path:** `terraform apply -parallelism=1` then **`terraform destroy -parallelism=1`** — no `simulith reset` required. **Docker required** for the Postgres sidecar. Parameter group `parameter {}` blocks use `ModifyDBParameterGroup`; instance backup/maintenance fields use `ModifyDBInstance`. Sidecar does not take snapshots or enable Performance Insights.
 
 ## Prerequisites
 

@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.123.0] - 2026-08-20
+
+### Features
+
+- ****: RDS ModifyDBInstance
+
+## [0.122.0] - 2026-08-20
+
+### Features
+
+- ****: RDS ModifyDBParameterGroup
+
 ## [0.121.0] - 2026-08-19
 
 ### Features
