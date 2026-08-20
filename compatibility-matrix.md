@@ -13,7 +13,7 @@ Last updated: 2026-08-20..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
-| Operations **available** locally | 178 |
+| Operations **available** locally | 179 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -321,8 +321,9 @@ Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
 | ModifyDBInstance | available | no | Backup/maintenance/deletion-protection metadata |
 | CreateDBInstance / Describe / Delete | available | yes | Postgres 15 Docker sidecar |
 | CreateDBProxy / Describe / Delete | available | yes |  |
-| RegisterDBProxyTargets / DeregisterDBProxyTargets | available | yes | TCP relay to instance |
-| ModifyDBProxyTargetGroup | available | no | Stub (pool config ignored) |
+| ModifyDBProxy | available | no | Idle/debug metadata |
+| RegisterDBProxyTargets / DescribeDBProxyTargets / DeregisterDBProxyTargets | available | yes | TCP relay to instance |
+| ModifyDBProxyTargetGroup / DescribeDBProxyTargetGroups | available | no | Pool config persisted; not enforced |
 
 ---
 
@@ -332,8 +333,8 @@ Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateRole / GetRole / DeleteRole | available | yes |  /  |
-| CreatePolicy / GetPolicy / DeletePolicy | available | yes | Managed policy subset |
+| CreateRole / GetRole / DeleteRole | available | yes |  /  · ListRolePolicies / ListInstanceProfilesForRole empty stubs |
+| CreatePolicy / GetPolicy / DeletePolicy | available | yes | Managed policy subset · GetPolicyVersion / ListPolicyVersions stub |
 | AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | yes | RDS Proxy role attach |
 
 ---

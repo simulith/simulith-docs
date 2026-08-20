@@ -15,8 +15,8 @@ Compatible with Terraform `aws_iam_role`, `aws_iam_policy`, and `aws_iam_role_po
 
 | Operation | Notes |
 | --- | --- |
-| CreateRole / GetRole / DeleteRole | Assume-role policy document stored verbatim |
-| CreatePolicy / GetPolicy / DeletePolicy | Managed policy JSON document |
+| CreateRole / GetRole / DeleteRole | Assume-role policy document stored verbatim. `ListRolePolicies` and `ListInstanceProfilesForRole` return empty |
+| CreatePolicy / GetPolicy / DeletePolicy | Managed policy JSON document. `GetPolicyVersion` / `ListPolicyVersions` return default `v1` |
 | AttachRolePolicy / DetachRolePolicy | Role ↔ policy ARN |
 | ListAttachedRolePolicies | For Terraform refresh |
 

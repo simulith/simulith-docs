@@ -1,6 +1,6 @@
 # RDS Postgres sidecar — Simulith
 
-Local Amazon RDS emulation via **AWS JSON 1.1** (and **AWS Query** for the Terraform AWS provider) with a **Postgres 15 Docker sidecar** per DB instance and **RDS Proxy TCP relay**.  / ,  / ,  / ,  / .
+Local Amazon RDS emulation via **AWS JSON 1.1** (and **AWS Query** for the Terraform AWS provider) with a **Postgres 15 Docker sidecar** per DB instance and **RDS Proxy TCP relay**.  / ,  / ,  / ,  / ,  / .
 
 ## Overview
 
@@ -9,7 +9,7 @@ Local Amazon RDS emulation via **AWS JSON 1.1** (and **AWS Query** for the Terra
 - **Persistence:** SQLite (`rds_db_*` tables)
 - **Sidecar:** `postgres:15-alpine` via Docker CLI (one container per instance)
 
-Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, and `aws_db_instance` when using provider endpoint override.
+Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, `aws_db_instance`, and `aws_db_proxy` when using provider endpoint override.
 
 ## Implemented operations
 
@@ -27,11 +27,15 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, and `
 | ModifyDBInstance | Persist backup/maintenance/deletion-protection/max storage/log export/PI flags. No real backups or PI |
 | DescribeDBInstances | Returns endpoint `127.0.0.1:<hostPort>` plus stored instance settings |
 | DeleteDBInstance | Stops/removes sidecar container |
-| CreateDBProxy | POSTGRESQL proxy metadata |
-| DescribeDBProxies | Returns endpoint `127.0.0.1:<proxyPort>` after target registration |
+| CreateDBProxy | POSTGRESQL proxy metadata (idle timeout / debug logging persisted) |
+| ModifyDBProxy | Persist idle/debug/RequireTLS/auth/security groups. No real pooling or TLS |
+| DescribeDBProxies | Returns endpoint `127.0.0.1:<proxyPort>` after target registration plus stored proxy settings |
 | DeleteDBProxy | Stops TCP relay and deletes proxy |
 | RegisterDBProxyTargets | Links proxy to DB instance; starts TCP relay |
+| DescribeDBProxyTargets | Returns registered targets (Terraform Read) |
 | DeregisterDBProxyTargets | Removes target; stops relay when last target gone |
+| ModifyDBProxyTargetGroup | Persist ConnectionPoolConfig metadata (not enforced) |
+| DescribeDBProxyTargetGroups | Returns stored pool config for the default target group |
 | ListTagsForResource | Empty TagList stub (Terraform read) |
 | AddTagsToResource / RemoveTagsFromResource | No-op stubs |
 
@@ -95,3 +99,4 @@ Scenarios: `db-instance-lifecycle`, `db-proxy-tcp-connect`. **Docker must be ava
 - Subnet groups store subnet IDs without validating against EC2 DescribeSubnets
 - Parameter group **user** parameters are persisted for Terraform (`ModifyDBParameterGroup` / `DescribeDBParameters`) but **not** applied to the Postgres sidecar
 - Instance backup/maintenance/deletion-protection fields are persisted but **not** executed (no snapshots, PI, or CloudWatch log shipping)
+- Proxy idle/debug and target-group pool percents are persisted but **not** enforced (no real pooling or TLS termination)

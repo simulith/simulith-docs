@@ -2,7 +2,7 @@
 
 VPC + subnets + security groups + KMS + Secrets Manager + RDS Postgres + RDS Proxy — apply/destroy against Simulith (no remote state S3).
 
-Combines slices from [`../postgres-min/`](../postgres-min/), [`../proxy-min/`](../proxy-min/), [`../../kms/cmk-min/`](../../kms/cmk-min/), and [`../../vpc/network-min/`](../../vpc/network-min/).
+Combines slices from [`../postgres-min/`](../postgres-min/), [`../proxy-min/`](../proxy-min/), [`../../kms/cmk-min/`](../../kms/cmk-min/), and [`../../vpc/network-min/`](../../vpc/network-min/). Proxy idle/debug and default target-group pool percents use `ModifyDBProxy` / `DescribeDBProxyTargetGroups`. Local relay does not pool connections or terminate TLS.
 
 ## Resources
 

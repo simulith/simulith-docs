@@ -40,13 +40,13 @@ Last updated: 2026-08-20..
 | **SES** | 4 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
 | **VPC** | 8 | 5 / 5 scenarios | **100%** (17 / 17) | **low subset** |
-| **RDS** | 8 | 2 / 2 scenarios | **100%** (17 / 17) | **low subset** |
+| **RDS** | 9 | 2 / 2 scenarios | **100%** (17 / 17) | **low subset** |
 | **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **KMS** | 11 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **178** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
+| **Total** | **179** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -436,7 +436,7 @@ Guide: [rds.md](rds.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup; **ModifyDBParameterGroup / DescribeDBParameters**; CreateDBInstance / **ModifyDBInstance** / DescribeDBInstances / DeleteDBInstance; **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **RegisterDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup** (stub). Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local). **Console panel `/rds`**. Default seed instance **`demo-db`**. Product messaging + docs sync. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
+CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBParameterGroup / DescribeDBParameterGroups / DeleteDBParameterGroup; **ModifyDBParameterGroup / DescribeDBParameters**; CreateDBInstance / **ModifyDBInstance** / DescribeDBInstances / DeleteDBInstance; **CreateDBProxy / DescribeDBProxies / DeleteDBProxy**; **ModifyDBProxy**; **RegisterDBProxyTargets / DescribeDBProxyTargets / DeregisterDBProxyTargets**; **ModifyDBProxyTargetGroup / DescribeDBProxyTargetGroups**. Instance endpoint `127.0.0.1:<hostPort>`; proxy endpoint `127.0.0.1:<proxyPort>` via TCP relay. Terraform green path [`examples/terraform/rds/postgres-min/`](examples/terraform/rds/postgres-min/) + [`proxy-min/`](examples/terraform/rds/proxy-min/) (apply local) + [`vpc-rds-proxy-min/`](examples/terraform/rds/vpc-rds-proxy-min/). **Console panel `/rds`**. Default seed instance **`demo-db`**. Product messaging + docs sync. SQLite `rds_db_*`. SigV4 `rds` + `X-Amz-Target: AmazonRDSv2014-10-31.*`. **`simulith verify rds`** (2 scenarios; Docker required).
 
 ### Notable gaps (tracked)
 
@@ -451,7 +451,7 @@ CreateDBSubnetGroup / DescribeDBSubnetGroups / DeleteDBSubnetGroup; CreateDBPara
 
 CreateDBSubnetGroup, DescribeDBSubnetGroups, DeleteDBSubnetGroup; CreateDBParameterGroup, DescribeDBParameterGroups, DeleteDBParameterGroup; ModifyDBParameterGroup, DescribeDBParameters; CreateDBInstance, ModifyDBInstance, DescribeDBInstances, DeleteDBInstance; CreateDBProxy, DescribeDBProxies, DeleteDBProxy; RegisterDBProxyTargets, DeregisterDBProxyTargets; ModifyDBProxyTargetGroup (stub).
 
-17 **available** = **100%** Tier A RDS (17 / 17). ModifyDBInstance is a shipped extra outside this original ref set.
+17 **available** = **100%** Tier A RDS (17 / 17). ModifyDBInstance and ModifyDBProxy / DescribeDBProxyTargetGroups are shipped extras outside this original ref set.
 
 ---
 
@@ -550,7 +550,7 @@ Guide: [iam.md](iam.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). **`simulith verify iam`**. **Console panel `/iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
+CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / **GetPolicyVersion** / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies / **ListRolePolicies** (empty inline list) (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). **`simulith verify iam`**. **Console panel `/iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
 
 ### Notable gaps (tracked)
 
