@@ -19,6 +19,19 @@ resource "aws_cognito_user_pool" "main" {
     enabled = true
   }
 
+  schema {
+    name                = "tenant_id"
+    attribute_data_type = "String"
+    mutable             = true
+    required            = false
+    string_attribute_constraints {
+      min_length = 0
+      max_length = 64
+    }
+  }
+
+  deletion_protection = "INACTIVE"
+
   tags = {
     Environment = "dev"
     ManagedBy   = "terraform"

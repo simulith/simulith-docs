@@ -13,7 +13,7 @@ Last updated: 2026-08-21..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
-| Operations **available** locally | 188 |
+| Operations **available** locally | 189 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -267,6 +267,7 @@ Guide: [cognito.md](cognito.md) · Verify: `simulith verify cognito`
 | TagResource | available | no | User pool tags |
 | UntagResource | available | no | User pool tags |
 | ListTagsForResource | available | no | User pool tags |
+| AddCustomAttributes | available | no | Custom schema merge |
 
 ---
 

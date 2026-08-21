@@ -36,7 +36,7 @@ Last updated: 2026-08-20..
 | **Lambda** | 22 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | low (~29%‡) |
 | **API Gateway** | 14 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | low (~18%‡) |
 | **Secrets Manager** | 4 | 2 / 2 scenarios | **100%** (4 / 4) | low (~5%‡) |
-| **Cognito** | 21 | 2 / 2 scenarios | **90%** (18 / 20) | **low subset** |
+| **Cognito** | 22 | 2 / 2 scenarios | **90%** (18 / 20) | **low subset** |
 | **SES** | 4 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
 | **VPC** | 8 | 5 / 5 scenarios | **100%** (17 / 17) | **low subset** |
@@ -46,7 +46,7 @@ Last updated: 2026-08-20..
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 12 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **188** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
+| **Total** | **189** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -334,7 +334,7 @@ Guide: [cognito.md](cognito.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; **UpdateUserPoolClient**; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). **Lambda triggers** PreSignUp + PostConfirmation on admin lifecycle. **User pool MFA config** SetUserPoolMfaConfig / GetUserPoolMfaConfig. **User pool tags** TagResource / UntagResource / ListTagsForResource. Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios). Console panel `/cognito`. Default seed pool **`demo-pool`**. Product messaging + docs sync.
+CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool; UserPoolClient CRUD; **UpdateUserPoolClient**; **AddCustomAttributes** + **SchemaAttributes** on describe; Group CRUD; UserPoolDomain CRUD (metadata); JWKS GET `/{userPoolId}/.well-known/jwks.json`. AdminCreateUser, AdminGetUser, AdminSetUserPassword, AdminConfirmSignUp, AdminEnableUser, AdminDisableUser, AdminInitiateAuth (RS256 Access/Id tokens). **Lambda triggers** PreSignUp + PostConfirmation on admin lifecycle. **User pool MFA config** SetUserPoolMfaConfig / GetUserPoolMfaConfig. **User pool tags** TagResource / UntagResource / ListTagsForResource. Terraform green path [`examples/terraform/cognito/`](examples/terraform/cognito/). **`simulith verify cognito`** (2 scenarios). Console panel `/cognito`. Default seed pool **`demo-pool`**. Product messaging + docs sync.
 
 ### Notable gaps (tracked)
 
@@ -355,7 +355,7 @@ CreateUserPool, DescribeUserPool, ListUserPools, DeleteUserPool, UpdateUserPool;
 | AdminEnableUser, AdminDisableUser, AdminInitiateAuth | ✓ | available |
 | **SignUp**, **ConfirmSignUp** | ✓ | **gap** (P2 follow-up) |
 
-18 **available** = **90%** Tier A Cognito (18 / 20). Shipped extras (ListUserPools, UpdateUserPool, UpdateUserPoolClient, UserPoolDomain, Lambda triggers, Set/Get UserPoolMfaConfig, TagResource / UntagResource / ListTagsForResource) are outside this ref set.
+18 **available** = **90%** Tier A Cognito (18 / 20). Shipped extras (ListUserPools, UpdateUserPool, UpdateUserPoolClient, AddCustomAttributes, UserPoolDomain, Lambda triggers, Set/Get UserPoolMfaConfig, TagResource / UntagResource / ListTagsForResource) are outside this ref set.
 
 ---
 
