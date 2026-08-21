@@ -28,6 +28,7 @@ Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url 
 | AdminInitiateAuth (`ADMIN_USER_PASSWORD_AUTH`) | ✓ RS256 Access + Id tokens |
 | Lambda triggers (`PreSignUp`, `PostConfirmation`) | ✓ on admin lifecycle |
 | SetUserPoolMfaConfig / GetUserPoolMfaConfig | ✓ metadata |
+| TagResource / UntagResource / ListTagsForResource | ✓ user pool tags |
 
 ## Limits
 

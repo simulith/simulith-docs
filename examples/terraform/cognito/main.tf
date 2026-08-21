@@ -18,6 +18,11 @@ resource "aws_cognito_user_pool" "main" {
   software_token_mfa_configuration {
     enabled = true
   }
+
+  tags = {
+    Environment = "dev"
+    ManagedBy   = "terraform"
+  }
 }
 
 resource "aws_cognito_user_pool_client" "app" {
