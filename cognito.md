@@ -31,6 +31,7 @@ Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url 
 | TagResource / UntagResource / ListTagsForResource | ✓ user pool tags |
 | UpdateUserPoolClient | ✓ client settings merge |
 | AddCustomAttributes | ✓ custom schema merge |
+| ListUsers | ✓ user listing + pagination |
 
 ## Limits
 

@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.132.0] - 2026-08-21
+
+### Features
+
+- ****: Cognito ListUsers
+
 ## [0.131.0] - 2026-08-21
 
 ### Features
