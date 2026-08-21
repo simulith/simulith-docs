@@ -29,6 +29,7 @@ Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url 
 | Lambda triggers (`PreSignUp`, `PostConfirmation`) | ✓ on admin lifecycle |
 | SetUserPoolMfaConfig / GetUserPoolMfaConfig | ✓ metadata |
 | TagResource / UntagResource / ListTagsForResource | ✓ user pool tags |
+| UpdateUserPoolClient | ✓ client settings merge |
 
 ## Limits
 

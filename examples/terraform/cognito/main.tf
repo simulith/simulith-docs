@@ -32,9 +32,28 @@ resource "aws_cognito_user_pool_client" "app" {
   explicit_auth_flows = [
     "ALLOW_USER_PASSWORD_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH",
+    "ALLOW_USER_SRP_AUTH",
   ]
 
   generate_secret = false
+
+  prevent_user_existence_errors = "ENABLED"
+  enable_token_revocation       = true
+
+  access_token_validity  = 1
+  id_token_validity      = 1
+  refresh_token_validity = 30
+
+  token_validity_units {
+    access_token  = "hours"
+    id_token      = "hours"
+    refresh_token = "days"
+  }
+
+  callback_urls = ["http://localhost:5173/callback"]
+  logout_urls   = ["http://localhost:5173"]
+
+  supported_identity_providers = ["COGNITO"]
 }
 
 resource "aws_cognito_user_group" "admin" {
