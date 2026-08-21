@@ -21,7 +21,7 @@ runtime/examples/terraform/
 ├── eventbridge/        ← rate rule → Lambda target
 ├── vpc/                ← network-min; interface-endpoint-min; nat-gateway-min; network-acl-min
 ├── rds/                ← postgres-min, proxy-min, vpc-rds-proxy-min (Docker sidecar)
-├── iam/                ← proxy-roles-min (RDS Proxy role wiring)
+├── iam/                ← proxy-roles-min (RDS Proxy role wiring); lambda-roles-min (inline execution role)
 ├── kms/                ← cmk-min (CMK + alias)
 ├── route53/            ← zone-min (hosted zone + A/CNAME)
 ├── acm/                ← cert-min (certificate + DNS validation)
@@ -63,6 +63,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`rds/postgres-min/`](rds/postgres-min/) | Green | Green | Embedded VPC + Postgres sidecar; `-parallelism=1`; **Docker required**; [README](rds/postgres-min/README.md) |
 | [`rds/vpc-rds-proxy-min/`](rds/vpc-rds-proxy-min/) | Green | Green | Single-root VPC + KMS + SM + RDS + Proxy; `-parallelism=1`; **Docker required**; [README](rds/vpc-rds-proxy-min/README.md) |
 | [`kms/cmk-min/`](kms/cmk-min/) | Green | Green | CMK + alias + secret + `enable_key_rotation`; `-parallelism=1`; [README](kms/cmk-min/README.md) |
+| [`iam/lambda-roles-min/`](iam/lambda-roles-min/) | Green | Green | Lambda trust + inline `aws_iam_role_policy`; `-parallelism=1`; [README](iam/lambda-roles-min/README.md) |
 | [`route53/zone-min/`](route53/zone-min/) | Green | Green | Hosted zone + A/CNAME records; `endpoints { route53 }`; `-parallelism=1`; [README](route53/zone-min/README.md) |
 | [`acm/cert-min/`](acm/cert-min/) | Green | Green | ACM certificate + Route 53 DNS validation; `endpoints { acm, route53 }`; `-parallelism=1`; [README](acm/cert-min/README.md) |
 | [`cloudfront/cdn-min/`](cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME; `endpoints { s3, cloudfront, route53 }`; `-parallelism=1`; [README](cloudfront/cdn-min/README.md) |

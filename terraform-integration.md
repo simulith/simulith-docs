@@ -274,6 +274,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | --- | --- | --- | --- |
 | [`rds/proxy-min/`](examples/terraform/rds/proxy-min/) | Local | TBD | DB proxy + target registration |
 | [`iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/) | Local | TBD | Role, policy, attach |
+| [`iam/lambda-roles-min/`](examples/terraform/iam/lambda-roles-min/) | Green | Green | Lambda trust + inline `aws_iam_role_policy` |
 | [`lambda-vpc-rds/full-stack-min/`](examples/terraform/lambda-vpc-rds/full-stack-min/) | Local | TBD | Legacy self-contained stack; prefer **`transaction-min/`** |
 
 Index: [`examples/terraform/README.md`](examples/terraform/README.md).
@@ -318,6 +319,7 @@ maintainer workflow (private monorepo) --module dynamodb-sqs
 maintainer workflow (private monorepo) --module s3
 maintainer workflow (private monorepo) --module s3-lambda
 maintainer workflow (private monorepo) --module ssm-path
+maintainer workflow (private monorepo) --module iam-lambda-roles-min
 maintainer workflow (private monorepo) --module kms-cmk-min
 maintainer workflow (private monorepo) --module route53-zone-min
 maintainer workflow (private monorepo) --module acm-cert-min
@@ -342,7 +344,7 @@ Allowed delta vs AWS (endpoint / creds only):
 | AWS provider | `use_simulith_endpoint` in first-party examples, or a gitignored `*_override.tf` on unmodified roots |
 | `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints`, skip_*, or `use_path_style` in `.tf`.** STS `GetCallerIdentity` is stubbed (account `000000000000`). Use a **hostname** that wildcard-resolves to loopback (`localhost` on macOS/Linux; `127.0.0.1.sslip.io` on Windows). A raw IP makes Terraform request `http://<bucket>.<ip>/`, which does not resolve. **`-backend-config` does not apply** to this data source. |
 
-Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: packet NAT/IGW/NACL data plane (product out of scope). Interface endpoints, NAT Gateway, and Network ACL **metadata** shipped. KMS `enable_key_rotation` shipped. RDS `ModifyDBParameterGroup` shipped. RDS `ModifyDBInstance` backup/maintenance metadata shipped. RDS `ModifyDBProxy` idle/pool metadata shipped. Next unmodified-root candidate: TBD (next failing AWS op after production Proxy idle/pool settings).
+Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: packet NAT/IGW/NACL data plane (product out of scope). Interface endpoints, NAT Gateway, and Network ACL **metadata** shipped. KMS `enable_key_rotation` shipped. RDS `ModifyDBParameterGroup` shipped. RDS `ModifyDBInstance` backup/maintenance metadata shipped. RDS `ModifyDBProxy` idle/pool metadata shipped. IAM inline role policies (`PutRolePolicy` / `aws_iam_role_policy`) in  / . Next unmodified-root candidate: TBD after Lambda inline policies.
 
 Backlog: .
 

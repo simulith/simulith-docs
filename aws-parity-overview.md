@@ -41,12 +41,12 @@ Last updated: 2026-08-20..
 | **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
 | **VPC** | 8 | 5 / 5 scenarios | **100%** (17 / 17) | **low subset** |
 | **RDS** | 9 | 2 / 2 scenarios | **100%** (17 / 17) | **low subset** |
-| **IAM** | 3 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
+| **IAM** | 4 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
 | **KMS** | 11 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **179** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
+| **Total** | **180** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -550,19 +550,19 @@ Guide: [iam.md](iam.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / **GetPolicyVersion** / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies / **ListRolePolicies** (empty inline list) (RDS Proxy role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/). **`simulith verify iam`**. **Console panel `/iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
+CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / **GetPolicyVersion** / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies; **PutRolePolicy / GetRolePolicy / DeleteRolePolicy** / **ListRolePolicies** (inline names) (RDS Proxy + Lambda execution-role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/) and [`examples/terraform/iam/lambda-roles-min/`](examples/terraform/iam/lambda-roles-min/). **`simulith verify iam`**. **Console panel `/iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| Lambda execution roles (depth) | P1 |  |
+| AWS managed policy catalog / instance profiles | P3 |  /  |
 
 ### Tier A reference set (9 ops)
 
 CreateRole, GetRole, DeleteRole; CreatePolicy, GetPolicy, DeletePolicy; AttachRolePolicy, DetachRolePolicy, ListAttachedRolePolicies.
 
-9 **available** = **100%** Tier A IAM (9 / 9). Lambda execution roles are a **depth** story outside this ref set.
+9 **available** = **100%** Tier A IAM (9 / 9). Lambda inline execution roles are shipped extras outside this original ref set.
 
 ---
 
