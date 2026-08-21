@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.128.0] - 2026-08-21
+
+### Features
+
+- ****: CloudFront distribution tags IPv6 SPA errors
+
+## [0.127.0] - 2026-08-21
+
+### Features
+
+- ****: CloudFront managed cache policies
+
 ## [0.126.0] - 2026-08-21
 
 ### Features

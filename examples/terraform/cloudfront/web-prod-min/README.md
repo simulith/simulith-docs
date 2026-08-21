@@ -15,7 +15,8 @@ Extends [`cdn-min/`](../cdn-min/) (default CloudFront cert) with patterns from [
 | `aws_s3_bucket_public_access_block` | PutPublicAccessBlock, GetPublicAccessBlock |
 | `aws_s3_bucket_policy` | PutBucketPolicy, GetBucketPolicy, DeleteBucketPolicy |
 | `aws_cloudfront_origin_access_control` | CreateOriginAccessControl, DeleteOriginAccessControl |
-| `aws_cloudfront_distribution` (aliases + ACM viewer cert) | CreateDistribution, UpdateDistribution, DeleteDistribution |
+| `data.aws_cloudfront_cache_policy` | ListCachePolicies, GetCachePolicy |
+| `aws_cloudfront_distribution` (aliases + ACM + cache_policy_id + IPv6 + SPA errors + tags) | CreateDistribution, TagResource, UpdateDistribution, DeleteDistribution |
 | `aws_route53_record` (CNAME or apex A alias) | ChangeResourceRecordSets |
 
 ## Usage

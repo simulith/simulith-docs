@@ -97,8 +97,13 @@ resource "aws_cloudfront_origin_access_control" "cdn" {
   signing_protocol                  = "sigv4"
 }
 
+data "aws_cloudfront_cache_policy" "caching_optimized" {
+  name = "Managed-CachingOptimized"
+}
+
 resource "aws_cloudfront_distribution" "cdn" {
   enabled             = true
+  is_ipv6_enabled     = true
   default_root_object = "index.html"
   comment             = "${var.project_name} ${var.environment} web prod CDN (Simulith green path)"
   aliases             = [var.domain_name]
@@ -115,14 +120,21 @@ resource "aws_cloudfront_distribution" "cdn" {
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
     compress               = true
+    cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
+  }
 
-    forwarded_values {
-      query_string = false
+  custom_error_response {
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
+  }
 
-      cookies {
-        forward = "none"
-      }
-    }
+  custom_error_response {
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
   }
 
   restrictions {
@@ -135,6 +147,11 @@ resource "aws_cloudfront_distribution" "cdn" {
     acm_certificate_arn      = aws_acm_certificate.cdn.arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
+  }
+
+  tags = {
+    Project   = var.project_name
+    ManagedBy = "terraform"
   }
 
   depends_on = [aws_acm_certificate_validation.cdn]

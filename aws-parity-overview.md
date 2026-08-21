@@ -45,8 +45,8 @@ Last updated: 2026-08-20..
 | **KMS** | 11 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
-| **CloudFront** | 9 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **181** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
+| **CloudFront** | 12 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
+| **Total** | **184** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -527,7 +527,7 @@ RequestCertificate, DescribeCertificate, ListCertificates, DeleteCertificate, Li
 
 Guide: [cloudfront.md](cloudfront.md) · Backlog: the product backlog
 
-CreateOriginAccessControl / GetOriginAccessControl / CreateDistribution / GetDistribution / ListDistributions / GetDistributionConfig / UpdateDistribution / DeleteDistribution / DeleteOriginAccessControl. **Local CDN stub** — no edge caching. **Terraform green path** [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/). **`simulith verify cloudfront`**. **Console panel `/cloudfront`**. **Seed** demo OAC + distribution **`E0DEMOCF00001`**. SQLite `cloudfront_*`. SigV4 `cloudfront` REST/XML.
+CreateOriginAccessControl / GetOriginAccessControl / CreateDistribution / GetDistribution / ListDistributions / GetDistributionConfig / UpdateDistribution / DeleteDistribution / DeleteOriginAccessControl. **ListCachePolicies / GetCachePolicy** AWS managed catalog. **TagResource** distribution tags; **IsIPV6Enabled** and SPA custom errors. **Terraform green path** [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/cdn-min/) and [`web-prod-min/`](examples/terraform/cloudfront/web-prod-min/) (`Managed-CachingOptimized`). **`simulith verify cloudfront`**. **Console panel `/cloudfront`**. **Seed** demo OAC + distribution **`E0DEMOCF00001`**. SQLite `cloudfront_*`. SigV4 `cloudfront` REST/XML.
 
 ### Notable gaps (tracked)
 
@@ -540,7 +540,7 @@ CreateOriginAccessControl / GetOriginAccessControl / CreateDistribution / GetDis
 
 CreateOriginAccessControl, GetOriginAccessControl, CreateDistribution, GetDistribution, ListDistributions, GetDistributionConfig, UpdateDistribution, DeleteDistribution, DeleteOriginAccessControl.
 
-9 **available** = **100%** Tier A CloudFront (9 / 9).
+9 **available** = **100%** Tier A CloudFront (9 / 9). Shipped extras (ListCachePolicies / GetCachePolicy / TagResource) are outside this ref set.
 
 ---
 
