@@ -16,7 +16,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | Lambda | [`lambda/`](examples/terraform/lambda/) | Yes — function + SQS ESM; env vars + config update on re-apply |
 | API Gateway | [`apigateway/`](examples/terraform/apigateway/) | Yes — REST API + Lambda proxy + stage |
 | Secrets Manager | [`secretsmanager/`](examples/terraform/secretsmanager/) | Yes — secret + version |
-| Cognito | [`cognito/`](examples/terraform/cognito/) | Yes — user pool + client + group |
+| Cognito | [`cognito/`](examples/terraform/cognito/) | Yes — user pool + client + group + OPTIONAL software-token MFA |
 | SES | [`ses/`](examples/terraform/ses/) | Yes — email identity + template |
 | EventBridge | [`eventbridge/`](examples/terraform/eventbridge/) | Yes — rate rule + Lambda target |
 
@@ -252,7 +252,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`lambda/`](examples/terraform/lambda/) | Green | Green | CreateFunction, GetFunction, DeleteFunction, CreateQueue, GetQueueAttributes, DeleteQueue, Create/List/Get/DeleteEventSourceMapping |
 | [`apigateway/`](examples/terraform/apigateway/) | Green | Green | RestApi CRUD reads/deletes, resource/method/integration, deployment/stage, Lambda AddPermission/RemovePermission/GetPolicy — `-parallelism=1` |
 | [`secretsmanager/`](examples/terraform/secretsmanager/) | Green | Green | CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, DeleteSecret — `-parallelism=1` |
-| [`cognito/`](examples/terraform/cognito/) | Green | Green | User pool + client + group; JWKS at `/{poolId}/.well-known/jwks.json` |
+| [`cognito/`](examples/terraform/cognito/) | Green | Green | User pool + client + group; Set/Get UserPoolMfaConfig; JWKS at `/{poolId}/.well-known/jwks.json` |
 | [`ses/`](examples/terraform/ses/) | Green | Green | Email identity + template; Send* outbox local |
 | [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
 | [`vpc/network-min/`](examples/terraform/vpc/network-min/) | Green | Green | VPC, IGW, route tables, gateway endpoints, subnet, SG — `-parallelism=1` |
@@ -344,7 +344,7 @@ Allowed delta vs AWS (endpoint / creds only):
 | AWS provider | `use_simulith_endpoint` in first-party examples, or a gitignored `*_override.tf` on unmodified roots |
 | `data.terraform_remote_state` | Env: `AWS_ENDPOINT_URL` / `AWS_ENDPOINT_URL_S3` / `AWS_ENDPOINT_URL_DYNAMODB` (+ creds). **No `endpoints`, skip_*, or `use_path_style` in `.tf`.** STS `GetCallerIdentity` is stubbed (account `000000000000`). Use a **hostname** that wildcard-resolves to loopback (`localhost` on macOS/Linux; `127.0.0.1.sslip.io` on Windows). A raw IP makes Terraform request `http://<bucket>.<ip>/`, which does not resolve. **`-backend-config` does not apply** to this data source. |
 
-Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: packet NAT/IGW/NACL data plane (product out of scope). Interface endpoints, NAT Gateway, and Network ACL **metadata** shipped. KMS `enable_key_rotation` shipped. RDS `ModifyDBParameterGroup` shipped. RDS `ModifyDBInstance` backup/maintenance metadata shipped. RDS `ModifyDBProxy` idle/pool metadata shipped. IAM inline role policies (`PutRolePolicy` / `aws_iam_role_policy`) in  / . Next unmodified-root candidate: TBD after Lambda inline policies.
+Do not copy a customer Terraform tree into this repo. Remaining AWS gaps from that discovery: packet NAT/IGW/NACL data plane (product out of scope). Interface endpoints, NAT Gateway, and Network ACL **metadata** shipped. KMS `enable_key_rotation` shipped. RDS `ModifyDBParameterGroup` shipped. RDS `ModifyDBInstance` backup/maintenance metadata shipped. RDS `ModifyDBProxy` idle/pool metadata shipped. IAM inline role policies (`PutRolePolicy` / `aws_iam_role_policy`) shipped. Cognito pool MFA config (`SetUserPoolMfaConfig`) in this change. Next unmodified-root candidate: TBD (next failing AWS op after pool MFA config).
 
 Backlog: .
 

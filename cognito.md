@@ -27,13 +27,14 @@ Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url 
 | AdminEnableUser / AdminDisableUser | ✓ |
 | AdminInitiateAuth (`ADMIN_USER_PASSWORD_AUTH`) | ✓ RS256 Access + Id tokens |
 | Lambda triggers (`PreSignUp`, `PostConfirmation`) | ✓ on admin lifecycle |
+| SetUserPoolMfaConfig / GetUserPoolMfaConfig | ✓ metadata |
 
 ## Limits
 
 - Passwords stored plaintext locally (dev only)
 - Refresh token is an opaque stub (no refresh rotation)
 - No Hosted UI / OAuth authorize / token endpoints yet
-- No MFA TOTP complete flows
+- Pool MFA config is metadata only; no TOTP challenge (AssociateSoftwareToken / VerifySoftwareToken)
 - No Identity Pools
 - No `SignUp` / `ConfirmSignUp` public APIs yet (admin path + triggers supported)
 - Domain is metadata only (no real CloudFront)
@@ -133,7 +134,7 @@ Green path: [`examples/terraform/cognito/`](examples/terraform/cognito/).
 
 ```hcl
 endpoints {
-  cognito_idp = var.simulith_endpoint
+  cognitoidp = var.simulith_endpoint
 }
 ```
 

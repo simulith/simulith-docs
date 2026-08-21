@@ -1,6 +1,6 @@
 # Terraform — Cognito User Pool (Simulith)
 
-Green path for `aws_cognito_user_pool` + client + group against Simulith.
+Green path for `aws_cognito_user_pool` (OPTIONAL software-token MFA) + client + group against Simulith.
 
 ## Prerequisites
 

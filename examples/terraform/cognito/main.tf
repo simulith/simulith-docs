@@ -12,6 +12,12 @@ resource "aws_cognito_user_pool" "main" {
   password_policy {
     minimum_length = 8
   }
+
+  mfa_configuration = "OPTIONAL"
+
+  software_token_mfa_configuration {
+    enabled = true
+  }
 }
 
 resource "aws_cognito_user_pool_client" "app" {

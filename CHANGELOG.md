@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.126.0] - 2026-08-21
+
+### Features
+
+- ****: Cognito user pool MFA config
+
 ## [0.125.0] - 2026-08-20
 
 ### Features

@@ -16,7 +16,7 @@ runtime/examples/terraform/
 ├── lambda/             ← aws_lambda_function + aws_sqs_queue + event source mapping
 ├── apigateway/         ← RestApi + Lambda AWS_PROXY + stage + permission
 ├── secretsmanager/     ← aws_secretsmanager_secret + secret_version
-├── cognito/            ← aws_cognito_user_pool + client + group
+├── cognito/            ← aws_cognito_user_pool + client + group + OPTIONAL software-token MFA
 ├── ses/                ← aws_ses_email_identity + template
 ├── eventbridge/        ← rate rule → Lambda target
 ├── vpc/                ← network-min; interface-endpoint-min; nat-gateway-min; network-acl-min

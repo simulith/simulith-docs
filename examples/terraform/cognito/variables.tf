@@ -17,10 +17,10 @@ variable "aws_region" {
 
 variable "pool_name" {
   type    = string
-  default = "simulith-cognito-tf"
+  default = "demoapp-cognito-tf"
 }
 
 variable "client_name" {
   type    = string
-  default = "simulith-app-tf"
+  default = "demoapp-cognito-client"
 }

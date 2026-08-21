@@ -10,7 +10,7 @@ provider "aws" {
   dynamic "endpoints" {
     for_each = var.use_simulith_endpoint ? [1] : []
     content {
-      cognito_idp = var.simulith_endpoint
+      cognitoidp = var.simulith_endpoint
     }
   }
 }
