@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.134.0] - 2026-08-24
+
+### Features
+
+- ****: Cognito PreSignUp Lambda trigger Terraform
+
 ## [0.133.0] - 2026-08-24
 
 ### Features

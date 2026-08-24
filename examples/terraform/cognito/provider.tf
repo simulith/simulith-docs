@@ -13,6 +13,7 @@ provider "aws" {
       cognitoidp = var.simulith_endpoint
       lambda     = var.simulith_endpoint
       iam        = var.simulith_endpoint
+      sts        = var.simulith_endpoint
     }
   }
 }

@@ -1,6 +1,6 @@
 # Terraform — Cognito User Pool (Simulith)
 
-Green path for `aws_cognito_user_pool` (MFA + custom schema + Lambda PostConfirmation trigger + domain) + client + group against Simulith.
+Green path for `aws_cognito_user_pool` (MFA + schema + **PreSignUp + PostConfirmation** Lambda triggers + domain) + client + group against Simulith.
 
 ## Prerequisites
 
