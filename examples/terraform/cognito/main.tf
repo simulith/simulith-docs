@@ -32,6 +32,25 @@ resource "aws_cognito_user_pool" "main" {
 
   deletion_protection = "INACTIVE"
 
+  account_recovery_setting {
+    recovery_mechanism {
+      name     = "verified_email"
+      priority = 1
+    }
+  }
+
+  admin_create_user_config {
+    allow_admin_create_user_only = false
+  }
+
+  user_attribute_update_settings {
+    attributes_require_verification_before_update = ["email"]
+  }
+
+  lambda_config {
+    post_confirmation = aws_lambda_function.post_confirmation.arn
+  }
+
   tags = {
     Environment = "dev"
     ManagedBy   = "terraform"
@@ -67,6 +86,11 @@ resource "aws_cognito_user_pool_client" "app" {
   logout_urls   = ["http://localhost:5173"]
 
   supported_identity_providers = ["COGNITO"]
+}
+
+resource "aws_cognito_user_pool_domain" "main" {
+  domain       = var.domain_prefix
+  user_pool_id = aws_cognito_user_pool.main.id
 }
 
 resource "aws_cognito_user_group" "admin" {

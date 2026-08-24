@@ -1,6 +1,6 @@
 # Terraform — Cognito User Pool (Simulith)
 
-Green path for `aws_cognito_user_pool` (OPTIONAL software-token MFA) + client + group against Simulith.
+Green path for `aws_cognito_user_pool` (MFA + custom schema + Lambda PostConfirmation trigger + domain) + client + group against Simulith.
 
 ## Prerequisites
 
@@ -29,4 +29,4 @@ terraform destroy -var-file=terraform.tfvars -auto-approve
 
 ## Limits
 
-See [`runtime/docs/cognito.md`](../../../cognito.md). Domain / Hosted UI not in this module.
+See [`runtime/docs/cognito.md`](../../../cognito.md). Hosted UI on the domain is metadata-only locally; trigger Lambdas must exist in Simulith Lambda before apply completes `lambda_config`.

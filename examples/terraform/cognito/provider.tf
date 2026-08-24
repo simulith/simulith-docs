@@ -11,6 +11,8 @@ provider "aws" {
     for_each = var.use_simulith_endpoint ? [1] : []
     content {
       cognitoidp = var.simulith_endpoint
+      lambda     = var.simulith_endpoint
+      iam        = var.simulith_endpoint
     }
   }
 }

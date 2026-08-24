@@ -10,6 +10,10 @@ output "client_id" {
   value = aws_cognito_user_pool_client.app.id
 }
 
+output "domain" {
+  value = aws_cognito_user_pool_domain.main.domain
+}
+
 output "jwks_url" {
   value = "${var.simulith_endpoint}/${aws_cognito_user_pool.main.id}/.well-known/jwks.json"
 }

@@ -24,3 +24,8 @@ variable "client_name" {
   type    = string
   default = "demoapp-cognito-client"
 }
+
+variable "domain_prefix" {
+  type    = string
+  default = "demoapp-cognito-tf"
+}
