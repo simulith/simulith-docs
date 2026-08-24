@@ -1,5 +1,6 @@
-aws_region            = "us-east-1"
 use_simulith_endpoint = true
 simulith_endpoint     = "http://127.0.0.1:4566"
-email_identity        = "otp@example.com"
-template_name         = "otp"
+aws_region            = "us-east-1"
+project_name          = "demoapp"
+environment           = "dev"
+from_email            = "noreply@localhost"

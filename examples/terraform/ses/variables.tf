@@ -13,12 +13,17 @@ variable "simulith_endpoint" {
   default = "http://127.0.0.1:4566"
 }
 
-variable "email_identity" {
+variable "project_name" {
   type    = string
-  default = "otp@example.com"
+  default = "demoapp"
 }
 
-variable "template_name" {
+variable "environment" {
   type    = string
-  default = "otp"
+  default = "dev"
+}
+
+variable "from_email" {
+  type    = string
+  default = "noreply@localhost"
 }
