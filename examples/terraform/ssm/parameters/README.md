@@ -21,7 +21,7 @@
 
 The workspace name only isolates Terraform **state** — it does **not** switch the provider endpoint. That comes from `use_simulith_endpoint` in the var file.
 
-27 parameters: secrets (`SecureString`), config (`String`), infra refs (VPC, subnets, RDS proxy, Cognito, SES, JWT).
+26 parameters: secrets (`SecureString`), config (`String`), infra refs (VPC, subnets, RDS proxy, Cognito, SES, JWT).
 
 ## Run (Simulith local)
 
@@ -84,7 +84,7 @@ aws ssm get-parameters-by-path --path /SIMULITH/DEV --recursive \
   --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
 ```
 
-**Console:** open SSM → path prefix `/SIMULITH/DEV` → Refresh. This example creates **27** parameters; the Console paginates `GetParametersByPath` (10 per page).
+**Console:** open SSM → path prefix `/SIMULITH/DEV` → Refresh. This example creates **26** parameters; the Console paginates `GetParametersByPath` (10 per page).
 
 ## GetParametersByPath (Terraform refresh)
 
