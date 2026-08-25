@@ -1,17 +1,18 @@
-# Production multi-root green path — vpc → subnets (Simulith)
+# Production multi-root green path — vpc → subnets → secrets (Simulith)
 
-Generic **three-step** graph matching production apply order with S3 remote state between roots. Names are `demoapp` / `demo-terraform-state`.
+Generic **four-step** graph matching production apply order with S3 remote state between roots. Names are `demoapp` / `demo-terraform-state`.
 
 ```text
 terraform-state-min/           local state → versioned bucket + lock table
 multi-root-green-path/
   01-vpc/                      backend "s3" → production vpc/ shape (7 resources)
   02-subnets/                  backend "s3" + terraform_remote_state → subnets/ shape (12 resources)
+  03-secrets/                  backend "s3" + terraform_remote_state → secrets/ shape (6 resources)
 ```
 
-Single-root twins: [`../vpc-root/`](../vpc-root/) · [`../subnets/`](../subnets/). Minimal remote-state probe: [`../s3/multi-root-min/`](../s3/multi-root-min/).
+Single-root twins: [`../vpc-root/`](../vpc-root/) · [`../subnets/`](../subnets/) · [`../secrets/`](../secrets/). Minimal remote-state probe: [`../s3/multi-root-min/`](../s3/multi-root-min/).
 
-**Requires Simulith** on `:4566` with S3 + DynamoDB + EC2 (VPC).
+**Requires Simulith** on `:4566` with S3 + DynamoDB + EC2 (VPC) + KMS + Secrets Manager.
 
 ## Usage (native Simulith)
 
@@ -41,9 +42,15 @@ export AWS_SECRET_ACCESS_KEY=secret
 export AWS_EC2_METADATA_DISABLED=true
 terraform init -backend-config=backend.simulith.hcl
 terraform apply -var-file=terraform.tfvars -parallelism=1 -auto-approve
+
+# 3 — secrets root (same remote state env as step 2)
+cd ../03-secrets
+cp terraform.tfvars.native.example terraform.tfvars
+terraform init -backend-config=backend.simulith.hcl
+terraform apply -var-file=terraform.tfvars -parallelism=1 -auto-approve
 ```
 
-**Windows (PowerShell)** — remote state env for step 2 (use `127.0.0.1.sslip.io:4566` if `localhost` fails for virtual-hosted S3). Update `backend.simulith.hcl` endpoints to match.
+**Windows (PowerShell)** — remote state env for steps 2–3 (use `127.0.0.1.sslip.io:4566` if `localhost` fails for virtual-hosted S3). Update `backend.simulith.hcl` endpoints to match.
 
 ```powershell
 $env:AWS_ENDPOINT_URL = "http://127.0.0.1.sslip.io:4566"
@@ -54,6 +61,6 @@ $env:AWS_SECRET_ACCESS_KEY = "secret"
 $env:AWS_EC2_METADATA_DISABLED = "true"
 ```
 
-Destroy **reverse** order: `02-subnets` → `01-vpc` → `terraform-state-min`.
+Destroy **reverse** order: `03-secrets` → `02-subnets` → `01-vpc` → `terraform-state-min`.
 
-See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 / .
+See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 /  / .
