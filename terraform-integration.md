@@ -257,7 +257,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`ses/`](examples/terraform/ses/) | Green | Green | Identity + OTP template; outputs `from_email` / `otp_template_name` |
 | [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
 | [`vpc/network-min/`](examples/terraform/vpc/network-min/) | Green | Green | VPC, IGW, route tables, gateway endpoints, subnet, SG — `-parallelism=1` |
-| [`multi-root-green-path/`](examples/terraform/multi-root-green-path/) | Green | Green | Production chain: bootstrap → **01-vpc** → **02-subnets** → **03-secrets** → **04-postgresdb** → **05-proxydb** via S3 remote state — `-parallelism=1` |
+| [`multi-root-green-path/`](examples/terraform/multi-root-green-path/) | Green | Green | Production chain: bootstrap → **01-vpc** → **02-subnets** → **03-secrets** → **04-postgresdb** → **05-proxydb** → **06-ses** → **07-cognito** via S3 remote state — `-parallelism=1` |
 | [`vpc-root/`](examples/terraform/vpc-root/) | Green | Green | Production **vpc/** root: VPC + IGW + RTs + S3/DDB gateway endpoints; outputs `vpc_id` / `vpc_cidr_block` / route table IDs — `-parallelism=1` |
 | [`subnets/`](examples/terraform/subnets/) | Green | Green | 6 database subnets + RT associations; outputs `database_subnet_*_id` / `vpc_id` |
 | [`postgresdb/`](examples/terraform/postgresdb/) | Green | Green | RDS Postgres + subnet/param groups + DB SG; outputs `postgres_db_*` — `-parallelism=1`; **Docker required** |
