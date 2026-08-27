@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.150.0] - 2026-08-27
+
+### Features
+
+- ****: Production multi-root dynamodb Terraform green path
+
 ## [0.149.0] - 2026-08-27
 
 ### Features
