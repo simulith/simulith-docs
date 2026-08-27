@@ -1,6 +1,6 @@
-# Production multi-root green path — vpc → subnets → secrets → postgresdb → proxydb → ses → cognito (Simulith)
+# Production multi-root green path — vpc → subnets → secrets → postgresdb → proxydb → ses → cognito → parameters (Simulith)
 
-Generic **eight-step** graph matching production apply order with S3 remote state between roots. Names are `demoapp` / `demo-terraform-state`.
+Generic **nine-step** graph matching production apply order with S3 remote state between roots. Names are `demoapp` / `demo-terraform-state`.
 
 ```text
 terraform-state-min/           local state → versioned bucket + lock table
@@ -12,11 +12,12 @@ multi-root-green-path/
   05-proxydb/                  backend "s3" + terraform_remote_state → proxydb/ shape (7 resources)
   06-ses/                      backend "s3" → production ses/ shape (2 resources)
   07-cognito/                  backend "s3" → production cognito/ shape (12 resources)
+  08-parameters/               backend "s3" + terraform_remote_state → parameters/ shape (26 resources)
 ```
 
-Single-root twins: [`../vpc-root/`](../vpc-root/) · [`../subnets/`](../subnets/) · [`../secrets/`](../secrets/) · [`../postgresdb/`](../postgresdb/) · [`../proxydb/`](../proxydb/) · [`../ses/`](../ses/) · [`../cognito/`](../cognito/). Minimal remote-state probe: [`../s3/multi-root-min/`](../s3/multi-root-min/).
+Single-root twins: [`../vpc-root/`](../vpc-root/) · [`../subnets/`](../subnets/) · [`../secrets/`](../secrets/) · [`../postgresdb/`](../postgresdb/) · [`../proxydb/`](../proxydb/) · [`../ses/`](../ses/) · [`../cognito/`](../cognito/) · [`../ssm/parameters/`](../ssm/parameters/). Minimal remote-state probe: [`../s3/multi-root-min/`](../s3/multi-root-min/).
 
-**Requires Simulith** on `:4566` with S3 + DynamoDB + EC2 (VPC) + KMS + Secrets Manager + IAM + RDS (Docker sidecar) + SES + Cognito + Lambda.
+**Requires Simulith** on `:4566` with S3 + DynamoDB + EC2 (VPC) + KMS + Secrets Manager + IAM + RDS (Docker sidecar) + SES + Cognito + Lambda + SSM.
 
 ## Usage (native Simulith)
 
@@ -76,9 +77,15 @@ cd ../07-cognito
 cp terraform.tfvars.native.example terraform.tfvars
 terraform init -backend-config=backend.simulith.hcl
 terraform apply -var-file=terraform.tfvars -parallelism=1 -auto-approve
+
+# 8 — parameters root (same remote state env; reads subnets + secrets + proxydb + cognito + ses)
+cd ../08-parameters
+cp terraform.tfvars.native.example terraform.tfvars
+terraform init -backend-config=backend.simulith.hcl
+terraform apply -var-file=terraform.tfvars -parallelism=1 -auto-approve
 ```
 
-**Windows (PowerShell)** — remote state env for steps 2–7 (use `127.0.0.1.sslip.io:4566` if `localhost` fails for virtual-hosted S3). Update `backend.simulith.hcl` endpoints to match.
+**Windows (PowerShell)** — remote state env for steps 2–8 (use `127.0.0.1.sslip.io:4566` if `localhost` fails for virtual-hosted S3). Update `backend.simulith.hcl` endpoints to match.
 
 ```powershell
 $env:AWS_ENDPOINT_URL = "http://127.0.0.1.sslip.io:4566"
@@ -89,6 +96,14 @@ $env:AWS_SECRET_ACCESS_KEY = "secret"
 $env:AWS_EC2_METADATA_DISABLED = "true"
 ```
 
-Destroy **reverse** order: `07-cognito` → `06-ses` → `05-proxydb` → `04-postgresdb` → `03-secrets` → `02-subnets` → `01-vpc` → `terraform-state-min`.
+Destroy **reverse** order: `08-parameters` → `07-cognito` → `06-ses` → `05-proxydb` → `04-postgresdb` → `03-secrets` → `02-subnets` → `01-vpc` → `terraform-state-min`.
 
-See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 /  /  /  /  /  / .
+See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 /  /  /  /  /  /  /  / .
+
+## Post-parameters status
+
+The generic **infra + platform config** chain is green through `08-parameters/`. App roots (`dynamodb/`, Lambda stacks, `web/`) are **parallel tracks**, not downstream of parameters.
+
+**Post-parameters:** `05-proxydb` remote state exposes non-empty `rds_proxy_endpoint` after apply. `08-parameters/` reads proxydb remote state only — same shape as unmodified prod `parameters/`. Deferred: **** (`09-dynamodb/` multi-root twin, P2).
+
+Gap report: .

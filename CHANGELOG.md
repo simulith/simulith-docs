@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.149.0] - 2026-08-27
+
+### Features
+
+- ****: RDS Proxy endpoint in Terraform remote state
+
+## [0.148.0] - 2026-08-27
+
+### Features
+
+- ****: Production multi-root parameters Terraform green path
+
 ## [0.147.0] - 2026-08-26
 
 ### Features

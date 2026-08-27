@@ -27,9 +27,9 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, `aws_
 | ModifyDBInstance | Persist backup/maintenance/deletion-protection/max storage/log export/PI flags. No real backups or PI |
 | DescribeDBInstances | Returns endpoint `127.0.0.1:<hostPort>` plus stored instance settings |
 | DeleteDBInstance | Stops/removes sidecar container |
-| CreateDBProxy | POSTGRESQL proxy metadata (idle timeout / debug logging persisted) |
+| CreateDBProxy | POSTGRESQL proxy metadata; pre-allocates local endpoint `127.0.0.1:<port>` |
 | ModifyDBProxy | Persist idle/debug/RequireTLS/auth/security groups. No real pooling or TLS |
-| DescribeDBProxies | Returns endpoint `127.0.0.1:<proxyPort>` after target registration plus stored proxy settings |
+| DescribeDBProxies | Returns endpoint `127.0.0.1:<proxyPort>` (allocated at create; relay after target registration) plus stored proxy settings |
 | DeleteDBProxy | Stops TCP relay and deletes proxy |
 | RegisterDBProxyTargets | Links proxy to DB instance; starts TCP relay |
 | DescribeDBProxyTargets | Returns registered targets (Terraform Read) |
@@ -48,7 +48,7 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, `aws_
 
 Connect with `psql -h 127.0.0.1 -p <port> -U <MasterUsername> -d <DBName>`.
 
-**RDS Proxy:** after `RegisterDBProxyTargets`, connect to the proxy endpoint (`127.0.0.1:<proxyPort>`) — TCP relay forwards to the instance sidecar. Auth secret ARNs are metadata only in v1 (no live Secrets Manager fetch).
+**RDS Proxy:** `CreateDBProxy` assigns a local endpoint immediately so Terraform remote-state outputs are non-empty before target registration. After `RegisterDBProxyTargets`, the TCP relay listens on that port and forwards to the instance sidecar. Auth secret ARNs are metadata only in v1 (no live Secrets Manager fetch).
 
 **Requires Docker** on PATH for real sidecar lifecycle. Unit tests use a mock sidecar.
 

@@ -1,0 +1,16 @@
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:4566"
+aws_region            = "us-east-1"
+project_name          = "demoapp"
+env                   = "DEV"
+
+account_id = "000000000000"
+algorithm  = "HS512"
+api_key    = "LOYALTY"
+domain     = "dev.localhost"
+endpoint   = "http://127.0.0.1:4566"
+region     = "us-east-1"
+
+access_key_id     = "AKIALOCALDEMOKEY"
+secret_access_key = "local-demo-secret-access-key"
+secret_password   = "local-demo-secret-password"
