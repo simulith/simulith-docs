@@ -340,7 +340,7 @@ Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateRole / GetRole / DeleteRole | available | yes |  /  · ListInstanceProfilesForRole empty stub · DeleteRole conflicts on inline policies |
+| CreateRole / GetRole / UpdateRole / DeleteRole | available | yes |  /  · UpdateRole MaxSessionDuration · ListInstanceProfilesForRole empty stub · DeleteRole conflicts on inline policies |
 | CreatePolicy / GetPolicy / DeletePolicy | available | yes | Managed policy subset · GetPolicyVersion / ListPolicyVersions stub |
 | AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | yes | RDS Proxy role attach |
 | PutRolePolicy / GetRolePolicy / DeleteRolePolicy | available | no | Inline role policies · ListRolePolicies returns stored names |

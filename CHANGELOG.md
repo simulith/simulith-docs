@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.151.0] - 2026-08-28
+
+### Features
+
+- ****: IAM UpdateRole
+
 ## [0.150.0] - 2026-08-27
 
 ### Features

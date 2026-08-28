@@ -105,12 +105,22 @@ $env:AWS_EC2_METADATA_DISABLED = "true"
 
 Destroy **reverse** order: `09-dynamodb` → `08-parameters` → `07-cognito` → `06-ses` → `05-proxydb` → `04-postgresdb` → `03-secrets` → `02-subnets` → `01-vpc` → `terraform-state-min`.
 
-See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 / –033.
+See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 / –034.
+
+## Post-dynamodb status
+
+The generic **ten-step** chain is green through `09-dynamodb/`. Remaining parallel tracks: `web/`, Lambda stacks (see [`../lambda-vpc-rds/transaction-min/`](../lambda-vpc-rds/transaction-min/)).
+
+**Next runtime gap:** incremental `05-proxydb` re-apply fails on `UpdateRole` — full destroy+apply workaround only today.
+
+Gap report: .
 
 ## Post-parameters status
 
 The generic **infra + platform config** chain is green through `08-parameters/`. App roots (`dynamodb/`, Lambda stacks, `web/`) are **parallel tracks**, not downstream of parameters.
 
-**Post-parameters:** `05-proxydb` remote state exposes non-empty `rds_proxy_endpoint` after apply. `08-parameters/` reads proxydb remote state only — same shape as unmodified prod `parameters/`. **`09-dynamodb/`** adds the app-table parallel track (`demoapp_user` + 2 GSIs).
+Remaining Lambda green path: [`../lambda-vpc-rds/transaction-min/`](../lambda-vpc-rds/transaction-min/).
 
-Gap report: .
+**Post-parameters:** `05-proxydb` remote state exposes non-empty `rds_proxy_endpoint` after apply. `08-parameters/` reads proxydb remote state only — same shape as unmodified prod `parameters/`. **`09-dynamodb/`** shipped — app-table parallel track (`demoapp_user` + 2 GSIs).
+
+Gap report (post-dynamodb): . **** (`UpdateRole`) ships in  for incremental `05-proxydb` re-apply.

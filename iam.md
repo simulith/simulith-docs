@@ -15,7 +15,7 @@ Compatible with Terraform `aws_iam_role`, `aws_iam_policy`, `aws_iam_role_policy
 
 | Operation | Notes |
 | --- | --- |
-| CreateRole / GetRole / DeleteRole | Assume-role policy document stored verbatim. `ListInstanceProfilesForRole` returns empty. `DeleteRole` requires no managed attachments and no inline policies |
+| CreateRole / GetRole / UpdateRole / DeleteRole | Assume-role policy document stored verbatim. `MaxSessionDuration` persisted (default 3600). `ListInstanceProfilesForRole` returns empty. `DeleteRole` requires no managed attachments and no inline policies |
 | CreatePolicy / GetPolicy / DeletePolicy | Managed policy JSON document. `GetPolicyVersion` / `ListPolicyVersions` return default `v1` |
 | AttachRolePolicy / DetachRolePolicy | Role ↔ policy ARN |
 | ListAttachedRolePolicies | For Terraform refresh |

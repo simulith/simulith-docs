@@ -550,7 +550,7 @@ Guide: [iam.md](iam.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateRole / GetRole / DeleteRole; CreatePolicy / GetPolicy / **GetPolicyVersion** / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies; **PutRolePolicy / GetRolePolicy / DeleteRolePolicy** / **ListRolePolicies** (inline names) (RDS Proxy + Lambda execution-role subset). Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/) and [`examples/terraform/iam/lambda-roles-min/`](examples/terraform/iam/lambda-roles-min/). **`simulith verify iam`**. **Console panel `/iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
+CreateRole / GetRole / **UpdateRole** / DeleteRole; CreatePolicy / GetPolicy / **GetPolicyVersion** / DeletePolicy; AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies; **PutRolePolicy / GetRolePolicy / DeleteRolePolicy** / **ListRolePolicies** (inline names) (RDS Proxy + Lambda execution-role subset). **`MaxSessionDuration`** on roles. Terraform green-path [`examples/terraform/iam/proxy-roles-min/`](examples/terraform/iam/proxy-roles-min/) and [`examples/terraform/iam/lambda-roles-min/`](examples/terraform/iam/lambda-roles-min/). **`simulith verify iam`**. **Console panel `/iam`**. SQLite `iam_*`. SigV4 `iam` Query API.
 
 ### Notable gaps (tracked)
 
