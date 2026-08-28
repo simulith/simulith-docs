@@ -110,7 +110,21 @@ $env:AWS_SECRET_ACCESS_KEY = "secret"
 $env:AWS_EC2_METADATA_DISABLED = "true"
 ```
 
-**T2 helper** — bootstrap + standalone `10-web/` apply + destroy. Requires Simulith **v0.109.1+** (Route53 + ACM + CloudFront subset) on `:4566`.
+**T2 helper (full eleven-step chain)** — bootstrap → `10-web` apply + reverse destroy. Requires Simulith **v0.152.0+** on `:4566`.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File runtime/examples/terraform/multi-root-green-path/run-t2-full-chain.ps1
+# Log: runtime/examples/terraform/multi-root-green-path/t2-full-chain.log
+```
+
+**T2 helper** — ten-step infra + app chain (no `10-web`):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File runtime/examples/terraform/multi-root-green-path/run-t2-sml295.ps1
+# Log: runtime/examples/terraform/multi-root-green-path/t2-sml295.log
+```
+
+**T2 helper** — bootstrap + standalone `10-web/` apply + destroy. Requires Simulith **v0.152.0+** (Route53 + ACM + CloudFront subset) on `:4566`.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File runtime/examples/terraform/multi-root-green-path/run-t2-sml299.ps1
@@ -127,7 +141,15 @@ powershell -ExecutionPolicy Bypass -File runtime/examples/terraform/multi-root-g
 
 Destroy **reverse** order: `10-web` → `09-dynamodb` → `08-parameters` → `07-cognito` → `06-ses` → `05-proxydb` → `04-postgresdb` → `03-secrets` → `02-subnets` → `01-vpc` → `terraform-state-min`.
 
-See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 / –035.
+See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 / –037.
+
+## Post-web discovery
+
+Generic **eleven-step** graph is complete for documented parallel tracks (infra through `10-web/`). ** closed**. **No new P1 runtime gap** from this discovery cycle.
+
+**Next evidence bar:** optional full eleven-step chain T2 on v0.152.0; full prod validator re-apply when creds available. Lambda reference path: [`../lambda-vpc-rds/transaction-min/`](../lambda-vpc-rds/transaction-min/).
+
+Gap report: .
 
 ## Post-web status
 

@@ -35,7 +35,7 @@ Last updated: 2026-08-20..
 | **S3** | 21 | 8 / 8 scenarios (100%) | **100%** (9 / 9 ref) | medium (~50%‡) |
 | **Lambda** | 22 | 9 / 9 scenarios (100%) | **100%** (7 / 7 Tier A) | low (~29%‡) |
 | **API Gateway** | 14 | 4 / 4 scenarios | **100%** (4 / 4 Tier A) | low (~18%‡) |
-| **Secrets Manager** | 4 | 2 / 2 scenarios | **100%** (4 / 4) | low (~5%‡) |
+| **Secrets Manager** | 6 | 2 / 2 scenarios | **100%** (4 / 4) | low (~5%‡) |
 | **Cognito** | 23 | 2 / 2 scenarios | **90%** (18 / 20) | **low subset** |
 | **SES** | 4 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **EventBridge** | 5 | 2 / 2 scenarios | **100%** (10 / 10) | **low subset** |
@@ -46,7 +46,7 @@ Last updated: 2026-08-20..
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 12 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **190** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
+| **Total** | **192** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -315,7 +315,7 @@ Guide: [secretsmanager.md](secretsmanager.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, ListSecrets, DeleteSecret, GetResourcePolicy stub (plain `SecretString`). `simulith verify secretsmanager`. Terraform green path [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/). Console panel `/secretsmanager`. Default seed secret **`demo-secret`**. SQLite `secretsmanager_secrets`. SigV4 `secretsmanager` + `X-Amz-Target: SecretsManager.*`.
+CreateSecret, DescribeSecret, PutSecretValue, GetSecretValue, ListSecrets, DeleteSecret, GetResourcePolicy stub (plain `SecretString`). **TagResource / UntagResource** with `Tags` on DescribeSecret. `simulith verify secretsmanager`. Terraform green path [`examples/terraform/secretsmanager/`](examples/terraform/secretsmanager/). Console panel `/secretsmanager`. Default seed secret **`demo-secret`**. SQLite `secretsmanager_secrets`. SigV4 `secretsmanager` + `X-Amz-Target: SecretsManager.*`.
 
 ### Notable gaps (tracked)
 

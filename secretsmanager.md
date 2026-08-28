@@ -23,6 +23,8 @@ Compatible with AWS CLI (`aws secretsmanager`) and AWS SDKs when using `--endpoi
 | GetSecretValue | `SecretsManager.GetSecretValue` | ✓ |
 | ListSecrets | `SecretsManager.ListSecrets` | ✓ |
 | DeleteSecret | `SecretsManager.DeleteSecret` | ✓ (immediate local delete) |
+| TagResource | `SecretsManager.TagResource` | ✓ |
+| UntagResource | `SecretsManager.UntagResource` | ✓ |
 
 ## Limits
 

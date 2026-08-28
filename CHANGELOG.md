@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.153.0] - 2026-08-28
+
+### Features
+
+- ****: Secrets Manager secret tags
+
 ## [0.152.0] - 2026-08-28
 
 ### Features
