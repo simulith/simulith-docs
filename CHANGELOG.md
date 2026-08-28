@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.152.0] - 2026-08-28
+
+### Features
+
+- ****: Production multi-root web Terraform green path
+
 ## [0.151.0] - 2026-08-28
 
 ### Features

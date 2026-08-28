@@ -1,0 +1,187 @@
+# Web prod subset — same shape as single-root twin cloudfront/web-prod-min/
+# Route53 zone + ACM DNS validation + S3 origin + OAC + CloudFront + DNS alias
+#
+#   terraform apply -var-file=terraform.tfvars -parallelism=1
+#   terraform destroy -var-file=terraform.tfvars -parallelism=1
+
+resource "aws_route53_zone" "app" {
+  name    = var.zone_name
+  comment = "${var.project_name} ${var.environment} web prod zone (Simulith multi-root green path)"
+}
+
+resource "aws_acm_certificate" "cdn" {
+  domain_name       = var.domain_name
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "cert_validation" {
+  for_each = {
+    for option in aws_acm_certificate.cdn.domain_validation_options : option.domain_name => {
+      name   = option.resource_record_name
+      record = option.resource_record_value
+      type   = option.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  zone_id         = aws_route53_zone.app.zone_id
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+}
+
+resource "aws_acm_certificate_validation" "cdn" {
+  certificate_arn         = aws_acm_certificate.cdn.arn
+  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
+}
+
+resource "aws_s3_bucket" "origin" {
+  bucket        = var.bucket_name
+  force_destroy = true
+}
+
+resource "aws_s3_bucket_public_access_block" "origin" {
+  bucket = aws_s3_bucket.origin.id
+
+  block_public_acls       = true
+  ignore_public_acls      = true
+  block_public_policy     = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_object" "index" {
+  bucket       = aws_s3_bucket.origin.id
+  key          = "index.html"
+  content      = "<html><body>Simulith web prod multi-root green path</body></html>"
+  content_type = "text/html"
+}
+
+data "aws_iam_policy_document" "origin" {
+  statement {
+    sid    = "AllowCloudFrontServicePrincipal"
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.origin.arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.cdn.arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "origin" {
+  bucket = aws_s3_bucket.origin.id
+  policy = data.aws_iam_policy_document.origin.json
+
+  depends_on = [aws_s3_bucket_public_access_block.origin]
+}
+
+resource "aws_cloudfront_origin_access_control" "cdn" {
+  name                              = "${var.project_name}-${var.environment}-web-oac"
+  description                       = "OAC for ${var.project_name} ${var.environment} web prod (Simulith multi-root green path)"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
+data "aws_cloudfront_cache_policy" "caching_optimized" {
+  name = "Managed-CachingOptimized"
+}
+
+resource "aws_cloudfront_distribution" "cdn" {
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = "index.html"
+  comment             = "${var.project_name} ${var.environment} web prod CDN (Simulith multi-root green path)"
+  aliases             = [var.domain_name]
+
+  origin {
+    domain_name              = aws_s3_bucket.origin.bucket_regional_domain_name
+    origin_id                = "s3-origin"
+    origin_access_control_id = aws_cloudfront_origin_access_control.cdn.id
+  }
+
+  default_cache_behavior {
+    target_origin_id       = "s3-origin"
+    viewer_protocol_policy = "redirect-to-https"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    cached_methods         = ["GET", "HEAD"]
+    compress               = true
+    cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
+  }
+
+  custom_error_response {
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
+  }
+
+  custom_error_response {
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  viewer_certificate {
+    acm_certificate_arn      = aws_acm_certificate.cdn.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
+  }
+
+  tags = {
+    Project   = var.project_name
+    Environment = var.environment
+    ManagedBy = "terraform"
+  }
+
+  depends_on = [aws_acm_certificate_validation.cdn]
+}
+
+locals {
+  apex_alias = var.domain_name == var.zone_name || var.domain_name == trimsuffix(var.zone_name, ".")
+}
+
+resource "aws_route53_record" "cdn_apex" {
+  count = local.apex_alias ? 1 : 0
+
+  zone_id = aws_route53_zone.app.zone_id
+  name    = var.domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.cdn.domain_name
+    zone_id                = aws_cloudfront_distribution.cdn.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "cdn_cname" {
+  count = local.apex_alias ? 0 : 1
+
+  zone_id = aws_route53_zone.app.zone_id
+  name    = trimsuffix(replace(var.domain_name, ".${var.zone_name}", ""), ".")
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_cloudfront_distribution.cdn.domain_name]
+}

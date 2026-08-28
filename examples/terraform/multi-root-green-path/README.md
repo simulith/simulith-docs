@@ -1,6 +1,6 @@
-# Production multi-root green path — vpc → subnets → secrets → postgresdb → proxydb → ses → cognito → parameters → dynamodb (Simulith)
+# Production multi-root green path — vpc → subnets → secrets → postgresdb → proxydb → ses → cognito → parameters → dynamodb → web (Simulith)
 
-Generic **ten-step** graph matching production apply order with S3 remote state between roots. Names are `demoapp` / `demo-terraform-state`.
+Generic **eleven-step** graph matching production apply order with S3 remote state between roots. Names are `demoapp` / `demo-terraform-state`.
 
 ```text
 terraform-state-min/           local state → versioned bucket + lock table
@@ -14,11 +14,12 @@ multi-root-green-path/
   07-cognito/                  backend "s3" → production cognito/ shape (12 resources)
   08-parameters/               backend "s3" + terraform_remote_state → parameters/ shape (26 resources)
   09-dynamodb/                 backend "s3" → production dynamodb/ shape (1 resource — user table)
+  10-web/                      backend "s3" → production web/ shape (Route53 + ACM + S3 + CloudFront)
 ```
 
-Single-root twins: [`../vpc-root/`](../vpc-root/) · [`../subnets/`](../subnets/) · [`../secrets/`](../secrets/) · [`../postgresdb/`](../postgresdb/) · [`../proxydb/`](../proxydb/) · [`../ses/`](../ses/) · [`../cognito/`](../cognito/) · [`../ssm/parameters/`](../ssm/parameters/) · [`../dynamodb/user-table/`](../dynamodb/user-table/). Minimal remote-state probe: [`../s3/multi-root-min/`](../s3/multi-root-min/).
+Single-root twins: [`../vpc-root/`](../vpc-root/) · [`../subnets/`](../subnets/) · [`../secrets/`](../secrets/) · [`../postgresdb/`](../postgresdb/) · [`../proxydb/`](../proxydb/) · [`../ses/`](../ses/) · [`../cognito/`](../cognito/) · [`../ssm/parameters/`](../ssm/parameters/) · [`../dynamodb/user-table/`](../dynamodb/user-table/) · [`../cloudfront/web-prod-min/`](../cloudfront/web-prod-min/). Minimal remote-state probe: [`../s3/multi-root-min/`](../s3/multi-root-min/).
 
-**Requires Simulith** on `:4566` with S3 + DynamoDB + EC2 (VPC) + KMS + Secrets Manager + IAM + RDS (Docker sidecar) + SES + Cognito + Lambda + SSM.
+**Requires Simulith** on `:4566` with S3 + DynamoDB + EC2 (VPC) + KMS + Secrets Manager + IAM + RDS (Docker sidecar) + SES + Cognito + Lambda + SSM + Route 53 + ACM + CloudFront.
 
 ## Usage (native Simulith)
 
@@ -90,9 +91,15 @@ cd ../09-dynamodb
 cp terraform.tfvars.native.example terraform.tfvars
 terraform init -backend-config=backend.simulith.hcl
 terraform apply -var-file=terraform.tfvars -parallelism=1 -auto-approve
+
+# 10 — web root (same remote state env for backend; standalone web/ shape — parallel track)
+cd ../10-web
+cp terraform.tfvars.native.example terraform.tfvars
+terraform init -backend-config=backend.simulith.hcl
+terraform apply -var-file=terraform.tfvars -parallelism=1 -auto-approve
 ```
 
-**Windows (PowerShell)** — remote state env for steps 2–9 (use `127.0.0.1.sslip.io:4566` if `localhost` fails for virtual-hosted S3). Update `backend.simulith.hcl` endpoints to match.
+**Windows (PowerShell)** — remote state env for steps 2–10 (use `127.0.0.1.sslip.io:4566` if `localhost` fails for virtual-hosted S3). Update `backend.simulith.hcl` endpoints to match.
 
 ```powershell
 $env:AWS_ENDPOINT_URL = "http://127.0.0.1.sslip.io:4566"
@@ -103,15 +110,40 @@ $env:AWS_SECRET_ACCESS_KEY = "secret"
 $env:AWS_EC2_METADATA_DISABLED = "true"
 ```
 
-Destroy **reverse** order: `09-dynamodb` → `08-parameters` → `07-cognito` → `06-ses` → `05-proxydb` → `04-postgresdb` → `03-secrets` → `02-subnets` → `01-vpc` → `terraform-state-min`.
+**T2 helper** — bootstrap + standalone `10-web/` apply + destroy. Requires Simulith **v0.109.1+** (Route53 + ACM + CloudFront subset) on `:4566`.
 
-See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 / –034.
+```powershell
+powershell -ExecutionPolicy Bypass -File runtime/examples/terraform/multi-root-green-path/run-t2-sml299.ps1
+# Log: runtime/examples/terraform/multi-root-green-path/t2-sml299.log
+```
+
+**T2 helper** — apply deps through `04-postgresdb`, then **two** applies on `05-proxydb/` (2nd apply exercises `UpdateRole`). Requires Simulith **v0.151.0+** on `:4566`.
+
+```powershell
+# From repo root after: cd runtime; go build -o simulith.exe ./cmd/simulith; .\simulith.exe start --port 4566
+powershell -ExecutionPolicy Bypass -File runtime/examples/terraform/multi-root-green-path/run-t2-sml297.ps1
+# Log: runtime/examples/terraform/multi-root-green-path/t2-sml297.log
+```
+
+Destroy **reverse** order: `10-web` → `09-dynamodb` → `08-parameters` → `07-cognito` → `06-ses` → `05-proxydb` → `04-postgresdb` → `03-secrets` → `02-subnets` → `01-vpc` → `terraform-state-min`.
+
+See [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md) · –013 / –035.
+
+## Post-web status
+
+**`10-web/`** shipped — Route53 zone + ACM DNS validation + S3 origin (PAB + policy) + OAC + CloudFront distribution (ACM viewer cert, managed cache policy, IPv6, SPA errors) + DNS alias. Standalone parallel track; same `.tf` shape as [`cloudfront/web-prod-min/`](../cloudfront/web-prod-min/). S3 backend key `demo-web-state`.
+
+Remaining parallel tracks: Lambda stacks (see [`../lambda-vpc-rds/transaction-min/`](../lambda-vpc-rds/transaction-min/)).
+
+## Post-UpdateRole status
+
+The generic **ten-step** infra + app chain is green through `09-dynamodb/`. Incremental **`05-proxydb` re-apply** green. ** closed** — no new P1 runtime gap from .
+
+Gap report: .
 
 ## Post-dynamodb status
 
-The generic **ten-step** chain is green through `09-dynamodb/`. Remaining parallel tracks: `web/`, Lambda stacks (see [`../lambda-vpc-rds/transaction-min/`](../lambda-vpc-rds/transaction-min/)).
-
-**Next runtime gap:** incremental `05-proxydb` re-apply fails on `UpdateRole` — full destroy+apply workaround only today.
+The generic **ten-step** chain is green through `09-dynamodb/`. Incremental **`05-proxydb` re-apply** green. Remaining parallel tracks: `web/`, Lambda stacks (see [`../lambda-vpc-rds/transaction-min/`](../lambda-vpc-rds/transaction-min/)).
 
 Gap report: .
 
@@ -123,4 +155,4 @@ Remaining Lambda green path: [`../lambda-vpc-rds/transaction-min/`](../lambda-vp
 
 **Post-parameters:** `05-proxydb` remote state exposes non-empty `rds_proxy_endpoint` after apply. `08-parameters/` reads proxydb remote state only — same shape as unmodified prod `parameters/`. **`09-dynamodb/`** shipped — app-table parallel track (`demoapp_user` + 2 GSIs).
 
-Gap report (post-dynamodb): . **** (`UpdateRole`) ships in  for incremental `05-proxydb` re-apply.
+Gap report (post-dynamodb): .
