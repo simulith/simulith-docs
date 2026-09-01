@@ -356,8 +356,6 @@ Backlog: .
 
 **Layer 2 — generic eleven-step chain:** [`multi-root-green-path/`](examples/terraform/multi-root-green-path/) — T2 full-chain PASS. Helper: `run-t2-full-chain.ps1`.
 
-**Layer 3 — unmodified prod validator:** `prod-validator-runbook.md` — apply order and gap recording for customer infra roots (local checkout only; do not copy customer `.tf` into this repo).
-
 ### When to use `simulith reset`
 
 Use [`simulith reset`](persistence.md) for **non-Terraform** experiments (CLI smoke, manual tables, seed fixtures) or orphaned resources **outside** Terraform state. It is **not** required to tear down the shipped example modules after a normal apply.
