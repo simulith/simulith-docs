@@ -18,7 +18,8 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 | `GetKeyPolicy` | Default no-op policy for Terraform read-after-create |
 | `GetKeyRotationStatus` | Returns stored `KeyRotationEnabled` |
 | `EnableKeyRotation` / `DisableKeyRotation` | Persist rotation metadata only — no AWS-identical key-material rotation |
-| `ListResourceTags` | Empty tag list |
+| `ListResourceTags` | Returns stored tags (`TagKey` / `TagValue`)
+| `TagResource` / `UntagResource` | CMK tag merge/remove
 | `CreateAlias` | `alias/<name>` → target key |
 | `ListAliases` | Optional filter by `KeyId` |
 | `Encrypt` | Base64 plaintext in → `CiphertextBlob` (mock envelope) |

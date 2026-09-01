@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.155.0] - 2026-08-31
+
+### Features
+
+- ****: Layer 3 validator cognito green path
+
+## [0.154.0] - 2026-08-31
+
+### Features
+
+- ****: Layer 3 validator secrets green path
+
 ## [0.153.0] - 2026-08-28
 
 ### Features

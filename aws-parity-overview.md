@@ -42,11 +42,11 @@ Last updated: 2026-08-20..
 | **VPC** | 8 | 5 / 5 scenarios | **100%** (17 / 17) | **low subset** |
 | **RDS** | 9 | 2 / 2 scenarios | **100%** (17 / 17) | **low subset** |
 | **IAM** | 4 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **KMS** | 11 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
+| **KMS** | 14 | 2 / 2 scenarios | **100%** (12 / 12) | **low subset** |
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 12 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **192** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
+| **Total** | **195** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -461,7 +461,7 @@ Guide: [kms.md](kms.md) · Backlog: the product backlog
 
 ### Implemented
 
-CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decrypt; ScheduleKeyDeletion (mock symmetric envelope); **EnableKeyRotation / DisableKeyRotation / GetKeyRotationStatus**. Secrets Manager accepts `KmsKeyId` on CreateSecret. **Terraform green path** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — apply + destroy with `enable_key_rotation`. **`simulith verify kms`**. **Console panel `/kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
+CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decrypt; ScheduleKeyDeletion (mock symmetric envelope); **EnableKeyRotation / DisableKeyRotation / GetKeyRotationStatus**; **TagResource / UntagResource / ListResourceTags**. Secrets Manager accepts `KmsKeyId` on CreateSecret. **Terraform green path** [`examples/terraform/kms/cmk-min/`](examples/terraform/kms/cmk-min/) — apply + destroy with `enable_key_rotation`. **`simulith verify kms`**. **Console panel `/kms`**. SQLite `kms_keys`, `kms_aliases`. SigV4 `kms` JSON 1.1 (`TrentService.*`).
 
 ### Notable gaps (tracked)
 
@@ -473,7 +473,7 @@ CreateKey / DescribeKey; CreateAlias / ListAliases / DeleteAlias; Encrypt / Decr
 
 CreateKey, DescribeKey, CreateAlias, ListAliases, DeleteAlias, Encrypt, Decrypt, GetKeyPolicy, ScheduleKeyDeletion, GetKeyRotationStatus, EnableKeyRotation, DisableKeyRotation.
 
-12 **available** = **100%** Tier A KMS (12 / 12).
+12 **available** = **100%** Tier A KMS (12 / 12). **+3 ops** in matrix total **14** for KMS service row.
 
 ---
 
