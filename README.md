@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `878e4d7` on 2026-09-01.
+Generated from monorepo commit `296b15d` on 2026-09-03.
 
 ## Start here
 
@@ -52,6 +52,7 @@ Generated from monorepo commit `878e4d7` on 2026-09-01.
 | [Route 53](route53.md) | Hosted zones + DNS records |
 | [ACM](acm.md) | DNS-validated certificates |
 | [CloudFront](cloudfront.md) | OAC + distributions (local CDN metadata) |
+| [CloudFormation](cloudformation.md) | Stack control plane subset (Serverless path) |
 
 ## Compatibility
 

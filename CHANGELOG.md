@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.157.0] - 2026-09-03
+
+### Features
+
+- ****: CFN resource types — Serverless v3 Node
+
+## [0.156.0] - 2026-09-03
+
+### Features
+
+- ****: CloudFormation control plane subset
+
 ## [0.155.0] - 2026-08-31
 
 ### Features

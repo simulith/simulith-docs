@@ -1,19 +1,19 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **seventeen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **eighteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
 
 > **Start here** for limits and verify coverage. For onboarding, see [quickstart.md](quickstart.md) and [using-simulith.md](using-simulith.md). For a deeper API summary, see [aws-parity-overview.md](aws-parity-overview.md).
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-08-21..
+Last updated: 2026-09-03..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 17 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront) |
-| Operations **available** locally | 195 |
+| Services in matrix | 18 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
+| Operations **available** locally | 201 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -400,6 +400,23 @@ Guide: [cloudfront.md](cloudfront.md) · Verify: `simulith verify cloudfront`
 | ListCachePolicies | available | — | AWS managed catalog |
 | GetCachePolicy | available | — | AWS managed catalog |
 | TagResource | available | — | Distribution tags |
+
+---
+
+## CloudFormation
+
+Guide: [cloudformation.md](cloudformation.md) · Verify: —
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateStack | available | no | Sync `CREATE_COMPLETE`; provisions supported resource types |
+| UpdateStack | available | no | Replace-all recreate |
+| DeleteStack | available | no | Deletes provisioned resources + stack |
+| DescribeStacks | available | no | Optional name filter |
+| DescribeStackEvents | available | no | Newest first |
+| DescribeStackResources | available | no | Logical/physical IDs |
+
+Supported CFN resource types (Lambda, IAM, APIGW, EventBridge subset) — see [cloudformation.md](cloudformation.md). **** Serverless hello deploy — follow-on.
 
 ---
 

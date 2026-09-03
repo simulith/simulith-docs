@@ -1,6 +1,6 @@
 # AWS parity overview — Simulith
 
-Consolidated view of **Simulith vs AWS** for **seventeen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
+Consolidated view of **Simulith vs AWS** for **eighteen** shipped services: what is **implemented**, what is **missing**, **coverage percentages**, and **Terraform** status.
 
 > **Audience:** evaluators comparing Simulith to AWS at scale. **Developers** can use [compatibility-matrix.md](compatibility-matrix.md) and service guides for day-to-day work.
 
@@ -8,7 +8,7 @@ Consolidated view of **Simulith vs AWS** for **seventeen** shipped services: wha
 
 > **Console panels:** [console.md](console.md) · **Operation × verify:** [compatibility-matrix.md](compatibility-matrix.md)
 
-Last updated: 2026-08-20..
+Last updated: 2026-09-03..
 
 ---
 
@@ -46,7 +46,8 @@ Last updated: 2026-08-20..
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 12 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **Total** | **195** | 17 services with verify | **~98%** Tier A (180 / 184 ref) | — |
+| **CloudFormation** | 6 | — | **100%** (6 / 6 control plane + resources subset) | **low subset** |
+| **Total** | **201** | 17 services with verify | **~98%** Tier A (186 / 190 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
