@@ -417,7 +417,7 @@ Guide: [cloudformation.md](cloudformation.md) · Verify: —
 | DescribeStackResources | available | no | Logical/physical IDs |
 | ListStackResources | available | no | Serverless CLI |
 
-Supported CFN resource types: Lambda, IAM, API Gateway, EventBridge, **`AWS::S3::Bucket`** — see [cloudformation.md](cloudformation.md). Serverless hello green path shipped; use [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin. **`AWS::S3::BucketPolicy`** not yet supported.
+Supported CFN resource types: Lambda, IAM, API Gateway, EventBridge, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`** — see [cloudformation.md](cloudformation.md). Serverless hello green path shipped; use [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin.
 
 ---
 
