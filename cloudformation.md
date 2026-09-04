@@ -9,7 +9,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`.
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets.
 
 ## Implemented operations
 
@@ -37,8 +37,11 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | `AWS::ApiGateway::Deployment` | API Gateway |
 | `AWS::ApiGateway::Stage` | API Gateway |
 | `AWS::Events::Rule` | EventBridge (schedule/event pattern + targets subset) |
+| `AWS::S3::Bucket` | S3 store (`BucketName`, `PublicAccessBlockConfiguration`, `Tags` subset) |
 
 **Intrinsics (subset):** `Ref`, `Fn::GetAtt`, `Fn::Sub`, `Fn::Join`. Template `DependsOn` ordering is honored.
+
+**S3 bucket GetAtt:** `Arn`, `DomainName`, `RegionalDomainName`. Stack delete empties the bucket before `DeleteBucket`.
 
 ## AWS CLI
 
@@ -68,7 +71,7 @@ aws cloudformation create-stack `
 
 ## Serverless Framework
 
-Use the [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin so `serverless deploy` reaches Simulith (AWS profile / `AWS_ENDPOINT_URL` alone is insufficient for Serverless v3 deploy). Set `provider.deploymentMethod: direct`. See [`hello-serverless`](examples/serverless/hello-serverless/README.md).
+Use the [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin so `serverless deploy` reaches Simulith. Set `provider.deploymentMethod: direct`. Deployment buckets use `AWS::S3::Bucket`. See [`hello-serverless`](examples/serverless/hello-serverless/README.md).
 
 ## Limits
 
