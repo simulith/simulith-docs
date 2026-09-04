@@ -9,18 +9,19 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types.
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`.
 
 ## Implemented operations
 
 | Operation | Notes |
 | --- | --- |
-| CreateStack | Requires `StackName` + `TemplateBody`. Sync `CREATE_COMPLETE` after provisioning. `TemplateURL` not supported |
+| CreateStack | `StackName` + `TemplateBody` or `TemplateURL` (S3 fetch). Sync `CREATE_COMPLETE` |
 | UpdateStack | Replace-all: deletes provisioned resources, applies new template |
 | DeleteStack | Deletes provisioned resources, then stack and events |
-| DescribeStacks | Optional `StackName` filter |
+| DescribeStacks | Optional `StackName` (name, ARN, or ID); error if filtered stack missing |
 | DescribeStackEvents | Events for one stack, newest first |
 | DescribeStackResources | Logical/physical IDs and status for stack resources |
+| ListStackResources | Same resource rows as Describe (Serverless CLI) |
 
 ## Supported resource types
 
@@ -65,10 +66,13 @@ aws cloudformation create-stack `
   --capabilities CAPABILITY_IAM
 ```
 
+## Serverless Framework
+
+Use the [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin so `serverless deploy` reaches Simulith (AWS profile / `AWS_ENDPOINT_URL` alone is insufficient for Serverless v3 deploy). Set `provider.deploymentMethod: direct`. See [`hello-serverless`](examples/serverless/hello-serverless/README.md).
+
 ## Limits
 
 - No change sets, nested stacks, drift detection, or StackSets
-- No `TemplateURL` (S3 fetch of template body)
 - Create/update/delete are **synchronous** (`*_COMPLETE` immediately)
 - Update uses **replace-all** (no resource-level diff yet)
 - No `simulith verify cloudformation` yet

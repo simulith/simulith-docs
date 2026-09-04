@@ -7,6 +7,18 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.159.0] - 2026-09-04
+
+### Features
+
+- ****: serverless-simulith plugin
+
+## [0.158.0] - 2026-09-03
+
+### Features
+
+- ****: Generic Serverless hello deploy green path
+
 ## [0.157.0] - 2026-09-03
 
 ### Features

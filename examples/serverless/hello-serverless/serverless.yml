@@ -1,0 +1,43 @@
+service: hello-simulith
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-simulith
+
+custom:
+  simulith:
+    stages:
+      - dev
+    endpoint: http://127.0.0.1.sslip.io:4566
+
+provider:
+  name: aws
+  deploymentMethod: direct
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: dev
+  memorySize: 128
+  timeout: 10
+  versionFunctions: false
+  # Pre-create this bucket on Simulith before deploy (see README).
+  deploymentBucket:
+    name: simulith-serverless-deploy-${sls:stage}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: '*'
+
+functions:
+  hello:
+    handler: handler.hello
+    disableLogs: true
+    events:
+      - http:
+          path: hello
+          method: get

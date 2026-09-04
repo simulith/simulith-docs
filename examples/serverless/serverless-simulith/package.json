@@ -1,0 +1,14 @@
+{
+  "name": "serverless-simulith",
+  "version": "0.1.0",
+  "description": "Route Serverless Framework v3 AWS SDK calls to Simulith (:4566)",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": ["serverless", "simulith", "aws", "local"],
+  "dependencies": {
+    "aws-sdk": "^2.1693.0"
+  },
+  "peerDependencies": {
+    "serverless": "^3.0.0"
+  }
+}

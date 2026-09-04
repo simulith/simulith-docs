@@ -1,0 +1,14 @@
+{
+  "name": "hello-simulith-serverless",
+  "private": true,
+  "description": "Minimal Serverless v3 hello on Simulith (SML-328 / FW-EX-061)",
+  "scripts": {
+    "deploy": "serverless deploy --stage dev",
+    "remove": "serverless remove --stage dev",
+    "info": "serverless info --stage dev"
+  },
+  "devDependencies": {
+    "serverless": "^3.40.0",
+    "serverless-simulith": "file:../serverless-simulith"
+  }
+}
