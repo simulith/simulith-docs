@@ -128,6 +128,29 @@ See [Endpoint matrix](#endpoint-matrix) above. Docker **all-in-one** does not pu
 
 There is **no Simulith-specific Terraform provider** — use `hashicorp/aws` with endpoints, the same pattern LocalStack and similar tools use.
 
+### AWS shared config profile (recommended for validator checkouts)
+
+With **`hashicorp/aws` ≥ 5.65**, Terraform reads **`endpoint_url`** from a named profile in `~/.aws/config` — no duplicate `provider "aws"` overlay file required.
+
+```ini
+# ~/.aws/config
+[profile simulith]
+region = us-east-1
+endpoint_url = http://127.0.0.1.sslip.io:4566
+s3 =
+    endpoint_url = http://127.0.0.1.sslip.io:4566
+    use_path_style = true
+```
+
+```powershell
+$env:AWS_PROFILE = "simulith"
+$env:AWS_SDK_LOAD_CONFIG = "1"
+terraform init -backend-config=backend.simulith.hcl -reconfigure
+terraform plan -var-file=dev.tfvars -parallelism=1
+```
+
+Maintainer evidence (unmodified demoapp `parameters/` root): `profile-only-terraform-recipe.md`. Legacy per-module `simulith_override.tf` overlays are optional.
+
 ---
 
 ## DynamoDB — `aws_dynamodb_table`

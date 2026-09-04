@@ -82,4 +82,5 @@ Use the [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin
 
 ## Related
 
-- Serverless / CloudFormation roadmap is documented in the product repository (maintainers).
+- Serverless examples: [`examples/serverless/`](examples/serverless/)
+- Serverless / CloudFormation roadmap:  (maintainers)

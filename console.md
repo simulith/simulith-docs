@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, and Verify.
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, and Verify. **CloudFormation** stacks are managed via CLI, SDK, or Serverless — not a Console panel yet ([cloudformation.md](cloudformation.md)).
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -134,6 +134,8 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate | Local validation stub — not a real CA; delete/tags UI deferred; seeded demo cert via **Seed** |
 | **CloudFront** | ListDistributions, GetDistribution, GetOriginAccessControl, CreateOriginAccessControl, CreateDistribution | Local CDN stub — no edge caching; delete UI deferred; use Terraform `cloudfront/cdn-min` |
 
+**Not in Console (use CLI / SDK / Serverless):** **CloudFormation** — stack lifecycle and Serverless v3 deploy via [`cloudformation.md`](cloudformation.md) and [`serverless-simulith`](examples/serverless/serverless-simulith/). Point AWS CLI at `:4566` or Console proxy `:9080/runtime`.
+
 Panel capabilities are documented in the **Service panels** section below.
 
 ### DynamoDB JSON document mode
@@ -183,6 +185,7 @@ Vite dev server proxies `/runtime` and `/_simulith` to `http://127.0.0.1:4566`.
 | Area | Follow-up |
 | --- | --- |
 | Live verify run from Console (admin trigger) | CLI `simulith verify` — import JSON on Verify panel instead |
+| CloudFormation stack browser | CLI `aws cloudformation describe-stacks` or Serverless deploy — [cloudformation.md](cloudformation.md) |
 | Snapshot save/restore UI | CLI `simulith snapshot` |
 | Full AWS Console parity | See [console.md](console.md) |
 

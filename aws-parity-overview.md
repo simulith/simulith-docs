@@ -8,7 +8,7 @@ Consolidated view of **Simulith vs AWS** for **eighteen** shipped services: what
 
 > **Console panels:** [console.md](console.md) · **Operation × verify:** [compatibility-matrix.md](compatibility-matrix.md)
 
-Last updated: 2026-09-03..
+Last updated: 2026-09-04..
 
 ---
 
@@ -46,8 +46,8 @@ Last updated: 2026-09-03..
 | **Route 53** | 7 | 2 / 2 scenarios | **100%** (7 / 7) | **low subset** |
 | **ACM** | 5 | 2 / 2 scenarios | **100%** (5 / 5) | **low subset** |
 | **CloudFront** | 12 | 2 / 2 scenarios | **100%** (9 / 9) | **low subset** |
-| **CloudFormation** | 6 | — | **100%** (6 / 6 control plane + resources subset) | **low subset** |
-| **Total** | **201** | 17 services with verify | **~98%** Tier A (186 / 190 ref) | — |
+| **CloudFormation** | 7 | — | **100%** (6 / 6 control plane + resources subset) | **low subset** |
+| **Total** | **202** | 17 services with verify | **~98%** Tier A (186 / 190 ref) | — |
 
 \* **Tier A — POC / IaC / worker patterns:** `% (available / ref)` on a **curated, enumerated op list** per service ([methodology](#tier-a-methodology-standard)). **Use this for progress.**
 
@@ -117,8 +117,9 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **Route 53** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **ACM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **CloudFront** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **CloudFormation** | 100% | — | — | — | — | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth).
+**Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth) · **—** not applicable (e.g. CFN has no Console panel or Terraform green path yet).
 
 **Tier A aggregate (184 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **116 / 118** · **Overall ~98% (180 / 184)**.
 
@@ -542,6 +543,28 @@ CreateOriginAccessControl / GetOriginAccessControl / CreateDistribution / GetDis
 CreateOriginAccessControl, GetOriginAccessControl, CreateDistribution, GetDistribution, ListDistributions, GetDistributionConfig, UpdateDistribution, DeleteDistribution, DeleteOriginAccessControl.
 
 9 **available** = **100%** Tier A CloudFront (9 / 9). Shipped extras (ListCachePolicies / GetCachePolicy / TagResource) are outside this ref set.
+
+---
+
+## CloudFormation
+
+Guide: [cloudformation.md](cloudformation.md) · Backlog: the product backlog
+
+CreateStack / UpdateStack / DeleteStack / DescribeStacks / DescribeStackEvents / DescribeStackResources / ListStackResources. Template parse + provision: **Lambda**, **IAM**, **API Gateway**, **EventBridge**, **`AWS::S3::Bucket`**. **Serverless v3** green path [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/) with [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin. No Console panel — use CLI/SDK/Serverless through `:4566` or Console `/runtime` proxy. **`simulith verify cloudformation`**. SQLite `cfn_*` tables. SigV4 `cloudformation` Query API.
+
+### Notable gaps (tracked)
+
+| Gap | Priority | Backlog |
+| --- | --- | --- |
+| `AWS::S3::BucketPolicy` (Serverless deployment bucket policy) | P1 |  |
+| Change sets, nested stacks, drift | P3 | Out of scope |
+| Console CFN panel | P2 | FW-PRD-* |
+
+### Tier A reference set (6 ops)
+
+CreateStack, UpdateStack, DeleteStack, DescribeStacks, DescribeStackEvents, DescribeStackResources.
+
+6 **available** = **100%** Tier A CloudFormation (6 / 6). Resource types and ListStackResources are documented in [cloudformation.md](cloudformation.md).
 
 ---
 

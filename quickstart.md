@@ -29,6 +29,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | Route 53 | Hosted zones + DNS records — [route53.md](route53.md) |
 | ACM | DNS-validated certificates — [acm.md](acm.md) |
 | CloudFront | OAC + distributions (local CDN metadata) — [cloudfront.md](cloudfront.md) |
+| CloudFormation | Stack lifecycle + Serverless v3 deploy — [cloudformation.md](cloudformation.md) |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 
