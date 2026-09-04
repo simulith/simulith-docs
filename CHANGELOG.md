@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.162.0] - 2026-09-04
+
+### Features
+
+- ****: CFN Lambda LayerVersion Content property
+
 ## [0.161.0] - 2026-09-04
 
 ### Features

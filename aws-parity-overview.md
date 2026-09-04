@@ -550,13 +550,13 @@ CreateOriginAccessControl, GetOriginAccessControl, CreateDistribution, GetDistri
 
 Guide: [cloudformation.md](cloudformation.md) · Backlog: the product backlog
 
-CreateStack / UpdateStack / DeleteStack / DescribeStacks / DescribeStackEvents / DescribeStackResources / ListStackResources. Template parse + provision: **Lambda**, **IAM**, **API Gateway**, **EventBridge**, **`AWS::S3::Bucket`**. **Serverless v3** green path [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/) with [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin. No Console panel — use CLI/SDK/Serverless through `:4566` or Console `/runtime` proxy. **`simulith verify cloudformation`**. SQLite `cfn_*` tables. SigV4 `cloudformation` Query API.
+CreateStack / UpdateStack / DeleteStack / DescribeStacks / DescribeStackEvents / DescribeStackResources / ListStackResources. Template parse + provision: **Lambda**, **IAM**, **API Gateway**, **EventBridge**, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`**, **`AWS::Lambda::LayerVersion`** `Content`. **Serverless v3** green path [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/) with [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin. No Console panel — use CLI/SDK/Serverless through `:4566` or Console `/runtime` proxy. **`simulith verify cloudformation`**. SQLite `cfn_*` tables. SigV4 `cloudformation` Query API.
 
 ### Notable gaps (tracked)
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| `AWS::S3::BucketPolicy` (Serverless deployment bucket policy) | P1 |  |
+| layer-transversal T2 re-test (LayerVersion + deploy monitor) | P1 | external after **0.162.0** + #1052 |
 | Change sets, nested stacks, drift | P3 | Out of scope |
 | Console CFN panel | P2 | FW-PRD-* |
 

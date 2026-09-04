@@ -9,7 +9,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`.
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys.
 
 ## Implemented operations
 
@@ -30,7 +30,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | `AWS::IAM::Role` | IAM store (inline policies subset) |
 | `AWS::Lambda::Function` | Lambda store (`Code.ZipFile` or `Code.S3Bucket`+`S3Key`) |
 | `AWS::Lambda::Permission` | Lambda permissions |
-| `AWS::Lambda::LayerVersion` | Lambda layers |
+| `AWS::Lambda::LayerVersion` | Lambda layers (`Content.ZipFile` or `Content.S3Bucket`+`S3Key` — not `Code`) |
 | `AWS::ApiGateway::RestApi` | API Gateway |
 | `AWS::ApiGateway::Resource` | API Gateway |
 | `AWS::ApiGateway::Method` | API Gateway (+ `AWS_PROXY` integration) |
