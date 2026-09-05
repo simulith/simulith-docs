@@ -9,14 +9,14 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys.
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template.
 
 ## Implemented operations
 
 | Operation | Notes |
 | --- | --- |
 | CreateStack | `StackName` + `TemplateBody` or `TemplateURL` (S3 fetch). Sync `CREATE_COMPLETE` |
-| UpdateStack | Replace-all: deletes provisioned resources, applies new template |
+| UpdateStack | Replace-all: deletes provisioned resources, applies new template. **S3 buckets** whose logical IDs remain `AWS::S3::Bucket` in the new template are **preserved** (Serverless deployment bucket + pre-uploaded artifacts) |
 | DeleteStack | Deletes provisioned resources, then stack and events |
 | DescribeStacks | Optional `StackName` (name, ARN, or ID); error if filtered stack missing |
 | DescribeStackEvents | Events for one stack, newest first |
