@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.162.3] - 2026-09-05
+
+### Fixes
+
+- ****: CFN UpdateStack S3 deployment bucket preservation
+
 ## [0.162.2] - 2026-09-05
 
 ### Fixes
