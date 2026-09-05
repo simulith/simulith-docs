@@ -556,7 +556,7 @@ CreateStack / UpdateStack / DeleteStack / DescribeStacks / DescribeStackEvents /
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| layer-transversal T2 re-test (LayerVersion + deploy monitor) | P1 | external after **0.162.0** + #1052 |
+| layer-transversal T2 re-test (LayerVersion + deploy monitor) | P1 | external on **simulith/simulith:0.162.0** |
 | Change sets, nested stacks, drift | P3 | Out of scope |
 | Console CFN panel | P2 | FW-PRD-* |
 

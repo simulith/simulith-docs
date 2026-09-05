@@ -21,6 +21,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | DescribeStacks | Optional `StackName` (name, ARN, or ID); error if filtered stack missing |
 | DescribeStackEvents | Events for one stack, newest first |
 | DescribeStackResources | Logical/physical IDs and status for stack resources |
+| DescribeStackResource | Single resource detail (Serverless deploy monitor) |
 | ListStackResources | Same resource rows as Describe (Serverless CLI) |
 
 ## Supported resource types
