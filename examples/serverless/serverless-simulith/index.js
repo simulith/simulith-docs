@@ -62,6 +62,10 @@ class ServerlessSimulithPlugin {
     this.addHookFirst('before:aws:deploy:deploy:checkForChanges', () =>
       this.patchDeployState(),
     );
+
+    if (this.isActive()) {
+      this.applySimulithDefaults();
+    }
   }
 
   addHookFirst(hookName, hookFn) {
@@ -238,6 +242,16 @@ class ServerlessSimulithPlugin {
             ? entry
             : entry?.name || entry?.localPath || '';
         return !skipPlugins.some((skip) => name.includes(skip));
+      });
+    }
+    const pm = this.serverless.pluginManager;
+    if (pm && Array.isArray(pm.plugins)) {
+      pm.plugins = pm.plugins.filter((plugin) => {
+        const name = (plugin.constructor && plugin.constructor.name) || '';
+        return !skipPlugins.some((skip) => {
+          const needle = skip.replace(/^serverless-/, '').replace(/-/g, '').toLowerCase();
+          return name.toLowerCase().replace(/-/g, '').includes(needle);
+        });
       });
     }
 

@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.165.1] - 2026-09-07
+
+### Fixes
+
+- ****: Serverless auth-api T2 deploy parity
+
 ## [0.165.0] - 2026-09-07
 
 ### Features
