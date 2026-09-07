@@ -9,7 +9,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth. ** / ** — plugin transparent deploy defaults + SSM `${ssm:...}` resolution with `AWS_PROFILE=simulith`.
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth. ** / ** — plugin transparent deploy defaults + SSM `${ssm:...}` resolution with `AWS_PROFILE=simulith`. ** / ** — `AWS::Lambda::Version` for Serverless `versionFunctions: true`.
 
 ## Implemented operations
 
@@ -33,6 +33,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | `AWS::Lambda::Function` | Lambda store (`Code.ZipFile` or `Code.S3Bucket`+`S3Key`) |
 | `AWS::Lambda::Permission` | Lambda permissions |
 | `AWS::Lambda::LayerVersion` | Lambda layers (`Content.ZipFile` or `Content.S3Bucket`+`S3Key` — not `Code`) |
+| `AWS::Lambda::Version` | Published function snapshot (`FunctionName` ref or ARN; physical ID = version ARN) |
 | `AWS::ApiGateway::RestApi` | API Gateway |
 | `AWS::ApiGateway::Resource` | API Gateway |
 | `AWS::ApiGateway::Method` | API Gateway (+ `AWS_PROXY` integration) |
@@ -97,7 +98,7 @@ export AWS_PROFILE=simulith AWS_SDK_LOAD_CONFIG=1 AWS_DEFAULT_REGION=us-east-1
 npx serverless deploy -s dev
 ```
 
-When the plugin is active it applies `deploymentMethod: direct`, `versionFunctions: false`, and `disableLogs` automatically — no overlay yml required. It resolves `${ssm:...}` in config files against Simulith when using `[profile simulith]`.
+When the plugin is active it applies `deploymentMethod: direct` and `disableLogs` automatically — no overlay yml required. It resolves `${ssm:...}` in config files against Simulith when using `[profile simulith]`.
 
 Deployment buckets use `AWS::S3::Bucket`. See [`hello-serverless`](examples/serverless/hello-serverless/README.md) and the [plugin README](examples/serverless/serverless-simulith/README.md).
 

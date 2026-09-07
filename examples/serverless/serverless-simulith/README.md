@@ -9,7 +9,7 @@ Use this when `AWS_ENDPOINT_URL` or `[profile simulith]` alone does not reach Si
 When `custom.simulith.stages` includes the active stage (typically `dev`), the plugin:
 
 - Routes all AWS SDK calls to Simulith
-- Sets `deploymentMethod: direct`, `versionFunctions: false`
+- Sets `deploymentMethod: direct`
 - Enables `disableLogs` on functions (CloudWatch LogGroup parity gap)
 - Skips `serverless-domain-manager` and `serverless-add-api-key` (not on Simulith yet)
 
@@ -73,7 +73,7 @@ provider:
   region: us-east-1
 ```
 
-`deploymentMethod: direct` and `versionFunctions: false` are applied automatically when the plugin is active.
+`deploymentMethod: direct` is applied automatically when the plugin is active.
 
 ## Credentials
 

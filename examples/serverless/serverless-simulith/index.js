@@ -198,7 +198,6 @@ class ServerlessSimulithPlugin {
     if (!service.provider.deploymentMethod) {
       service.provider.deploymentMethod = 'direct';
     }
-    service.provider.versionFunctions = false;
     delete service.provider.logRetentionInDays;
 
     if (service.functions) {
