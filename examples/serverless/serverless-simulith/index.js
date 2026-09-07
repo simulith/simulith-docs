@@ -181,12 +181,14 @@ class ServerlessSimulithPlugin {
     const endpoint = this.getEndpoint();
     const awsProvider = this.getAwsProvider();
     const changes = {};
+    const cfg = this.getConfig();
+    const preserveProfile = cfg.preserveProfileCredentials === true;
 
-    const existing = awsProvider.getCredentials();
-    if (!existing.credentials) {
-      const accessKeyId = process.env.AWS_ACCESS_KEY_ID || 'test';
-      const secretAccessKey =
-        process.env.AWS_SECRET_ACCESS_KEY || 'test';
+    const accessKeyId = process.env.AWS_ACCESS_KEY_ID || 'test';
+    const secretAccessKey =
+      process.env.AWS_SECRET_ACCESS_KEY || 'test';
+
+    if (!preserveProfile) {
       changes.credentials = new AWS.Credentials({
         accessKeyId,
         secretAccessKey,
@@ -194,6 +196,20 @@ class ServerlessSimulithPlugin {
       process.env.AWS_ACCESS_KEY_ID = accessKeyId;
       process.env.AWS_SECRET_ACCESS_KEY = secretAccessKey;
       awsProvider.cachedCredentials = null;
+    } else {
+      const existing = awsProvider.getCredentials();
+      if (!existing.credentials) {
+        changes.credentials = new AWS.Credentials({
+          accessKeyId,
+          secretAccessKey,
+        });
+        process.env.AWS_ACCESS_KEY_ID = accessKeyId;
+        process.env.AWS_SECRET_ACCESS_KEY = secretAccessKey;
+        awsProvider.cachedCredentials = null;
+      }
+    }
+
+    if (changes.credentials) {
       awsProvider.getCredentials();
     }
 

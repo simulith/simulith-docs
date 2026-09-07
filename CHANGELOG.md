@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.163.0] - 2026-09-07
+
+### Features
+
+- ****: serverless-simulith deploy depth (auth-api T2)
+
 ## [0.162.3] - 2026-09-05
 
 ### Fixes

@@ -9,7 +9,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template.
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth.
 
 ## Implemented operations
 
@@ -22,6 +22,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | DescribeStackEvents | Events for one stack, newest first |
 | DescribeStackResources | Logical/physical IDs and status for stack resources |
 | DescribeStackResource | Single resource detail (Serverless deploy monitor) |
+| GetTemplate | Returns stored `TemplateBody` for a stack (Serverless deploy diff). Same `Action` as SES — disambiguated by `Version=2010-05-15` |
 | ListStackResources | Same resource rows as Describe (Serverless CLI) |
 
 ## Supported resource types
@@ -40,6 +41,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | `AWS::Events::Rule` | EventBridge (schedule/event pattern + targets subset) |
 | `AWS::S3::Bucket` | S3 store (`BucketName`, `PublicAccessBlockConfiguration`, `Tags` subset) |
 | `AWS::S3::BucketPolicy` | S3 store (`Bucket` ref, `PolicyDocument` JSON — Serverless deployment bucket policy) |
+| `AWS::Logs::LogGroup` | Metadata-only (physical ID = log group name; no CloudWatch Logs API) |
 
 **Intrinsics (subset):** `Ref`, `Fn::GetAtt`, `Fn::Sub`, `Fn::Join`. Template `DependsOn` ordering is honored.
 

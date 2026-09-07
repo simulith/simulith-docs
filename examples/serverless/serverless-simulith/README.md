@@ -40,7 +40,7 @@ Works with:
 - Dummy env vars (`AWS_ACCESS_KEY_ID=test`, `AWS_SECRET_ACCESS_KEY=test`), or
 - `--aws-profile simulith` (recommended with `[profile simulith]` in `~/.aws/config`)
 
-The plugin **only** overrides endpoints; it does not replace profile credentials when already configured.
+When the plugin is active for the stage, it **overrides credentials to `test`/`test`** (unless `custom.simulith.preserveProfileCredentials: true`) so Serverless deploy calls like `Lambda.getFunction` succeed against Simulith SigV4. Endpoints always route to Simulith.
 
 ## Simulith prerequisites
 
