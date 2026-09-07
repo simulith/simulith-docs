@@ -9,7 +9,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth. ** / ** — plugin transparent deploy defaults + SSM `${ssm:...}` resolution with `AWS_PROFILE=simulith`. ** / ** — `AWS::Lambda::Version` for Serverless `versionFunctions: true`. ** / ** — auth-api T2 parity (layer ARN lookup, Events Rule without Name, GatewayResponse, plugin skip timing).
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth. ** / ** — plugin transparent deploy defaults + SSM `${ssm:...}` resolution with `AWS_PROFILE=simulith`. ** / ** — `AWS::Lambda::Version` for Serverless `versionFunctions: true`. ** / ** — auth-api T2 parity (layer ARN lookup, Events Rule without Name, GatewayResponse, plugin skip timing). ** / ** — `AWS::ApiGateway::Authorizer` + method `AuthorizerId` for Serverless Lambda authorizers.
 
 ## Implemented operations
 
@@ -36,7 +36,8 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | `AWS::Lambda::Version` | Published function snapshot (`FunctionName` ref or ARN; physical ID = version ARN) |
 | `AWS::ApiGateway::RestApi` | API Gateway |
 | `AWS::ApiGateway::Resource` | API Gateway |
-| `AWS::ApiGateway::Method` | API Gateway (+ `AWS_PROXY` integration) |
+| `AWS::ApiGateway::Method` | API Gateway (+ `AWS_PROXY` integration; `AuthorizerId` when set) |
+| `AWS::ApiGateway::Authorizer` | API Gateway Lambda authorizer (`REQUEST` / `TOKEN`; physical ID = authorizer ID) |
 | `AWS::ApiGateway::Deployment` | API Gateway |
 | `AWS::ApiGateway::Stage` | API Gateway |
 | `AWS::ApiGateway::GatewayResponse` | Metadata-only (physical ID = `{RestApiId}:{ResponseType}`; CORS 4XX/5XX) |

@@ -8,6 +8,12 @@ Simulith emulates the API Gateway **management** REST API on the same port as ot
 
 **Stage HTTP invoke**: unauthenticated requests to `/restapis/{restapi_id}/{stage}/_user_request_/…` proxy to configured Lambda integrations.
 
+**Custom domain invoke**: requests with a `Host` header matching a provisioned domain name route through the mapped API + stage. The API mapping key (e.g. `api`) is stripped from the path — `Host: dev.demoapp.com` + `GET /api/hello` → same as `GET /restapis/{id}/dev/_user_request_/hello`.
+
+```bash
+curl -H "Host: dev.demoapp.com" http://127.0.0.1:4566/api/hello
+```
+
 **Lambda request authorizer**: methods with `authorizationType` `CUSTOM` and an `authorizerId` invoke the configured authorizer Lambda before the integration. Deny → `401` with `{"message":"Unauthorized"}`. Allow → authorizer `context` is passed to the proxy event under `requestContext.authorizer`.
 
 Compatible with:
@@ -43,6 +49,15 @@ Compatible with:
 | CreateAuthorizer | `POST /restapis/{restapi_id}/authorizers` | ✓ |
 | GetAuthorizer | `GET /restapis/{restapi_id}/authorizers/{authorizer_id}` | ✓ |
 | DeleteAuthorizer | `DELETE /restapis/{restapi_id}/authorizers/{authorizer_id}` | ✓ |
+| CreateDomainName (V2) | `POST /v2/domainnames` | ✓ |
+| GetDomainName (V2) | `GET /v2/domainnames/{domain_name}` | ✓ |
+| DeleteDomainName (V2) | `DELETE /v2/domainnames/{domain_name}` | ✓ |
+| GetApiMappings | `GET /v2/domainnames/{domain_name}/apimappings` | ✓ |
+| CreateApiMapping | `POST /v2/domainnames/{domain_name}/apimappings` | ✓ |
+| UpdateApiMapping | `PATCH /v2/domainnames/{domain_name}/apimappings/{id}` | ✓ |
+| DeleteApiMapping | `DELETE /v2/domainnames/{domain_name}/apimappings/{id}` | ✓ |
+| CreateDomainName (V1) | `POST /domainnames` | ✓ |
+| CreateBasePathMapping | `POST /domainnames/{domain_name}/basepathmappings` | ✓ |
 | Stage HTTP invoke | `GET/POST …/restapis/{id}/{stage}/_user_request_/…` | ✓ |
 
 `CreateRestApi` creates a root resource automatically and returns `rootResourceId` (required for Terraform `aws_api_gateway_resource`).
@@ -124,7 +139,7 @@ Provider routes **apigateway** and **lambda** endpoints to Simulith. Use **`-par
 ## Out of scope (follow-up stories)
 
 - Cognito user pool authorizer (native) — use Lambda REQUEST authorizer validating Cognito JWT (common production pattern).
-- API keys / usage plans, custom domains.
+- API keys / usage plans.
 
 Console panel: **shipped**  /  — [`console/README.md`](console.md), [`runtime/docs/console.md`](console.md).
 

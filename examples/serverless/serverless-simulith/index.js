@@ -232,7 +232,6 @@ class ServerlessSimulithPlugin {
     }
 
     const skipPlugins = [
-      'serverless-domain-manager',
       'serverless-add-api-key',
     ];
     if (Array.isArray(service.plugins)) {

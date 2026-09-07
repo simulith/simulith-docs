@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.166.0] - 2026-09-07
+
+### Features
+
+- ****: CFN AWS::ApiGateway::Authorizer type
+
 ## [0.165.1] - 2026-09-07
 
 ### Fixes

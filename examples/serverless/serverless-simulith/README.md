@@ -11,7 +11,8 @@ When `custom.simulith.stages` includes the active stage (typically `dev`), the p
 - Routes all AWS SDK calls to Simulith
 - Sets `deploymentMethod: direct`
 - Enables `disableLogs` on functions (CloudWatch LogGroup parity gap)
-- Skips `serverless-domain-manager` and `serverless-add-api-key` (not on Simulith yet) — applied in plugin **constructor** so `${file():plugins}` lists are filtered before other plugins load
+- Skips `serverless-add-api-key` (not on Simulith yet) — applied in plugin **constructor** so `${file():plugins}` lists are filtered before other plugins load
+- **`serverless-domain-manager`** runs on Simulith when custom domain APIs are available
 
 **No overlay yml or maintainer scripts required.** Use the project's normal deploy entrypoint, e.g.:
 
