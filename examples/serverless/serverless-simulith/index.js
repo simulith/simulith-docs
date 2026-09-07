@@ -33,9 +33,21 @@ class ServerlessSimulithPlugin {
     this.serverless = serverless;
     this.options = options;
     this.configured = false;
+    this.simulithActivated = false;
+    this.earlyConfigureForVariables();
+    if (this.simulithActivated) {
+      try {
+        this.patchProviderRequest();
+      } catch {
+        // Aws provider may not be ready; initialize hook will retry.
+      }
+    }
 
     this.hooks = {
-      initialize: () => this.ensureConfigured(),
+      initialize: () => {
+        this.applySimulithDefaults();
+        this.ensureConfigured();
+      },
     };
 
     for (const event of Object.keys(this.serverless.pluginManager.hooks)) {
@@ -69,14 +81,80 @@ class ServerlessSimulithPlugin {
     return (
       this.options.stage ||
       this.serverless.service.provider?.stage ||
+      this.readStageFromArgv() ||
       'dev'
     );
+  }
+
+  readStageFromArgv() {
+    const argv = process.argv;
+    const stageIdx = argv.indexOf('--stage');
+    if (stageIdx >= 0 && argv[stageIdx + 1]) {
+      return argv[stageIdx + 1];
+    }
+    const shortIdx = argv.indexOf('-s');
+    if (shortIdx >= 0 && argv[shortIdx + 1]) {
+      return argv[shortIdx + 1];
+    }
+    return process.env.SLS_STAGE || process.env.SERVERLESS_STAGE || null;
+  }
+
+  /** Patch SDK before Serverless resolves ${ssm:...} in config files. */
+  earlyConfigureForVariables() {
+    const stage = this.readStageFromArgv();
+    if (!stage) {
+      return;
+    }
+    const simulithRequested =
+      process.env.SIMULITH === '1' ||
+      process.env.SIMULITH === 'true' ||
+      process.env.AWS_PROFILE === 'simulith' ||
+      Boolean(process.env.AWS_ENDPOINT_URL);
+    if (!simulithRequested) {
+      return;
+    }
+    const cfg = (this.serverless?.service?.custom || {}).simulith || {};
+    const stages = cfg.stages || ['dev', 'local'];
+    if (!stages.includes(stage)) {
+      return;
+    }
+    const endpoint =
+      process.env.AWS_ENDPOINT_URL || cfg.endpoint || DEFAULT_ENDPOINT;
+    const changes = {};
+    for (const service of AWS_SERVICES) {
+      const entry = { endpoint };
+      if (service === 's3') {
+        entry.s3ForcePathStyle = true;
+      }
+      changes[service] = entry;
+    }
+    AWS.config.update(changes);
+    if (!process.env.AWS_ENDPOINT_URL) {
+      process.env.AWS_ENDPOINT_URL = endpoint;
+    }
+    this.simulithActivated = true;
+    this.preserveProfileForSession = process.env.AWS_PROFILE === 'simulith';
   }
 
   isActive() {
     const cfg = this.getConfig();
     const stages = cfg.stages || ['dev', 'local'];
-    return stages.includes(this.getStage());
+    if (!stages.includes(this.getStage())) {
+      return false;
+    }
+    if (process.env.SIMULITH === '1' || process.env.SIMULITH === 'true') {
+      return true;
+    }
+    if (this.simulithActivated) {
+      return true;
+    }
+    if (process.env.AWS_PROFILE === 'simulith') {
+      return true;
+    }
+    if (process.env.AWS_ENDPOINT_URL) {
+      return true;
+    }
+    return false;
   }
 
   getEndpoint() {
@@ -100,6 +178,73 @@ class ServerlessSimulithPlugin {
     this.serverless.cli.log(`serverless-simulith: ${msg}`);
   }
 
+  /** Simulith-specific deploy defaults — no per-project overlay yml required. */
+  applySimulithDefaults() {
+    if (!this.isActive()) {
+      return;
+    }
+
+    const service = this.serverless.service;
+    service.provider = service.provider || {};
+    const simulithAccount = '000000000000';
+
+    if (service.custom?.config?.ACCOUNT_ID) {
+      service.custom.config.ACCOUNT_ID = simulithAccount;
+    }
+    if (service.custom?.ACCOUNT_ID) {
+      service.custom.ACCOUNT_ID = simulithAccount;
+    }
+
+    if (!service.provider.deploymentMethod) {
+      service.provider.deploymentMethod = 'direct';
+    }
+    service.provider.versionFunctions = false;
+    delete service.provider.logRetentionInDays;
+
+    if (service.functions) {
+      for (const fn of Object.values(service.functions)) {
+        if (fn && fn.disableLogs !== false) {
+          fn.disableLogs = true;
+        }
+        if (Array.isArray(fn?.layers)) {
+          fn.layers = fn.layers.map((layer) => {
+            if (typeof layer === 'string') {
+              return layer.replace(
+                /arn:aws:lambda:[^:]+:\d+:layer:/,
+                `arn:aws:lambda:${service.provider.region || 'us-east-1'}:${simulithAccount}:layer:`,
+              );
+            }
+            return layer;
+          });
+        }
+      }
+    }
+
+    if (service.custom?.authorizer?.users?.arn) {
+      service.custom.authorizer.users.arn =
+        service.custom.authorizer.users.arn.replace(
+          /arn:aws:lambda:[^:]+:\d+:function:/,
+          `arn:aws:lambda:${service.provider.region || 'us-east-1'}:${simulithAccount}:function:`,
+        );
+    }
+
+    const skipPlugins = [
+      'serverless-domain-manager',
+      'serverless-add-api-key',
+    ];
+    if (Array.isArray(service.plugins)) {
+      service.plugins = service.plugins.filter((entry) => {
+        const name =
+          typeof entry === 'string'
+            ? entry
+            : entry?.name || entry?.localPath || '';
+        return !skipPlugins.some((skip) => name.includes(skip));
+      });
+    }
+
+    this.defaultsApplied = true;
+  }
+
   patchDeployState() {
     const deploy = this.findPlugin('AwsDeploy');
     if (deploy) {
@@ -117,7 +262,7 @@ class ServerlessSimulithPlugin {
     if (!this.isActive()) {
       if (!this.skippedLogged) {
         this.log(
-          `skipped (stage "${this.getStage()}" not in custom.simulith.stages)`,
+          `skipped (set AWS_PROFILE=simulith or AWS_ENDPOINT_URL for stage "${this.getStage()}")`,
         );
         this.skippedLogged = true;
       }
@@ -182,7 +327,8 @@ class ServerlessSimulithPlugin {
     const awsProvider = this.getAwsProvider();
     const changes = {};
     const cfg = this.getConfig();
-    const preserveProfile = cfg.preserveProfileCredentials === true;
+    const preserveProfile =
+      cfg.preserveProfileCredentials === true || this.preserveProfileForSession;
 
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || 'test';
     const secretAccessKey =

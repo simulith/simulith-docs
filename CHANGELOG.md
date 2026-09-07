@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.164.0] - 2026-09-07
+
+### Features
+
+- ****: serverless-simulith transparent deploy
+
 ## [0.163.0] - 2026-09-07
 
 ### Features
