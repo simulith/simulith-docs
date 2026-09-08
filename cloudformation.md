@@ -9,7 +9,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 - **API version:** `2010-05-15`
 - **Persistence:** SQLite (`cfn_stacks`, `cfn_stack_events`, `cfn_stack_resources`)
 
-** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth. ** / ** — plugin transparent deploy defaults + SSM `${ssm:...}` resolution with `AWS_PROFILE=simulith`. ** / ** — `AWS::Lambda::Version` for Serverless `versionFunctions: true`. ** / ** — auth-api T2 parity (layer ARN lookup, Events Rule without Name, GatewayResponse, plugin skip timing). ** / ** — `AWS::ApiGateway::Authorizer` + method `AuthorizerId` for Serverless Lambda authorizers.
+** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth. ** / ** — plugin transparent deploy defaults + SSM `${ssm:...}` resolution with `AWS_PROFILE=simulith`. ** / ** — `AWS::Lambda::Version` for Serverless `versionFunctions: true`. ** / ** — auth-api T2 parity (layer ARN lookup, Events Rule without Name, GatewayResponse, plugin skip timing). ** / ** — `AWS::ApiGateway::Authorizer` + method `AuthorizerId` for Serverless Lambda authorizers. ** / ** — `ValidateTemplate` for Serverless pre-deploy validation (no plugin skip).
 
 ## Implemented operations
 
@@ -23,6 +23,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | DescribeStackResources | Logical/physical IDs and status for stack resources |
 | DescribeStackResource | Single resource detail (Serverless deploy monitor) |
 | GetTemplate | Returns stored `TemplateBody` for a stack (Serverless deploy diff). Same `Action` as SES — disambiguated by `Version=2010-05-15` |
+| ValidateTemplate | Validates JSON template without creating a stack; returns `Parameters`, `Capabilities` subset (Serverless pre-deploy) |
 | ListStackResources | Same resource rows as Describe (Serverless CLI) |
 
 ## Supported resource types

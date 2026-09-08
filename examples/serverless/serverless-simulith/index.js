@@ -305,11 +305,6 @@ class ServerlessSimulithPlugin {
       this.log(`→ ${service}.${method}`);
     }
 
-    if (method === 'validateTemplate') {
-      this.log('skipping template validation (ValidateTemplate not on Simulith)');
-      return '';
-    }
-
     const svc = service.toLowerCase();
     if (svc === 'ecr') {
       if (method === 'describeRepositories') {
