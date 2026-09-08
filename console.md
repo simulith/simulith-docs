@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, and Verify. **CloudFormation** stacks are managed via CLI, SDK, or Serverless — not a Console panel yet ([cloudformation.md](cloudformation.md)).
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or Serverless — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md)).
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -64,7 +64,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
 6. Open **S3** — list/create/delete buckets, list objects by prefix, upload/download/delete objects.
-7. Open **Lambda** — list functions, inspect config, invoke with JSON payload, delete function (invoke needs node/python3 on runtime host).
+7. Open **Lambda** — **Functions**: list, config (incl. attached layers), invoke, delete; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
 8. Open **API Gateway** — list REST APIs, load stage, copy invoke URL, HTTP smoke invoke, delete API.
 9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
@@ -120,7 +120,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
-| **Lambda** | ListFunctions, GetFunction (config + env), Invoke (RequestResponse JSON), DeleteFunction | Create/update code UI deferred; seeded `demo-fn` via Dashboard **Seed**; invoke needs node/python3 on runtime host PATH |
+| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Layers:** ListLayers, ListLayerVersions, GetLayerVersion (read-only) | Create/publish layer UI deferred; seeded `demo-fn` via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi | Create/deploy UI deferred; seeded `demo-api` via **Seed** |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
@@ -133,8 +133,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A UPSERT) | Local DNS stub — not a real resolver; CNAME/delete UI deferred |
 | **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate | Local validation stub — not a real CA; delete/tags UI deferred; seeded demo cert via **Seed** |
 | **CloudFront** | ListDistributions, GetDistribution, GetOriginAccessControl, CreateOriginAccessControl, CreateDistribution | Local CDN stub — no edge caching; delete UI deferred; use Terraform `cloudfront/cdn-min` |
-
-**Not in Console (use CLI / SDK / Serverless):** **CloudFormation** — stack lifecycle and Serverless v3 deploy via [`cloudformation.md`](cloudformation.md) and [`serverless-simulith`](examples/serverless/serverless-simulith/). Point AWS CLI at `:4566` or Console proxy `:9080/runtime`.
+| **CloudFormation** | DescribeStacks, ListStackResources, DescribeStackEvents, GetTemplate (read-only) | Create/update/delete from UI deferred — use CLI, SDK, or [`serverless-simulith`](examples/serverless/serverless-simulith/); see [`cloudformation.md`](cloudformation.md) |
 
 Panel capabilities are documented in the **Service panels** section below.
 
@@ -185,7 +184,7 @@ Vite dev server proxies `/runtime` and `/_simulith` to `http://127.0.0.1:4566`.
 | Area | Follow-up |
 | --- | --- |
 | Live verify run from Console (admin trigger) | CLI `simulith verify` — import JSON on Verify panel instead |
-| CloudFormation stack browser | CLI `aws cloudformation describe-stacks` or Serverless deploy — [cloudformation.md](cloudformation.md) |
+| CloudFormation stack browser | Console `/cloudformation` (read-only) or CLI — [cloudformation.md](cloudformation.md) |
 | Snapshot save/restore UI | CLI `simulith snapshot` |
 | Full AWS Console parity | See [console.md](console.md) |
 

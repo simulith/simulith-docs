@@ -7,6 +7,14 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.169.0] - 2026-09-08
+
+### Features
+
+- ****: Console CloudFormation panel
+
+- ****: Console Lambda layers panel
+
 ## [0.168.0] - 2026-09-08
 
 ### Features

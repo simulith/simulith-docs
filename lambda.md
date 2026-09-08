@@ -242,6 +242,8 @@ aws lambda publish-layer-version \
 
 **Limits:** `AddLayerVersionPermission` not implemented (open local access).
 
+**Console:** inspect layers and attached function layers in the Lambda panel (**Layers** tab + function configuration) — [console.md](console.md).
+
 ## SQS event source mapping
 
 Map a local SQS queue to a Lambda function. The runtime **polls enabled mappings in the background** (~1s interval), batches messages, invokes the function with a standard SQS `Records` event, and deletes messages on success.
