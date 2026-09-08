@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.167.3] - 2026-09-08
+
+### Fixes
+
+- ****: Node.js Lambda callback-style handlers
+
 ## [0.167.2] - 2026-09-08
 
 ### Fixes
