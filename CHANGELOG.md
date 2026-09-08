@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.167.1] - 2026-09-08
+
+### Fixes
+
+- ****: GET V1 base path mappings (domain-manager)
+
 ## [0.167.0] - 2026-09-07
 
 ### Features

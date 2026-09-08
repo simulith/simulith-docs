@@ -44,7 +44,33 @@ custom:
     endpoint: http://127.0.0.1.sslip.io:4566
 ```
 
-Stage `prod` is unaffected — the plugin skips when the stage is not listed.
+Stage `prod` on **real AWS** is unaffected — the plugin is inactive unless `AWS_PROFILE=simulith`, `SIMULITH=1`, or `AWS_ENDPOINT_URL` is set (see below).
+
+## Deploying to real AWS (same `serverless.yml`)
+
+`serverless-simulith` stays in `plugins` permanently. On a normal AWS deploy it is a **no-op**:
+
+- No SDK redirect to `:4566`
+- No `deploymentMethod: direct` / `disableLogs` overrides
+- Other plugins (`serverless-domain-manager`, etc.) call **real** AWS
+
+Activation requires **both** (1) stage listed in `custom.simulith.stages` (defaults: `dev`, `local`) **and** (2) an explicit Simulith signal:
+
+| Signal | Example |
+| --- | --- |
+| `AWS_PROFILE=simulith` | `export AWS_PROFILE=simulith` before `sls deploy` |
+| `SIMULITH=1` | CI/local script |
+| `AWS_ENDPOINT_URL` | Already pointing at Simulith |
+
+```bash
+# AWS dev (default credentials / prod profile)
+sls deploy --stage dev
+
+# Simulith dev (same yml, same stage)
+AWS_PROFILE=simulith sls deploy --stage dev
+```
+
+No overlay yml and no plugin list edits when switching environments.
 
 ## Install
 

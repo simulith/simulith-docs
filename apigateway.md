@@ -58,6 +58,7 @@ Compatible with:
 | DeleteApiMapping | `DELETE /v2/domainnames/{domain_name}/apimappings/{id}` | ✓ |
 | CreateDomainName (V1) | `POST /domainnames` | ✓ |
 | CreateBasePathMapping | `POST /domainnames/{domain_name}/basepathmappings` | ✓ |
+| GetBasePathMappings | `GET /domainnames/{domain_name}/basepathmappings` | ✓ |
 | Stage HTTP invoke | `GET/POST …/restapis/{id}/{stage}/_user_request_/…` | ✓ |
 
 `CreateRestApi` creates a root resource automatically and returns `rootResourceId` (required for Terraform `aws_api_gateway_resource`).
