@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.169.1] - 2026-09-08
+
+### Fixes
+
+- ****: Lambda ListLayers path without trailing slash
+
 ## [0.169.0] - 2026-09-08
 
 ### Features
