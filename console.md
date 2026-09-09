@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or Serverless — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md)).
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md) · [serverless-integration.md](serverless-integration.md)).
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -120,7 +120,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, CopyObject, DeleteObject | DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
-| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Triggers:** List/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion (read-only) | Create ESM / publish layer UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
+| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Triggers:** List/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload) | Create ESM UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi; **GetDomainNames**, **GetDomainName**, **GetBasePathMappings**, **GetApiMappings** | Create/deploy UI deferred; custom domains via Serverless domain manager |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
@@ -133,7 +133,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A UPSERT) | Local DNS stub — not a real resolver; CNAME/delete UI deferred |
 | **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate | Local validation stub — not a real CA; delete/tags UI deferred; seeded demo cert via **Seed** |
 | **CloudFront** | ListDistributions, GetDistribution, GetOriginAccessControl, CreateOriginAccessControl, CreateDistribution | Local CDN stub — no edge caching; delete UI deferred; use Terraform `cloudfront/cdn-min` |
-| **CloudFormation** | DescribeStacks, ListStackResources, DescribeStackEvents, GetTemplate (read-only) | Create/update/delete from UI deferred — use CLI, SDK, or [`serverless-simulith`](examples/serverless/serverless-simulith/); see [`cloudformation.md`](cloudformation.md) |
+| **CloudFormation** | DescribeStacks, ListStackResources, DescribeStackEvents, GetTemplate (read-only) | Create/update/delete from UI deferred — use CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith); see [`cloudformation.md`](cloudformation.md) |
 
 Panel capabilities are documented in the **Service panels** section below.
 

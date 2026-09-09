@@ -81,7 +81,7 @@ aws cloudformation create-stack `
 
 ## Serverless Framework
 
-Use the [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin so `serverless deploy` reaches Simulith.
+Use the [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) plugin so `serverless deploy` reaches Simulith. Plugin source: [`examples/serverless/serverless-simulith/`](examples/serverless/serverless-simulith/).
 
 **Canonical guide:** [serverless-integration.md](serverless-integration.md)
 
@@ -90,6 +90,8 @@ Use the [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin
 ```bash
 npm install --save-dev serverless-simulith@latest
 ```
+
+Package: [npmjs.com/package/serverless-simulith](https://www.npmjs.com/package/serverless-simulith)
 
 ```yaml
 plugins:

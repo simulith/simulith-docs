@@ -171,7 +171,7 @@ Examples: [`examples/terraform/`](examples/terraform/).
 Best for **Serverless v3 deploy** against the local stack API.
 
 1. Run Simulith (runtime on `:4566` or Console proxy at `:9080/runtime`)
-2. `npm install --save-dev serverless-simulith` (same semver as runtime) — see [serverless-integration.md](serverless-integration.md)
+2. `npm install --save-dev serverless-simulith` (same semver as runtime) — [npm package](https://www.npmjs.com/package/serverless-simulith) · [serverless-integration.md](serverless-integration.md)
 3. Add plugin + `custom.simulith.stages`; deploy: `serverless deploy --stage dev` (routes CFN + Lambda/S3/IAM calls to Simulith)
 
 Green path: [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/). Guides: [serverless-integration.md](serverless-integration.md) · [cloudformation.md](cloudformation.md).

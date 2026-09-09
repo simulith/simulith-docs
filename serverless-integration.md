@@ -32,7 +32,7 @@ npm install --save-dev serverless-simulith@latest
 
 Package page: [npmjs.com/package/serverless-simulith](https://www.npmjs.com/package/serverless-simulith) · Product: [simulith.dev](https://simulith.dev)
 
-Monorepo contributors can use `"serverless-simulith": "file:../serverless-simulith"` until publish is wired on the next release.
+Monorepo contributors can use `"serverless-simulith": "file:../serverless-simulith"` for plugin development.
 
 Add to `serverless.yml` (or shared `serverless.common.yml`):
 

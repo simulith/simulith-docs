@@ -142,6 +142,7 @@ Create the directory on the host if needed. On Windows, ensure the path is share
 ## Related
 
 - [using-simulith.md](using-simulith.md) — **after Docker is running**: workflows, Simulith vs AWS, endpoint matrix
+- [serverless-integration.md](serverless-integration.md) — Serverless deploy with [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) (npm)
 - [console.md](console.md) — all-in-one workshop demo
 - [quickstart.md](quickstart.md) — onboarding
 - [README.md](README.md) — module overview
