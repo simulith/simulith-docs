@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.169.2] - 2026-09-09
+
+### Fixes
+
+- ****: demoapp full-stack local parity
+
 ## [0.169.1] - 2026-09-08
 
 ### Fixes
