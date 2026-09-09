@@ -68,7 +68,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 8. Open **API Gateway** — list REST APIs, load stage, copy invoke URL, HTTP smoke invoke, delete API.
 9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
-11. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients and groups, open JWKS URL.
+11. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
 12. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), and seeded outbox after **Seed**.
 13. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
 14. Click **Reset local state** — clears all panels.
@@ -124,7 +124,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi | Create/deploy UI deferred; seeded `demo-api` via **Seed** |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
-| **Cognito** | ListUserPools, DescribeUserPool, ListUserPoolClients, ListGroups; JWKS link | Create/delete UI deferred; seeded `demo-pool` + `demo-client` + group `admin` via **Seed** |
+| **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
 | **RDS** | DescribeDBInstances (status, engine, sidecar endpoint) | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
