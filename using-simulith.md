@@ -171,10 +171,10 @@ Examples: [`examples/terraform/`](examples/terraform/).
 Best for **Serverless v3 deploy** against the local stack API.
 
 1. Run Simulith (runtime on `:4566` or Console proxy at `:9080/runtime`)
-2. Add the [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin and `provider.deploymentMethod: direct`
-3. Deploy: `serverless deploy --stage dev` (routes CFN + Lambda/S3/IAM calls to Simulith)
+2. `npm install --save-dev serverless-simulith` (same semver as runtime) — see [serverless-integration.md](serverless-integration.md)
+3. Add plugin + `custom.simulith.stages`; deploy: `serverless deploy --stage dev` (routes CFN + Lambda/S3/IAM calls to Simulith)
 
-Green path: [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/). Guide: [cloudformation.md](cloudformation.md).
+Green path: [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/). Guides: [serverless-integration.md](serverless-integration.md) · [cloudformation.md](cloudformation.md).
 
 ---
 
@@ -273,6 +273,7 @@ Docker-specific issues (ports, bind address): [docker.md — Troubleshooting](do
 | AWS CLI cookbook | [aws-cli-examples.md](aws-cli-examples.md) |
 | SDK cookbook | [sdk-examples.md](sdk-examples.md) |
 | Terraform + green path | [terraform-integration.md](terraform-integration.md) |
+| Serverless + green path | [serverless-integration.md](serverless-integration.md) |
 | Console panels | [console.md](console.md) |
 | CloudFormation + Serverless | [cloudformation.md](cloudformation.md) |
 | API parity summary | [aws-parity-overview.md](aws-parity-overview.md) |

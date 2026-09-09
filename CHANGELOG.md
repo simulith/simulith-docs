@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.175.0] - 2026-09-09
+
+### Features
+
+- ****: serverless-simulith npm publish
+
 ## [0.174.0] - 2026-09-09
 
 ### Features

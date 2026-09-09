@@ -8,7 +8,7 @@ Consolidated view of **Simulith vs AWS** for **eighteen** shipped services: what
 
 > **Console panels:** [console.md](console.md) · **Operation × verify:** [compatibility-matrix.md](compatibility-matrix.md)
 
-Last updated: 2026-09-04..
+Last updated: 2026-09-09..
 
 ---
 
@@ -119,7 +119,7 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **CloudFront** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **CloudFormation** | 100% | — | — | — | — | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth) · **—** not applicable (e.g. CFN has no Console panel or Terraform green path yet).
+**Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth) · **—** not applicable (e.g. CFN has no Terraform green path; Serverless green path in [serverless-integration.md](serverless-integration.md)).
 
 **Tier A aggregate (184 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **116 / 118** · **Overall ~98% (180 / 184)**.
 
@@ -550,7 +550,7 @@ CreateOriginAccessControl, GetOriginAccessControl, CreateDistribution, GetDistri
 
 Guide: [cloudformation.md](cloudformation.md) · Backlog: the product backlog
 
-CreateStack / UpdateStack / DeleteStack / DescribeStacks / DescribeStackEvents / DescribeStackResources / ListStackResources. Template parse + provision: **Lambda**, **IAM**, **API Gateway**, **EventBridge**, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`**, **`AWS::Lambda::LayerVersion`** `Content`. **Serverless v3** green path [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/) with [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin. No Console panel — use CLI/SDK/Serverless through `:4566` or Console `/runtime` proxy. **`simulith verify cloudformation`**. SQLite `cfn_*` tables. SigV4 `cloudformation` Query API.
+CreateStack / UpdateStack / DeleteStack / DescribeStacks / DescribeStackEvents / DescribeStackResources / ListStackResources. Template parse + provision: **Lambda**, **IAM**, **API Gateway**, **EventBridge**, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`**, **`AWS::Lambda::LayerVersion`** `Content`. **Serverless v3** green path [`examples/serverless/hello-serverless/`](examples/serverless/hello-serverless/) with [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin. **Console panel `/cloudformation`** read-only. Deploy via CLI/SDK/Serverless through `:4566` or Console `/runtime` proxy — [serverless-integration.md](serverless-integration.md). **`simulith verify cloudformation`**. SQLite `cfn_*` tables. SigV4 `cloudformation` Query API.
 
 ### Notable gaps (tracked)
 

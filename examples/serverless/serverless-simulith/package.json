@@ -1,10 +1,24 @@
 {
   "name": "serverless-simulith",
-  "version": "0.1.0",
-  "description": "Route Serverless Framework v3 AWS SDK calls to Simulith (:4566)",
+  "version": "0.174.1",
+  "description": "Serverless Framework v3 plugin — deploy to Simulith local AWS runtime (:4566). See https://simulith.dev",
   "main": "index.js",
   "license": "MIT",
-  "keywords": ["serverless", "simulith", "aws", "local"],
+  "author": "Simulith (https://simulith.dev)",
+  "keywords": ["serverless", "simulith", "aws", "local", "cloudformation"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simulith/simulith.git",
+    "directory": "runtime/examples/serverless/serverless-simulith"
+  },
+  "homepage": "https://simulith.dev",
+  "bugs": {
+    "url": "https://github.com/simulith/simulith/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": ["index.js", "README.md"],
   "dependencies": {
     "aws-sdk": "^2.1693.0"
   },
