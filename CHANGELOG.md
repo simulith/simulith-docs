@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.173.0] - 2026-09-09
+
+### Features
+
+- ****: Console Lambda event source mappings (AWS Triggers parity)
+
 ## [0.172.0] - 2026-09-09
 
 ### Features

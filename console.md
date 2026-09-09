@@ -64,7 +64,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
 6. Open **S3** — list/create/delete buckets, list objects by prefix, upload/download/delete objects.
-7. Open **Lambda** — **Functions**: list, config (incl. attached layers), invoke, delete; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
+7. Open **Lambda** — **Functions**: list, config (incl. attached layers), invoke, delete; **Triggers**: SQS event source mappings for the selected function; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
 8. Open **API Gateway** — REST APIs (resources, stage invoke) and **Custom domain names** (mappings, copy local invoke URL).
 9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
@@ -120,7 +120,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, DeleteObject | CopyObject / DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
-| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Layers:** ListLayers, ListLayerVersions, GetLayerVersion (read-only) | Create/publish layer UI deferred; seeded `demo-fn` via **Seed**; invoke needs node/python3 on PATH |
+| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Triggers:** List/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion (read-only) | Create ESM / publish layer UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi; **GetDomainNames**, **GetDomainName**, **GetBasePathMappings**, **GetApiMappings** | Create/deploy UI deferred; custom domains via Serverless domain manager |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
