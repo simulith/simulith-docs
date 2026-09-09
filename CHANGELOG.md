@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.172.0] - 2026-09-09
+
+### Features
+
+- ****: Console APIGW custom domain names (AWS Domains parity)
+
 ## [0.171.0] - 2026-09-09
 
 ### Features
