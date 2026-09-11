@@ -199,6 +199,12 @@ class ServerlessSimulithPlugin {
       service.custom.ACCOUNT_ID = simulithAccount;
     }
 
+    // Lambda runtime: SDK v3 (Secrets Manager) must reach Simulith, not real AWS.
+    const endpoint = this.getEndpoint();
+    if (service.custom?.config && typeof service.custom.config === 'object') {
+      service.custom.config.AWS_ENDPOINT_URL = endpoint;
+    }
+
     if (!service.provider.deploymentMethod) {
       service.provider.deploymentMethod = 'direct';
     }

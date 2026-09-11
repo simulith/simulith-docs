@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.176.1] - 2026-09-11
+
+### Fixes
+
+- ****: serverless-simulith Lambda AWS_ENDPOINT_URL injection
+
 ## [0.176.0] - 2026-09-09
 
 ### Features

@@ -151,6 +151,45 @@ terraform plan -var-file=dev.tfvars -parallelism=1
 
 Maintainer evidence (unmodified demoapp `parameters/` root): `profile-only-terraform-recipe.md`. Legacy per-module `simulith_override.tf` overlays are optional.
 
+### S3 remote state backend (`backend.simulith.hcl`)
+
+Modules written for **real AWS** often declare `backend "s3"` in `state.tf` (bucket + lock table only — no Simulith endpoint). The **AWS provider** and the **Terraform backend** are configured separately:
+
+| Layer | Purpose | Simulith setup |
+| --- | --- | --- |
+| **Provider** | Create/update AWS resources (VPC, RDS, …) | `[profile simulith]` in `~/.aws/config` or project `.aws/config` + `AWS_PROFILE=simulith` |
+| **Backend S3** | Store `.tfstate` + DynamoDB lock | `terraform init -backend-config=backend.simulith.hcl -reconfigure` |
+
+**Canonical file:** [`examples/terraform/multi-root-green-path/backend.simulith.hcl`](examples/terraform/multi-root-green-path/backend.simulith.hcl)
+
+It points the S3 backend at Simulith (`127.0.0.1.sslip.io:4566`), enables path-style S3, and uses dummy credentials. **Do not commit this file into customer `.tf` modules** — pass it only at `init` time (same pattern as LocalStack / other emulators).
+
+**In this repo** (green-path roots under `multi-root-green-path/`):
+
+```bash
+terraform init -backend-config=backend.simulith.hcl -reconfigure
+```
+
+**External checkout** (demoapp, other multi-root IaC — **recommended**):
+
+1. Copy `backend.simulith.hcl` once into your infrastructure tree, e.g. `infrastructure/backend.simulith.hcl`.
+2. Bootstrap state bucket locally (`terraformState/` with **local** backend) if your project uses that pattern.
+3. From each module with `backend "s3"`:
+
+```bash
+cd infrastructure/vpc   # example
+terraform init -backend-config=../backend.simulith.hcl -reconfigure
+terraform plan -var-file=dev.tfvars -parallelism=1
+```
+
+**Windows paths:** use `C:/Projects/.../backend.simulith.hcl` (forward slashes), not `/c/Projects/...`, when `-backend-config` fails to read the file.
+
+**All-in-one Console (`:9080/runtime`):** copy the file and change both `endpoints` values to `http://127.0.0.1:9080/runtime`.
+
+**Not needed for:** modules without `backend "s3"`, or the first `terraformState/` bootstrap apply (local backend until the Simulith bucket exists).
+
+See also [Multi-root apply (S3 backend + remote state)](#multi-root-apply-s3-backend--remote-state) and the demoapp checklist `demoapp-prod-terraform-checklist.md`.
+
 ---
 
 ## DynamoDB — `aws_dynamodb_table`

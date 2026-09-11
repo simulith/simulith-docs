@@ -95,7 +95,7 @@ For demoapp-shaped repos (multiple `serverless.yml` roots, layers, domain manage
 export AWS_PROFILE=simulith AWS_SDK_LOAD_CONFIG=1 AWS_DEFAULT_REGION=us-east-1
 ```
 
-The plugin applies `deploymentMethod: direct`, `disableLogs`, SSM `${ssm:...}` resolution, and skips plugins not yet on Simulith — see [plugin README](examples/serverless/serverless-simulith/README.md).
+The plugin applies `deploymentMethod: direct`, `disableLogs`, SSM `${ssm:...}` resolution, injects **`AWS_ENDPOINT_URL` into Lambda environment** (`provider.environment` / `custom.config`) so runtime SDK v3 clients (e.g. Secrets Manager) reach Simulith without per-service code forks, and skips plugins not yet on Simulith — see [plugin README](examples/serverless/serverless-simulith/README.md).
 
 **Terraform first:** unmodified demoapp modules apply with `[profile simulith]` before Serverless backend deploy — see the maintainer checklist under .
 

@@ -117,11 +117,11 @@ Per-service checklist beyond raw API counts — same **seven surfaces** as `SERV
 | **Route 53** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **ACM** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
 | **CloudFront** | 100% | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **CloudFormation** | 100% | — | — | — | — | ✅ |
+| **CloudFormation** | 100% | — | — | ✅ | — | ✅ |
 
-**Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth) · **—** not applicable (e.g. CFN has no Terraform green path; Serverless green path in [serverless-integration.md](serverless-integration.md)).
+**Legend:** ✅ shipped · ⏳ open in the product backlog (expansion depth) · **—** not applicable (e.g. CFN has no Terraform green path or seed fixture; Serverless green path in [serverless-integration.md](serverless-integration.md); verify tracked as ).
 
-**Tier A aggregate (184 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFront **116 / 118** · **Overall ~98% (180 / 184)**.
+**Tier A aggregate (190 ref ops):** Foundation **40 / 42** · S3–Secrets Manager **24 / 24** · Cognito–CloudFormation **122 / 124** · **Overall ~98% (186 / 190)** — matches executive summary above.
 
 ---
 
@@ -556,9 +556,9 @@ CreateStack / UpdateStack / DeleteStack / DescribeStacks / DescribeStackEvents /
 
 | Gap | Priority | Backlog |
 | --- | --- | --- |
-| layer-transversal T2 re-test (LayerVersion + deploy monitor) | P1 | external on **simulith/simulith:0.162.0** |
+| demoapp full `./deploy-backend.sh` one-shot (transparent) | P1 | **** — 10/11 stacks PASS; `layer-engine` EMFILE on Windows host |
+| `simulith verify cloudformation` scenarios | P2 |  |
 | Change sets, nested stacks, drift | P3 | Out of scope |
-| Console CFN panel | P2 | FW-PRD-* |
 
 ### Tier A reference set (6 ops)
 

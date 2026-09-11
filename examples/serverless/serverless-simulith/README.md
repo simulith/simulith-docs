@@ -55,6 +55,7 @@ custom:
 Serverless deploy uses AWS SDK v2 internally. Environment variables and AWS profiles alone do not always redirect every call to Simulith. This plugin:
 
 - Routes deploy-time SDK calls to Simulith (`:4566` or Console proxy `:9080/runtime`)
+- Injects **`AWS_ENDPOINT_URL`** into Lambda environment (`custom.config`) so runtime SDK v3 (e.g. Secrets Manager) reaches Simulith without code forks (PostgreSQL SSL stays enabled for RDS Proxy `RequireTLS`)
 - Applies Simulith-friendly defaults (`deploymentMethod: direct`, `disableLogs`, SSM `${ssm:...}` resolution)
 - Stays **inactive on real AWS** when no Simulith signal is present (same `serverless.yml` for local and cloud)
 

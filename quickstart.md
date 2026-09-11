@@ -231,6 +231,7 @@ Container-specific config: [docker.md](docker.md).
 | Issue | Fix |
 | --- | --- |
 | Port in use | Map another host port, e.g. `-p 8787:4566` |
+| **Windows:** `bind: access forbidden` on `:4566` | Hyper-V reserves **4486–4585**. Admin PowerShell: `net stop winnat` → `netsh int ipv4 set dynamicport tcp start=49152 num=16384` → `net start winnat` → restart Docker Desktop; then `docker run` per [docker.md](docker.md) |
 | LocalStack also on 4566 | Change port on one tool |
 | `simulith seed` / `reset` fails with DB locked | Stop the running server first |
 | Console shows **Unavailable** | Ensure runtime is healthy; container must be named `simulith` on the same network |

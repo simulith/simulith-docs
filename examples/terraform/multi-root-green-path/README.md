@@ -21,6 +21,17 @@ Single-root twins: [`../vpc-root/`](../vpc-root/) · [`../subnets/`](../subnets/
 
 **Requires Simulith** on `:4566` with S3 + DynamoDB + EC2 (VPC) + KMS + Secrets Manager + IAM + RDS (Docker sidecar) + SES + Cognito + Lambda + SSM + Route 53 + ACM + CloudFront.
 
+## External customer checkouts (unmodified Terraform)
+
+When validating **your own** multi-root IaC (e.g. demoapp `infrastructure/`) against Simulith — **without** copying modules into this repo:
+
+1. Copy [`backend.simulith.hcl`](backend.simulith.hcl) to your project once (e.g. `infrastructure/backend.simulith.hcl`).
+2. Configure `[profile simulith]` with `endpoint_url = http://127.0.0.1.sslip.io:4566` (project `.aws/config` or `~/.aws/config`).
+3. Bootstrap remote state if needed (`terraformState/` with local backend → creates bucket on Simulith).
+4. Each module with `backend "s3"`: `terraform init -backend-config=../backend.simulith.hcl -reconfigure`.
+
+Full recipe: [`runtime/docs/terraform-integration.md`](../../../terraform-integration.md#s3-remote-state-backend-backendsimulithhcl) · demoapp checklist: `demoapp-prod-terraform-checklist.md`.
+
 ## Usage (native Simulith)
 
 From repo root:
