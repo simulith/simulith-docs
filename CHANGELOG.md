@@ -7,6 +7,12 @@ All notable changes to Simulith are documented here. Versions follow
 
 Runtime and Console share a single version (one tag per release).
 
+## [0.177.0] - 2026-09-11
+
+### Features
+
+- ****: Console RDS DB Proxy panel + Lambda Layers date fix
+
 ## [0.176.1] - 2026-09-11
 
 ### Fixes
