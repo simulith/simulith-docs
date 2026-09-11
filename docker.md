@@ -2,7 +2,7 @@
 
 Docker reference for the Simulith runtime. For first-time onboarding, see [quickstart.md](quickstart.md).
 
-> **Releases (versioned images + binaries):** see [release.md](https://simulith.dev) — tag-driven pipeline, multi-arch image, smoke and gated publishing.
+> **Releases (versioned images + binaries):** see release.md — tag-driven pipeline, multi-arch image, smoke and gated publishing.
 
 > **Docker Hub overviews (source):** [`../dockerhub/README.md`](https://hub.docker.com/r/simulith/simulith) — copy-paste README for `simulith/simulith` and `simulith/console`.
 
@@ -31,7 +31,7 @@ SIMULITH_VERSION=0.1.0 docker compose -f docker-compose.all-in-one.published.yml
 # or omit SIMULITH_VERSION for :latest
 ```
 
-Runtime and Console are separate images that share the release version. See [release.md](https://simulith.dev).
+Runtime and Console are separate images that share the release version. See release.md.
 
 ## Quick run (runtime only)
 

@@ -11,7 +11,7 @@ Local Amazon RDS emulation via **AWS JSON 1.1** (and **AWS Query** for the Terra
 
 Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, `aws_db_instance`, and `aws_db_proxy` when using provider endpoint override.
 
-## Implemented operations
+## What you can do
 
 | Operation | Notes |
 | --- | --- |
@@ -38,6 +38,19 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, `aws_
 | DescribeDBProxyTargetGroups | Returns stored pool config for the default target group |
 | ListTagsForResource | Empty TagList stub (Terraform read) |
 | AddTagsToResource / RemoveTagsFromResource | No-op stubs |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| MySQL / MariaDB / Aurora (`CreateDBCluster`) | Postgres sidecar only |
+| `CreateDBSnapshot` / `RestoreDBInstanceFromDBSnapshot` | No real snapshots |
+| Read replicas / Multi-AZ | Single local container |
+| Performance Insights / real backups | Flags stored; no AWS-identical backups |
+| RDS Proxy auth via live Secrets Manager fetch | Auth ARNs are metadata |
+| Parameter apply on the sidecar | `ModifyDBParameterGroup` persists names only |
 
 ## Local connectivity
 

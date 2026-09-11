@@ -24,7 +24,7 @@ For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK exa
 
 Parity gaps and expansion backlog:
 
-**Consolidated parity table (% by service, Terraform, Console):** [aws-parity-overview.md](aws-parity-overview.md).
+**What works vs what does not:** each service guide (for example [dynamodb.md](dynamodb.md)) plus the [compatibility matrix](compatibility-matrix.md).
 
 ---
 

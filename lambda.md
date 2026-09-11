@@ -10,7 +10,7 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 - AWS SDK for Go, Node.js, Python, etc.
 - Terraform (`aws_lambda_function`)
 
-## Implemented operations
+## What you can do
 
 | Operation | Method + Path | Status |
 |---|---|---|
@@ -33,6 +33,19 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 | ListLayerVersions | `GET /2018-10-31/layers/{name}/versions` | ✓ |
 | GetLayerVersion | `GET /2018-10-31/layers/{name}/versions/{version}` | ✓ |
 | DeleteLayerVersion | `DELETE /2018-10-31/layers/{name}/versions/{version}` | ✓ |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `CreateAlias` / `UpdateAlias` / `GetAlias` / `ListAliases` / `DeleteAlias` | No aliases |
+| `PublishVersion` / `ListVersionsByFunction` | No numbered versions (except CloudFormation `AWS::Lambda::Version` metadata) |
+| `PutFunctionConcurrency` / provisioned concurrency | Not applicable locally |
+| `CreateFunction` with `Code.S3Bucket` / `Code.S3Key` | Use `Code.ZipFile` (base64) |
+| Event source mappings other than SQS | No DynamoDB Streams, Kinesis, or MSK |
+| Lambda@Edge | Out of scope |
 
 ## AWS CLI examples
 
@@ -354,7 +367,7 @@ Default values: region `us-east-1`, accountId `000000000000`.
 
 ## Compatibility matrix row
 
-See [`aws-parity-overview.md`](aws-parity-overview.md) for the full matrix. Run **`simulith verify lambda`** for curated parity scenarios.
+See [compatibility-matrix.md](compatibility-matrix.md) for the full operation table. Run **`simulith verify lambda`** for curated parity scenarios.
 
 ## Verify
 

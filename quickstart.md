@@ -219,6 +219,7 @@ Container-specific config: [docker.md](docker.md).
 | Persistence, reset, state path | [persistence.md](persistence.md) |
 | Compatibility testing | [compatibility.md](compatibility.md) |
 | Compatibility matrix (API + verify) | [compatibility-matrix.md](compatibility-matrix.md) |
+| What each service can / cannot do | Service guides — **What you can do** and **What Simulith does not do** |
 | AWS CLI examples | [aws-cli-examples.md](aws-cli-examples.md) |
 | SDK examples | [sdk-examples.md](sdk-examples.md) |
 | Terraform integration | [terraform-integration.md](terraform-integration.md) — start with [Green path IaC](terraform-integration.md#green-path-iac) |

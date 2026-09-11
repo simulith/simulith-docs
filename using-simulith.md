@@ -45,7 +45,7 @@ Your app / CLI / Terraform
 
 **Same:** command shapes, request/response JSON, Terraform resources for the [green path](terraform-integration.md#green-path-iac).
 
-**Different:** where data lives, credentials, account IDs, billing, and which operations exist. See the comparison table below and [AWS parity overview](aws-parity-overview.md) for the operation inventory (do not expect every AWS API locally).
+**Different:** where data lives, credentials, account IDs, billing, and which operations exist. Each service guide lists **what you can do** and **what Simulith does not do**. The [compatibility matrix](compatibility-matrix.md) is the full operation table.
 
 ---
 
@@ -59,7 +59,7 @@ Your app / CLI / Terraform
 | **Account ID** | Your 12-digit account | Fixed **`000000000000`** in ARNs and queue URLs |
 | **Data storage** | AWS-managed, multi-AZ | **SQLite** under `/app/.simulith` in Docker (mount a volume to persist) — [persistence.md](persistence.md) |
 | **Billing / quotas** | AWS pricing and service limits | None — limited by disk and documented API subset |
-| **Services (available)** | Full catalogs | **Eighteen curated local subsets** — DynamoDB through CloudFormation; see [compatibility matrix](compatibility-matrix.md) and [aws-parity-overview.md](aws-parity-overview.md) |
+| **Services (available)** | Full catalogs | **Eighteen curated local subsets** — DynamoDB through CloudFormation; see each service guide and the [compatibility matrix](compatibility-matrix.md) |
 | **API coverage** | Complete per service | **Subset** — `simulith verify` scenarios on all shipped services — [compatibility-matrix.md](compatibility-matrix.md) |
 | **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
@@ -235,15 +235,15 @@ Positioning: Simulith **complements** AWS for local development and testing — 
 Do **not** expect locally:
 
 - IAM policy enforcement (unless strict SigV4 mode)
-- Multi-region replication, streams, FIFO SQS, multipart S3, etc.
-- Every DynamoDB/SQS/SSM/S3 operation AWS documents
+- Multi-region replication, DynamoDB Streams, or FIFO SQS
+- Every operation AWS documents — Simulith is a curated local subset
 
 **Where to look:**
 
 | Question | Doc |
 | --- | --- |
 | Which API ops ship? | [compatibility-matrix.md](compatibility-matrix.md) |
-| % coverage and gaps | [aws-parity-overview.md](aws-parity-overview.md) |
+| What this service cannot do | The **What Simulith does not do** section on each service guide |
 | Console UI gaps | [console.md](console.md) |
 | DynamoDB limits / deviations | [dynamodb.md](dynamodb.md) |
 | SQS limits / deviations | [sqs.md](sqs.md) |
@@ -276,7 +276,7 @@ Docker-specific issues (ports, bind address): [docker.md — Troubleshooting](do
 | Serverless + green path | [serverless-integration.md](serverless-integration.md) |
 | Console panels | [console.md](console.md) |
 | CloudFormation + Serverless | [cloudformation.md](cloudformation.md) |
-| API parity summary | [aws-parity-overview.md](aws-parity-overview.md) |
+| Operation coverage | [compatibility-matrix.md](compatibility-matrix.md) |
 | All runtime docs | [README.md](README.md) |
 
 ---

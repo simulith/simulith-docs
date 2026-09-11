@@ -2,7 +2,7 @@
 
 Public reference for **local API support** vs **`simulith verify` coverage** on all **eighteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
 
-> **Start here** for limits and verify coverage. For onboarding, see [quickstart.md](quickstart.md) and [using-simulith.md](using-simulith.md). For a deeper API summary, see [aws-parity-overview.md](aws-parity-overview.md).
+> **Start here** for limits and verify coverage. Each [service guide](using-simulith.md) also lists **what you can do** and **what Simulith does not do**. Onboarding: [quickstart.md](quickstart.md) · [using-simulith.md](using-simulith.md).
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
@@ -19,7 +19,7 @@ Last updated: 2026-09-04..
 
 Run verification: [`compatibility.md`](compatibility.md).
 
-**Trust bundle:** packaged matrix + verify smoke reports for enterprise POCs — [`trust-bundle.md`](trust-bundle.md) · sales guide: .
+Each service guide names operations that are **out of scope** locally. This matrix is the full available-vs-verify table.
 
 ## Legend
 

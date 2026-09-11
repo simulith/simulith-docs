@@ -13,7 +13,7 @@ Simulith emulates **cognito-idp** JSON 1.1 on the same port as other services (d
 
 Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url http://localhost:4566`.
 
-## Implemented operations
+## What you can do
 
 | Operation | Status |
 | --- | --- |
@@ -32,6 +32,19 @@ Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url 
 | UpdateUserPoolClient | ✓ client settings merge |
 | AddCustomAttributes | ✓ custom schema merge |
 | ListUsers | ✓ user listing + pagination |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `SignUp` / `ConfirmSignUp` | Public signup APIs — use Admin* instead |
+| `InitiateAuth` / `RespondToAuthChallenge` (public) | `AdminInitiateAuth` only |
+| `ForgotPassword` / `ConfirmForgotPassword` | Not implemented |
+| Hosted UI / OAuth `/oauth2/authorize` / `/oauth2/token` | No hosted UI |
+| `AssociateSoftwareToken` / `VerifySoftwareToken` | MFA config is metadata only |
+| Identity Pools (`cognito-identity`) | Not implemented |
 
 ## Limits
 

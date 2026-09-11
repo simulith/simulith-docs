@@ -11,7 +11,7 @@ Local Amazon IAM emulation via the **IAM Query API** for RDS Proxy roles.
 
 Compatible with Terraform `aws_iam_role`, `aws_iam_policy`, `aws_iam_role_policy_attachment`, and `aws_iam_role_policy` when using provider endpoint override.
 
-## Implemented operations
+## What you can do
 
 | Operation | Notes |
 | --- | --- |
@@ -20,6 +20,19 @@ Compatible with Terraform `aws_iam_role`, `aws_iam_policy`, `aws_iam_role_policy
 | AttachRolePolicy / DetachRolePolicy | Role ↔ policy ARN |
 | ListAttachedRolePolicies | For Terraform refresh |
 | PutRolePolicy / GetRolePolicy / DeleteRolePolicy | Inline role policies. `GetRolePolicy` returns a URL-encoded `PolicyDocument`. `ListRolePolicies` lists stored names |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `CreateUser` / `CreateAccessKey` / `CreateGroup` | Roles and policies only |
+| `AssumeRole` (STS) | No STS session simulation |
+| AWS managed policy catalog (`arn:aws:iam::aws:policy/…`) | Customer-managed policies only |
+| `CreateInstanceProfile` / instance profiles | Not implemented |
+| `ListRoles` | Load a role by name (CLI `GetRole` or Console) |
+| Runtime policy enforcement | Documents stored; not evaluated on each API call |
 
 ## Terraform
 

@@ -22,7 +22,7 @@ Compatible with:
 - AWS SDKs (management APIs)
 - Terraform (`aws_api_gateway_rest_api`, resource/method/integration, deployment, stage, `aws_lambda_permission`) — green path example
 
-## Implemented operations
+## What you can do
 
 | Operation | Method + Path | Status |
 | --- | --- | --- |
@@ -65,6 +65,19 @@ Compatible with:
 | Stage HTTP invoke | `GET/POST …/restapis/{id}/{stage}/_user_request_/…` | ✓ |
 
 `CreateRestApi` creates a root resource automatically and returns `rootResourceId` (required for Terraform `aws_api_gateway_resource`).
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| HTTP APIs (`apigatewayv2` APIs) | REST APIs only (domain-name v2 is for custom domains) |
+| `CreateApiKey` / usage plans / `CreateUsagePlan` | No API keys |
+| Native Cognito authorizer | Use a Lambda REQUEST authorizer |
+| `MOCK` / `HTTP` integrations | `AWS_PROXY` only |
+| WebSocket APIs | Not implemented |
+| Canary releases / tracing | Not implemented |
 
 ## AWS CLI examples
 

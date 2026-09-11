@@ -401,20 +401,11 @@ COMPOSE_MODE=all-in-one SIMULITH_BIN=./bin/simulith bash ./scripts/ci-verify-smo
 
 Uses `docker-compose.yml` by default, or `docker-compose.all-in-one.yml` + `docker-compose.all-in-one.runtime-port.yml` when `COMPOSE_MODE=all-in-one`.
 
-**Enterprise Trust bundle:** zip with matrix + smoke JSON/HTML + quickstart — [`trust-bundle.md`](trust-bundle.md):
-
-```bash
-bash ./scripts/build-trust-bundle.sh
-# → dist/simulith-trust-bundle-YYYYMMDD.zip
-```
-
 ---
 
 ## Related
 
-- [trust-bundle.md](trust-bundle.md) — enterprise evaluation zip
-- [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix
+- [compatibility-matrix.md](compatibility-matrix.md) — operation × verify coverage
 - [dynamodb.md](dynamodb.md) — DynamoDB operations
 - [ssm.md](ssm.md) — SSM operations
-
 - [quickstart.md](quickstart.md) — starting the runtime

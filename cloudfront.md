@@ -8,7 +8,7 @@ Simulith implements a **minimal CloudFront slice** for local web-stack Terraform
 - **REST/XML paths:** `/2020-05-31/origin-access-control`, `/2020-05-31/distribution`
 - **SigV4 signing name:** `cloudfront` (region `us-east-1`)
 
-## Implemented operations
+## What you can do
 
 | Operation | Notes |
 | --- | --- |
@@ -24,6 +24,19 @@ Simulith implements a **minimal CloudFront slice** for local web-stack Terraform
 | `ListCachePolicies` | AWS managed catalog (`Managed-CachingOptimized`, …) |
 | `GetCachePolicy` | By managed policy id |
 | `TagResource` | Persist distribution tags |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| Real edge caching / POP | Metadata only |
+| `CreateInvalidation` | Not implemented |
+| Lambda@Edge / CloudFront Functions | Not implemented |
+| Signed URLs / signed cookies | Not implemented |
+| WAF association | Not implemented |
+| Streaming / RTMP | Not implemented |
 
 ## Terraform green path
 

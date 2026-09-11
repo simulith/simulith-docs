@@ -13,7 +13,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 
 ** / ** — control plane (stack metadata). ** / ** — template parse + Serverless resource types. ** / ** — [`hello-serverless` example](examples/serverless/hello-serverless/) green path + deploy hardening. ** / ** — [`serverless-simulith` plugin](examples/serverless/serverless-simulith/) routes Serverless deploy SDK calls to `:4566`. ** / ** — `AWS::S3::Bucket` for Serverless deployment buckets. ** / ** — `AWS::S3::BucketPolicy` for `ServerlessDeploymentBucketPolicy`. ** / ** — `AWS::Lambda::LayerVersion` reads `Content` (not `Code`) for Serverless layer deploys. ** / ** — `UpdateStack` preserves S3 deployment buckets (and objects) when the logical bucket ID remains in the template. ** / ** — `GetTemplate` + `AWS::Logs::LogGroup` (no-op) for auth-api Serverless deploy depth. ** / ** — plugin transparent deploy defaults + SSM `${ssm:...}` resolution with `AWS_PROFILE=simulith`. ** / ** — `AWS::Lambda::Version` for Serverless `versionFunctions: true`. ** / ** — auth-api T2 parity (layer ARN lookup, Events Rule without Name, GatewayResponse, plugin skip timing). ** / ** — `AWS::ApiGateway::Authorizer` + method `AuthorizerId` for Serverless Lambda authorizers. ** / ** — `ValidateTemplate` for Serverless pre-deploy validation (no plugin skip).
 
-## Implemented operations
+## What you can do
 
 | Operation | Notes |
 | --- | --- |
@@ -27,6 +27,19 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | GetTemplate | Returns stored `TemplateBody` for a stack (Serverless deploy diff). Same `Action` as SES — disambiguated by `Version=2010-05-15` |
 | ValidateTemplate | Validates JSON template without creating a stack; returns `Parameters`, `Capabilities` subset (Serverless pre-deploy) |
 | ListStackResources | Same resource rows as Describe (Serverless CLI) |
+
+## What Simulith does not do
+
+These AWS operations (and most resource types) are **not available** locally. Use real AWS if you need them.
+
+| Operation / type | Notes |
+| --- | --- |
+| `CreateChangeSet` / `ExecuteChangeSet` / `DescribeChangeSet` | No change sets |
+| Nested stacks | Not implemented |
+| Drift detection | Not implemented |
+| `AWS::EC2::*` / `AWS::ECS::*` / `AWS::RDS::*` in templates | Not provisioned |
+| Most of the AWS resource catalog | Only the Serverless-oriented types listed below |
+| CloudFormation-as-a-service / waiters identical to AWS | Sync local lifecycle |
 
 ## Supported resource types
 

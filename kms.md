@@ -9,7 +9,7 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 - **X-Amz-Target:** `TrentService.<Operation>`
 - **SigV4 signing name:** `kms`
 
-## Implemented operations
+## What you can do
 
 | Operation | Notes |
 | --- | --- |
@@ -26,6 +26,19 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 | `Decrypt` | Base64 ciphertext in → base64 plaintext |
 | `DeleteAlias` | Remove alias before key deletion |
 | `ScheduleKeyDeletion` | Delete CMK after aliases removed |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `CreateGrant` / `ListGrants` / `RevokeGrant` | No grants |
+| `ReplicateKey` / multi-Region keys | Single local store |
+| Asymmetric / HMAC keys | Symmetric `ENCRYPT_DECRYPT` only |
+| CloudHSM / custom key store | Not implemented |
+| AWS-identical key-material rotation | `EnableKeyRotation` is a stored flag |
+| Interoperable ciphertext with real AWS KMS | Local envelope only |
 
 ## Behaviour notes
 

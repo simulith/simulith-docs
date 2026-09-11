@@ -6,7 +6,7 @@ Local **Amazon SQS** emulation for the supported Phase 5 subset.
 
 SQS uses **AWS Query** (`application/x-www-form-urlencoded` + **XML** responses), not AWS JSON. Simulith multiplexes `POST /` between JSON (DynamoDB, SSM) and Query (SQS) by `Content-Type` and `Action=` body prefix.
 
-## Implemented operations
+## What you can do
 
 | Operation | Status | Notes |
 | --- | --- | --- |
@@ -24,6 +24,17 @@ SQS uses **AWS Query** (`application/x-www-form-urlencoded` + **XML** responses)
 | DeleteQueue | **Available** | Remove queue and all messages by `QueueUrl` |
 | PurgeQueue | **Available** | Delete all messages; queue remains; 60s throttle |
 | SetQueueAttributes | **Available** | Update persisted queue metadata (incl. RedrivePolicy) |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| FIFO `CreateQueue` (`.fifo` / `FifoQueue=true`) | Standard queues only |
+| `TagQueue` / `UntagQueue` / `ListQueueTags` | No queue tags |
+| `StartMessageMoveTask` / `CancelMessageMoveTask` / `ListMessageMoveTasks` | No DLQ redrive tasks |
+| `ListDeadLetterSourceQueues` | Not implemented |
 
 ## CreateQueue
 

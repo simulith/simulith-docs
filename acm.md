@@ -9,7 +9,7 @@ Simulith implements a **minimal DNS-validated certificate slice** for web-stack 
 - **X-Amz-Target:** `CertificateManager.<Operation>`
 - **SigV4 signing name:** `acm`
 
-## Implemented operations
+## What you can do
 
 | Operation | Notes |
 | --- | --- |
@@ -18,6 +18,18 @@ Simulith implements a **minimal DNS-validated certificate slice** for web-stack 
 | `ListCertificates` | Optional status filter |
 | `DeleteCertificate` | For Terraform destroy |
 | `ListTagsForCertificate` | Empty tag list stub (Terraform read) |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `ImportCertificate` | Request + DNS validation stub only |
+| Email validation | DNS validation only |
+| Private CA / `ExportCertificate` | Not implemented |
+| Cross-region replication | Single local store |
+| Real CA / public trust | Status flips to ISSUED locally — not a public certificate |
 
 ## Behaviour notes
 

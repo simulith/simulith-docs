@@ -12,7 +12,7 @@ Simulith emulates the Secrets Manager **JSON 1.1** API on the same port as other
 
 Compatible with AWS CLI (`aws secretsmanager`) and AWS SDKs when using `--endpoint-url http://localhost:4566`.
 
-## Implemented operations
+## What you can do
 
 | Operation | X-Amz-Target | Status |
 | --- | --- | --- |
@@ -25,6 +25,18 @@ Compatible with AWS CLI (`aws secretsmanager`) and AWS SDKs when using `--endpoi
 | DeleteSecret | `SecretsManager.DeleteSecret` | ✓ (immediate local delete) |
 | TagResource | `SecretsManager.TagResource` | ✓ |
 | UntagResource | `SecretsManager.UntagResource` | ✓ |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `RotateSecret` / `CancelRotateSecret` / rotation Lambdas | No rotation |
+| `PutResourcePolicy` / `DeleteResourcePolicy` | `GetResourcePolicy` is a stub |
+| `ReplicateSecretToRegions` / `RemoveRegionsFromReplication` | Single local store |
+| `SecretBinary` | `SecretString` only |
+| Recovery window | Delete is immediate |
 
 ## Limits
 

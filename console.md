@@ -17,7 +17,7 @@ SIMULITH_VERSION=0.1.0 docker compose -f docker-compose.all-in-one.published.yml
 # omit SIMULITH_VERSION for :latest
 ```
 
-Same single entry URL as below (`http://localhost:9080`). Details: [release.md](https://simulith.dev), [docker.md](docker.md).
+Same single entry URL as below (`http://localhost:9080`). Details: release.md, [docker.md](docker.md).
 
 ### Workshop demo — all-in-one
 
@@ -120,14 +120,14 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
 | **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, CopyObject, DeleteObject | DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
-| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Triggers:** List/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload) | Create ESM UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
+| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Triggers:** List/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload) | Create ESM UI deferred; Layers tolerate Simulith ISO date strings; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi; **GetDomainNames**, **GetDomainName**, **GetBasePathMappings**, **GetApiMappings** | Create/deploy UI deferred; custom domains via Serverless domain manager |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
-| **RDS** | DescribeDBInstances (status, engine, sidecar endpoint) | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
+| **RDS** | **DB instances:** DescribeDBInstances (status, engine, sidecar endpoint). **DB Proxies:** DescribeDBProxies, targets, connection pool | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
 | **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy document; create RDS Proxy role bundle | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
 | **KMS** | ListAliases, DescribeKey, CreateKey + alias, Encrypt/Decrypt round-trip | Mock envelope crypto; delete/schedule UI deferred; use Terraform `kms/cmk-min` |
 | **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A UPSERT) | Local DNS stub — not a real resolver; CNAME/delete UI deferred |

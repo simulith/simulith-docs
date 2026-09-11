@@ -10,14 +10,13 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `9d9f609` on 2026-09-11.
+Generated from monorepo commit `e1b36bd` on 2026-09-11.
 
 ## Start here
 
 | Guide | Purpose |
 | --- | --- |
 | [Quickstart](quickstart.md) | Run Simulith in under 5 minutes |
-| [Changelog](CHANGELOG.md) | Release notes by version |
 | [Using Simulith (local vs AWS)](using-simulith.md) | After Docker is up — workflows and endpoints |
 | [Docker](docker.md) | Images, volumes, health checks |
 | [Console](console.md) | Web GUI at `:9080` |
@@ -32,6 +31,8 @@ Generated from monorepo commit `9d9f609` on 2026-09-11.
 | [Examples](examples/terraform/) | Runnable Terraform modules |
 
 ## Services
+
+Each service page lists **what you can do** and **what Simulith does not do**.
 
 | Guide | Purpose |
 | --- | --- |
@@ -59,9 +60,7 @@ Generated from monorepo commit `9d9f609` on 2026-09-11.
 | Guide | Purpose |
 | --- | --- |
 | [Compatibility matrix](compatibility-matrix.md) | Operation × verify coverage — **start here** for limits |
-| [AWS parity overview](aws-parity-overview.md) | Deeper API summary by service (evaluators) |
-| [Compatibility / verify](compatibility.md) | `simulith verify` and reports |
-| [Trust bundle](trust-bundle.md) | Enterprise evaluation package |
+| [Compatibility / verify](compatibility.md) | How to run `simulith verify` |
 
 ## Platform
 

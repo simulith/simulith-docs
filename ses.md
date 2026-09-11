@@ -13,7 +13,7 @@ Simulith emulates **SES Classic** AWS Query on the same port as other services (
 
 Compatible with AWS CLI (`aws ses`) and SDKs when using `--endpoint-url http://localhost:4566`.
 
-## Implemented operations
+## What you can do
 
 | Operation | Status |
 | --- | --- |
@@ -21,6 +21,18 @@ Compatible with AWS CLI (`aws ses`) and SDKs when using `--endpoint-url http://l
 | GetIdentityVerificationAttributes | ✓ |
 | CreateTemplate / GetTemplate / UpdateTemplate / DeleteTemplate / ListTemplates | ✓ |
 | SendEmail / SendTemplatedEmail / SendRawEmail | ✓ → outbox |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| Real SMTP / internet delivery | Messages stay in the local outbox |
+| `VerifyDomainIdentity` / DKIM | Email identities only |
+| Configuration sets / event destinations | Not implemented |
+| `SendBulkTemplatedEmail` | Send one message at a time |
+| Bounce / complaint SNS | No mailbox simulation |
 
 ## Console
 

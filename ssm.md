@@ -6,7 +6,7 @@ Local **AWS Systems Manager Parameter Store** emulation for the supported subset
 
 SSM uses **AWS JSON 1.1** (`application/x-amz-json-1.1` + `X-Amz-Target: AmazonSSM.<Operation>`). Simulith multiplexes `POST /` with DynamoDB (JSON 1.0) and SQS (Query) on the same listener.
 
-## Implemented operations
+## What you can do
 
 | Operation | Status | Notes |
 | --- | --- | --- |
@@ -21,7 +21,18 @@ SSM uses **AWS JSON 1.1** (`application/x-amz-json-1.1` + `X-Amz-Target: AmazonS
 | RemoveTagsFromResource | **Available** | `ResourceType=Parameter` |
 | ListTagsForResource | **Available** | Parameter `TagList` sorted by key |
 
-Not implemented yet: full ParameterFilters, labels, Advanced tier, parameter policies, real AWS KMS encryption.
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `GetParameterHistory` | No version history API |
+| `LabelParameterVersion` / `UnlabelParameterVersion` | No labels |
+| Full `ParameterFilters` on `DescribeParameters` | Name Equals / BeginsWith only |
+| Parameter policies (`PutParameter` policies) | Not implemented |
+| Advanced / Intelligent-Tiering | Standard tier only |
+| Real KMS encryption for SecureString | Local mock only |
 
 ## Parameter tier
 

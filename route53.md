@@ -9,7 +9,7 @@ Simulith implements a **minimal hosted-zone slice** for local Terraform and CLI 
 - **Formats:** AWS SDK uses **REST/XML** (`/2013-04-01/hostedzone/...`); AWS CLI may use JSON 1.1 targets
 - **SigV4 signing name:** `route53`
 
-## Implemented operations
+## What you can do
 
 | Operation | Notes |
 | --- | --- |
@@ -20,6 +20,19 @@ Simulith implements a **minimal hosted-zone slice** for local Terraform and CLI 
 | `ChangeResourceRecordSets` | **A** and **CNAME** — CREATE / UPSERT / DELETE |
 | `ListResourceRecordSets` | Optional `StartRecordName` / `StartRecordType` filter |
 | `GetChange` | Returns `INSYNC` stub |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| Alias records (`AliasTarget`) | A and CNAME only |
+| Weighted / latency / geolocation / failover routing | Simple records only |
+| Health checks | Not implemented |
+| DNSSEC | Not implemented |
+| Private hosted zone VPC association | Flag only |
+| Real DNS resolution | Records are stored; Simulith is not a nameserver |
 
 ## Behaviour notes
 

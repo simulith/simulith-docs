@@ -2,7 +2,7 @@
 
 Local DynamoDB table metadata and item storage (Foundation phase).
 
-## Operations
+## What you can do
 
 | Operation | Status | Notes |
 | --- | --- | --- |
@@ -24,6 +24,19 @@ Local DynamoDB table metadata and item storage (Foundation phase).
 | TagResource / UntagResource / ListTagsOfResource | **Available** | Table ARN tags in metadata blob; merge on tag; CreateTable tags persisted |
 | DescribeContinuousBackups | **Available** | Continuous backups **ENABLED**; PITR status from stored flag |
 | UpdateContinuousBackups | **Available** | Toggle PITR metadata (Terraform `point_in_time_recovery`); no real restore |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| DynamoDB Streams (`EnableStreams`, `GetRecords`, `GetShardIterator`, `DescribeStream`) | No change stream |
+| `UpdateTimeToLive` / `DescribeTimeToLive` | No TTL expiry |
+| `ExportTableToPointInTime` / `ImportTable` | No S3 export/import |
+| `CreateBackup` / `RestoreTableFromBackup` / `RestoreTableToPointInTime` | PITR is metadata only — no real restore |
+| `ExecuteStatement` / `BatchExecuteStatement` / `ExecuteTransaction` | No PartiQL |
+| `DescribeContributorInsights` / `UpdateContributorInsights` | No CloudWatch insights |
 
 ## Resource tags
 - **TagResource** — merge tags by key on table ARN (`arn:aws:dynamodb:{region}:000000000000:table/{name}`)

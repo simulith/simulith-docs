@@ -13,7 +13,7 @@ Simulith emulates EventBridge schedule APIs on the same port as other services (
 
 Compatible with AWS CLI (`aws events`) and SDKs when using `--endpoint-url http://localhost:4566`.
 
-## Implemented operations
+## What you can do
 
 | Operation | Status |
 | --- | --- |
@@ -22,6 +22,18 @@ Compatible with AWS CLI (`aws events`) and SDKs when using `--endpoint-url http:
 | PutTargets / RemoveTargets / ListTargetsByRule | ✓ (Lambda ARNs) |
 | PutEvents → pattern rules → Lambda Invoke | ✓ default bus |
 | Schedule poller → Lambda Invoke | ✓ `rate(...)`; `cron(...)` ≈ every minute |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| `CreateEventBus` / `DeleteEventBus` / custom buses | Default bus only |
+| Archives / replays | Not implemented |
+| EventBridge Pipes | Not implemented |
+| Schema registry | Not implemented |
+| Non-Lambda targets (SQS, SNS, Step Functions) | Lambda targets only |
 
 ## Limits
 

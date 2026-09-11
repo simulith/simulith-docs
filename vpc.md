@@ -13,7 +13,7 @@ Simulith emulates **VPC, subnet, security group, IGW, route table, NAT Gateway, 
 
 Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aws_security_group` when using provider endpoint override.
 
-## Implemented operations
+## What you can do
 
 | Area | Operations |
 | --- | --- |
@@ -28,6 +28,19 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 | VPC endpoints | CreateVpcEndpoint, DescribeVpcEndpoints, ModifyVpcEndpoint, DeleteVpcEndpoints (Gateway + Interface metadata) |
 | Tags | CreateTags, DescribeTags |
 | Network interfaces | DescribeNetworkInterfaces (stub ENIs for Interface endpoints and NAT Gateways; empty otherwise) |
+
+## What Simulith does not do
+
+These AWS operations are **not available** locally. Use real AWS if you need them.
+
+| Operation | Notes |
+| --- | --- |
+| Real ENI / packet path | Metadata only — no hypervisor networking |
+| Transit Gateway / VPC peering data plane | Not implemented |
+| Flow Logs | Not implemented |
+| NAT packet translation | NAT Gateway is metadata (no packet NAT) |
+| PrivateLink data plane | Interface endpoints are metadata only |
+| EC2 instances (`RunInstances`) | VPC APIs only — no EC2 compute |
 
 ## Terraform
 

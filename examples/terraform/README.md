@@ -82,4 +82,4 @@ Runnable modules with documented limits. **`terraform destroy`** coverage is tra
 
 Full walkthrough: [terraform-integration.md — Green path IaC](../../terraform-integration.md#green-path-iac).
 
-Guide: [terraform-integration.md](../../terraform-integration.md) · Parity gaps: [aws-parity-overview.md](../../aws-parity-overview.md)
+Guide: [terraform-integration.md](../../terraform-integration.md) · Parity gaps: aws-parity-overview.md
