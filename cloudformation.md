@@ -60,7 +60,7 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | `AWS::Events::Rule` | EventBridge (schedule/event pattern + targets subset; `Name` optional — defaults to logical ID) |
 | `AWS::S3::Bucket` | S3 store (`BucketName`, `PublicAccessBlockConfiguration`, `Tags` subset) |
 | `AWS::S3::BucketPolicy` | S3 store (`Bucket` ref, `PolicyDocument` JSON — Serverless deployment bucket policy) |
-| `AWS::Logs::LogGroup` | Metadata-only (physical ID = log group name; no CloudWatch Logs API) |
+| `AWS::Logs::LogGroup` | CloudWatch Logs store |
 
 **Intrinsics (subset):** `Ref`, `Fn::GetAtt`, `Fn::Sub`, `Fn::Join`. Template `DependsOn` ordering is honored.
 

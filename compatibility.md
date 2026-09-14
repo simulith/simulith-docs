@@ -4,6 +4,12 @@ Measure behavioral parity between **Simulith** and **real AWS** for all **sixtee
 
 For a **public operation × verify coverage matrix**, see [compatibility-matrix.md](compatibility-matrix.md).
 
+## Development gate (AWS parity)
+
+Before closing a runtime story that changes HTTP behavior or verify scenarios, run **full parity** (no `--skip-aws`) against a **sandbox AWS account** and archive the JSON report in the feature package. CI runs **`--skip-aws` only** — see .
+
+Verify scenarios are **integration tests**: when a service needs others (e.g. API Gateway → Lambda, Lambda → SQS), scenarios **create minimal fixtures, compare both sides, then delete on AWS and Simulith** — same doc § Cross-service integration.
+
 ## Commands
 
 ```bash
