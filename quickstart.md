@@ -20,6 +20,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | API Gateway | REST API CRUD + stage invoke — [apigateway.md](apigateway.md) |
 | Secrets Manager | Secret CRUD + GetSecretValue — [secretsmanager.md](secretsmanager.md) |
 | EventBridge | Schedule rules → Lambda — [eventbridge.md](eventbridge.md) |
+| CloudWatch Logs | Log groups + PutLogEvents — [cloudwatch.md](cloudwatch.md) |
 | Cognito | User Pool + Admin* + JWKS — [cognito.md](cognito.md) |
 | SES | Identity, templates, Send* (local outbox) — [ses.md](ses.md) |
 | VPC | VPC, subnets, security groups — [vpc.md](vpc.md) |
@@ -111,7 +112,7 @@ Expected: `{"status":"ok"}`.
 
 ## 2. Demo data
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, Secrets Manager secret `demo-secret`, EventBridge rule `demo-rule` (`rate(5 minutes)` → `demo-fn`), Cognito User Pool `demo-pool` (client `demo-client`, group `admin`), SES identity `demo@simulith.local` with template `demo-template`, VPC **`demo-vpc`** with database subnet and **`demo-postgres-sg`**, and RDS Postgres instance `demo-db` (Docker required on runtime host). Details: [seed.md](seed.md).
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, Secrets Manager secret `demo-secret`, EventBridge rule `demo-rule` (`rate(5 minutes)` → `demo-fn`), CloudWatch Logs group `/aws/lambda/demo-fn` with sample events, Cognito User Pool `demo-pool` (client `demo-client`, group `admin`), SES identity `demo@simulith.local` with template `demo-template`, VPC **`demo-vpc`** with database subnet and **`demo-postgres-sg`**, and RDS Postgres instance `demo-db` (Docker required on runtime host). Details: [seed.md](seed.md).
 
 **Console (Option A):** Dashboard → **Seed demo data** (runtime must be healthy).
 

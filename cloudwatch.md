@@ -38,6 +38,10 @@ CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs A
 
 Log groups, streams, and events are stored in SQLite (`cloudwatch_log_*` tables). `simulith reset` clears them.
 
+## Seed
+
+Default **Seed** includes log group **`/aws/lambda/demo-fn`** with a sample stream and three events (`hello from seed` in the middle line). . See [seed.md](seed.md).
+
 ## Verify
 
 ```bash

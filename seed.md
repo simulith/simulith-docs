@@ -30,6 +30,7 @@ simulith seed [--config path] [--file path] [--no-reset]
 | API Gateway | REST API `demo-api` (`demoapi001`) | Stage `dev` → `{proxy+}` AWS_PROXY to `demo-fn` |
 | Secrets Manager | secret `demo-secret` | Plain `SecretString` `hello from seed` |
 | EventBridge | rule `demo-rule` | `rate(5 minutes)` → Lambda target `demo-fn` |
+| CloudWatch Logs | log group `/aws/lambda/demo-fn` | Stream with sample `PutLogEvents` lines (Console `/cloudwatch`) |
 | Cognito | pool `demo-pool` | client `demo-client` + group `admin` (JWKS enabled) |
 | SES | identity `demo@simulith.local` | template `demo-template` + sample outbox message |
 | VPC | `demo-vpc` + `demo-database-subnet` | Postgres SG `demo-postgres-sg` (10.0.0.0/16 → 5432) |
@@ -71,7 +72,7 @@ aws ssm get-parameter --name /app/demo/api-url --endpoint-url http://127.0.0.1:4
 
 On **Git Bash (Windows)**, set `export MSYS2_ARG_CONV_EXCL="*"` before SSM CLI commands, or use [PowerShell](quickstart.md). See [quickstart troubleshooting](quickstart.md#troubleshooting).
 
-Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EC2/VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, and EventBridge — same scope as `simulith reset` — then re-applies the fixture).
+Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, CloudWatch Logs, Cognito, SES, EC2/VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront — same scope as `simulith reset` — then re-applies the fixture).
 
 More CLI examples: [aws-cli-examples.md](aws-cli-examples.md#seeded-data). SDK: [sdk-examples.md](sdk-examples.md#seeded-data).
 
