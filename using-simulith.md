@@ -117,7 +117,7 @@ Best for **exploration**, demos, and users who prefer a GUI.
 
 1. Open **http://localhost:9080**
 2. **Seed demo data** on the dashboard (or load seed via CLI — [seed.md](seed.md))
-3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, **Lambda**, **EventBridge**, **Cognito**, **SES**, **VPC**, and **RDS** panels (`demo-fn`, `demo-rule`, `demo-pool`, `demo-template`, and `demo-db` after Seed)
+3. Explore **DynamoDB**, **SQS**, **SSM**, **S3**, **Lambda**, **EventBridge**, **CloudWatch Logs**, **Cognito**, **SES**, **VPC**, and **RDS** panels (`demo-fn`, `demo-rule`, `/aws/lambda/demo-fn`, `demo-pool`, `demo-template`, and `demo-db` after Seed)
 4. **Lambda panel:** list, config, invoke with JSON — sync invoke needs `node`/`python3` on the runtime host PATH — [lambda.md](lambda.md)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 

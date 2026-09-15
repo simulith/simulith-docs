@@ -594,6 +594,45 @@ Verify: `simulith verify eventbridge --skip-aws` (see [compatibility.md](compati
 
 ---
 
+## CloudWatch Logs
+
+Log groups, streams, and `PutLogEvents` locally. See [cloudwatch.md](cloudwatch.md). Default seed includes group `/aws/lambda/demo-fn` with sample events.
+
+**Terraform green path:** [`examples/terraform/cloudwatch/`](examples/terraform/cloudwatch/).
+
+```bash
+aws logs create-log-group \
+  --log-group-name /demo/cli-smoke \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws logs create-log-stream \
+  --log-group-name /demo/cli-smoke \
+  --log-stream-name stream1 \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws logs put-log-events \
+  --log-group-name /demo/cli-smoke \
+  --log-stream-name stream1 \
+  --log-events timestamp=$(($(date +%s)*1000)),message="hello from cli" \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws logs describe-log-groups \
+  --log-group-name-prefix /demo/ \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws logs describe-log-streams \
+  --log-group-name /demo/cli-smoke \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+
+aws logs delete-log-group \
+  --log-group-name /demo/cli-smoke \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+Verify: `simulith verify cloudwatch --skip-aws` (see [compatibility.md](compatibility.md)).
+
+---
+
 ## Cognito
 
 User Pool + Admin* + JWKS locally. See [cognito.md](cognito.md). Default seed includes pool `demo-pool` / client `demo-client` / group `admin`.
@@ -947,6 +986,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
 | Secrets Manager | CreateSecret, PutSecretValue, GetSecretValue, DeleteSecret; see [secretsmanager.md](secretsmanager.md) |
 | EventBridge | PutRule / PutTargets / ListRules (schedule → Lambda); see [eventbridge.md](eventbridge.md) |
+| CloudWatch Logs | CreateLogGroup / PutLogEvents / GetLogEvents / Describe*; see [cloudwatch.md](cloudwatch.md) |
 | Cognito | User Pool + Admin* + JWKS; see [cognito.md](cognito.md) |
 | SES | Identity/template/Send* (local outbox); see [ses.md](ses.md) |
 | VPC | VPC/subnet/SG metadata (EC2 API); see [vpc.md](vpc.md) |

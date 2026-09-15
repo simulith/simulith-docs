@@ -22,6 +22,7 @@ Compatible with AWS CLI (`aws logs`) and AWS SDKs when using `--endpoint-url htt
 | CreateLogStream | `Logs_20140328.CreateLogStream` | ✓ |
 | DescribeLogStreams | `Logs_20140328.DescribeLogStreams` | ✓ |
 | PutLogEvents | `Logs_20140328.PutLogEvents` | ✓ |
+| GetLogEvents | `Logs_20140328.GetLogEvents` | ✓ |
 
 CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs API is available.
 
@@ -29,8 +30,9 @@ CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs A
 
 | Area | Notes |
 | --- | --- |
-| `GetLogEvents`, `FilterLogEvents`, Insights | Read path deferred |
-| CloudWatch Metrics, Alarms, Dashboards | Separate backlog |
+| `FilterLogEvents`, Insights | Read-path depth deferred |
+| CloudWatch Metrics | Partial — see [cloudwatch-metrics.md](cloudwatch-metrics.md) |
+| Alarms, Dashboards | + |
 | Subscription filters, metric filters | Not emulated |
 | Cross-account / cross-region | Single local account/region |
 
@@ -49,7 +51,7 @@ simulith verify cloudwatch --skip-aws   # CI smoke (Simulith-only)
 simulith verify cloudwatch              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `log-group-lifecycle`, `put-log-events`. See [compatibility.md](compatibility.md).
+Scenarios: `log-group-lifecycle`, `put-log-events`, `get-log-events`. See [compatibility.md](compatibility.md).
 
 ## Terraform
 
@@ -66,4 +68,6 @@ aws logs create-log-stream --log-group-name /aws/lambda/demo --log-stream-name s
 aws logs put-log-events --log-group-name /aws/lambda/demo --log-stream-name stream1 \
   --log-events timestamp=1726339200000,message=hello --endpoint-url "$EP"
 aws logs describe-log-groups --log-group-name-prefix /aws/lambda/ --endpoint-url "$EP"
+aws logs get-log-events --log-group-name /aws/lambda/demo --log-stream-name stream1 \
+  --start-from-head --limit 10 --endpoint-url "$EP"
 ```
