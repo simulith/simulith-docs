@@ -1,6 +1,6 @@
 # Compatibility verification — Simulith runtime
 
-Measure behavioral parity between **Simulith** and **real AWS** for all **sixteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM).
+Measure behavioral parity between **Simulith** and **real AWS** for all **nineteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
 
 For a **public operation × verify coverage matrix**, see [compatibility-matrix.md](compatibility-matrix.md).
 
@@ -23,6 +23,7 @@ simulith verify secretsmanager
 simulith verify cognito
 simulith verify ses
 simulith verify eventbridge
+simulith verify cloudwatch
 simulith verify vpc
 simulith verify rds
 simulith verify iam
@@ -322,6 +323,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Cognito | `simulith verify cognito --skip-aws` | 2 |
 | SES | `simulith verify ses --skip-aws` | 2 |
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
+| CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 2 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
 | VPC | `simulith verify vpc --skip-aws` | 4 |
 | IAM | `simulith verify iam --skip-aws` | 2 |
@@ -347,6 +349,7 @@ runtime/artifacts/
   verify-cognito.json
   verify-ses.json
   verify-eventbridge.json
+  verify-cloudwatch.json
   verify-rds.json
   verify-vpc.json
   verify-iam.json

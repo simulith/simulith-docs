@@ -1,20 +1,20 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **eighteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **nineteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
 
 > **Start here** for limits and verify coverage. Each [service guide](using-simulith.md) also lists **what you can do** and **what Simulith does not do**. Onboarding: [quickstart.md](quickstart.md) · [using-simulith.md](using-simulith.md).
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-04..
+Last updated: 2026-09-15..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 18 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 202 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Services in matrix | 19 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
+| Operations **available** locally | 205 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -304,6 +304,19 @@ Guide: [eventbridge.md](eventbridge.md) · Verify: `simulith verify eventbridge`
 
 ---
 
+## CloudWatch Logs
+
+Guide: [cloudwatch.md](cloudwatch.md) · Verify: `simulith verify cloudwatch`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateLogGroup / DeleteLogGroup / DescribeLogGroups | available | yes (`log-group-lifecycle`) |  |
+| CreateLogStream / DescribeLogStreams | available | yes (`put-log-events`) | |
+| PutLogEvents | available | yes (`put-log-events`) | Sequence token after first batch |
+| GetLogEvents / FilterLogEvents | not available | no |  |
+
+---
+
 ## VPC (EC2 networking)
 
 Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
@@ -437,6 +450,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
+| CloudWatch Logs | `log-group-lifecycle`, `put-log-events` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
@@ -457,6 +471,7 @@ simulith verify secretsmanager --skip-aws
 simulith verify cognito --skip-aws
 simulith verify ses --skip-aws
 simulith verify eventbridge --skip-aws
+simulith verify cloudwatch --skip-aws
 simulith verify rds --skip-aws
 simulith verify vpc --skip-aws
 simulith verify iam --skip-aws

@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `f174496` on 2026-09-14.
+Generated from monorepo commit `96a4566` on 2026-09-15.
 
 ## Start here
 
@@ -54,6 +54,7 @@ Each service page lists **what you can do** and **what Simulith does not do**.
 | [ACM](acm.md) | DNS-validated certificates |
 | [CloudFront](cloudfront.md) | OAC + distributions (local CDN metadata) |
 | [CloudFormation](cloudformation.md) | Stack control plane subset (Serverless path) |
+| [CloudWatch Logs](cloudwatch.md) | Log groups, streams, PutLogEvents |
 
 ## Compatibility
 
