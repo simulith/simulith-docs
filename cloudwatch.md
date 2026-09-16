@@ -23,6 +23,7 @@ Compatible with AWS CLI (`aws logs`) and AWS SDKs when using `--endpoint-url htt
 | DescribeLogStreams | `Logs_20140328.DescribeLogStreams` | ✓ |
 | PutLogEvents | `Logs_20140328.PutLogEvents` | ✓ |
 | GetLogEvents | `Logs_20140328.GetLogEvents` | ✓ |
+| FilterLogEvents | `Logs_20140328.FilterLogEvents` | ✓ |
 
 CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs API is available.
 
@@ -30,7 +31,7 @@ CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs A
 
 | Area | Notes |
 | --- | --- |
-| `FilterLogEvents`, Insights | Read-path depth deferred |
+| Logs Insights | Not emulated |
 | CloudWatch Metrics | Available — see [cloudwatch-metrics.md](cloudwatch-metrics.md) |
 | Alarms, Dashboards | + |
 | Subscription filters, metric filters | Not emulated |
@@ -51,7 +52,7 @@ simulith verify cloudwatch --skip-aws   # CI smoke (Simulith-only)
 simulith verify cloudwatch              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `log-group-lifecycle`, `put-log-events`, `get-log-events`. See [compatibility.md](compatibility.md).
+Scenarios: `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`. See [compatibility.md](compatibility.md).
 
 ## Terraform
 

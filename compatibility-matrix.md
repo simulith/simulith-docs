@@ -13,8 +13,8 @@ Last updated: 2026-09-16..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 20 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 209 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 3, CloudWatch Metrics 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Operations **available** locally | 210 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 4, CloudWatch Metrics 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -314,7 +314,7 @@ Guide: [cloudwatch.md](cloudwatch.md) · Verify: `simulith verify cloudwatch`
 | CreateLogStream / DescribeLogStreams | available | yes (`put-log-events`) | |
 | PutLogEvents | available | yes (`put-log-events`) | Sequence token after first batch |
 | GetLogEvents | available | yes (`get-log-events`) |  |
-| FilterLogEvents | not available | no |  |
+| FilterLogEvents | available | yes (`filter-log-events`) | ; simple text filter |
 
 ---
 
@@ -464,7 +464,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
-| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events` | — |
+| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events` | — |
 | CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |

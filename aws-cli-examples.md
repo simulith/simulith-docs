@@ -986,7 +986,7 @@ Expected: item `Alice` (Id `1`); message body `hello from seed`; SSM values `htt
 | Lambda | InvokeFunction sync (node/python on PATH), UpdateFunctionCode, SQS event source mapping; see [lambda.md](lambda.md) |
 | Secrets Manager | CreateSecret, PutSecretValue, GetSecretValue, DeleteSecret; see [secretsmanager.md](secretsmanager.md) |
 | EventBridge | PutRule / PutTargets / ListRules (schedule → Lambda); see [eventbridge.md](eventbridge.md) |
-| CloudWatch Logs | CreateLogGroup / PutLogEvents / GetLogEvents / Describe*; see [cloudwatch.md](cloudwatch.md) |
+| CloudWatch Logs | CreateLogGroup / PutLogEvents / GetLogEvents / FilterLogEvents / Describe*; see [cloudwatch.md](cloudwatch.md) |
 | Cognito | User Pool + Admin* + JWKS; see [cognito.md](cognito.md) |
 | SES | Identity/template/Send* (local outbox); see [ses.md](ses.md) |
 | VPC | VPC/subnet/SG metadata (EC2 API); see [vpc.md](vpc.md) |

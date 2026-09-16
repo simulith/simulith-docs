@@ -127,7 +127,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi; **GetDomainNames**, **GetDomainName**, **GetBasePathMappings**, **GetApiMappings** | Create/deploy UI deferred; custom domains via Serverless domain manager |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
-| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents** | Read-only; FilterLogEvents deferred; create via CLI/Terraform/Serverless |
+| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents** | Read-only; **FilterLogEvents** API shipped — Console UI still uses GetLogEvents; create via CLI/Terraform/Serverless |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics** (last hour) | Read-only; PutMetricData via CLI/Terraform/SDK; Alarms deferred |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
