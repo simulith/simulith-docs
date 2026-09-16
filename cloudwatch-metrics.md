@@ -36,6 +36,10 @@ simulith verify cloudwatch-metrics              # full parity vs AWS sandbox (P-
 
 Scenarios: `put-list-metrics`, `get-metric-statistics`.
 
+## Terraform
+
+Green path: [`examples/terraform/cloudwatch-metrics/`](examples/terraform/cloudwatch-metrics/) — publishes a custom metric on apply via `PutMetricData` (`endpoints { cloudwatch }`; AWS CLI on apply). See [terraform-integration.md](terraform-integration.md).
+
 ## Persistence
 
 Datapoints stored in SQLite (`cloudwatch_metric_datapoints`). Cleared on `simulith reset`.

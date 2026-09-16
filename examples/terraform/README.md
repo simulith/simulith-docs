@@ -27,6 +27,7 @@ runtime/examples/terraform/
 ├── acm/                ← cert-min (certificate + DNS validation)
 ├── cloudfront/         ← cdn-min (OAC + distribution + Route 53 CNAME); web-prod-min (+ ACM viewer, PAB/policy, managed cache policy, IPv6, SPA errors, tags, apex alias)
 ├── cloudwatch/         ← aws_cloudwatch_log_group apply + destroy
+├── cloudwatch-metrics/ ← custom metric PutMetricData apply + destroy
 ├── lambda-vpc-rds/     ← transaction-min (preferred); full-stack-min (legacy)
 └── secretsmanager-lambda/  ← secret data source → Lambda environment
 └── dynamodb-sqs/           ← table + queue fan-out
@@ -70,6 +71,7 @@ Use **`terraform destroy`** for teardown in all modules below — Simulith imple
 | [`cloudfront/cdn-min/`](cloudfront/cdn-min/) | Green | Green | S3 + OAC + distribution + Route 53 CNAME; `endpoints { s3, cloudfront, route53 }`; `-parallelism=1`; [README](cloudfront/cdn-min/README.md) |
 | [`cloudfront/web-prod-min/`](cloudfront/web-prod-min/) | Green | Green | S3 + PAB + bucket policy + OAC + ACM viewer + `Managed-CachingOptimized` + IPv6 + SPA errors + tags + Route 53; `-parallelism=1`; [README](cloudfront/web-prod-min/README.md) |
 | [`cloudwatch/`](cloudwatch/) | Green | Green | `aws_cloudwatch_log_group`; `endpoints { logs }`; `-parallelism=1`; [README](cloudwatch/README.md) |
+| [`cloudwatch-metrics/`](cloudwatch-metrics/) | Green | Green* | `PutMetricData` via AWS CLI; `endpoints { cloudwatch }`; `-parallelism=1`; [README](cloudwatch-metrics/README.md) |
 | [`lambda-vpc-rds/transaction-min/`](lambda-vpc-rds/transaction-min/) | Green | Green | `vpc-rds-proxy-min` module + Lambda VpcConfig probe; **Docker required**; `-parallelism=1`; [README](lambda-vpc-rds/transaction-min/README.md) |
 
 ### + examples (apply local — formal green path pending FW-*-003)
