@@ -36,6 +36,8 @@ simulith verify cloudwatch-metrics              # full parity vs AWS sandbox (P-
 
 Scenarios: `put-list-metrics`, `get-metric-statistics`.
 
+Matrix: [compatibility-matrix.md](compatibility-matrix.md#cloudwatch-metrics) · Parity summary: aws-parity-overview.md · Console: [console.md](console.md) (**CloudWatch** → **Metrics** tab).
+
 ## Terraform
 
 Green path: [`examples/terraform/cloudwatch-metrics/`](examples/terraform/cloudwatch-metrics/) — publishes a custom metric on apply via `PutMetricData` (`endpoints { cloudwatch }`; AWS CLI on apply). See [terraform-integration.md](terraform-integration.md).

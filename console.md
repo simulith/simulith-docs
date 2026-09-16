@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, CloudWatch Logs, Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md) · [serverless-integration.md](serverless-integration.md)).
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, CloudWatch (Logs + Metrics), Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md) · [serverless-integration.md](serverless-integration.md)).
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -68,11 +68,12 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 8. Open **API Gateway** — REST APIs (resources, stage invoke) and **Custom domain names** (mappings, copy local invoke URL).
 9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
-11. Open **CloudWatch Logs** — list log groups (`/aws/lambda/demo-fn` after Seed), streams, and recent events via **GetLogEvents**.
-12. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
-13. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), and seeded outbox after **Seed**.
-14. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
-15. Click **Reset local state** — clears all panels.
+11. Open **CloudWatch** → **Logs** — list log groups (`/aws/lambda/demo-fn` after Seed), streams, and recent events via **GetLogEvents**.
+12. Open **CloudWatch** → **Metrics** — browse custom metrics by namespace; view **GetMetricStatistics** for the last hour (publish via CLI/Terraform first if empty).
+13. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
+14. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), and seeded outbox after **Seed**.
+15. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
+16. Click **Reset local state** — clears all panels.
 
 Console README: [`../../console/README.md`](console.md).
 
@@ -127,6 +128,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
 | **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents** | Read-only; FilterLogEvents deferred; create via CLI/Terraform/Serverless |
+| **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics** (last hour) | Read-only; PutMetricData via CLI/Terraform/SDK; Alarms deferred |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |

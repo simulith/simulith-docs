@@ -1,6 +1,6 @@
 # Compatibility verification — Simulith runtime
 
-Measure behavioral parity between **Simulith** and **real AWS** for all **nineteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
+Measure behavioral parity between **Simulith** and **real AWS** for all **twenty** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
 
 For a **public operation × verify coverage matrix**, see [compatibility-matrix.md](compatibility-matrix.md).
 

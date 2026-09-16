@@ -1,20 +1,20 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **nineteen** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
 
 > **Start here** for limits and verify coverage. Each [service guide](using-simulith.md) also lists **what you can do** and **what Simulith does not do**. Onboarding: [quickstart.md](quickstart.md) · [using-simulith.md](using-simulith.md).
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-15..
+Last updated: 2026-09-16..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 19 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 206 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Services in matrix | 20 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
+| Operations **available** locally | 209 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 3, CloudWatch Metrics 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -318,6 +318,19 @@ Guide: [cloudwatch.md](cloudwatch.md) · Verify: `simulith verify cloudwatch`
 
 ---
 
+## CloudWatch Metrics
+
+Guide: [cloudwatch-metrics.md](cloudwatch-metrics.md) · Verify: `simulith verify cloudwatch-metrics`
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| PutMetricData | available | yes (`put-list-metrics`) |  |
+| ListMetrics | available | yes (`put-list-metrics`) | |
+| GetMetricStatistics | available | yes (`get-metric-statistics`) | |
+| GetMetricData / Alarms / Dashboards | not available | no | + |
+
+---
+
 ## VPC (EC2 networking)
 
 Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
@@ -452,6 +465,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
 | CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events` | — |
+| CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
@@ -473,6 +487,7 @@ simulith verify cognito --skip-aws
 simulith verify ses --skip-aws
 simulith verify eventbridge --skip-aws
 simulith verify cloudwatch --skip-aws
+simulith verify cloudwatch-metrics --skip-aws
 simulith verify rds --skip-aws
 simulith verify vpc --skip-aws
 simulith verify iam --skip-aws
