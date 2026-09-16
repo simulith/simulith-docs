@@ -24,6 +24,7 @@ simulith verify cognito
 simulith verify ses
 simulith verify eventbridge
 simulith verify cloudwatch
+simulith verify cloudwatch-metrics
 simulith verify vpc
 simulith verify rds
 simulith verify iam
@@ -324,6 +325,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | SES | `simulith verify ses --skip-aws` | 2 |
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
 | CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 3 |
+| CloudWatch Metrics | `simulith verify cloudwatch-metrics --skip-aws` | 2 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
 | VPC | `simulith verify vpc --skip-aws` | 4 |
 | IAM | `simulith verify iam --skip-aws` | 2 |
@@ -350,6 +352,7 @@ runtime/artifacts/
   verify-ses.json
   verify-eventbridge.json
   verify-cloudwatch.json
+  verify-cloudwatch-metrics.json
   verify-rds.json
   verify-vpc.json
   verify-iam.json

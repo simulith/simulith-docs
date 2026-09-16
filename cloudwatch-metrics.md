@@ -11,21 +11,30 @@ Local **CloudWatch Metrics** emulation (custom metrics only — not Logs, Alarms
 
 Compatible with AWS CLI (`aws cloudwatch`) when using `--endpoint-url http://localhost:4566`.
 
-## Supported operations
+## What you can do
 
-| Operation | Status |
+| Operation | Notes |
 | --- | --- |
-| PutMetricData | ✓ |
-| ListMetrics | ✓ |
-| GetMetricStatistics | ✓ |
+| `PutMetricData` | Custom metric datapoints |
+| `ListMetrics` | Filter by namespace / metric name |
+| `GetMetricStatistics` | Average, Sum, SampleCount over a time range |
 
-## Limits
+## What Simulith does not do
 
 | Area | Notes |
 | --- | --- |
 | GetMetricData, Alarms, Dashboards | + |
 | Metric streams, anomaly detectors | Not emulated |
 | Cross-account / cross-region | Single local account/region |
+
+## Verify
+
+```bash
+simulith verify cloudwatch-metrics --skip-aws   # CI smoke (Simulith-only)
+simulith verify cloudwatch-metrics              # full parity vs AWS sandbox (P-dev)
+```
+
+Scenarios: `put-list-metrics`, `get-metric-statistics`.
 
 ## Persistence
 
