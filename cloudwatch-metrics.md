@@ -23,7 +23,9 @@ Compatible with AWS CLI (`aws cloudwatch`) when using `--endpoint-url http://loc
 
 | Area | Notes |
 | --- | --- |
-| GetMetricData, Alarms, Dashboards | + |
+| GetMetricData |  remainder |
+| Alarms | Partial — see [cloudwatch-alarms.md](cloudwatch-alarms.md) |
+| Dashboards |  |
 | Metric streams, anomaly detectors | Not emulated |
 | Cross-account / cross-region | Single local account/region |
 

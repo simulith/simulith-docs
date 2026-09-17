@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `33ee337` on 2026-09-16.
+Generated from monorepo commit `7172b57` on 2026-09-17.
 
 ## Start here
 
@@ -56,6 +56,7 @@ Each service page lists **what you can do** and **what Simulith does not do**.
 | [CloudFormation](cloudformation.md) | Stack control plane subset (Serverless path) |
 | [CloudWatch Logs](cloudwatch.md) | Log groups, streams, PutLogEvents, GetLogEvents, FilterLogEvents |
 | [CloudWatch Metrics](cloudwatch-metrics.md) | PutMetricData, ListMetrics, GetMetricStatistics |
+| [CloudWatch Alarms](cloudwatch-alarms.md) | PutMetricAlarm, DescribeAlarms, DeleteAlarms |
 
 ## Compatibility
 

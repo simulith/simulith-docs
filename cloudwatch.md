@@ -33,7 +33,8 @@ CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs A
 | --- | --- |
 | Logs Insights | Not emulated |
 | CloudWatch Metrics | Available — see [cloudwatch-metrics.md](cloudwatch-metrics.md) |
-| Alarms, Dashboards | + |
+| Alarms | Partial — see [cloudwatch-alarms.md](cloudwatch-alarms.md) |
+| Dashboards |  |
 | Subscription filters, metric filters | Not emulated |
 | Cross-account / cross-region | Single local account/region |
 
