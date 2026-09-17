@@ -1,6 +1,6 @@
 # CloudWatch Alarms — Simulith
 
-Local **CloudWatch metric alarms** emulation (definition CRUD only — not automatic evaluation or SNS actions).
+Local **CloudWatch metric alarms** emulation with **metric-based evaluation**. SNS actions are stored but not invoked.
 
 ## Overview
 
@@ -16,17 +16,30 @@ Compatible with AWS CLI (`aws cloudwatch put-metric-alarm`, `describe-alarms`, `
 | Operation | Notes |
 | --- | --- |
 | `PutMetricAlarm` | Create or update a threshold alarm definition |
-| `DescribeAlarms` | List alarms; optional `AlarmNames` filter |
+| `DescribeAlarms` | List alarms; optional `AlarmNames` filter; re-evaluates state before respond |
 | `DeleteAlarms` | Delete alarms by name |
+
+## Evaluation
+
+When **`PutMetricData`** publishes datapoints for a metric referenced by an alarm, Simulith evaluates the alarm using **`GetMetricStatistics`** over the configured `Period` × `EvaluationPeriods` window. Matching alarms transition to:
+
+| State | When |
+| --- | --- |
+| `ALARM` | All evaluation periods breach the threshold |
+| `OK` | All periods have data and at least one period is not breaching |
+| `INSUFFICIENT_DATA` | Not enough datapoints in the window (including after create) |
+
+Evaluation also runs on **`DescribeAlarms`** so CLI and Console show current state without a separate poll API.
+
+Supported comparison operators: `GreaterThanThreshold`, `GreaterThanOrEqualToThreshold`, `LessThanThreshold`, `LessThanOrEqualToThreshold`. Statistics: `Average`, `Sum`, `Minimum`, `Maximum`, `SampleCount`.
 
 ## What Simulith does not do
 
 | Area | Notes |
 | --- | --- |
-| Alarm evaluation / state transitions | Alarms stay `INSUFFICIENT_DATA` until a future story evaluates metrics |
+| SNS / action execution | Action ARNs are stored but not invoked |
 | `SetAlarmState`, composite alarms, anomaly detectors |  remainder |
 | Dashboards |  |
-| SNS / action execution | Action ARNs are stored but not invoked |
 
 ## Persistence
 
@@ -39,7 +52,7 @@ simulith verify cloudwatch-alarms --skip-aws   # CI smoke (Simulith-only)
 simulith verify cloudwatch-alarms              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `put-describe-alarms`, `delete-alarms`.
+Scenarios: `put-describe-alarms`, `delete-alarms`, `alarm-evaluation`.
 
 ## Example (AWS CLI)
 
