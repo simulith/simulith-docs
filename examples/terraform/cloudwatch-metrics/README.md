@@ -61,7 +61,7 @@ Expected plan: **1 to destroy**. Datapoints already stored remain until `simulit
 ## Provider notes
 
 - **`skip_requesting_account_id = true`** — Simulith uses fixed account `000000000000`.
-- **`aws_cloudwatch_metric_alarm`** is out of scope — alarms API is .
+- **`aws_cloudwatch_metric_alarm`** — see [`../cloudwatch-alarms/`](../cloudwatch-alarms/).
 - Re-apply after changing `metric_value` replaces the `terraform_data` resource and publishes again.
 
 ## Related

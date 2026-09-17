@@ -57,4 +57,10 @@ aws cloudwatch describe-alarms --alarm-names cpu-high --endpoint-url "$EP"
 aws cloudwatch delete-alarms --alarm-names cpu-high --endpoint-url "$EP"
 ```
 
+## Terraform
+
+Green path: [`examples/terraform/cloudwatch-alarms/`](examples/terraform/cloudwatch-alarms/) — `aws_cloudwatch_metric_alarm` apply + destroy with `endpoints { cloudwatch }`. See [terraform-integration.md](terraform-integration.md).
+
+## Related
+
 See also [cloudwatch-metrics.md](cloudwatch-metrics.md) · [cloudwatch.md](cloudwatch.md) (Logs).

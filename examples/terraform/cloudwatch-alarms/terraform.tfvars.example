@@ -1,0 +1,7 @@
+use_simulith_endpoint = true
+simulith_endpoint     = "http://127.0.0.1:9080/runtime"
+aws_region            = "us-east-1"
+alarm_name            = "demo-tf-alarm"
+metric_name           = "CPUUtilization"
+metric_namespace      = "AWS/EC2"
+threshold             = 80

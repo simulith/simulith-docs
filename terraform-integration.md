@@ -21,6 +21,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | EventBridge | [`eventbridge/`](examples/terraform/eventbridge/) | Yes — rate rule + Lambda target |
 | CloudWatch Logs | [`cloudwatch/`](examples/terraform/cloudwatch/) | Yes — log group apply + destroy |
 | CloudWatch Metrics | [`cloudwatch-metrics/`](examples/terraform/cloudwatch-metrics/) | Yes — custom metric apply + destroy |
+| CloudWatch Alarms | [`cloudwatch-alarms/`](examples/terraform/cloudwatch-alarms/) | Yes — metric alarm apply + destroy |
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md). **Honest integration examples** (AWS-derived Terraform + CLI): [below](#honest-integration-examples).
 
@@ -338,6 +339,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`cloudfront/web-prod-min/`](examples/terraform/cloudfront/web-prod-min/) | Green | Green | S3 + PAB + bucket policy + OAC + ACM viewer cert + `Managed-CachingOptimized` + IPv6 + SPA errors + tags + Route 53 — `-parallelism=1`; `endpoints { s3, cloudfront, route53, acm }` |
 | [`cloudwatch/`](examples/terraform/cloudwatch/) | Green | Green | `aws_cloudwatch_log_group` — `-parallelism=1`; `endpoints { logs }` |
 | [`cloudwatch-metrics/`](examples/terraform/cloudwatch-metrics/) | Green | Green* | `PutMetricData` via `terraform_data` + AWS CLI — `-parallelism=1`; `endpoints { cloudwatch }`; destroy leaves datapoints |
+| [`cloudwatch-alarms/`](examples/terraform/cloudwatch-alarms/) | Green | Green | `aws_cloudwatch_metric_alarm` — `-parallelism=1`; `endpoints { cloudwatch }` |
 | [`lambda-vpc-rds/transaction-min/`](examples/terraform/lambda-vpc-rds/transaction-min/) | Green | Green | Composes `rds/vpc-rds-proxy-min` + Lambda VpcConfig probe — `-parallelism=1`; **Docker required** |
 
 ### + modules (apply local — formal green path pending)
