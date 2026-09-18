@@ -33,6 +33,7 @@ simulith verify kms
 simulith verify route53
 simulith verify acm
 simulith verify cloudfront
+simulith verify cloudformation
 ```
 
 Each subcommand requires a running Simulith server (`simulith start` or Docker Compose).
@@ -332,6 +333,10 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | VPC | `simulith verify vpc --skip-aws` | 4 |
 | IAM | `simulith verify iam --skip-aws` | 2 |
 | KMS | `simulith verify kms --skip-aws` | 2 |
+| Route 53 | `simulith verify route53 --skip-aws` | 2 |
+| ACM | `simulith verify acm --skip-aws` | 2 |
+| CloudFront | `simulith verify cloudfront --skip-aws` | 2 |
+| CloudFormation | `simulith verify cloudformation --skip-aws` | 2 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.
 

@@ -128,12 +128,20 @@ When the plugin is active it applies `deploymentMethod: direct` and `disableLogs
 
 Deployment buckets use `AWS::S3::Bucket`. See [`hello-serverless`](examples/serverless/hello-serverless/README.md) and the [plugin README](examples/serverless/serverless-simulith/README.md).
 
+## Verify
+
+```bash
+simulith verify cloudformation --skip-aws   # CI smoke (Simulith-only)
+simulith verify cloudformation              # full parity vs AWS sandbox (P-dev)
+```
+
+Scenarios: `stack-lifecycle`, `validate-template`.
+
 ## Limits
 
 - No change sets, nested stacks, drift detection, or StackSets
 - Create/update/delete are **synchronous** (`*_COMPLETE` immediately)
 - Update uses **replace-all** (no resource-level diff yet)
-- No `simulith verify cloudformation` yet
 
 ## Related
 

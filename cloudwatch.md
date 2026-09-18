@@ -1,6 +1,6 @@
 # CloudWatch Logs — Simulith
 
-Local AWS CloudWatch **Logs** emulation for development and testing (initial slice — not Metrics, Alarms, or Insights).
+Local AWS CloudWatch **Logs** emulation for development and testing.
 
 ## Overview
 
@@ -24,6 +24,9 @@ Compatible with AWS CLI (`aws logs`) and AWS SDKs when using `--endpoint-url htt
 | PutLogEvents | `Logs_20140328.PutLogEvents` | ✓ |
 | GetLogEvents | `Logs_20140328.GetLogEvents` | ✓ |
 | FilterLogEvents | `Logs_20140328.FilterLogEvents` | ✓ |
+| StartQuery | `Logs_20140328.StartQuery` | ✓ |
+| GetQueryResults | `Logs_20140328.GetQueryResults` | ✓ |
+| StopQuery | `Logs_20140328.StopQuery` | ✓ |
 
 CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs API is available.
 
@@ -31,7 +34,7 @@ CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs A
 
 | Area | Notes |
 | --- | --- |
-| Logs Insights | Not emulated |
+| Logs Insights (full CWLI) | Partial — `fields`/`filter @message`/`limit`/`sort` subset |
 | CloudWatch Metrics | Available — see [cloudwatch-metrics.md](cloudwatch-metrics.md) |
 | Alarms | Partial — see [cloudwatch-alarms.md](cloudwatch-alarms.md) |
 | Dashboards |  |
@@ -53,7 +56,7 @@ simulith verify cloudwatch --skip-aws   # CI smoke (Simulith-only)
 simulith verify cloudwatch              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`. See [compatibility.md](compatibility.md).
+Scenarios: `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`. See [compatibility.md](compatibility.md).
 
 ## Terraform
 

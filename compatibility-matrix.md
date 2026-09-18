@@ -6,15 +6,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-16..
+Last updated: 2026-09-17..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 20 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 210 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 4, CloudWatch Metrics 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Operations **available** locally | 212 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 5, CloudWatch Metrics 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -234,6 +234,7 @@ Guide: [kms.md](kms.md) · Verify: `simulith verify kms`
 | GetKeyRotationStatus | available | — | Stored flag (default false)
 | EnableKeyRotation / DisableKeyRotation | available | — | Rotation metadata only
 | CreateAlias | available | yes (`cmk-alias-lifecycle`) | `alias/...` |
+| UpdateAlias | available | yes (handler test) | Terraform alias target drift
 | ListAliases | available | yes (`cmk-alias-lifecycle`) | Optional `KeyId` filter |
 | Encrypt | available | yes (`encrypt-decrypt-roundtrip`) | Mock envelope ciphertext |
 | Decrypt | available | yes (`encrypt-decrypt-roundtrip`) | Round-trip with Encrypt |
@@ -315,6 +316,7 @@ Guide: [cloudwatch.md](cloudwatch.md) · Verify: `simulith verify cloudwatch`
 | PutLogEvents | available | yes (`put-log-events`) | Sequence token after first batch |
 | GetLogEvents | available | yes (`get-log-events`) |  |
 | FilterLogEvents | available | yes (`filter-log-events`) | ; simple text filter |
+| StartQuery / GetQueryResults / StopQuery | available | yes (`logs-insights`) | ; CWLI subset |
 
 ---
 
@@ -432,17 +434,17 @@ Guide: [cloudfront.md](cloudfront.md) · Verify: `simulith verify cloudfront`
 
 ## CloudFormation
 
-Guide: [cloudformation.md](cloudformation.md) · Verify: —
+Guide: [cloudformation.md](cloudformation.md) · Verify: `simulith verify cloudformation`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateStack | available | no | Sync `CREATE_COMPLETE`; provisions supported resource types |
-| UpdateStack | available | no | Replace-all recreate |
-| DeleteStack | available | no | Deletes provisioned resources + stack |
-| DescribeStacks | available | no | Optional name filter |
-| DescribeStackEvents | available | no | Newest first |
-| DescribeStackResources | available | no | Logical/physical IDs |
-| ListStackResources | available | no | Serverless CLI |
+| CreateStack | available | yes (`stack-lifecycle`) | Sync `CREATE_COMPLETE`; provisions supported resource types |
+| UpdateStack | available | yes (`stack-lifecycle`) | Replace-all recreate |
+| DeleteStack | available | yes (`stack-lifecycle`) | Deletes provisioned resources + stack |
+| DescribeStacks | available | yes (`stack-lifecycle`) | Optional name filter |
+| DescribeStackEvents | available | — | Newest first |
+| DescribeStackResources | available | — | Logical/physical IDs |
+| ListStackResources | available | — | Serverless CLI |
 
 Supported CFN resource types: Lambda, IAM, API Gateway, EventBridge, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`** — see [cloudformation.md](cloudformation.md). Serverless hello green path shipped; use [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin.
 
@@ -464,7 +466,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
-| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events` | — |
+| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights` | — |
 | CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
@@ -473,6 +475,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency` | — |
 | CloudFront | `oac-create-get`, `distribution-oac-lifecycle` | — |
+| CloudFormation | `stack-lifecycle`, `validate-template` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -495,6 +498,7 @@ simulith verify kms --skip-aws
 simulith verify route53 --skip-aws
 simulith verify acm --skip-aws
 simulith verify cloudfront --skip-aws
+simulith verify cloudformation --skip-aws
 ```
 
 ---

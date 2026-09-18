@@ -1,6 +1,6 @@
 # CloudWatch Alarms — Simulith
 
-Local **CloudWatch metric alarms** emulation with **metric-based evaluation**. SNS actions are stored but not invoked.
+Local **CloudWatch metric alarms** emulation with **metric-based evaluation** and **SNS alarm actions**.
 
 ## Overview
 
@@ -33,11 +33,23 @@ Evaluation also runs on **`DescribeAlarms`** so CLI and Console show current sta
 
 Supported comparison operators: `GreaterThanThreshold`, `GreaterThanOrEqualToThreshold`, `LessThanThreshold`, `LessThanOrEqualToThreshold`. Statistics: `Average`, `Sum`, `Minimum`, `Maximum`, `SampleCount`.
 
+## SNS actions
+
+When an alarm **transitions state** and **`ActionsEnabled`** is true, Simulith publishes a CloudWatch-style JSON notification to configured **SNS topic ARNs**:
+
+| New state | Action list used |
+| --- | --- |
+| `ALARM` | `AlarmActions` |
+| `OK` | `OKActions` |
+| `INSUFFICIENT_DATA` | `InsufficientDataActions` |
+
+Topics must exist locally (`aws sns create-topic` or Terraform `aws_sns_topic`). Messages are stored in SQLite for inspection; no email/SMS/Lambda fan-out yet.
+
 ## What Simulith does not do
 
 | Area | Notes |
 | --- | --- |
-| SNS / action execution | Action ARNs are stored but not invoked |
+| Non-SNS action targets | Lambda, SQS, auto-scaling ARNs stored but not invoked |
 | `SetAlarmState`, composite alarms, anomaly detectors |  remainder |
 | Dashboards |  |
 

@@ -21,6 +21,7 @@ Simulith implements a **minimal CMK slice** for Secrets Manager Terraform integr
 | `ListResourceTags` | Returns stored tags (`TagKey` / `TagValue`)
 | `TagResource` / `UntagResource` | CMK tag merge/remove
 | `CreateAlias` | `alias/<name>` → target key |
+| `UpdateAlias` | Repoint alias to another CMK (Terraform drift)
 | `ListAliases` | Optional filter by `KeyId` |
 | `Encrypt` | Base64 plaintext in → `CiphertextBlob` (mock envelope) |
 | `Decrypt` | Base64 ciphertext in → base64 plaintext |
