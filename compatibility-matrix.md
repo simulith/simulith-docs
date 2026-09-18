@@ -356,7 +356,7 @@ Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateDBSubnetGroup / Describe / Delete | available | yes |  |
+| CreateDBSubnetGroup / Describe / Modify / Delete | available | yes | ,  |
 | CreateDBParameterGroup / Describe / Delete | available | yes | Metadata stub |
 | ModifyDBParameterGroup / DescribeDBParameters | available | no | User params persisted; not applied to sidecar |
 | ModifyDBInstance | available | no | Backup/maintenance/deletion-protection metadata |

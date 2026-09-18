@@ -1,6 +1,6 @@
 # RDS Postgres sidecar — Simulith
 
-Local Amazon RDS emulation via **AWS JSON 1.1** (and **AWS Query** for the Terraform AWS provider) with a **Postgres 15 Docker sidecar** per DB instance and **RDS Proxy TCP relay**.  / ,  / ,  / ,  / ,  / .
+Local Amazon RDS emulation via **AWS JSON 1.1** (and **AWS Query** for the Terraform AWS provider) with a **Postgres 15 Docker sidecar** per DB instance and **RDS Proxy TCP relay**.  / ,  / ,  / ,  / ,  / ,  / .
 
 ## Overview
 
@@ -17,6 +17,7 @@ Compatible with Terraform `aws_db_subnet_group`, `aws_db_parameter_group`, `aws_
 | --- | --- |
 | CreateDBSubnetGroup | Subnet metadata only (no ENI placement) |
 | DescribeDBSubnetGroups | Filter by name optional |
+| ModifyDBSubnetGroup | Update description and/or `SubnetIds` (metadata only) |
 | DeleteDBSubnetGroup | Blocked when referenced by an instance |
 | CreateDBParameterGroup | Family + description; parameters stored via Modify |
 | DescribeDBParameterGroups | |
