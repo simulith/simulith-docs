@@ -16,8 +16,9 @@ Compatible with AWS CLI (`aws cloudwatch put-metric-alarm`, `describe-alarms`, `
 | Operation | Notes |
 | --- | --- |
 | `PutMetricAlarm` | Create or update a threshold alarm definition |
-| `DescribeAlarms` | List alarms; optional `AlarmNames` filter; re-evaluates state before respond |
+| `DescribeAlarms` | List alarms; optional `AlarmNames` filter; returns persisted state |
 | `DeleteAlarms` | Delete alarms by name |
+| `SetAlarmState` | Manually set alarm state (`OK` / `ALARM` / `INSUFFICIENT_DATA`); triggers SNS actions on transition |
 
 ## Evaluation
 
@@ -29,7 +30,7 @@ When **`PutMetricData`** publishes datapoints for a metric referenced by an alar
 | `OK` | All periods have data and at least one period is not breaching |
 | `INSUFFICIENT_DATA` | Not enough datapoints in the window (including after create) |
 
-Evaluation also runs on **`DescribeAlarms`** so CLI and Console show current state without a separate poll API.
+Evaluation runs on **`PutMetricData`** / **`PutMetricAlarm`** (metric publish paths). **`DescribeAlarms`** returns the persisted state (including after **`SetAlarmState`**).
 
 Supported comparison operators: `GreaterThanThreshold`, `GreaterThanOrEqualToThreshold`, `LessThanThreshold`, `LessThanOrEqualToThreshold`. Statistics: `Average`, `Sum`, `Minimum`, `Maximum`, `SampleCount`.
 
@@ -50,7 +51,7 @@ Topics must exist locally (`aws sns create-topic` or Terraform `aws_sns_topic`).
 | Area | Notes |
 | --- | --- |
 | Non-SNS action targets | Lambda, SQS, auto-scaling ARNs stored but not invoked |
-| `SetAlarmState`, composite alarms, anomaly detectors |  remainder |
+| Composite alarms, anomaly detectors |  remainder |
 | Dashboards |  |
 
 ## Persistence
