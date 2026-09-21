@@ -34,6 +34,12 @@ Evaluation runs on **`PutMetricData`** / **`PutMetricAlarm`** (metric publish pa
 
 Supported comparison operators: `GreaterThanThreshold`, `GreaterThanOrEqualToThreshold`, `LessThanThreshold`, `LessThanOrEqualToThreshold`. Statistics: `Average`, `Sum`, `Minimum`, `Maximum`, `SampleCount`.
 
+### Eval depth
+
+- **`DatapointsToAlarm`** — M-of-N breaching (defaults to `EvaluationPeriods`; must be ≤ `EvaluationPeriods`).
+- **`TreatMissingData`** — `missing` (default), `breaching`, `notBreaching`, `ignore` applied to empty period buckets in the evaluation window.
+- Evaluation walks **consecutive** period buckets (not only periods that received datapoints).
+
 ## SNS actions
 
 When an alarm **transitions state** and **`ActionsEnabled`** is true, Simulith publishes a CloudWatch-style JSON notification to configured **SNS topic ARNs**:
@@ -65,7 +71,7 @@ simulith verify cloudwatch-alarms --skip-aws   # CI smoke (Simulith-only)
 simulith verify cloudwatch-alarms              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `put-describe-alarms`, `delete-alarms`, `alarm-evaluation`.
+Scenarios: `put-describe-alarms`, `delete-alarms`, `alarm-evaluation`, `alarm-eval-depth`.
 
 ## Example (AWS CLI)
 

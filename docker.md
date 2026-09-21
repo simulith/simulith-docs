@@ -78,7 +78,8 @@ Compose sets environment variables (recommended for Docker):
 | Variable | Compose value | Why |
 | --- | --- | --- |
 | `SIMULITH_HOST` | `0.0.0.0` | Required so port mapping reaches the process inside the container |
-| `SIMULITH_PORT` | `4566` | Default port |
+| `SIMULITH_PORT` | `4566` | Listen port **inside** the container |
+| `SIMULITH_RUNTIME_HOST_PORT` | `4566` | Host port published by Compose (`host:container`) |
 
 **Pitfall:** If you mount a `config.yaml` with `server.host: 127.0.0.1`, the runtime binds to loopback **inside** the container and `curl localhost:4566` from the host will fail. Fixes:
 
@@ -130,11 +131,53 @@ Create the directory on the host if needed. On Windows, ensure the path is share
 | Entrypoint | `simulith start` |
 | Health | `GET /health` via `wget` (Dockerfile + Compose) |
 
+## Running multiple instances (parallel dev)
+
+Run **separate containers** with different **host ports** and **volumes**. The process inside each container should keep `SIMULITH_PORT=4566`; only the Docker `-p` / Compose host mapping changes.
+
+| Instance | Typical use | Host port | Volume | Container name |
+| --- | --- | --- | --- | --- |
+| **simulith-dev** | Simulith repo — verify, examples, CI | `4566` | `simulith-dev-data` | `simulith-dev` |
+| **Customer / demoapp** | External checkout Path C + Serverless | `4567` | `simulith-demoapp-data` (or project-specific) | `simulith-demoapp` |
+
+**Simulith repo (dev on `:4566`):**
+
+```bash
+cd runtime
+docker compose up --build
+# or published image:
+docker run -d --name simulith-dev -p 4566:4566 \
+  -v simulith-dev-data:/app/.simulith \
+  -e SIMULITH_HOST=0.0.0.0 \
+  simulith/simulith:latest
+export SIMULITH_ENDPOINT=http://127.0.0.1:4566
+```
+
+**Second instance on `:4567` (same image, isolated state):**
+
+```bash
+docker run -d --name simulith-demoapp -p 4567:4566 \
+  -v simulith-demoapp-data:/app/.simulith \
+  -v //var/run/docker.sock:/var/run/docker.sock \
+  -e SIMULITH_HOST=0.0.0.0 \
+  simulith/simulith:latest
+# Clients (AWS profile, Terraform backend, Serverless) → http://127.0.0.1.sslip.io:4567
+```
+
+**Compose on another host port:**
+
+```bash
+SIMULITH_RUNTIME_HOST_PORT=4567 docker compose up --build
+# CLI still targets http://127.0.0.1:4567 (host), not SIMULITH_PORT inside the container
+```
+
+Customer-specific port conventions live in the **external** project (e.g. demoapp `.simulith.env`), not in Simulith defaults.
+
 ## Troubleshooting
 
 | Issue | Fix |
 | --- | --- |
-| Port 4566 in use (LocalStack, etc.) | Change host port: `"8787:4566"` and `SIMULITH_PORT=8787` |
+| Port 4566 in use (LocalStack, second instance, etc.) | Map a different **host** port: `-p 8787:4566` or `SIMULITH_RUNTIME_HOST_PORT=8787`. Keep **`SIMULITH_PORT=4566`** inside the container unless you also change the right-hand side of the port mapping. Clients use `http://127.0.0.1:8787`. |
 | Container unhealthy | `docker compose logs simulith`; confirm bind is `0.0.0.0` |
 | Permission errors on bind mount | Ensure `./.simulith` is writable; named volume avoids most host permission issues |
 | Stale image after code change | `docker compose up --build` or `docker build --no-cache` |

@@ -328,7 +328,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
 | CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 4 |
 | CloudWatch Metrics | `simulith verify cloudwatch-metrics --skip-aws` | 2 |
-| CloudWatch Alarms | `simulith verify cloudwatch-alarms --skip-aws` | 2 |
+| CloudWatch Alarms | `simulith verify cloudwatch-alarms --skip-aws` | 4 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
 | VPC | `simulith verify vpc --skip-aws` | 4 |
 | IAM | `simulith verify iam --skip-aws` | 2 |
