@@ -132,7 +132,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents** | Read-only; **FilterLogEvents** API shipped — Console UI still uses GetLogEvents; create via CLI/Terraform/Serverless |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics** (last hour) | Read-only; PutMetricData via CLI/Terraform/SDK |
 | **CloudWatch Alarms** | **DescribeAlarms** | Read-only; create/delete via CLI/Terraform/SDK |
-| **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset (`fields`, `filter @message`, `limit`, `sort`); read-only |
+| **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |

@@ -30,11 +30,21 @@ Compatible with AWS CLI (`aws logs`) and AWS SDKs when using `--endpoint-url htt
 
 CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs API is available.
 
+### Logs Insights depth
+
+Extended CWLI subset on **StartQuery** / **GetQueryResults**:
+
+- **`fields`** — return only selected columns (e.g. `fields @message`)
+- **`filter @message not like`** — negated substring filter
+- **`sort @timestamp desc`** — explicit descending sort (default)
+- **`stats count()`** and **`stats count() by @logStream`** / **`@logGroup`**
+- **`logGroupNames`** — query multiple groups (include `@logGroup` in `fields` when needed)
+
 ## What Simulith does not do
 
 | Area | Notes |
 | --- | --- |
-| Logs Insights (full CWLI) | Partial — `fields`/`filter @message`/`limit`/`sort` subset |
+| Logs Insights (full CWLI) | Partial
 | CloudWatch Metrics | Available — see [cloudwatch-metrics.md](cloudwatch-metrics.md) |
 | Alarms | Partial — see [cloudwatch-alarms.md](cloudwatch-alarms.md) |
 | Dashboards |  |
@@ -56,7 +66,7 @@ simulith verify cloudwatch --skip-aws   # CI smoke (Simulith-only)
 simulith verify cloudwatch              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`. See [compatibility.md](compatibility.md).
+Scenarios: `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`, `logs-insights-depth`. See [compatibility.md](compatibility.md).
 
 ## Terraform
 

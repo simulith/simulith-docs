@@ -326,7 +326,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Cognito | `simulith verify cognito --skip-aws` | 2 |
 | SES | `simulith verify ses --skip-aws` | 2 |
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
-| CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 4 |
+| CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 5 |
 | CloudWatch Metrics | `simulith verify cloudwatch-metrics --skip-aws` | 2 |
 | CloudWatch Alarms | `simulith verify cloudwatch-alarms --skip-aws` | 4 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
