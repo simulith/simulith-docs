@@ -44,6 +44,11 @@ Extended CWLI subset on **StartQuery** / **GetQueryResults**:
 
 - **`parse @message /…(?<field>…)/`** — named capture groups exposed as query result fields (use in `fields`)
 
+### Logs Insights bin + async
+
+- **`stats count() by bin(@timestamp, Nm|Nh|Nd)`** — histogram buckets by timestamp
+- **Async queries** — **StartQuery** returns immediately with `Running`; **GetQueryResults** polls until `Complete`
+
 ## What Simulith does not do
 
 | Area | Notes |
