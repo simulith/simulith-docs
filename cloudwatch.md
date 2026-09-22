@@ -40,6 +40,10 @@ Extended CWLI subset on **StartQuery** / **GetQueryResults**:
 - **`stats count()`** and **`stats count() by @logStream`** / **`@logGroup`**
 - **`logGroupNames`** — query multiple groups (include `@logGroup` in `fields` when needed)
 
+### Logs Insights parse
+
+- **`parse @message /…(?<field>…)/`** — named capture groups exposed as query result fields (use in `fields`)
+
 ## What Simulith does not do
 
 | Area | Notes |
@@ -47,7 +51,7 @@ Extended CWLI subset on **StartQuery** / **GetQueryResults**:
 | Logs Insights (full CWLI) | Partial
 | CloudWatch Metrics | Available — see [cloudwatch-metrics.md](cloudwatch-metrics.md) |
 | Alarms | Partial — see [cloudwatch-alarms.md](cloudwatch-alarms.md) |
-| Dashboards |  |
+| Dashboards | Partial — see [cloudwatch-dashboards.md](cloudwatch-dashboards.md) |
 | Subscription filters, metric filters | Not emulated |
 | Cross-account / cross-region | Single local account/region |
 

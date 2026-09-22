@@ -58,7 +58,7 @@ Topics must exist locally (`aws sns create-topic` or Terraform `aws_sns_topic`).
 | --- | --- |
 | Non-SNS action targets | Lambda, SQS, auto-scaling ARNs stored but not invoked |
 | Composite alarms, anomaly detectors |  remainder |
-| Dashboards |  |
+| Dashboard rendering | See [cloudwatch-dashboards.md](cloudwatch-dashboards.md) — CRUD only |
 
 ## Persistence
 

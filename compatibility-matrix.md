@@ -6,15 +6,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-17..
+Last updated: 2026-09-21..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 20 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 212 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 5, CloudWatch Metrics 2, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Operations **available** locally | 217 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -329,7 +329,12 @@ Guide: [cloudwatch-metrics.md](cloudwatch-metrics.md) · Verify: `simulith verif
 | PutMetricData | available | yes (`put-list-metrics`) |  |
 | ListMetrics | available | yes (`put-list-metrics`) | |
 | GetMetricStatistics | available | yes (`get-metric-statistics`) | |
-| GetMetricData / Alarms / Dashboards | not available | no | + |
+| GetMetricData | available | yes (`get-metric-data`) | ; MetricDataQueries + MetricStat |
+| PutDashboard | available | yes (`put-get-dashboard`) | ; see [cloudwatch-dashboards.md](cloudwatch-dashboards.md) |
+| GetDashboard | available | yes (`put-get-dashboard`) |  |
+| ListDashboards | available | yes (`list-dashboards`) |  |
+| DeleteDashboards | available | yes (`delete-dashboards`) |  |
+| Alarms | partial | see [cloudwatch-alarms.md](cloudwatch-alarms.md) |  remainder |
 
 ---
 
@@ -466,8 +471,9 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
-| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights` | — |
-| CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics` | — |
+| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`, `logs-insights-depth`, `logs-insights-parse` | — |
+| CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics`, `get-metric-data` | — |
+| CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |

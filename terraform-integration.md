@@ -22,6 +22,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | CloudWatch Logs | [`cloudwatch/`](examples/terraform/cloudwatch/) | Yes — log group apply + destroy |
 | CloudWatch Metrics | [`cloudwatch-metrics/`](examples/terraform/cloudwatch-metrics/) | Yes — custom metric apply + destroy |
 | CloudWatch Alarms | [`cloudwatch-alarms/`](examples/terraform/cloudwatch-alarms/) | Yes — metric alarm apply + destroy |
+| CloudWatch Dashboards | [`cloudwatch-dashboards/`](examples/terraform/cloudwatch-dashboards/) | Yes — dashboard apply + destroy |
 
 For imperative examples see [AWS CLI examples](aws-cli-examples.md) and [SDK examples](sdk-examples.md). **Honest integration examples** (AWS-derived Terraform + CLI): [below](#honest-integration-examples).
 

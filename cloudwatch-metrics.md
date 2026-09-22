@@ -1,6 +1,6 @@
 # CloudWatch Metrics — Simulith
 
-Local **CloudWatch Metrics** emulation (custom metrics only — not Logs, Alarms, or Dashboards).
+Local **CloudWatch Metrics** emulation (custom metrics only — not Logs or Alarms). Dashboards: [cloudwatch-dashboards.md](cloudwatch-dashboards.md).
 
 ## Overview
 
@@ -18,14 +18,21 @@ Compatible with AWS CLI (`aws cloudwatch`) when using `--endpoint-url http://loc
 | `PutMetricData` | Custom metric datapoints |
 | `ListMetrics` | Filter by namespace / metric name |
 | `GetMetricStatistics` | Average, Sum, SampleCount over a time range |
+| `GetMetricData` | Batch metric queries via `MetricDataQueries` |
+
+### GetMetricData
+
+- **`MetricDataQueries`** with `MetricStat` (`Namespace`, `MetricName`, `Period`, `Stat`)
+- Stats: `Average`, `Sum`, `SampleCount`, `Minimum`, `Maximum`
+- Returns aligned `Timestamps` / `Values` per query id
 
 ## What Simulith does not do
 
 | Area | Notes |
 | --- | --- |
-| GetMetricData |  remainder |
+| Metric math expressions | SEARCH, anomaly detectors |
 | Alarms | Partial — see [cloudwatch-alarms.md](cloudwatch-alarms.md) |
-| Dashboards |  |
+| Dashboard rendering | See [cloudwatch-dashboards.md](cloudwatch-dashboards.md) — CRUD only |
 | Metric streams, anomaly detectors | Not emulated |
 | Cross-account / cross-region | Single local account/region |
 
@@ -36,7 +43,7 @@ simulith verify cloudwatch-metrics --skip-aws   # CI smoke (Simulith-only)
 simulith verify cloudwatch-metrics              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `put-list-metrics`, `get-metric-statistics`.
+Scenarios: `put-list-metrics`, `get-metric-statistics`, `get-metric-data`.
 
 Matrix: [compatibility-matrix.md](compatibility-matrix.md#cloudwatch-metrics) · Parity summary: aws-parity-overview.md · Console: [console.md](console.md) (**CloudWatch** → **Metrics** tab).
 
