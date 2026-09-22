@@ -6,15 +6,15 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-21..
+Last updated: 2026-09-22..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 20 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 217 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 2, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Operations **available** locally | 218 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -297,11 +297,12 @@ Guide: [eventbridge.md](eventbridge.md) · Verify: `simulith verify eventbridge`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| PutRule / DeleteRule / DescribeRule / ListRules | available | yes (`rule-target-lifecycle`) | Default bus; schedule only |
+| PutRule / DeleteRule / DescribeRule / ListRules | available | yes (`rule-target-lifecycle`) | Default + custom bus; schedule or pattern |
 | EnableRule / DisableRule | available | yes (`rule-target-lifecycle`) | |
 | PutTargets / RemoveTargets / ListTargetsByRule | available | yes (`rule-target-lifecycle`) | Lambda ARN targets |
 | Schedule → Lambda Invoke | available | yes (`schedule-lambda-invoke`) | `rate(...)`; `cron(...)` ≈ 1m; needs `node` |
-| PutEvents (default bus) | available | no | ; verify deferred |
+| PutEvents (default + custom bus) | available | yes (`custom-bus-lifecycle`) | ,  |
+| CreateEventBus / DeleteEventBus / DescribeEventBus / ListEventBuses | available | yes (`custom-bus-lifecycle`) |  |
 
 ---
 
@@ -470,7 +471,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
-| EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke` | — |
+| EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke`, `custom-bus-lifecycle` | — |
 | CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`, `logs-insights-depth`, `logs-insights-parse` | — |
 | CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics`, `get-metric-data` | — |
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |

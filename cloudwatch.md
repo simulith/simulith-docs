@@ -49,11 +49,22 @@ Extended CWLI subset on **StartQuery** / **GetQueryResults**:
 - **`stats count() by bin(@timestamp, Nm|Nh|Nd)`** — histogram buckets by timestamp
 - **Async queries** — **StartQuery** returns immediately with `Running`; **GetQueryResults** polls until `Complete`
 
+### Logs Insights pipeline parser
+
+Pipe-delimited CWLI stages execute **in order** (regex-safe `|` splitting):
+
+- **`parse`** → **`filter`** on any field (`=`, `!=`, `like`, `not like`, wildcards `*`/`?`)
+- **`sort`** on any field (`asc`/`desc`)
+- **`dedup`** by field
+- **`fields`**, **`stats`**, **`limit`** — same subset as prior stories
+
+Example: `parse @message /level=(?<level>\w+)/ | filter level = 'ERROR' | fields @message, level`
+
 ## What Simulith does not do
 
 | Area | Notes |
 | --- | --- |
-| Logs Insights (full CWLI) | Partial
+| Logs Insights (full CWLI) | Partial — pipe parser + /392/397/399 subset; not full AWS grammar |
 | CloudWatch Metrics | Available — see [cloudwatch-metrics.md](cloudwatch-metrics.md) |
 | Alarms | Partial — see [cloudwatch-alarms.md](cloudwatch-alarms.md) |
 | Dashboards | Partial — see [cloudwatch-dashboards.md](cloudwatch-dashboards.md) |

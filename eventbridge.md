@@ -8,7 +8,7 @@ Simulith emulates EventBridge schedule APIs on the same port as other services (
 
 - **SigV4 service name:** `events`
 - **Protocol:** AWS JSON 1.1 (`X-Amz-Target: AWSEvents.<Operation>`)
-- **Bus:** default bus only
+- **Bus:** default bus + custom event buses
 - **Delivery:** schedule poller invokes Lambda targets via `InvokeSync` (no real EventBridge bus)
 
 Compatible with AWS CLI (`aws events`) and SDKs when using `--endpoint-url http://localhost:4566`.
@@ -20,7 +20,8 @@ Compatible with AWS CLI (`aws events`) and SDKs when using `--endpoint-url http:
 | PutRule / DeleteRule / DescribeRule / ListRules | ✓ (schedule or event pattern) |
 | EnableRule / DisableRule | ✓ |
 | PutTargets / RemoveTargets / ListTargetsByRule | ✓ (Lambda ARNs) |
-| PutEvents → pattern rules → Lambda Invoke | ✓ default bus |
+| PutEvents → pattern rules → Lambda Invoke | ✓ default + custom buses |
+| CreateEventBus / DeleteEventBus / DescribeEventBus / ListEventBuses | ✓ |
 | Schedule poller → Lambda Invoke | ✓ `rate(...)`; `cron(...)` ≈ every minute |
 
 ## What Simulith does not do
@@ -29,7 +30,6 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 | Operation | Notes |
 | --- | --- |
-| `CreateEventBus` / `DeleteEventBus` / custom buses | Default bus only |
 | Archives / replays | Not implemented |
 | EventBridge Pipes | Not implemented |
 | Schema registry | Not implemented |
@@ -37,7 +37,8 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 ## Limits
 
-- No custom event buses — **default bus only** for PutRule / PutEvents
+- Custom buses cannot be deleted while they contain rules
+- Default bus cannot be deleted
 - Event pattern matching is a documented subset (exact `source`, `detail-type`, `detail` fields)
 - Cron is a local approximation (≈1 minute), not full AWS cron semantics
 - Non-Lambda targets are skipped
@@ -45,12 +46,12 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 ## Verify
 
 ```bash
-simulith verify eventbridge --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify eventbridge --skip-aws          # Simulith-only smoke (3 scenarios)
 simulith verify eventbridge                     # AWS parity (rule CRUD; schedule fire is Simulith smoke)
 simulith verify eventbridge --filter schedule   # subset by scenario name prefix
 ```
 
-Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PATH).
+Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PATH), `custom-bus-lifecycle`.
 
 ## Console
 
@@ -87,6 +88,19 @@ aws events put-targets --endpoint-url "$EP" \
 
 aws events put-events --endpoint-url "$EP" \
   --entries Source=my.app,DetailType=OrderCreated,Detail='{"orderId":"42"}'
+```
+
+### Custom event bus
+
+```bash
+aws events create-event-bus --endpoint-url "$EP" --name orders-bus
+
+aws events put-rule --endpoint-url "$EP" \
+  --name orders --event-bus-name orders-bus \
+  --event-pattern '{"source":["my.app"],"detail-type":["OrderCreated"]}'
+
+aws events put-events --endpoint-url "$EP" \
+  --entries Source=my.app,DetailType=OrderCreated,Detail='{"orderId":"1"}',EventBusName=orders-bus
 ```
 
 ## Terraform
