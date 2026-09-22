@@ -26,7 +26,7 @@ Compatible with AWS CLI (`aws cloudwatch put-dashboard`, `get-dashboard`, `list-
 | --- | --- |
 | Widget rendering / live metric queries from dashboard body | Body stored only |
 | Dashboard JSON schema validation | Any non-empty string accepted |
-| Console panel | Follow-on story |
+| Console widget rendering | Body displayed as JSON only |
 | Cross-account sharing, tags | Not emulated |
 
 ## Verify
@@ -61,6 +61,10 @@ aws cloudwatch get-dashboard --endpoint-url "$EP" --dashboard-name demo-dashboar
 aws cloudwatch list-dashboards --endpoint-url "$EP"
 aws cloudwatch delete-dashboards --endpoint-url "$EP" --dashboard-names demo-dashboard
 ```
+
+## Console
+
+Open **CloudWatch → Dashboards** in the local Console ([console.md](console.md)) — read-only **ListDashboards** + **GetDashboard** with JSON body viewer.
 
 ## Related
 
