@@ -6,14 +6,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-22..
+Last updated: 2026-09-23..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 20 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 218 |
+| Operations **available** locally | 222 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -269,6 +269,10 @@ Guide: [cognito.md](cognito.md) · Verify: `simulith verify cognito`
 | AdminSetUserPassword / AdminConfirmSignUp | available | yes (`admin-auth-jwks`) | AdminSetUserPassword |
 | AdminEnableUser / AdminDisableUser | available | no | |
 | AdminInitiateAuth | available | yes (`admin-auth-jwks`) | ADMIN_USER_PASSWORD_AUTH → RS256 JWT |
+| InitiateAuth / RespondToAuthChallenge | available | no | USER_PASSWORD_AUTH, USER_SRP_AUTH |
+| SignUp / ConfirmSignUp | available | no | Public self-registration |
+| ForgotPassword / ConfirmForgotPassword | available | no | In-memory reset codes |
+| ChangePassword | available | no | Access Token + previous/proposed password |
 | SetUserPoolMfaConfig / GetUserPoolMfaConfig | available | no | Metadata; no TOTP challenge |
 | TagResource | available | no | User pool tags |
 | UntagResource | available | no | User pool tags |

@@ -26,7 +26,11 @@ Compatible with AWS CLI (`aws cognito-idp`) and SDKs when using `--endpoint-url 
 | AdminSetUserPassword / AdminConfirmSignUp | ✓ |
 | AdminEnableUser / AdminDisableUser | ✓ |
 | AdminInitiateAuth (`ADMIN_USER_PASSWORD_AUTH`) | ✓ RS256 Access + Id tokens |
-| Lambda triggers (`PreSignUp`, `PostConfirmation`) | ✓ on admin lifecycle |
+| InitiateAuth / RespondToAuthChallenge (public) | ✓ `USER_PASSWORD_AUTH`, `USER_SRP_AUTH` |
+| SignUp / ConfirmSignUp | ✓ public self-registration |
+| ForgotPassword / ConfirmForgotPassword | ✓ password reset flow |
+| ChangePassword | ✓ with Access Token |
+| Lambda triggers (`PreSignUp`, `PostConfirmation`) | ✓ admin + public signup lifecycle |
 | SetUserPoolMfaConfig / GetUserPoolMfaConfig | ✓ metadata |
 | TagResource / UntagResource / ListTagsForResource | ✓ user pool tags |
 | UpdateUserPoolClient | ✓ client settings merge |
@@ -39,9 +43,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 | Operation | Notes |
 | --- | --- |
-| `SignUp` / `ConfirmSignUp` | Public signup APIs — use Admin* instead |
-| `InitiateAuth` / `RespondToAuthChallenge` (public) | `AdminInitiateAuth` only |
-| `ForgotPassword` / `ConfirmForgotPassword` | Not implemented |
+| ResendConfirmationCode | Not implemented |
 | Hosted UI / OAuth `/oauth2/authorize` / `/oauth2/token` | No hosted UI |
 | `AssociateSoftwareToken` / `VerifySoftwareToken` | MFA config is metadata only |
 | Identity Pools (`cognito-identity`) | Not implemented |
@@ -53,7 +55,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 - No Hosted UI / OAuth authorize / token endpoints yet
 - Pool MFA config is metadata only; no TOTP challenge (AssociateSoftwareToken / VerifySoftwareToken)
 - No Identity Pools
-- No `SignUp` / `ConfirmSignUp` public APIs yet (admin path + triggers supported)
+- SignUp / reset confirmation codes are stored **in-memory** on the runtime process (not emailed); use `ConfirmSignUp` / `ConfirmForgotPassword` in the same session or `AdminConfirmSignUp` to bypass in tests
 - Domain is metadata only (no real CloudFront)
 - `UpdateUserPool` merges JSON config; not full AWS parity
 
@@ -72,8 +74,8 @@ Function names or Lambda ARNs are accepted. Simulith invokes synchronously via t
 
 | Trigger | Invoked from | triggerSource |
 | --- | --- | --- |
-| PreSignUp | `AdminCreateUser` (before persist) | `PreSignUp_AdminCreateUser` |
-| PostConfirmation | `AdminConfirmSignUp`, permanent `AdminSetUserPassword`, or auto-confirm from PreSignUp | `PostConfirmation_ConfirmSignUp` |
+| PreSignUp | `AdminCreateUser`, `SignUp` (before persist) | `PreSignUp_AdminCreateUser`, `PreSignUp_SignUp` |
+| PostConfirmation | `AdminConfirmSignUp`, `ConfirmSignUp`, permanent `AdminSetUserPassword`, or auto-confirm from PreSignUp | `PostConfirmation_ConfirmSignUp` |
 
 PreSignUp Lambda returns the event with optional `response.autoConfirmUser`, `autoVerifyEmail`, `autoVerifyPhone`. Lambda errors return `UserLambdaValidationException`.
 
