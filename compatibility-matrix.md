@@ -1,19 +1,19 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty-one** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
 
 > **Start here** for limits and verify coverage. Each [service guide](using-simulith.md) also lists **what you can do** and **what Simulith does not do**. Onboarding: [quickstart.md](quickstart.md) · [using-simulith.md](using-simulith.md).
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-23..
+Last updated: 2026-09-24..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 20 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 222 |
+| Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
+| Operations **available** locally | 227 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -292,6 +292,22 @@ Guide: [ses.md](ses.md) · Verify: `simulith verify ses`
 | GetIdentityVerificationAttributes | available | yes (`identity-template-lifecycle`) | |
 | CreateTemplate / Get / Update / Delete / ListTemplates | available | yes (`identity-template-lifecycle`) | Update/List not in default scenarios |
 | SendEmail / SendTemplatedEmail / SendRawEmail | available | yes (`send-templated-email`) | Outbox; AWS send skipped (sandbox) |
+
+---
+
+## SNS (Simple Notification Service)
+
+Guide: [sns.md](sns.md) · Verify: not yet
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateTopic | available | no |  scaffold; productized  |
+| DeleteTopic | available | no | Removes topic and stored messages |
+| ListTopics | available | no | |
+| GetTopicAttributes | available | no | TopicArn, Owner |
+| Publish | available | no | Local message log; alarm actions use same store |
+
+**Not in matrix (gap):** Subscribe, Unsubscribe, fan-out to Lambda/SQS; S3 bucket notifications to SNS.
 
 ---
 

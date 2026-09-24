@@ -50,7 +50,7 @@ When an alarm **transitions state** and **`ActionsEnabled`** is true, Simulith p
 | `OK` | `OKActions` |
 | `INSUFFICIENT_DATA` | `InsufficientDataActions` |
 
-Topics must exist locally (`aws sns create-topic` or Terraform `aws_sns_topic`). Messages are stored in SQLite for inspection; no email/SMS/Lambda fan-out yet.
+Topics must exist locally (`aws sns create-topic`, Terraform `aws_sns_topic`, or default seed **`demo-alarm`**). Messages are stored in SQLite for inspection; no email/SMS/Lambda fan-out yet.
 
 ## What Simulith does not do
 

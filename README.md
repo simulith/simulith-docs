@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `748a01a` on 2026-09-24.
+Generated from monorepo commit `fb23a98` on 2026-09-24.
 
 ## Start here
 
@@ -46,6 +46,7 @@ Each service page lists **what you can do** and **what Simulith does not do**.
 | [EventBridge](eventbridge.md) | Schedule rules → Lambda; seeded demo-rule |
 | [Cognito](cognito.md) | User Pool + Admin* + JWKS; seeded demo-pool |
 | [SES](ses.md) | Identity, templates, Send* (local outbox); seeded demo-template |
+| [SNS](sns.md) | Topics, Publish; seeded demo-alarm (alarms + CLI) |
 | [VPC](vpc.md) | VPC, subnets, security groups |
 | [RDS](rds.md) | PostgreSQL + RDS Proxy (Docker sidecar) |
 | [IAM](iam.md) | Roles and policies (RDS Proxy) |
