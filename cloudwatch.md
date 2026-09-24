@@ -30,6 +30,8 @@ Compatible with AWS CLI (`aws logs`) and AWS SDKs when using `--endpoint-url htt
 
 CloudFormation `AWS::Logs::LogGroup` provisions a real log group when the Logs API is available.
 
+**Lambda invoke** automatically writes to **`/aws/lambda/<function-name>`** on each invoke (stderr + START/END/REPORT). See [`lambda.md`](lambda.md) § InvokeFunction.
+
 ### Logs Insights depth
 
 Extended CWLI subset on **StartQuery** / **GetQueryResults**:
