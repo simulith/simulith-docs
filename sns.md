@@ -14,10 +14,11 @@
 | Operation | Notes |
 | --- | --- |
 | `CreateTopic` | Persist topic metadata |
-| `Publish` | Store message body (local delivery log) |
+| `Subscribe` / `Unsubscribe` / `ListSubscriptionsByTopic` | Protocols **`lambda`**, **`sqs`** |
+| `Publish` | Local delivery log + fan-out to subscriptions |
 | `ListTopics` | List topic ARNs |
 | `GetTopicAttributes` | Basic attributes |
-| `DeleteTopic` | Remove topic and messages |
+| `DeleteTopic` | Remove topic, subscriptions, and messages |
 
 ## Primary use cases
 
@@ -26,8 +27,9 @@
 
 ## Limits
 
-- No subscriptions, email, SMS, or Lambda/SQS fan-out yet
+- **Fan-out:** `Publish` invokes Lambda asynchronously (SNS event shape) and enqueues SQS notification JSON; no email/SMS/mobile
 - S3 bucket notifications to SNS not supported yet
+- No `simulith verify sns` yet
 - Topics must exist before `Publish` (including alarm dispatch)
 
 ## Seed
@@ -44,11 +46,15 @@ aws sns create-topic --name my-topic --endpoint-url "$EP"
 aws sns publish --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic \
   --message '{"hello":"world"}' --endpoint-url "$EP"
 aws sns list-topics --endpoint-url "$EP"
+
+# Subscribe Lambda or SQS, then publish (fan-out)
+aws sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic \
+  --protocol sqs --notification-endpoint arn:aws:sqs:us-east-1:000000000000:my-queue --endpoint-url "$EP"
 ```
 
 ## Persistence
 
-Topics and published messages are stored in SQLite (`sns_topics`, `sns_messages`). Cleared on `simulith reset`.
+Topics, subscriptions, and published messages are stored in SQLite (`sns_topics`, `sns_subscriptions`, `sns_messages`). Cleared on `simulith reset`.
 
 ## Matrix
 

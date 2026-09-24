@@ -13,7 +13,7 @@ Last updated: 2026-09-24..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 227 |
+| Operations **available** locally | 230 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -302,12 +302,15 @@ Guide: [sns.md](sns.md) · Verify: not yet
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
 | CreateTopic | available | no |  scaffold; productized  |
-| DeleteTopic | available | no | Removes topic and stored messages |
+| DeleteTopic | available | no | Removes topic, subscriptions, and stored messages |
 | ListTopics | available | no | |
 | GetTopicAttributes | available | no | TopicArn, Owner |
-| Publish | available | no | Local message log; alarm actions use same store |
+| Publish | available | no | Local message log + fan-out to subscriptions |
+| Subscribe | available | no | Protocols `lambda`, `sqs` |
+| Unsubscribe | available | no | |
+| ListSubscriptionsByTopic | available | no | |
 
-**Not in matrix (gap):** Subscribe, Unsubscribe, fan-out to Lambda/SQS; S3 bucket notifications to SNS.
+**Not in matrix (gap):** S3 bucket notifications to SNS; `simulith verify sns`.
 
 ---
 
