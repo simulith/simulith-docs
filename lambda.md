@@ -124,7 +124,7 @@ Supported runtimes for invoke: `nodejs*` (uses `node`), `python*` (uses `python3
 
 ### CloudWatch Logs (local)
 
-Each successful invoke (sync or async) appends **START / END / REPORT** lines plus **stderr** from the handler to CloudWatch Logs group **`/aws/lambda/<function-name>`** (stream name `YYYY/MM/DD/[$LATEST]simulith`). View them in Console **CloudWatch → Logs** or with `aws logs filter-log-events --log-group-name /aws/lambda/my-fn`. The invoke response still includes base64 **`LogResult`** (stderr only), same as AWS.
+Each successful invoke (sync or async) appends **START / END / REPORT** lines plus handler output to CloudWatch Logs group **`/aws/lambda/<function-name>`** (stream name `YYYY/MM/DD/[$LATEST]simulith`). Handler lines come from **stderr** and from **stdout** except the final JSON return value (so Node **`console.log`** / Python **`print`** appear in logs). View them in Console **CloudWatch → Logs** or with `aws logs filter-log-events --log-group-name /aws/lambda/my-fn`. The invoke response includes base64 **`LogResult`** with the same merged log bytes.
 
 ### VpcConfig
 
