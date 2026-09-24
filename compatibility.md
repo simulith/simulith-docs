@@ -22,6 +22,7 @@ simulith verify apigateway
 simulith verify secretsmanager
 simulith verify cognito
 simulith verify ses
+simulith verify sns
 simulith verify eventbridge
 simulith verify cloudwatch
 simulith verify cloudwatch-metrics
@@ -326,6 +327,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Secrets Manager | `simulith verify secretsmanager --skip-aws` | 2 |
 | Cognito | `simulith verify cognito --skip-aws` | 2 |
 | SES | `simulith verify ses --skip-aws` | 2 |
+| SNS | `simulith verify sns --skip-aws` | 2 |
 | EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
 | CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 7 |
 | CloudWatch Metrics | `simulith verify cloudwatch-metrics --skip-aws` | 3 |

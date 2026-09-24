@@ -14,7 +14,7 @@ Last updated: 2026-09-24..
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
 | Operations **available** locally | 230 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -297,20 +297,20 @@ Guide: [ses.md](ses.md) · Verify: `simulith verify ses`
 
 ## SNS (Simple Notification Service)
 
-Guide: [sns.md](sns.md) · Verify: not yet
+Guide: [sns.md](sns.md) · Verify: `simulith verify sns`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateTopic | available | no |  scaffold; productized  |
-| DeleteTopic | available | no | Removes topic, subscriptions, and stored messages |
-| ListTopics | available | no | |
-| GetTopicAttributes | available | no | TopicArn, Owner |
-| Publish | available | no | Local message log + fan-out to subscriptions |
-| Subscribe | available | no | Protocols `lambda`, `sqs` |
-| Unsubscribe | available | no | |
-| ListSubscriptionsByTopic | available | no | |
+| CreateTopic | available | yes (`topic-publish-lifecycle`) |  scaffold; productized  |
+| DeleteTopic | available | yes (`topic-publish-lifecycle`) | Removes topic, subscriptions, and stored messages |
+| ListTopics | available | yes (`topic-publish-lifecycle`) | |
+| GetTopicAttributes | available | yes (`topic-publish-lifecycle`) | TopicArn, Owner |
+| Publish | available | yes (`topic-publish-lifecycle`, `subscribe-sqs-fanout`) | Local message log + fan-out to subscriptions |
+| Subscribe | available | yes (`subscribe-sqs-fanout`) | Protocols `lambda`, `sqs` |
+| Unsubscribe | available | yes (`subscribe-sqs-fanout`) | |
+| ListSubscriptionsByTopic | available | yes (`subscribe-sqs-fanout`) | |
 
-**Not in matrix (gap):** S3 bucket notifications to SNS; `simulith verify sns`.
+**Not in matrix (gap):** S3 bucket notifications to SNS.
 
 ---
 
@@ -494,6 +494,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
+| SNS | `topic-publish-lifecycle`, `subscribe-sqs-fanout` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke`, `custom-bus-lifecycle` | — |
 | CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`, `logs-insights-depth`, `logs-insights-parse` | — |
 | CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics`, `get-metric-data` | — |
@@ -518,6 +519,7 @@ simulith verify apigateway --skip-aws
 simulith verify secretsmanager --skip-aws
 simulith verify cognito --skip-aws
 simulith verify ses --skip-aws
+simulith verify sns --skip-aws
 simulith verify eventbridge --skip-aws
 simulith verify cloudwatch --skip-aws
 simulith verify cloudwatch-metrics --skip-aws

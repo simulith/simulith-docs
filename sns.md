@@ -29,7 +29,7 @@
 
 - **Fan-out:** `Publish` invokes Lambda asynchronously (SNS event shape) and enqueues SQS notification JSON; no email/SMS/mobile
 - S3 bucket notifications to SNS not supported yet
-- No `simulith verify sns` yet
+- **`simulith verify sns`** — 2 scenarios (topic lifecycle + SQS fan-out smoke)
 - Topics must exist before `Publish` (including alarm dispatch)
 
 ## Seed
@@ -55,6 +55,14 @@ aws sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic \
 ## Persistence
 
 Topics, subscriptions, and published messages are stored in SQLite (`sns_topics`, `sns_subscriptions`, `sns_messages`). Cleared on `simulith reset`.
+
+## Verify
+
+```bash
+simulith verify sns --skip-aws          # Simulith-only (2 scenarios)
+simulith verify sns                     # AWS parity on topic/publish subset
+simulith verify sns --filter topic      # prefix filter
+```
 
 ## Matrix
 
