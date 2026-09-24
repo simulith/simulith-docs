@@ -55,7 +55,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 - No Hosted UI / OAuth authorize / token endpoints yet
 - Pool MFA config is metadata only; no TOTP challenge (AssociateSoftwareToken / VerifySoftwareToken)
 - No Identity Pools
-- SignUp / reset confirmation codes are stored **in-memory** on the runtime process (not emailed); use `ConfirmSignUp` / `ConfirmForgotPassword` in the same session or `AdminConfirmSignUp` to bypass in tests
+- SignUp / reset confirmation codes are stored **in-memory** on the runtime process (same session / restart clears codes). When the user has an **email** attribute (or the username is an email), Simulith also captures a dev message in the **SES outbox** with the plain code — open Console **SES → Outbox** or `GET /_simulith/v1/ses/outbox`. No real SMTP.
 - Domain is metadata only (no real CloudFront)
 - `UpdateUserPool` merges JSON config; not full AWS parity
 

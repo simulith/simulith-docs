@@ -36,7 +36,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 ## Console
 
-Panel **SES** (`/ses`) — list identities (verification status), templates, and captured outbox messages. Outbox via admin peek `GET /_simulith/v1/ses/outbox`.
+Panel **SES** (`/ses`) — list identities (verification status), templates, and captured outbox messages. Outbox via admin peek `GET /_simulith/v1/ses/outbox`. **Cognito** `SignUp` / `ForgotPassword` verification codes appear here when the user has an email.
 
 Inspect-only create/delete (CLI / Terraform for identities and templates).
 
