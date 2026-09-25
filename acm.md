@@ -67,8 +67,8 @@ Panel **`/acm`**: list certificates, request DNS-validated cert, describe metada
 ## Verify
 
 ```bash
-simulith verify acm --skip-aws          # Simulith-only smoke (2 scenarios)
-simulith verify acm                     # AWS parity (RequestCertificate, DescribeCertificate)
+simulith verify acm --skip-aws          # Simulith-only smoke (3 scenarios)
+simulith verify acm                     # AWS parity (request, describe, tags + delete)
 simulith verify acm --filter certificate  # subset by scenario name prefix
 ```
 

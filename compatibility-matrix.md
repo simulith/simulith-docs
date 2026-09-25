@@ -6,7 +6,7 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-24..
+Last updated: 2026-09-25..
 
 ## Summary
 
@@ -14,7 +14,7 @@ Last updated: 2026-09-24..
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
 | Operations **available** locally | 232 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 3, KMS 2, Route 53 2, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -38,6 +38,8 @@ Each service guide names operations that are **out of scope** locally. This matr
 | **yes** (`scenario`) | Default `simulith verify <service>` (no filter) |
 | **extended** (`scenario`) | DynamoDB only: `simulith verify dynamodb --filter <name>` |
 | **no** | Not in verify subset |
+
+On rows marked **available** these three values are the only ones allowed: `runtime/scripts/check-verify-depth.py` derives the verify depth per service from this column and fails CI on anything else.
 
 ---
 
@@ -128,14 +130,14 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (8 scenarios)
 | GetObject | available | yes (`put-get-object`, `object-round-trip`) | Body + Content-Type, Content-Length, ETag |
 | HeadObject | available | yes (`head-object`) | Existence check; Content-Length |
 | DeleteObject | available | yes (`delete-object`) | Idempotent (204); `versionId` matches current object |
-| CopyObject | available | — | Same/cross-bucket via `x-amz-copy-source` |
-| DeleteObjects | available | — | Batch up to 1000 keys (`POST ?delete`); honors VersionId |
-| CreateMultipartUpload | available | — | POST `?uploads` |
-| UploadPart | available | — | `partNumber` 1–10000 |
-| CompleteMultipartUpload | available | — | Assembles parts; multipart ETag |
-| AbortMultipartUpload | available | — | Cleans in-progress upload |
-| GetBucketNotificationConfiguration | available | — | GET `?notification` |
-| PutBucketNotificationConfiguration | available | — | Lambda + **TopicConfiguration** |
+| CopyObject | available | no | Same/cross-bucket via `x-amz-copy-source` |
+| DeleteObjects | available | no | Batch up to 1000 keys (`POST ?delete`); honors VersionId |
+| CreateMultipartUpload | available | no | POST `?uploads` |
+| UploadPart | available | no | `partNumber` 1–10000 |
+| CompleteMultipartUpload | available | no | Assembles parts; multipart ETag |
+| AbortMultipartUpload | available | no | Cleans in-progress upload |
+| GetBucketNotificationConfiguration | available | no | GET `?notification` |
+| PutBucketNotificationConfiguration | available | no | Lambda + **TopicConfiguration** |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
 | ListObjectVersions | available | yes (`list-object-versions`) | Current objects; last-write-wins (no noncurrent history) |
 | PutBucketVersioning / GetBucketVersioning | available | yes (`bucket-state-config`) | Status; Enabled assigns current-object version IDs |
@@ -159,7 +161,7 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
 | DeleteFunction | available | yes (`function-crud-lifecycle`) | 204; removes metadata + zip from disk |
 | InvokeFunction | available | yes (`invoke-sync-payload`) | Sync subprocess; skips if `node` not on PATH; `java*` uses host `java`; `provided*` runs zip `bootstrap` |
 | UpdateFunctionCode | available | yes (`update-function-code`) | Replaces zip on disk; updates CodeSize / CodeSha256 |
-| UpdateFunctionConfiguration | available | — | Partial JSON patch: Environment, Timeout, MemorySize, Handler, Runtime, Role, Description, Layers, **VpcConfig** |
+| UpdateFunctionConfiguration | available | no | Partial JSON patch: Environment, Timeout, MemorySize, Handler, Runtime, Role, Description, Layers, **VpcConfig** |
 | CreateEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | SQS ARNs only; BatchSize capped at 10 |
 | ListEventSourceMappings | available | yes (`esm-sqs-lifecycle`) | Filter by FunctionName |
 | GetEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | UUID path |
@@ -170,10 +172,10 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
 | Function URL HTTP invoke | available | yes (`function-url-invoke`) | Same path; raw JSON event |
 | InvokeFunction (Event) | available | yes (`invoke-async-event`) | HTTP 202 + background run |
 | PublishLayerVersion | available | yes (`layer-invoke`) | `/2018-10-31/layers/{name}/versions` |
-| ListLayers | available | — | All layer names |
-| ListLayerVersions | available | — | Per layer name |
-| GetLayerVersion | available | — | By version number |
-| DeleteLayerVersion | available | — | Removes metadata + zip |
+| ListLayers | available | no | All layer names |
+| ListLayerVersions | available | no | Per layer name |
+| GetLayerVersion | available | no | By version number |
+| DeleteLayerVersion | available | no | Removes metadata + zip |
 | CreateFunction (`Layers`) | available | yes (`layer-invoke`) | Layer ARNs on configuration |
 
 **Not in matrix (gap):** aliases, versions.
@@ -196,10 +198,10 @@ Guide: [apigateway.md](apigateway.md) · Verify: `simulith verify apigateway`
 | CreateDeployment | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/deployments` |
 | CreateStage | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/stages` |
 | Stage HTTP invoke | available | yes (`stage-http-invoke`) | `…/{stage}/_user_request_/…` → Lambda proxy (no SigV4) |
-| GetResources / GetResource / GetMethod / GetIntegration | available | — | Terraform refresh; GetResources wire key `item` |
-| GetDeployment / GetStage | available | — | Terraform read after create |
-| DeleteStage / DeleteDeployment / DeleteResource / DeleteMethod / DeleteIntegration | available | — | Terraform destroy |
-| Lambda AddPermission / RemovePermission / GetPolicy | available | — | `POST/DELETE/GET …/functions/{name}/policy` |
+| GetResources / GetResource / GetMethod / GetIntegration | available | no | Terraform refresh; GetResources wire key `item` |
+| GetDeployment / GetStage | available | no | Terraform read after create |
+| DeleteStage / DeleteDeployment / DeleteResource / DeleteMethod / DeleteIntegration | available | no | Terraform destroy |
+| Lambda AddPermission / RemovePermission / GetPolicy | available | no | `POST/DELETE/GET …/functions/{name}/policy` |
 
 **Terraform:** [`examples/terraform/apigateway/`](examples/terraform/apigateway/) — green apply + HTTP invoke + destroy.
 
@@ -217,8 +219,8 @@ Guide: [secretsmanager.md](secretsmanager.md) · Verify: `simulith verify secret
 | GetSecretValue | available | yes (`secret-crud-lifecycle`, `get-secret-value`) | By name or ARN; includes `VersionStages` for Terraform |
 | ListSecrets | available | yes (`secret-crud-lifecycle`) | Full list (no pagination) |
 | DeleteSecret | available | yes (`secret-crud-lifecycle`) | Immediate delete with `ForceDeleteWithoutRecovery` |
-| TagResource | available | no | Terraform `aws_secretsmanager_secret` tags |
-| UntagResource | available | no | Tag drift on destroy/update |
+| TagResource | available | yes (`secret-tags`) | Terraform `aws_secretsmanager_secret` tags |
+| UntagResource | available | yes (`secret-tags`) | Tag drift on destroy/update; `ListSecrets` returns `Tags` like AWS |
 
 ---
 
@@ -230,19 +232,19 @@ Guide: [kms.md](kms.md) · Verify: `simulith verify kms`
 | --- | --- | --- | --- |
 | CreateKey | available | yes (`cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip`) |  — symmetric CMK |
 | DescribeKey | available | yes (`cmk-alias-lifecycle`) | Key ID, ARN, or alias |
-| GetKeyPolicy | available | — | Default policy stub
-| GetKeyRotationStatus | available | — | Stored flag (default false)
-| EnableKeyRotation / DisableKeyRotation | available | — | Rotation metadata only
+| GetKeyPolicy | available | no | Default policy stub
+| GetKeyRotationStatus | available | no | Stored flag (default false)
+| EnableKeyRotation / DisableKeyRotation | available | no | Rotation metadata only
 | CreateAlias | available | yes (`cmk-alias-lifecycle`) | `alias/...` |
 | UpdateAlias | available | yes (handler test) | Terraform alias target drift
 | ListAliases | available | yes (`cmk-alias-lifecycle`) | Optional `KeyId` filter |
 | Encrypt | available | yes (`encrypt-decrypt-roundtrip`) | Mock envelope ciphertext |
 | Decrypt | available | yes (`encrypt-decrypt-roundtrip`) | Round-trip with Encrypt |
-| DeleteAlias | available | — |  — Terraform destroy |
-| ScheduleKeyDeletion | available | — |  — Terraform destroy |
-| ListResourceTags | available | — | CMK tags for Terraform read-after-create |
-| TagResource | available | — | Terraform `aws_kms_key` tags |
-| UntagResource | available | — | Tag drift on destroy/update |
+| DeleteAlias | available | no |  — Terraform destroy |
+| ScheduleKeyDeletion | available | no |  — Terraform destroy |
+| ListResourceTags | available | no | CMK tags for Terraform read-after-create |
+| TagResource | available | no | Terraform `aws_kms_key` tags |
+| UntagResource | available | no | Tag drift on destroy/update |
 
 ---
 
@@ -408,7 +410,7 @@ Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
 | CreateRole / GetRole / UpdateRole / DeleteRole | available | yes |  /  · UpdateRole MaxSessionDuration · ListInstanceProfilesForRole empty stub · DeleteRole conflicts on inline policies |
 | CreatePolicy / GetPolicy / DeletePolicy | available | yes | Managed policy subset · GetPolicyVersion / ListPolicyVersions stub |
 | AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | yes | RDS Proxy role attach |
-| PutRolePolicy / GetRolePolicy / DeleteRolePolicy | available | no | Inline role policies · ListRolePolicies returns stored names |
+| PutRolePolicy / GetRolePolicy / DeleteRolePolicy | available | yes (`role-inline-policy`) | Inline role policies · ListRolePolicies returns stored names |
 
 ---
 
@@ -420,11 +422,11 @@ Guide: [route53.md](route53.md) · Verify: `simulith verify route53`
 | --- | --- | --- | --- |
 | CreateHostedZone | available | yes (`hosted-zone-record-lifecycle`, `cname-record-upsert`) | Idempotent on `CallerReference` |
 | ListHostedZones | available | yes (`hosted-zone-record-lifecycle`) | Full list |
-| GetHostedZone | available | — | Zone + delegation stub |
+| GetHostedZone | available | no | Zone + delegation stub |
 | ChangeResourceRecordSets | available | yes (`hosted-zone-record-lifecycle`, `cname-record-upsert`) | A/CNAME CREATE/UPSERT/DELETE |
-| ListResourceRecordSets | available | — | Start name/type filter |
-| DeleteHostedZone | available | — | Empty zones only |
-| GetChange | available | — | `INSYNC` stub |
+| ListResourceRecordSets | available | no | Start name/type filter |
+| DeleteHostedZone | available | no | Empty zones only |
+| GetChange | available | no | `INSYNC` stub |
 
 ---
 
@@ -437,8 +439,8 @@ Guide: [acm.md](acm.md) · Verify: `simulith verify acm`
 | RequestCertificate | available | yes (`certificate-request-describe-list`, `certificate-client-token-idempotency`) | DNS validation only; ClientToken idempotency |
 | DescribeCertificate | available | yes (`certificate-request-describe-list`) | Local validation stub → ISSUED |
 | ListCertificates | available | yes (`certificate-request-describe-list`) | Optional status filter |
-| DeleteCertificate | available | — | Terraform destroy |
-| ListTagsForCertificate | available | — | Empty tag list stub |
+| DeleteCertificate | available | yes (`certificate-tags-delete`) | Terraform destroy |
+| ListTagsForCertificate | available | yes (`certificate-tags-delete`) | Empty tag list stub |
 
 ---
 
@@ -453,13 +455,13 @@ Guide: [cloudfront.md](cloudfront.md) · Verify: `simulith verify cloudfront`
 | CreateDistribution | available | yes (`distribution-oac-lifecycle`) | S3 origin + OAC ref; Deployed immediately |
 | GetDistribution | available | yes (`distribution-oac-lifecycle`) | ETag header + config |
 | ListDistributions | available | yes (`distribution-oac-lifecycle`) | Summary list for Terraform refresh |
-| GetDistributionConfig | available | — | Config-only read |
-| UpdateDistribution | available | — | Disable-on-destroy; ETag / If-Match |
-| DeleteDistribution | available | — | Terraform destroy |
-| DeleteOriginAccessControl | available | — | Terraform destroy |
-| ListCachePolicies | available | — | AWS managed catalog |
-| GetCachePolicy | available | — | AWS managed catalog |
-| TagResource | available | — | Distribution tags |
+| GetDistributionConfig | available | no | Config-only read |
+| UpdateDistribution | available | no | Disable-on-destroy; ETag / If-Match |
+| DeleteDistribution | available | no | Terraform destroy |
+| DeleteOriginAccessControl | available | no | Terraform destroy |
+| ListCachePolicies | available | no | AWS managed catalog |
+| GetCachePolicy | available | no | AWS managed catalog |
+| TagResource | available | no | Distribution tags |
 
 ---
 
@@ -473,9 +475,9 @@ Guide: [cloudformation.md](cloudformation.md) · Verify: `simulith verify cloudf
 | UpdateStack | available | yes (`stack-lifecycle`) | Replace-all recreate |
 | DeleteStack | available | yes (`stack-lifecycle`) | Deletes provisioned resources + stack |
 | DescribeStacks | available | yes (`stack-lifecycle`) | Optional name filter |
-| DescribeStackEvents | available | — | Newest first |
-| DescribeStackResources | available | — | Logical/physical IDs |
-| ListStackResources | available | — | Serverless CLI |
+| DescribeStackEvents | available | no | Newest first |
+| DescribeStackResources | available | no | Logical/physical IDs |
+| ListStackResources | available | no | Serverless CLI |
 
 Supported CFN resource types: Lambda, IAM, API Gateway, EventBridge, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`** — see [cloudformation.md](cloudformation.md). Serverless hello green path shipped; use [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin.
 

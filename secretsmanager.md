@@ -71,7 +71,7 @@ aws secretsmanager delete-secret \
 ## Verify
 
 ```bash
-simulith verify secretsmanager --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify secretsmanager --skip-aws          # Simulith-only smoke (3 scenarios)
 simulith verify secretsmanager                     # AWS parity (requires AWS credentials)
 simulith verify secretsmanager --filter secret-crud  # subset by scenario name prefix
 ```

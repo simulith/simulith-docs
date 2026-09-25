@@ -324,7 +324,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | S3 | `simulith verify s3 --skip-aws` | 6 |
 | Lambda | `simulith verify lambda --skip-aws` | 9 |
 | API Gateway | `simulith verify apigateway --skip-aws` | 4 |
-| Secrets Manager | `simulith verify secretsmanager --skip-aws` | 2 |
+| Secrets Manager | `simulith verify secretsmanager --skip-aws` | 3 |
 | Cognito | `simulith verify cognito --skip-aws` | 2 |
 | SES | `simulith verify ses --skip-aws` | 2 |
 | SNS | `simulith verify sns --skip-aws` | 2 |
@@ -335,10 +335,10 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | CloudWatch Dashboards | `simulith verify cloudwatch-dashboards --skip-aws` | 3 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
 | VPC | `simulith verify vpc --skip-aws` | 4 |
-| IAM | `simulith verify iam --skip-aws` | 2 |
+| IAM | `simulith verify iam --skip-aws` | 3 |
 | KMS | `simulith verify kms --skip-aws` | 2 |
 | Route 53 | `simulith verify route53 --skip-aws` | 2 |
-| ACM | `simulith verify acm --skip-aws` | 2 |
+| ACM | `simulith verify acm --skip-aws` | 3 |
 | CloudFront | `simulith verify cloudfront --skip-aws` | 2 |
 | CloudFormation | `simulith verify cloudformation --skip-aws` | 2 |
 
