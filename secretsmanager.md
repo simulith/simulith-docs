@@ -42,7 +42,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 - Optional `KmsKeyId` on CreateSecret when KMS CMK exists; no binary secrets or rotation
 - No recovery window — `ForceDeleteWithoutRecovery` deletes immediately
-- `ListSecrets` pagination stub (returns full list)
+- `ListSecrets` pagination stub (returns full list, no `NextToken`); tags are visible immediately, while real AWS takes a moment to reflect `TagResource` / `UntagResource` there
 - Distinct from SSM SecureString — use this API for Terraform `aws_secretsmanager_secret`
 
 ## Example (AWS CLI)

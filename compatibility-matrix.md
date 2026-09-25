@@ -495,7 +495,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
-| Secrets Manager | `secret-crud-lifecycle`, `get-secret-value` | — |
+| Secrets Manager | `secret-crud-lifecycle`, `get-secret-value`, `secret-tags` | — |
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | SNS | `topic-publish-lifecycle`, `subscribe-sqs-fanout` | — |
@@ -505,10 +505,10 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
-| IAM | `rds-proxy-role-lifecycle`, `managed-policy-get` | — |
+| IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |
-| ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency` | — |
+| ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency`, `certificate-tags-delete` | — |
 | CloudFront | `oac-create-get`, `distribution-oac-lifecycle` | — |
 | CloudFormation | `stack-lifecycle`, `validate-template` | — |
 
