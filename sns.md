@@ -34,6 +34,10 @@
 - **`simulith verify sns`** — 2 scenarios (topic lifecycle + SQS fan-out smoke)
 - Topics must exist before `Publish` (including alarm dispatch)
 
+## Console
+
+Panel **SNS** (`/sns`) — list topics, subscriptions (read-only), and recent publishes from `GET /_simulith/v1/sns/messages`.
+
 ## Seed
 
 Default `simulith seed` includes topic **`demo-alarm`** (`arn:aws:sns:us-east-1:000000000000:demo-alarm`).

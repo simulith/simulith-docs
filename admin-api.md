@@ -206,6 +206,31 @@ Empty outbox: `"messages": []`.
 
 ---
 
+### `GET /_simulith/v1/sns/messages`
+
+**Peek** published SNS messages from the local delivery log (non-destructive). Optional query `limit` (default 50, max 200) and `topicArn` (filter to one topic). Newest first.
+
+**Response 200:**
+
+```json
+{
+  "status": "ok",
+  "messages": [
+    {
+      "topicArn": "arn:aws:sns:us-east-1:000000000000:demo-alarm",
+      "messageId": "msg-…",
+      "subject": "ALARM",
+      "body": "{\"AlarmName\":\"demo\"}",
+      "publishedAt": "2026-08-01T12:01:00Z"
+    }
+  ]
+}
+```
+
+No messages: `"messages": []`.
+
+---
+
 ## Examples (curl)
 
 Runtime on `:4566`:

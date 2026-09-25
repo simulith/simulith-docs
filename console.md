@@ -112,6 +112,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | `GET` | `/_simulith/v1/sqs/messages?queueName=` | Peek messages (non-destructive) |
 | `GET` | `/_simulith/v1/eventbridge/rules` | Peek schedule rules + lastInvokedAt |
 | `GET` | `/_simulith/v1/ses/outbox` | Peek captured SES messages |
+| `GET` | `/_simulith/v1/sns/messages?topicArn=` | Peek SNS publish log (optional topic filter) |
 | `GET` | `/_simulith/v1/cloudwatch/events?logGroupName=&logStreamName=` | Peek recent log events (admin fallback — Console uses **GetLogEvents** API) |
 
 **Security:** local development only — no authentication in the Console. Do not expose admin routes on untrusted networks without a gateway.
@@ -137,6 +138,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
 | **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
+| **SNS** | ListTopics, ListSubscriptionsByTopic; recent publishes via admin peek | Read-only; create/subscribe/publish via CLI/Terraform; seeded `demo-alarm` via **Seed** |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
 | **RDS** | **DB instances:** DescribeDBInstances (status, engine, sidecar endpoint). **DB Proxies:** DescribeDBProxies, targets, connection pool | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
 | **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy document; create RDS Proxy role bundle | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
