@@ -475,9 +475,9 @@ Guide: [cloudformation.md](cloudformation.md) · Verify: `simulith verify cloudf
 | UpdateStack | available | yes (`stack-lifecycle`) | Replace-all recreate |
 | DeleteStack | available | yes (`stack-lifecycle`) | Deletes provisioned resources + stack |
 | DescribeStacks | available | yes (`stack-lifecycle`) | Optional name filter |
-| DescribeStackEvents | available | no | Newest first |
-| DescribeStackResources | available | no | Logical/physical IDs |
-| ListStackResources | available | no | Serverless CLI |
+| DescribeStackEvents | available | yes (`stack-lifecycle`) | Newest first; inspection after create |
+| DescribeStackResources | available | yes (`stack-lifecycle`) | Logical/physical IDs; inspection after create |
+| ListStackResources | available | yes (`stack-lifecycle`) | Serverless CLI; inspection after create |
 
 Supported CFN resource types: Lambda, IAM, API Gateway, EventBridge, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`** — see [cloudformation.md](cloudformation.md). Serverless hello green path shipped; use [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin.
 
