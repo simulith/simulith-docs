@@ -13,7 +13,7 @@ Last updated: 2026-09-24..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 230 |
+| Operations **available** locally | 232 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 2, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 2, KMS 2, Route 53 2, ACM 2, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -135,7 +135,7 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (8 scenarios)
 | CompleteMultipartUpload | available | — | Assembles parts; multipart ETag |
 | AbortMultipartUpload | available | — | Cleans in-progress upload |
 | GetBucketNotificationConfiguration | available | — | GET `?notification` |
-| PutBucketNotificationConfiguration | available | — | LambdaFunctionConfiguration only |
+| PutBucketNotificationConfiguration | available | — | Lambda + **TopicConfiguration** |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
 | ListObjectVersions | available | yes (`list-object-versions`) | Current objects; last-write-wins (no noncurrent history) |
 | PutBucketVersioning / GetBucketVersioning | available | yes (`bucket-state-config`) | Status; Enabled assigns current-object version IDs |
@@ -305,7 +305,9 @@ Guide: [sns.md](sns.md) · Verify: `simulith verify sns`
 | DeleteTopic | available | yes (`topic-publish-lifecycle`) | Removes topic, subscriptions, and stored messages |
 | ListTopics | available | yes (`topic-publish-lifecycle`) | |
 | GetTopicAttributes | available | yes (`topic-publish-lifecycle`) | TopicArn, Owner |
+| SetTopicAttributes | available | no | No-op accept for Terraform |
 | Publish | available | yes (`topic-publish-lifecycle`, `subscribe-sqs-fanout`) | Local message log + fan-out to subscriptions |
+| GetSubscriptionAttributes | available | no | PendingConfirmation false for sqs/lambda |
 | Subscribe | available | yes (`subscribe-sqs-fanout`) | Protocols `lambda`, `sqs` |
 | Unsubscribe | available | yes (`subscribe-sqs-fanout`) | |
 | ListSubscriptionsByTopic | available | yes (`subscribe-sqs-fanout`) | |

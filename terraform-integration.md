@@ -1,6 +1,6 @@
 # Terraform integration — Simulith runtime
 
-Use the **`hashicorp/aws` provider** to provision **DynamoDB**, **SQS**, **SSM Parameter Store**, **S3**, and **Lambda** resources against Simulith locally.
+Use the **`hashicorp/aws` provider** to provision **DynamoDB**, **SQS**, **SNS**, **SSM Parameter Store**, **S3**, and **Lambda** resources against Simulith locally.
 
 > **New to Simulith?** Complete the [Quickstart](quickstart.md) first (run server on port **4566**).
 
@@ -18,6 +18,7 @@ This guide is the **canonical IaC reference**. Examples live under [`examples/te
 | Secrets Manager | [`secretsmanager/`](examples/terraform/secretsmanager/) · [`secrets/`](examples/terraform/secrets/) | Yes — secret + version; production secrets/ root twin |
 | Cognito | [`cognito/`](examples/terraform/cognito/) | Yes — user pool + client + group + OPTIONAL software-token MFA |
 | SES | [`ses/`](examples/terraform/ses/) | Yes — email identity + template |
+| SNS | [`sns/`](examples/terraform/sns/) | Yes — topic + SQS subscription |
 | EventBridge | [`eventbridge/`](examples/terraform/eventbridge/) | Yes — rate rule + Lambda target |
 | CloudWatch Logs | [`cloudwatch/`](examples/terraform/cloudwatch/) | Yes — log group apply + destroy |
 | CloudWatch Metrics | [`cloudwatch-metrics/`](examples/terraform/cloudwatch-metrics/) | Yes — custom metric apply + destroy |
@@ -321,6 +322,7 @@ See [s3.md](s3.md) for API coverage and [examples/terraform/s3/README.md](exampl
 | [`secrets/`](examples/terraform/secrets/) | Green | Green | KMS + SM secret + SM VPC endpoint; outputs `secret_name` / `secrets_manager_sg` |
 | [`cognito/`](examples/terraform/cognito/) | Green | Green | User pool + client + group; Set/Get UserPoolMfaConfig; JWKS at `/{poolId}/.well-known/jwks.json` |
 | [`ses/`](examples/terraform/ses/) | Green | Green | Identity + OTP template; outputs `from_email` / `otp_template_name` |
+| [`sns/`](examples/terraform/sns/) | Green | Green | CreateTopic, SetTopicAttributes, GetTopicAttributes, Subscribe, GetSubscriptionAttributes, Unsubscribe, DeleteTopic; SQS CreateQueue + DeleteQueue |
 | [`eventbridge/`](examples/terraform/eventbridge/) | Green | Green | PutRule rate + PutTargets Lambda; schedule poller InvokeSync |
 | [`vpc/network-min/`](examples/terraform/vpc/network-min/) | Green | Green | VPC, IGW, route tables, gateway endpoints, subnet, SG — `-parallelism=1` |
 | [`multi-root-green-path/`](examples/terraform/multi-root-green-path/) | Green | Green | Production chain: bootstrap → **01-vpc** → **02-subnets** → **03-secrets** → **04-postgresdb** → **05-proxydb** → **06-ses** → **07-cognito** → **08-parameters** → **09-dynamodb** → **10-web** via S3 remote state — `-parallelism=1` |

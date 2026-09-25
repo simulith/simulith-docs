@@ -18,6 +18,8 @@
 | `Publish` | Local delivery log + fan-out to subscriptions |
 | `ListTopics` | List topic ARNs |
 | `GetTopicAttributes` | Basic attributes |
+| `SetTopicAttributes` | Accept provider tuning attrs (Terraform) |
+| `GetSubscriptionAttributes` | SQS/Lambda subscriptions confirmed |
 | `DeleteTopic` | Remove topic, subscriptions, and messages |
 
 ## Primary use cases
@@ -28,7 +30,7 @@
 ## Limits
 
 - **Fan-out:** `Publish` invokes Lambda asynchronously (SNS event shape) and enqueues SQS notification JSON; no email/SMS/mobile
-- S3 bucket notifications to SNS not supported yet
+- S3 → SNS: `TopicConfiguration` on bucket notifications; example [`examples/aws-cli/s3-sns/`](examples/aws-cli/s3-sns/)
 - **`simulith verify sns`** — 2 scenarios (topic lifecycle + SQS fan-out smoke)
 - Topics must exist before `Publish` (including alarm dispatch)
 
@@ -50,6 +52,16 @@ aws sns list-topics --endpoint-url "$EP"
 # Subscribe Lambda or SQS, then publish (fan-out)
 aws sns subscribe --topic-arn arn:aws:sns:us-east-1:000000000000:my-topic \
   --protocol sqs --notification-endpoint arn:aws:sqs:us-east-1:000000000000:my-queue --endpoint-url "$EP"
+```
+
+## Terraform
+
+Green-path module: [`examples/terraform/sns/`](examples/terraform/sns/) — `aws_sns_topic` + `aws_sqs_queue` + `aws_sns_topic_subscription` (protocol **sqs**). Provider `endpoints { sns = … sqs = … }` on `:4566`. See [terraform-integration.md](terraform-integration.md).
+
+```bash
+cd runtime/examples/terraform/sns
+cp terraform.tfvars.example terraform.tfvars
+terraform init && terraform apply -var-file=terraform.tfvars -auto-approve
 ```
 
 ## Persistence
