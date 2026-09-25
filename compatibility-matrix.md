@@ -14,7 +14,7 @@ Last updated: 2026-09-25..
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
 | Operations **available** locally | 232 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 3, KMS 2, Route 53 2, ACM 3, CloudFront 2 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 3, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -420,13 +420,13 @@ Guide: [route53.md](route53.md) · Verify: `simulith verify route53`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateHostedZone | available | yes (`hosted-zone-record-lifecycle`, `cname-record-upsert`) | Idempotent on `CallerReference` |
+| CreateHostedZone | available | yes (`hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone`) | Idempotent on `CallerReference` |
 | ListHostedZones | available | yes (`hosted-zone-record-lifecycle`) | Full list |
-| GetHostedZone | available | no | Zone + delegation stub |
+| GetHostedZone | available | yes (`hosted-zone-record-lifecycle`, `delete-empty-hosted-zone`) | Zone + delegation stub |
 | ChangeResourceRecordSets | available | yes (`hosted-zone-record-lifecycle`, `cname-record-upsert`) | A/CNAME CREATE/UPSERT/DELETE |
-| ListResourceRecordSets | available | no | Start name/type filter |
-| DeleteHostedZone | available | no | Empty zones only |
-| GetChange | available | no | `INSYNC` stub |
+| ListResourceRecordSets | available | yes (`hosted-zone-record-lifecycle`) | Start name/type filter |
+| DeleteHostedZone | available | yes (`delete-empty-hosted-zone`, `hosted-zone-record-lifecycle`) | Empty zones only |
+| GetChange | available | yes (`hosted-zone-record-lifecycle`) | `INSYNC` stub |
 
 ---
 
@@ -508,7 +508,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
-| Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert` | — |
+| Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency`, `certificate-tags-delete` | — |
 | CloudFront | `oac-create-get`, `distribution-oac-lifecycle` | — |
 | CloudFormation | `stack-lifecycle`, `validate-template` | — |

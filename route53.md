@@ -68,7 +68,7 @@ Panel **`/route53`**: list zones, create zone, UPSERT A record. See [console.md]
 ## Verify
 
 ```bash
-simulith verify route53 --skip-aws          # Simulith-only smoke (2 scenarios)
+simulith verify route53 --skip-aws          # Simulith-only smoke (3 scenarios)
 simulith verify route53                     # AWS parity (CreateHostedZone, ListHostedZones, ChangeResourceRecordSets)
 simulith verify route53 --filter hosted-zone  # subset by scenario name prefix
 ```
