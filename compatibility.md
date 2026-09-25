@@ -321,20 +321,20 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | DynamoDB | `simulith verify dynamodb --skip-aws` | 6 |
 | SQS | `simulith verify sqs --skip-aws` | 10 |
 | SSM | `simulith verify ssm --skip-aws` | 10 |
-| S3 | `simulith verify s3 --skip-aws` | 6 |
+| S3 | `simulith verify s3 --skip-aws` | 8 |
 | Lambda | `simulith verify lambda --skip-aws` | 9 |
 | API Gateway | `simulith verify apigateway --skip-aws` | 4 |
 | Secrets Manager | `simulith verify secretsmanager --skip-aws` | 3 |
 | Cognito | `simulith verify cognito --skip-aws` | 2 |
 | SES | `simulith verify ses --skip-aws` | 2 |
 | SNS | `simulith verify sns --skip-aws` | 2 |
-| EventBridge | `simulith verify eventbridge --skip-aws` | 2 |
-| CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 7 |
+| EventBridge | `simulith verify eventbridge --skip-aws` | 3 |
+| CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 9 |
 | CloudWatch Metrics | `simulith verify cloudwatch-metrics --skip-aws` | 3 |
 | CloudWatch Alarms | `simulith verify cloudwatch-alarms --skip-aws` | 4 |
 | CloudWatch Dashboards | `simulith verify cloudwatch-dashboards --skip-aws` | 3 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
-| VPC | `simulith verify vpc --skip-aws` | 4 |
+| VPC | `simulith verify vpc --skip-aws` | 5 |
 | IAM | `simulith verify iam --skip-aws` | 3 |
 | KMS | `simulith verify kms --skip-aws` | 2 |
 | Route 53 | `simulith verify route53 --skip-aws` | 2 |

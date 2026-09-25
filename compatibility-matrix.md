@@ -489,10 +489,10 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 
 | Service | Default scenarios | Extended (DynamoDB only) |
 | --- | --- | --- |
-| DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item` |
+| DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item`, `transact-write-get-items`, `projection-expression`, `update-expression-add-delete`, `query-scan-1mb-pagination`, `parallel-scan` |
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
-| S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config` | — |
+| S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config`, `list-object-versions` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value`, `secret-tags` | — |
@@ -500,8 +500,9 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | SNS | `topic-publish-lifecycle`, `subscribe-sqs-fanout` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke`, `custom-bus-lifecycle` | — |
-| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`, `logs-insights-depth`, `logs-insights-parse` | — |
+| CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`, `logs-insights-depth`, `logs-insights-parse`, `logs-insights-bin`, `logs-insights-pipeline` | — |
 | CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics`, `get-metric-data` | — |
+| CloudWatch Alarms | `put-describe-alarms`, `delete-alarms`, `alarm-evaluation`, `alarm-eval-depth` | — |
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
