@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, CloudWatch (Logs + Metrics + Alarms + Dashboards + Insights), Cognito, SES, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md) · [serverless-integration.md](serverless-integration.md)).
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, SNS, SES, CloudWatch (Logs + Metrics + Alarms + Dashboards + Insights), Cognito, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md) · [serverless-integration.md](serverless-integration.md)).
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
