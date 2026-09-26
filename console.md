@@ -58,24 +58,23 @@ docker compose -f docker-compose.yml -f docker-compose.console.yml up --build
 
 Default Console host port is **9080** (not 8080) to avoid conflicts with other local services. Override: `SIMULITH_CONSOLE_PORT=8080 docker compose ...`.
 
-1. Open the Console dashboard — expect **Connected** when runtime is healthy.
+1. Open the **Dashboard** — runtime **Connected**, categorized **service grid**, and **Seed demo data** / **Reset local state** in the header.
 2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM, API Gateway `demo-api`, Secrets Manager `demo-secret`, EventBridge `demo-rule` → `demo-fn`, CloudWatch Logs `/aws/lambda/demo-fn`, Cognito `demo-pool`, SES `demo@simulith.local` + `demo-template`, RDS `demo-db`).
-3. Open **DynamoDB** — browse, create tables, put/edit/delete items (Simple strings or **JSON document** for Map/List).
+3. Open **DynamoDB** or **S3** — **split-view** layout (resource list + detail). DynamoDB: browse tables, put/edit/delete items (Simple strings or **JSON document** for Map/List). S3: buckets, objects, upload/download/copy.
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
-6. Open **S3** — list/create/delete buckets, list objects by prefix, upload/download/delete objects.
-7. Open **Lambda** — **Functions**: list, config (incl. attached layers), invoke, delete; **Triggers**: SQS event source mappings for the selected function; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
-8. Open **API Gateway** — REST APIs (resources, stage invoke) and **Custom domain names** (mappings, copy local invoke URL).
-9. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
-10. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
-11. Open **CloudWatch** → **Logs** — list log groups (`/aws/lambda/demo-fn` after Seed), streams, and recent events via **GetLogEvents**.
-12. Open **CloudWatch** → **Metrics** — browse custom metrics by namespace; view **GetMetricStatistics** for the last hour (publish via CLI/Terraform first if empty).
-13. Open **CloudWatch** → **Alarms** — list metric alarms via **DescribeAlarms** (create via CLI/Terraform first if empty).
-14. Open **CloudWatch** → **Dashboards** — list dashboards via **ListDashboards** and inspect **DashboardBody** JSON (create via CLI/Terraform first if empty).
-15. Open **CloudWatch** → **Insights** — run a Logs Insights query (**StartQuery** + **GetQueryResults**) against a log group.
-16. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
-17. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), and seeded outbox after **Seed**.
-18. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
+6. Open **Lambda** — **Functions**: list, config (incl. attached layers), invoke, delete; **Triggers**: SQS event source mappings for the selected function; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
+7. Open **API Gateway** — REST APIs (resources, stage invoke) and **Custom domain names** (mappings, copy local invoke URL).
+8. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
+9. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
+10. Open **CloudWatch** → **Logs** — list log groups (`/aws/lambda/demo-fn` after Seed), streams, and recent events via **GetLogEvents**.
+11. Open **CloudWatch** → **Metrics** — browse custom metrics by namespace; view **GetMetricStatistics** for the last hour (publish via CLI/Terraform first if empty).
+12. Open **CloudWatch** → **Alarms** — list metric alarms via **DescribeAlarms** (create via CLI/Terraform first if empty).
+13. Open **CloudWatch** → **Dashboards** — list dashboards via **ListDashboards** and inspect **DashboardBody** JSON (create via CLI/Terraform first if empty).
+14. Open **CloudWatch** → **Insights** — run a Logs Insights query (**StartQuery** + **GetQueryResults**) against a log group.
+15. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
+16. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), and seeded outbox after **Seed**.
+17. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
 19. Click **Reset local state** — clears all panels.
 
 Console README: [`../../console/README.md`](console.md).
@@ -95,6 +94,12 @@ Console nginx
 ```
 
 The Console uses **same-origin proxies** so the browser does not need CORS on the runtime. nginx rewrites `/runtime` → runtime root (same as Vite dev); **both** `/runtime` and `/runtime/health` must proxy — a `/runtime/`‑only rule breaks DynamoDB SDK POSTs.
+
+### Console UI (v3)
+
+- **Shell** — dark theme, categorized sidebar navigation, live runtime status on the dashboard.
+- **Dashboard** — service cards grouped by category; jump to any panel from the grid.
+- **Data panels** — DynamoDB and S3 use a **split-view** (list + detail) for faster browsing; other panels keep the v2 capability set until modernized incrementally.
 
 ### Runtime admin routes
 
@@ -119,14 +124,14 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 
 ---
 
-## Service panels (v2)
+## Service panels
 
 | Panel | Capabilities | Limits |
 | --- | --- | --- |
-| **DynamoDB** | ListTables, Scan, CreateTable (hash key String), DeleteTable, Put/Update/Delete item (Simple), **JSON document** put/edit (Map/List via GetItem → PutItem) | GSIs / expressions → CLI; visual attribute editor deferred |
+| **DynamoDB** | **Split-view** UI; ListTables, Scan, CreateTable (hash key String), DeleteTable, Put/Update/Delete item (Simple), **JSON document** put/edit (Map/List via GetItem → PutItem) | GSIs / expressions → CLI; visual attribute editor deferred |
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
-| **S3** | ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, CopyObject, DeleteObject | DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
+| **S3** | **Split-view** UI; ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, CopyObject, DeleteObject | DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
 | **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Triggers:** List/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload) | Create ESM UI deferred; Layers tolerate Simulith ISO date strings; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi; **GetDomainNames**, **GetDomainName**, **GetBasePathMappings**, **GetApiMappings** | Create/deploy UI deferred; custom domains via Serverless domain manager |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
