@@ -232,19 +232,19 @@ Guide: [kms.md](kms.md) · Verify: `simulith verify kms`
 | --- | --- | --- | --- |
 | CreateKey | available | yes (`cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip`) |  — symmetric CMK |
 | DescribeKey | available | yes (`cmk-alias-lifecycle`) | Key ID, ARN, or alias |
-| GetKeyPolicy | available | no | Default policy stub
-| GetKeyRotationStatus | available | no | Stored flag (default false)
-| EnableKeyRotation / DisableKeyRotation | available | no | Rotation metadata only
+| GetKeyPolicy | available | yes (`cmk-alias-lifecycle`) | Default policy stub
+| GetKeyRotationStatus | available | yes (`cmk-alias-lifecycle`) | Stored flag
+| EnableKeyRotation / DisableKeyRotation | available | yes (`cmk-alias-lifecycle`) | Rotation metadata
 | CreateAlias | available | yes (`cmk-alias-lifecycle`) | `alias/...` |
 | UpdateAlias | available | yes (handler test) | Terraform alias target drift
 | ListAliases | available | yes (`cmk-alias-lifecycle`) | Optional `KeyId` filter |
 | Encrypt | available | yes (`encrypt-decrypt-roundtrip`) | Mock envelope ciphertext |
 | Decrypt | available | yes (`encrypt-decrypt-roundtrip`) | Round-trip with Encrypt |
-| DeleteAlias | available | no |  — Terraform destroy |
-| ScheduleKeyDeletion | available | no |  — Terraform destroy |
-| ListResourceTags | available | no | CMK tags for Terraform read-after-create |
-| TagResource | available | no | Terraform `aws_kms_key` tags |
-| UntagResource | available | no | Tag drift on destroy/update |
+| DeleteAlias | available | yes (`cmk-alias-lifecycle`) | ; sim cleanup in verify  |
+| ScheduleKeyDeletion | available | yes (`cmk-alias-lifecycle`) | ; sim cleanup in verify  |
+| ListResourceTags | available | yes (`cmk-alias-lifecycle`) | ; verify  |
+| TagResource | available | yes (`cmk-alias-lifecycle`) | ; verify  |
+| UntagResource | available | yes (`cmk-alias-lifecycle`) | ; verify  |
 
 ---
 
