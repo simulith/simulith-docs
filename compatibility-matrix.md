@@ -391,13 +391,13 @@ Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
 | --- | --- | --- | --- |
 | CreateDBSubnetGroup / Describe / Modify / Delete | available | yes | ,  |
 | CreateDBParameterGroup / Describe / Delete | available | yes | Metadata stub |
-| ModifyDBParameterGroup / DescribeDBParameters | available | no | User params persisted; not applied to sidecar |
-| ModifyDBInstance | available | no | Backup/maintenance/deletion-protection metadata |
+| ModifyDBParameterGroup / DescribeDBParameters | available | yes (`db-instance-lifecycle`) | User params persisted; not applied to sidecar; verify  |
+| ModifyDBInstance | available | yes (`db-instance-lifecycle`) | Backup/maintenance/deletion-protection metadata; verify  |
 | CreateDBInstance / Describe / Delete | available | yes | Postgres 15 Docker sidecar |
 | CreateDBProxy / Describe / Delete | available | yes |  |
-| ModifyDBProxy | available | no | Idle/debug metadata |
+| ModifyDBProxy | available | yes (`db-proxy-tcp-connect`) | Idle/debug metadata; verify  |
 | RegisterDBProxyTargets / DescribeDBProxyTargets / DeregisterDBProxyTargets | available | yes | TCP relay to instance |
-| ModifyDBProxyTargetGroup / DescribeDBProxyTargetGroups | available | no | Pool config persisted; not enforced |
+| ModifyDBProxyTargetGroup / DescribeDBProxyTargetGroups | available | yes (`db-proxy-tcp-connect`) | Pool config persisted; verify  |
 
 ---
 
