@@ -128,7 +128,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 
 | Panel | Capabilities | Limits |
 | --- | --- | --- |
-| **DynamoDB** | **Split-view** UI; ListTables, Scan, CreateTable (hash key String), DeleteTable, Put/Update/Delete item (Simple), **JSON document** put/edit (Map/List via GetItem → PutItem) | GSIs / expressions → CLI; visual attribute editor deferred |
+| **DynamoDB** | **Split-view** UI; ListTables, **Scan** (attribute columns, Previous/Next pages), CreateTable (hash key String), DeleteTable, Put/Update/Delete item (Simple), **JSON document** put/edit (Map/List via GetItem → PutItem) | Query UI → ****; GSIs / expressions → CLI |
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
 | **S3** | **Split-view** UI; ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, CopyObject, DeleteObject, **DeleteObjects** (batch) | Multipart / versioning → CLI; seeded `demo-bucket` via Dashboard **Seed** |
