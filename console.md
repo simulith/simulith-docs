@@ -146,7 +146,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SNS** | ListTopics, ListSubscriptionsByTopic, **CreateTopic**, **Subscribe**, **Publish**, **DeleteTopic**, **Unsubscribe**; recent publishes via admin peek | Seeded `demo-alarm` via **Seed**; topic attributes → CLI |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
 | **RDS** | **DB instances:** DescribeDBInstances (status, engine, sidecar endpoint). **DB Proxies:** DescribeDBProxies, targets, connection pool | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
-| **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy document; create RDS Proxy role bundle | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
+| **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy; create RDS Proxy bundle; **DetachRolePolicy**, **DeleteRole** | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
 | **KMS** | ListAliases, DescribeKey, CreateKey + alias, Encrypt/Decrypt, **ScheduleKeyDeletion** | Mock envelope crypto; use Terraform `kms/cmk-min` |
 | **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A/CNAME UPSERT), delete record | Local DNS stub — not a real resolver; private zone UI deferred |
 | **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate, **ListTagsForCertificate**, **DeleteCertificate** | Local validation stub — not a real CA; add/remove tags UI deferred; seeded demo cert via **Seed** |
