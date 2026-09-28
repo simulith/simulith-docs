@@ -63,17 +63,17 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 3. Open **DynamoDB** or **S3** — **split-view** layout (resource list + detail). DynamoDB: browse tables, put/edit/delete items (Simple strings or **JSON document** for Map/List). S3: buckets, objects, upload/download/copy.
 4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
-6. Open **Lambda** — **Functions**: list, config (incl. attached layers), invoke, delete; **Triggers**: SQS event source mappings for the selected function; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
+6. Open **Lambda** — **Functions**: list, config (incl. edit configuration), invoke, delete; **Triggers**: list/create/delete SQS event source mappings; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
 7. Open **API Gateway** — REST APIs (resources, stage invoke) and **Custom domain names** (mappings, copy local invoke URL).
 8. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
-9. Open **EventBridge** — list schedule rules, inspect targets, see last invoke time (admin peek).
+9. Open **EventBridge** — list schedule rules, inspect targets, last invoke time (admin peek), **Send test event** (PutEvents).
 10. Open **CloudWatch** → **Logs** — list log groups (`/aws/lambda/demo-fn` after Seed), streams, and recent events via **GetLogEvents**.
 11. Open **CloudWatch** → **Metrics** — browse custom metrics by namespace; view **GetMetricStatistics** for the last hour (publish via CLI/Terraform first if empty).
 12. Open **CloudWatch** → **Alarms** — list metric alarms via **DescribeAlarms** (create via CLI/Terraform first if empty).
 13. Open **CloudWatch** → **Dashboards** — list dashboards via **ListDashboards** and inspect **DashboardBody** JSON (create via CLI/Terraform first if empty).
 14. Open **CloudWatch** → **Insights** — run a Logs Insights query (**StartQuery** + **GetQueryResults**) against a log group.
 15. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
-16. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), and seeded outbox after **Seed**.
+16. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), **Send test email** (plain or templated), and outbox (seeded + new captures).
 17. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
 19. Click **Reset local state** — clears all panels.
 
@@ -97,9 +97,9 @@ The Console uses **same-origin proxies** so the browser does not need CORS on th
 
 ### Console UI (v3)
 
-- **Shell** — dark theme, categorized sidebar navigation, live runtime status on the dashboard.
-- **Dashboard** — service cards grouped by category; jump to any panel from the grid.
-- **Data panels** — DynamoDB and S3 use a **split-view** (list + detail) for faster browsing; other panels keep the v2 capability set until modernized incrementally.
+- **Shell** — dark OKLCH theme, **ConsoleShell** + categorized sidebar.
+- **Dashboard** — service cards with best-effort resource counts; seed, reset, health.
+- **Panels** — v3 **split-view** across shipped routes; parity depth –445 (batch deletes, test sends, Lambda edit/ESM, etc.).
 
 ### Runtime admin routes
 
@@ -130,27 +130,27 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | --- | --- | --- |
 | **DynamoDB** | **Split-view** UI; ListTables, Scan, CreateTable (hash key String), DeleteTable, Put/Update/Delete item (Simple), **JSON document** put/edit (Map/List via GetItem → PutItem) | GSIs / expressions → CLI; visual attribute editor deferred |
 | **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
-| **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter | SecureString = mock local encryption (not KMS); StringList / batch delete UI deferred |
-| **S3** | **Split-view** UI; ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, CopyObject, DeleteObject | DeleteObjects batch UI deferred; seeded `demo-bucket` via Dashboard **Seed** |
-| **Lambda** | **Functions:** ListFunctions, GetFunction (config, env, attached layers), Invoke, DeleteFunction. **Triggers:** List/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload) | Create ESM UI deferred; Layers tolerate Simulith ISO date strings; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
+| **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
+| **S3** | **Split-view** UI; ListBuckets, CreateBucket, DeleteBucket, ListObjectsV2 (prefix + pagination), PutObject upload, GetObject download, CopyObject, DeleteObject, **DeleteObjects** (batch) | Multipart / versioning → CLI; seeded `demo-bucket` via Dashboard **Seed** |
+| **Lambda** | **Functions:** ListFunctions, GetFunction, **UpdateFunctionConfiguration**, Invoke, DeleteFunction. **Triggers:** List/Create/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload) | Upload/replace code UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | List REST APIs, GetResources, GetStage, HTTP invoke, DeleteRestApi; **GetDomainNames**, **GetDomainName**, **GetBasePathMappings**, **GetApiMappings** | Create/deploy UI deferred; custom domains via Serverless domain manager |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
-| **EventBridge** | ListRules, DescribeRule, ListTargetsByRule; last invoke via admin peek | Create/delete UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
-| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents** | Read-only; **FilterLogEvents** API shipped — Console UI still uses GetLogEvents; create via CLI/Terraform/Serverless |
+| **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutEvents** (test send), **ListEventBuses**; last invoke via admin peek | Create/delete rule/target UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
+| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents** (group scope) | Read-only; create/delete group/stream → CLI/Terraform/Serverless |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics** (last hour) | Read-only; PutMetricData via CLI/Terraform/SDK |
 | **CloudWatch Alarms** | **DescribeAlarms** | Read-only; create/delete via CLI/Terraform/SDK |
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard** | Read-only; opaque JSON body; no widget rendering; create/delete via CLI/Terraform/SDK |
 | **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
-| **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates; outbox via admin peek | Create/delete UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
-| **SNS** | ListTopics, ListSubscriptionsByTopic; recent publishes via admin peek | Read-only; create/subscribe/publish via CLI/Terraform; seeded `demo-alarm` via **Seed** |
+| **SES** | ListIdentities, GetIdentityVerificationAttributes, ListTemplates, **SendEmail** / **SendTemplatedEmail**; outbox via admin peek | Create/delete identity/template UI deferred; no SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
+| **SNS** | ListTopics, ListSubscriptionsByTopic, **CreateTopic**, **Subscribe**, **Publish**, **DeleteTopic**, **Unsubscribe**; recent publishes via admin peek | Seeded `demo-alarm` via **Seed**; topic attributes → CLI |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
 | **RDS** | **DB instances:** DescribeDBInstances (status, engine, sidecar endpoint). **DB Proxies:** DescribeDBProxies, targets, connection pool | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
 | **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy document; create RDS Proxy role bundle | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
-| **KMS** | ListAliases, DescribeKey, CreateKey + alias, Encrypt/Decrypt round-trip | Mock envelope crypto; delete/schedule UI deferred; use Terraform `kms/cmk-min` |
-| **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A UPSERT) | Local DNS stub — not a real resolver; CNAME/delete UI deferred |
-| **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate | Local validation stub — not a real CA; delete/tags UI deferred; seeded demo cert via **Seed** |
-| **CloudFront** | ListDistributions, GetDistribution, GetOriginAccessControl, CreateOriginAccessControl, CreateDistribution | Local CDN stub — no edge caching; delete UI deferred; use Terraform `cloudfront/cdn-min` |
+| **KMS** | ListAliases, DescribeKey, CreateKey + alias, Encrypt/Decrypt, **ScheduleKeyDeletion** | Mock envelope crypto; use Terraform `kms/cmk-min` |
+| **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A/CNAME UPSERT), delete record | Local DNS stub — not a real resolver; private zone UI deferred |
+| **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate, **ListTagsForCertificate**, **DeleteCertificate** | Local validation stub — not a real CA; add/remove tags UI deferred; seeded demo cert via **Seed** |
+| **CloudFront** | ListDistributions, GetDistribution, GetOriginAccessControl, CreateOriginAccessControl, CreateDistribution, **DeleteDistribution** | Local CDN stub — no edge caching; use Terraform `cloudfront/cdn-min` |
 | **CloudFormation** | DescribeStacks, ListStackResources, DescribeStackEvents, GetTemplate (read-only) | Create/update/delete from UI deferred — use CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith); see [`cloudformation.md`](cloudformation.md) |
 
 Panel capabilities are documented in the **Service panels** section below.
