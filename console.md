@@ -64,7 +64,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 4. Open **SQS** — queue table, create/edit attributes, peek, send, poll messages, delete/return, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
 6. Open **Lambda** — **Functions**: resource list + tabs: Configuration, Test (invoke), Triggers (SQS ESM); edit configuration, delete; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
-7. Open **API Gateway** — REST APIs (resources, stage invoke) and **Custom domain names** (mappings, copy local invoke URL).
+7. Open **API Gateway** — API table, **Resources** / **Stages** / **Test** tabs, and **Custom domain names**.
 8. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 9. Open **EventBridge** — list schedule rules, inspect targets, last invoke time (admin peek), **Send test event** (PutEvents).
 10. Open **CloudWatch** → **Logs** — list log groups (`/aws/lambda/demo-fn` after Seed), streams, and recent events via **GetLogEvents**.
@@ -133,7 +133,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
 | **S3** | Bucket inventory, breadcrumbs/folders, object overview; CreateBucket, DeleteBucket, upload/download/copy/delete, **DeleteObjects** batch | **** Permissions/Properties Lovable refresh; multipart/versioning → CLI |
 | **Lambda** | **Functions:** ListFunctions, GetFunction, AWS-style **resource header + tabs**, **UpdateFunctionConfiguration**, Invoke, DeleteFunction. **Triggers:** List/Create/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload), **DeleteLayerVersion** | Upload/replace code UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
-| **API Gateway** | List REST APIs, GetResources, **CreateResource** / **PutMethod** / **PutIntegration** (Add route), **CreateDeployment** / **CreateStage** (deploy lite), GetStage, HTTP invoke, DeleteRestApi; custom domain tabs | Create REST API wizard → CLI/Terraform; existing stage not auto-updated on deploy |
+| **API Gateway** | **:** API table, Resources/Stages/Test tabs; GetResources, Add route, **CreateDeployment** / **CreateStage**, GetStage, HTTP invoke, DeleteRestApi; custom domain tabs | **Create API** **ComingSoon**; existing stage not auto-updated on deploy |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutEvents** (test send), **ListEventBuses**; last invoke via admin peek | Create/delete rule/target UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
 | **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents** (group scope) | Read-only; create/delete group/stream → CLI/Terraform/Serverless |
