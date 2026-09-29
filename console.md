@@ -60,10 +60,10 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 
 1. Open the **Dashboard** — runtime **Connected**, categorized **service grid**, and **Seed demo data** / **Reset local state** in the header.
 2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM, API Gateway `demo-api`, Secrets Manager `demo-secret`, EventBridge `demo-rule` → `demo-fn`, CloudWatch Logs `/aws/lambda/demo-fn`, Cognito `demo-pool`, SES `demo@simulith.local` + `demo-template`, RDS `demo-db`).
-3. Open **DynamoDB** or **S3** — AWS Console–style navigation: DynamoDB table list + Overview/Explore tabs; S3 bucket inventory, breadcrumbs, folders, object overview. Put/edit/delete items (Simple + **JSON document**); S3 upload/download/copy.
-4. Open **SQS** — list queues, peek messages, send, receive+delete, **purge queue**.
+3. Open **DynamoDB** or **S3** — AWS Console–style navigation; Lovable 2026-09 refresh planned. Put/edit/delete items; S3 upload/download/copy/delete batch.
+4. Open **SQS** — queue table, create/edit attributes, peek, send, poll messages, delete/return, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
-6. Open **Lambda** — **Functions**: list, config (incl. edit configuration), invoke, delete; **Triggers**: list/create/delete SQS event source mappings; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
+6. Open **Lambda** — **Functions**: resource list + tabs: Configuration, Test (invoke), Triggers (SQS ESM); edit configuration, delete; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
 7. Open **API Gateway** — REST APIs (resources, stage invoke) and **Custom domain names** (mappings, copy local invoke URL).
 8. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 9. Open **EventBridge** — list schedule rules, inspect targets, last invoke time (admin peek), **Send test event** (PutEvents).
@@ -128,11 +128,11 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 
 | Panel | Capabilities | Limits |
 | --- | --- | --- |
-| **DynamoDB** | Table search + **Overview** (DescribeTable) + **Explore items** (Scan/Query Run); CreateTable, DeleteTable, Put/Update/Delete (Simple + **JSON document**) | GSI / FilterExpression → CLI |
-| **SQS** | ListQueues, peek (admin API), SendMessage, ReceiveMessage + DeleteMessage, **PurgeQueue** | Peek has no receipt handle; FIFO / visibility deferred |
+| **DynamoDB** | Table search + **Overview** + **Explore items** + **Indexes**; Scan/Query Run; CreateTable, DeleteTable, Put/Update/Delete (Simple + **JSON document**) | **** Lovable refresh; GSI Query / FilterExpression → CLI or ComingSoon |
+| **SQS** | **:** ListQueues table, CreateQueue, SetQueueAttributes, DeleteQueue, peek (admin), SendMessage, ReceiveMessage (1–10), ChangeMessageVisibility, DeleteMessage, PurgeQueue | DLQ redrive + FIFO **ComingSoon** |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
-| **S3** | Bucket inventory drill-in, breadcrumbs/folders, object overview; CreateBucket, DeleteBucket, ListObjectsV2, **Create folder**, PutObject, GetObject, CopyObject, DeleteObject, **DeleteObjects** (batch) | Bucket policy/tags UI → follow-up; multipart → CLI |
-| **Lambda** | **Functions:** ListFunctions, GetFunction, **UpdateFunctionConfiguration**, Invoke, DeleteFunction. **Triggers:** List/Create/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload), **DeleteLayerVersion** | Upload/replace code UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
+| **S3** | Bucket inventory, breadcrumbs/folders, object overview; CreateBucket, DeleteBucket, upload/download/copy/delete, **DeleteObjects** batch | **** Permissions/Properties Lovable refresh; multipart/versioning → CLI |
+| **Lambda** | **Functions:** ListFunctions, GetFunction, AWS-style **resource header + tabs**, **UpdateFunctionConfiguration**, Invoke, DeleteFunction. **Triggers:** List/Create/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload), **DeleteLayerVersion** | Upload/replace code UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | List REST APIs, GetResources, **CreateResource** / **PutMethod** / **PutIntegration** (Add route), **CreateDeployment** / **CreateStage** (deploy lite), GetStage, HTTP invoke, DeleteRestApi; custom domain tabs | Create REST API wizard → CLI/Terraform; existing stage not auto-updated on deploy |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutEvents** (test send), **ListEventBuses**; last invoke via admin peek | Create/delete rule/target UI deferred; seeded `demo-rule` → `demo-fn` via **Seed** |
