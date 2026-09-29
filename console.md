@@ -99,7 +99,7 @@ The Console uses **same-origin proxies** so the browser does not need CORS on th
 
 - **Shell** — dark OKLCH theme, **ConsoleShell** + categorized sidebar.
 - **Dashboard** — service cards with best-effort resource counts; seed, reset, health.
-- **Panels** — v3 **split-view** across shipped routes; parity depth –445 (batch deletes, test sends, Lambda edit/ESM, etc.).
+- **Panels** — Lovable full-width tables + **panel-stack** detail on shipped routes; parity depth –445 (batch deletes, test sends, Lambda edit/ESM, etc.).
 
 ### Runtime admin routes
 
