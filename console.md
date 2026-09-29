@@ -60,7 +60,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 
 1. Open the **Dashboard** — runtime **Connected**, categorized **service grid**, and **Seed demo data** / **Reset local state** in the header.
 2. Click **Seed demo data** — loads the built-in fixture (`Demo` table, `demo-queue`, SSM params under `/app/demo/*`, S3 `demo-bucket`, Lambda `demo-fn` + SQS ESM, API Gateway `demo-api`, Secrets Manager `demo-secret`, EventBridge `demo-rule` → `demo-fn`, CloudWatch Logs `/aws/lambda/demo-fn`, Cognito `demo-pool`, SES `demo@simulith.local` + `demo-template`, RDS `demo-db`).
-3. Open **DynamoDB** or **S3** — AWS Console–style navigation; Lovable 2026-09 refresh planned. Put/edit/delete items; S3 upload/download/copy/delete batch.
+3. Open **DynamoDB** or **S3** — Lovable full-width tables + stacked detail. Put/edit/delete items; S3 Objects/Properties/Permissions tabs.
 4. Open **SQS** — queue table, create/edit attributes, peek, send, poll messages, delete/return, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
 6. Open **Lambda** — **Functions**: resource list + tabs: Configuration, Test (invoke), Triggers (SQS ESM); edit configuration, delete; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
