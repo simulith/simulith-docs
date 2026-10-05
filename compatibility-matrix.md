@@ -14,7 +14,7 @@ Last updated: 2026-10-05..
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
 | Operations **available** locally | 235 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 3, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
+| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -413,7 +413,7 @@ Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
 | CreatePolicy / GetPolicy / DeletePolicy | available | yes | Managed policy subset · GetPolicyVersion / ListPolicyVersions stub |
 | AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | yes | RDS Proxy role attach |
 | PutRolePolicy / GetRolePolicy / DeleteRolePolicy | available | yes (`role-inline-policy`) | Inline role policies · ListRolePolicies returns stored names |
-| ListRoles | available | no | PathPrefix / Marker pagination |
+| ListRoles | available | yes (`list-roles-after-create`) | PathPrefix / Marker pagination; verify  |
 
 ---
 
@@ -509,7 +509,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
-| IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy` | — |
+| IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy`, `list-roles-after-create` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency`, `certificate-tags-delete` | — |

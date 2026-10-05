@@ -335,7 +335,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | CloudWatch Dashboards | `simulith verify cloudwatch-dashboards --skip-aws` | 3 |
 | RDS | `simulith verify rds --skip-aws` | 2 |
 | VPC | `simulith verify vpc --skip-aws` | 5 |
-| IAM | `simulith verify iam --skip-aws` | 3 |
+| IAM | `simulith verify iam --skip-aws` | 4 |
 | KMS | `simulith verify kms --skip-aws` | 2 |
 | Route 53 | `simulith verify route53 --skip-aws` | 3 |
 | ACM | `simulith verify acm --skip-aws` | 3 |

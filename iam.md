@@ -65,12 +65,12 @@ Panel **`/iam`**: load role by name, inspect trust policy and attached managed p
 ## Verify
 
 ```bash
-simulith verify iam --skip-aws          # Simulith-only smoke (3 scenarios)
-simulith verify iam                     # AWS parity (GetRole / GetPolicy / inline role policy)
+simulith verify iam --skip-aws          # Simulith-only smoke (4 scenarios)
+simulith verify iam                     # AWS parity (roles, policies, ListRoles)
 simulith verify iam --filter rds-proxy  # subset by scenario name prefix
 ```
 
-Scenarios: `rds-proxy-role-lifecycle`, `managed-policy-get`.
+Scenarios: `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy`, `list-roles-after-create`.
 
 ## Follow-on surfaces
 
