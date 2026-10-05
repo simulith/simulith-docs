@@ -318,7 +318,7 @@ aws sqs set-queue-attributes \
   --attributes VisibilityTimeout=90 \
   --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
 
-# RedrivePolicy (stored for GetQueueAttributes; Simulith does not redrive messages to DLQ yet)
+# RedrivePolicy (no automatic DLQ on max receives; use start-message-move-task to redrive visible DLQ messages)
 # Use a JSON map for --attributes when the value contains quotes (Git Bash / AWS CLI v2).
 aws sqs set-queue-attributes \
   --queue-url "$QUEUE_URL" \
@@ -329,6 +329,17 @@ aws sqs set-queue-attributes \
 aws sqs get-queue-attributes \
   --queue-url "$QUEUE_URL" \
   --attribute-names RedrivePolicy VisibilityTimeout \
+  --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
+```
+
+### StartMessageMoveTask (DLQ redrive)
+
+Move visible messages from a dead-letter queue back to a source queue (when exactly one source uses this DLQ, omit `--destination-arn`).
+
+```bash
+aws sqs start-message-move-task \
+  --source-arn "arn:aws:sqs:us-east-1:000000000000:my-dlq" \
+  --destination-arn "arn:aws:sqs:us-east-1:000000000000:work-q" \
   --endpoint-url "$AWS_ENDPOINT" --region "$AWS_DEFAULT_REGION"
 ```
 

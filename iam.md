@@ -15,10 +15,11 @@ Compatible with Terraform `aws_iam_role`, `aws_iam_policy`, `aws_iam_role_policy
 
 | Operation | Notes |
 | --- | --- |
-| CreateRole / GetRole / UpdateRole / DeleteRole | Assume-role policy document stored verbatim. `MaxSessionDuration` persisted (default 3600). `ListInstanceProfilesForRole` returns empty. `DeleteRole` requires no managed attachments and no inline policies |
-| CreatePolicy / GetPolicy / DeletePolicy | Managed policy JSON document. `GetPolicyVersion` / `ListPolicyVersions` return default `v1` |
+| CreateRole / GetRole / UpdateRole / DeleteRole | Trust policy stored verbatim; **CreateRole/GetRole/UpdateRole** responses return **URL-encoded** `AssumeRolePolicyDocument`. `MaxSessionDuration` persisted (default 3600). `ListInstanceProfilesForRole` returns empty. `DeleteRole` requires no managed attachments and no inline policies |
+| CreatePolicy / GetPolicy / DeletePolicy | Managed policy JSON document; **Description** persisted and returned on **GetPolicy**. `GetPolicyVersion` / `ListPolicyVersions` return default `v1` |
 | AttachRolePolicy / DetachRolePolicy | Role ↔ policy ARN |
 | ListAttachedRolePolicies | For Terraform refresh |
+| ListRoles | PathPrefix, MaxItems, Marker pagination |
 | PutRolePolicy / GetRolePolicy / DeleteRolePolicy | Inline role policies. `GetRolePolicy` returns a URL-encoded `PolicyDocument`. `ListRolePolicies` lists stored names |
 
 ## What Simulith does not do
@@ -31,7 +32,6 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 | `AssumeRole` (STS) | No STS session simulation |
 | AWS managed policy catalog (`arn:aws:iam::aws:policy/…`) | Customer-managed policies only |
 | `CreateInstanceProfile` / instance profiles | Not implemented |
-| `ListRoles` | Load a role by name (CLI `GetRole` or Console) |
 | Runtime policy enforcement | Documents stored; not evaluated on each API call |
 
 ## Terraform
@@ -52,7 +52,7 @@ provider "aws" {
 - No policy enforcement against Secrets Manager/KMS at runtime (metadata only)
 - No IAM users, groups, or STS AssumeRole simulation
 - No AWS managed policy catalog (`arn:aws:iam::aws:policy/…`)
-- No **ListRoles** API — Console loads roles by name
+- Console lists roles via **ListRoles**; metadata only
 
 ## Seed
 

@@ -129,14 +129,14 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | Panel | Capabilities | Limits |
 | --- | --- | --- |
 | **DynamoDB** | Table search + **Overview** + **Explore items** + **Indexes**; Scan/Query Run; CreateTable, DeleteTable, Put/Update/Delete (Simple + **JSON document**) | **** Lovable refresh; GSI Query / FilterExpression → CLI or ComingSoon |
-| **SQS** | **:** ListQueues table, CreateQueue, SetQueueAttributes, DeleteQueue, peek (admin), SendMessage, ReceiveMessage (1–10), ChangeMessageVisibility, DeleteMessage, PurgeQueue | DLQ redrive + FIFO **ComingSoon** |
+| **SQS** | **:** ListQueues table, CreateQueue, SetQueueAttributes, DeleteQueue, peek (admin), SendMessage, ReceiveMessage (1–10), ChangeMessageVisibility, DeleteMessage, PurgeQueue; **:** DLQ redrive (**StartMessageMoveTask**) | FIFO **ComingSoon** |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
 | **S3** | Bucket inventory, breadcrumbs/folders, object overview; CreateBucket, DeleteBucket, upload/download/copy/delete, **DeleteObjects** batch | **** Permissions/Properties Lovable refresh; multipart/versioning → CLI |
 | **Lambda** | **Functions:** ListFunctions, GetFunction, AWS-style **resource header + tabs**, **UpdateFunctionConfiguration**, Invoke, DeleteFunction. **Triggers:** List/Create/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload), **DeleteLayerVersion** | Upload/replace code UI deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
 | **API Gateway** | **:** API table, Resources/Stages/Test tabs; GetResources, Add route, **CreateDeployment** / **CreateStage**, GetStage, HTTP invoke, DeleteRestApi; custom domain tabs | **Create API** **ComingSoon**; existing stage not auto-updated on deploy |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**; last invoke via admin peek | Custom bus create/delete → CLI |
-| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents** (group scope) | Read-only; create/delete group/stream → CLI/Terraform/Serverless |
+| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents**; **CreateLogGroup**, **PutLogEvents** | Delete group/stream → CLI/Terraform; other CW tabs read-only |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics** (last hour) | Read-only; PutMetricData via CLI/Terraform/SDK |
 | **CloudWatch Alarms** | **DescribeAlarms** | Read-only; create/delete via CLI/Terraform/SDK |
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard** | Read-only; opaque JSON body; no widget rendering; create/delete via CLI/Terraform/SDK |
@@ -146,7 +146,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SNS** | ListTopics, ListSubscriptionsByTopic, **CreateTopic**, **Subscribe**, **Publish**, **DeleteTopic**, **Unsubscribe**; recent publishes via admin peek | Seeded `demo-alarm` via **Seed**; topic attributes → CLI |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
 | **RDS** | **DB instances:** DescribeDBInstances (status, engine, sidecar endpoint). **DB Proxies:** DescribeDBProxies, targets, connection pool | Create/delete UI deferred; Postgres sidecar requires Docker; seeded `demo-db` via **Seed** |
-| **IAM** | GetRole, ListAttachedRolePolicies, GetPolicy; create RDS Proxy bundle; **DetachRolePolicy**, **DeleteRole** | No ListRoles API — load by name; metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
+| **IAM** | **ListRoles**, GetRole, ListAttachedRolePolicies, GetPolicy; create RDS Proxy bundle; **DetachRolePolicy**, **DeleteRole**; browse roles | Metadata only (no enforcement); use Terraform `iam/proxy-roles-min` |
 | **KMS** | ListAliases, DescribeKey, CreateKey + alias, Encrypt/Decrypt, **ScheduleKeyDeletion** | Mock envelope crypto; use Terraform `kms/cmk-min` |
 | **Route 53** | ListHostedZones, CreateHostedZone, ChangeResourceRecordSets (A/CNAME UPSERT), delete record | Local DNS stub — not a real resolver; private zone UI deferred |
 | **ACM** | ListCertificates, RequestCertificate (DNS validation), DescribeCertificate, **ListTagsForCertificate**, **DeleteCertificate** | Local validation stub — not a real CA; add/remove tags UI deferred; seeded demo cert via **Seed** |

@@ -6,14 +6,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-09-25..
+Last updated: 2026-10-05..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 232 |
+| Operations **available** locally | 235 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 3, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -91,6 +91,8 @@ Guide: [sqs.md](sqs.md) · Verify: `simulith verify sqs` (10 scenarios) · Stand
 | PurgeQueue | available | yes (`purge-queue`) | 60s throttle between purges |
 | ChangeMessageVisibility | available | yes (`change-message-visibility`) | Invalid handle → error |
 | ChangeMessageVisibilityBatch | available | yes (`change-message-visibility`) | Same scenario as single |
+| ListDeadLetterSourceQueues | available | no | DLQ source discovery |
+| StartMessageMoveTask | available | no | Synchronous DLQ redrive |
 
 **Not in matrix (gap):** FIFO queues, etc.
 
@@ -411,6 +413,7 @@ Guide: [iam.md](iam.md) · Verify: `simulith verify iam`
 | CreatePolicy / GetPolicy / DeletePolicy | available | yes | Managed policy subset · GetPolicyVersion / ListPolicyVersions stub |
 | AttachRolePolicy / DetachRolePolicy / ListAttachedRolePolicies | available | yes | RDS Proxy role attach |
 | PutRolePolicy / GetRolePolicy / DeleteRolePolicy | available | yes (`role-inline-policy`) | Inline role policies · ListRolePolicies returns stored names |
+| ListRoles | available | no | PathPrefix / Marker pagination |
 
 ---
 

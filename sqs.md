@@ -24,6 +24,8 @@ SQS uses **AWS Query** (`application/x-www-form-urlencoded` + **XML** responses)
 | DeleteQueue | **Available** | Remove queue and all messages by `QueueUrl` |
 | PurgeQueue | **Available** | Delete all messages; queue remains; 60s throttle |
 | SetQueueAttributes | **Available** | Update persisted queue metadata (incl. RedrivePolicy) |
+| ListDeadLetterSourceQueues | **Available** | Source queues whose RedrivePolicy targets this DLQ |
+| StartMessageMoveTask | **Available** | Synchronous move of visible DLQ messages to a source queue |
 
 ## What Simulith does not do
 
@@ -33,8 +35,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 | --- | --- |
 | FIFO `CreateQueue` (`.fifo` / `FifoQueue=true`) | Standard queues only |
 | `TagQueue` / `UntagQueue` / `ListQueueTags` | No queue tags |
-| `StartMessageMoveTask` / `CancelMessageMoveTask` / `ListMessageMoveTasks` | No DLQ redrive tasks |
-| `ListDeadLetterSourceQueues` | Not implemented |
+| `CancelMessageMoveTask` / `ListMessageMoveTasks` | No async task tracking; StartMessageMoveTask completes synchronously |
 
 ## CreateQueue
 
@@ -178,7 +179,7 @@ Updates persisted queue metadata for an existing queue. Supports **Query** (`Act
 | `ReceiveMessageWaitTimeSeconds` | 0–20; default long-poll wait when `WaitTimeSeconds` omitted on ReceiveMessage |
 | `MessageRetentionPeriod` | 60–1209600 |
 | `MaximumMessageSize` | 1024–1048576 |
-| `RedrivePolicy` | JSON with `deadLetterTargetArn` + `maxReceiveCount` (stored only; no DLQ redrive) |
+| `RedrivePolicy` | JSON with `deadLetterTargetArn` + `maxReceiveCount`; use **StartMessageMoveTask** to redrive visible DLQ messages (no automatic move on max receives) |
 
 Unsupported attributes (FIFO, KMS, `Policy`, computed counts, timestamps) return `InvalidAttributeValue`.
 
@@ -233,7 +234,7 @@ If no attribute names are requested, Simulith returns the **full supported subse
 | QueueOwnerAWSAccountId | Cross-account lookup | **Rejected** when account id ≠ local `000000000000` |
 | ListQueues | Prefix filter on **name**; returns **stored** URLs | Simulith `NextToken` is decimal **offset** when `MaxResults` is set (not opaque AWS token) |
 | DeleteQueue | May take up to 60s; 60s cooldown before recreate same name | **Tombstone window** (~60s default; `SIMULITH_SQS_DELETE_GRACE_SECONDS`); messages removed immediately; GQA/GQU during window; no exact recreate cooldown |
-| SetQueueAttributes | Propagation delay; full attribute surface | **Immediate** merge in SQLite; subset only; **RedrivePolicy stored only** (no automatic DLQ redrive) |
+| SetQueueAttributes | Propagation delay; full attribute surface | **Immediate** merge in SQLite; subset only; **RedrivePolicy** persisted (no automatic DLQ on max receives) |
 
 ## Errors
 
