@@ -13,9 +13,9 @@
 
 | Operation | Notes |
 | --- | --- |
-| `CreateTopic` | Persist topic metadata |
-| `Subscribe` / `Unsubscribe` / `ListSubscriptionsByTopic` | Protocols **`lambda`**, **`sqs`** |
-| `Publish` | Local delivery log + fan-out to subscriptions |
+| `CreateTopic` | Standard topics, or FIFO when the name ends in `.fifo` and `FifoTopic` is `true` |
+| `Subscribe` / `Unsubscribe` / `ListSubscriptionsByTopic` | Protocols **`lambda`**, **`sqs`**. `FilterPolicy` on Subscribe is an exact string match on message attributes |
+| `Publish` | Local delivery log + fan-out. FIFO requires `MessageGroupId` and `MessageDeduplicationId` (or content-based dedup). A repeated deduplication id returns the original message id and does not fan out again |
 | `ListTopics` | List topic ARNs |
 | `GetTopicAttributes` | Basic attributes |
 | `SetTopicAttributes` | Accept provider tuning attrs (Terraform) |
@@ -30,6 +30,8 @@
 ## Limits
 
 - **Fan-out:** `Publish` invokes Lambda asynchronously (SNS event shape) and enqueues SQS notification JSON; no email/SMS/mobile
+- **FIFO:** name must end with `.fifo` and `Attributes.FifoTopic=true`. `ContentBasedDeduplication` is optional. Dedup is kept for the life of the stored message log (not a 5-minute window). High-throughput FIFO is not implemented.
+- **Filter policy:** `Subscribe` attribute `FilterPolicy` is a JSON object of string arrays, matched against `Publish` message attributes (`{"event":["created"]}`). `anything-but`, `prefix`, numeric ranges, `exists`, and `FilterPolicyScope=MessageBody` are rejected. `SetSubscriptionAttributes` is not implemented.
 - S3 → SNS: `TopicConfiguration` on bucket notifications; example [`examples/aws-cli/s3-sns/`](examples/aws-cli/s3-sns/)
 - **`simulith verify sns`** — 2 scenarios (topic lifecycle + SQS fan-out smoke)
 - Topics must exist before `Publish` (including alarm dispatch)

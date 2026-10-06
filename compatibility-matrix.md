@@ -306,14 +306,14 @@ Guide: [sns.md](sns.md) · Verify: `simulith verify sns`
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateTopic | available | yes (`topic-publish-lifecycle`) |  scaffold; productized  |
+| CreateTopic | available | yes (`topic-publish-lifecycle`) | Standard and FIFO |
 | DeleteTopic | available | yes (`topic-publish-lifecycle`) | Removes topic, subscriptions, and stored messages |
 | ListTopics | available | yes (`topic-publish-lifecycle`) | |
-| GetTopicAttributes | available | yes (`topic-publish-lifecycle`) | TopicArn, Owner |
+| GetTopicAttributes | available | yes (`topic-publish-lifecycle`) | TopicArn, Owner, FifoTopic, ContentBasedDeduplication |
 | SetTopicAttributes | available | no | No-op accept for Terraform |
-| Publish | available | yes (`topic-publish-lifecycle`, `subscribe-sqs-fanout`) | Local message log + fan-out to subscriptions |
+| Publish | available | yes (`topic-publish-lifecycle`, `subscribe-sqs-fanout`) | Fan-out; FIFO group id + dedup. Filter policy applies on dispatch |
 | GetSubscriptionAttributes | available | no | PendingConfirmation false for sqs/lambda |
-| Subscribe | available | yes (`subscribe-sqs-fanout`) | Protocols `lambda`, `sqs` |
+| Subscribe | available | yes (`subscribe-sqs-fanout`) | Protocols `lambda`, `sqs`. FilterPolicy exact string match |
 | Unsubscribe | available | yes (`subscribe-sqs-fanout`) | |
 | ListSubscriptionsByTopic | available | yes (`subscribe-sqs-fanout`) | |
 
