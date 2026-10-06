@@ -158,6 +158,6 @@ Provider routes **apigateway** and **lambda** endpoints to Simulith. Use **`-par
 - Cognito user pool authorizer (native) — use Lambda REQUEST authorizer validating Cognito JWT (common production pattern).
 - API keys / usage plans.
 
-Console panel: **shipped**  /  — [`console/README.md`](console.md), [`runtime/docs/console.md`](console.md).
+Console panel: **shipped**  /  — [`console/README.md`](console.md), [`runtime/docs/console.md`](console.md). **CreateRestApi** from the panel:  /  (name + description; root resource created automatically).
 
 Seed demo API: **shipped**  /  — [`runtime/docs/seed.md`](seed.md) (`demo-api` → `demo-fn`).

@@ -228,7 +228,7 @@ simulith verify sqs
 
 ### Modes
 
-**Full parity** runs ten curated scenarios on both AWS and Simulith and compares normalized JSON responses:
+**Full parity** runs eleven curated scenarios on both AWS and Simulith and compares normalized JSON responses:
 
 1. CreateQueue + GetQueueUrl
 2. SendMessage + ReceiveMessage + DeleteMessage
@@ -240,13 +240,14 @@ simulith verify sqs
 8. DeleteMessageBatch
 9. PurgeQueue + empty receive + GetQueueUrl
 10. ChangeMessageVisibility (hide → change timeout → receive again)
+11. FIFO send/receive/dedup (`.fifo` queue, MessageGroupId, order + dedup on Simulith)
 
 Prerequisites:
 
 - AWS credentials configured
 - IAM: `sqs:CreateQueue`, `sqs:DeleteQueue`, `sqs:ListQueues`, `sqs:GetQueueUrl`, `sqs:GetQueueAttributes`, `sqs:SetQueueAttributes`, `sqs:SendMessage`, `sqs:SendMessageBatch`, `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:DeleteMessageBatch`, `sqs:PurgeQueue`, `sqs:ChangeMessageVisibility`
 - Simulith reachable at the configured endpoint
-- Standard queues only (verify subset)
+- Standard queues plus one FIFO scenario (verify subset)
 
 Queue names use a unique prefix (`simulith-verify-<timestamp>-*`). Each scenario deletes its queues on **both** AWS and Simulith when it finishes; a final sweep removes any that remain.
 
@@ -319,7 +320,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Service | Command | Default scenarios |
 | --- | --- | --- |
 | DynamoDB | `simulith verify dynamodb --skip-aws` | 6 |
-| SQS | `simulith verify sqs --skip-aws` | 10 |
+| SQS | `simulith verify sqs --skip-aws` | 11 |
 | SSM | `simulith verify ssm --skip-aws` | 10 |
 | S3 | `simulith verify s3 --skip-aws` | 8 |
 | Lambda | `simulith verify lambda --skip-aws` | 9 |

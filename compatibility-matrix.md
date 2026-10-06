@@ -73,14 +73,14 @@ Guide: [dynamodb.md](dynamodb.md) · Verify: `simulith verify dynamodb` (6 defau
 
 ## SQS
 
-Guide: [sqs.md](sqs.md) · Verify: `simulith verify sqs` (10 scenarios) · Standard queues only
+Guide: [sqs.md](sqs.md) · Verify: `simulith verify sqs` (11 scenarios) · Standard + FIFO (subset)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateQueue | available | yes (`create-get-queue-url`) | Standard queues; idempotent create |
+| CreateQueue | available | yes (`create-get-queue-url`, `fifo-send-receive-dedup`) | Standard + `.fifo` queues; idempotent create |
 | GetQueueUrl | available | yes (`create-get-queue-url`) | |
-| SendMessage | available | yes (`send-receive-delete`) | |
-| ReceiveMessage | available | yes (`send-receive-delete`) | Short poll in verify |
+| SendMessage | available | yes (`send-receive-delete`, `fifo-send-receive-dedup`) | FIFO: MessageGroupId + dedup |
+| ReceiveMessage | available | yes (`send-receive-delete`, `fifo-send-receive-dedup`) | Short poll in verify |
 | DeleteMessage | available | yes (`send-receive-delete`) | |
 | GetQueueAttributes | available | yes (`get-queue-attributes`) | Subset of attributes in scenario |
 | ListQueues | available | yes (`list-queues`) | |
@@ -94,7 +94,7 @@ Guide: [sqs.md](sqs.md) · Verify: `simulith verify sqs` (10 scenarios) · Stand
 | ListDeadLetterSourceQueues | available | no | DLQ source discovery |
 | StartMessageMoveTask | available | no | Synchronous DLQ redrive |
 
-**Not in matrix (gap):** FIFO queues, etc.
+**FIFO gaps (documented in [sqs.md](sqs.md)):** high-throughput mode, `ReceiveRequestAttemptId`, per-message delay on FIFO.
 
 ---
 
@@ -493,7 +493,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Service | Default scenarios | Extended (DynamoDB only) |
 | --- | --- | --- |
 | DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item`, `transact-write-get-items`, `projection-expression`, `update-expression-add-delete`, `query-scan-1mb-pagination`, `parallel-scan` |
-| SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility` | — |
+| SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility`, `fifo-send-receive-dedup` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config`, `list-object-versions` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |

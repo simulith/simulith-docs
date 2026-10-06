@@ -33,9 +33,9 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 | Operation | Notes |
 | --- | --- |
-| FIFO `CreateQueue` (`.fifo` / `FifoQueue=true`) | Standard queues only |
 | `TagQueue` / `UntagQueue` / `ListQueueTags` | No queue tags |
-| `CancelMessageMoveTask` / `ListMessageMoveTasks` | No async task tracking; StartMessageMoveTask completes synchronously |
+| `CancelMessageMoveTask` / `ListMessageMoveTasks` | No async task tracking; **StartMessageMoveTask** completes synchronously |
+| FIFO throughput / deduplication scope | **perQueue** / **queue** only; no high-throughput FIFO mode |
 
 ## CreateQueue
 
@@ -56,6 +56,15 @@ Re-creating a queue with the **same name** returns the **stored** `QueueUrl` whe
 Queue metadata is stored in the same SQLite database as DynamoDB (`state.path`, default `.simulith/state.db`). Survives process restart.
 
 `simulith reset` clears SQS queue and message rows along with DynamoDB state.
+
+### FIFO queues
+
+- Queue names must end with `.fifo`; `FifoQueue=true` is set automatically when omitted.
+- **SendMessage** requires `MessageGroupId`. Provide `MessageDeduplicationId` unless `ContentBasedDeduplication=true` on the queue (hash is SHA-256 of the body).
+- Deduplication IDs are remembered for **5 minutes** per queue; duplicate sends return the original `MessageId` without enqueueing again.
+- **Per-message `DelaySeconds`** is rejected on FIFO queues (use queue-level delay only).
+- **ReceiveMessage** returns `MessageGroupId` and `SequenceNumber` in message **Attributes** when requested (AWS JSON/query shape).
+- Verify: `simulith verify sqs --filter fifo-send-receive-dedup`.
 
 ## SendMessage
 
@@ -219,10 +228,10 @@ If no attribute names are requested, Simulith returns the **full supported subse
 
 | Area | AWS | Simulith |
 | --- | --- | --- |
-| FIFO queues | Supported | **Not supported** — `FifoQueue=true` or `.fifo` names rejected |
+| FIFO queues | Supported | **Supported** — `.fifo` names, `MessageGroupId`, deduplication window |
 | Duplicate create | Returns existing `QueueUrl` when attributes match | **Same**; mismatch → `QueueAlreadyExists` |
 | SendMessageBatch / DeleteMessageBatch / ChangeMessageVisibilityBatch | Up to 10 entries; partial errors | **Same** |
-| FIFO send fields | MessageGroupId / deduplication | **Rejected** with `InvalidParameterValue` |
+| FIFO send fields | MessageGroupId / deduplication | **Required** on FIFO queues; rejected on standard queues |
 | QueueUrl host match | Strict URL must match queue | **Resolved by queue name** in URL path |
 | Long polling | Distributed sampling | **SQLite poll loop** (~200ms); blocks up to `WaitTimeSeconds` or queue default |
 | Receipt handle | AWS opaque token | **`simulith:{messageId}:{count}:{nonce}`** |
