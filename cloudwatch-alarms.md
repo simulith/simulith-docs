@@ -95,7 +95,7 @@ Green path: [`examples/terraform/cloudwatch-alarms/`](examples/terraform/cloudwa
 
 ## Console
 
-Open **CloudWatch → Alarms** in the local Console ([console.md](console.md)) — read-only **DescribeAlarms** list and detail.
+Open **CloudWatch → Alarms** — **DescribeAlarms**, **Create alarm**, and **Delete**.
 
 ## Related
 

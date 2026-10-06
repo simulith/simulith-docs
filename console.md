@@ -69,7 +69,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 9. Open **EventBridge** — list rules, **Create rule** (schedule or pattern + optional Lambda target), delete rule, inspect targets, last invoke peek, **Send test event** (PutEvents).
 10. Open **CloudWatch** → **Logs** — list log groups (`/aws/lambda/demo-fn` after Seed), streams, and recent events via **GetLogEvents**.
 11. Open **CloudWatch** → **Metrics** — **ListMetrics**, **Put metric data**, and **GetMetricStatistics** for the last hour.
-12. Open **CloudWatch** → **Alarms** — list metric alarms via **DescribeAlarms** (create via CLI/Terraform first if empty).
+12. Open **CloudWatch** → **Alarms** — **DescribeAlarms**, **Create alarm**, and **Delete**.
 13. Open **CloudWatch** → **Dashboards** — **ListDashboards** / **GetDashboard**, **Create dashboard** / **Edit JSON**, or delete via Console.
 14. Open **CloudWatch** → **Insights** — run a Logs Insights query (**StartQuery** + **GetQueryResults**) against a log group.
 15. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
@@ -138,7 +138,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**; last invoke via admin peek | Custom bus create/delete → CLI |
 | **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents**; **CreateLogGroup**, **PutLogEvents** | Delete group/stream → CLI/Terraform; other CW tabs read-only |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics**, **PutMetricData** | GetMetricData batch via CLI/SDK |
-| **CloudWatch Alarms** | **DescribeAlarms** | Read-only; create/delete via CLI/Terraform/SDK |
+| **CloudWatch Alarms** | **DescribeAlarms**, **PutMetricAlarm**, **DeleteAlarms** | SetAlarmState / SNS ARNs via CLI |
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard**, **PutDashboard**, **DeleteDashboards** | Opaque JSON body; no widget rendering |
 | **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
