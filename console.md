@@ -63,7 +63,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 3. Open **DynamoDB** or **S3** — Lovable full-width tables + stacked detail. Put/edit/delete items; S3 Objects/Properties/Permissions tabs.
 4. Open **SQS** — queue table, create/edit attributes, peek, send, poll messages, delete/return, **purge queue**.
 5. Open **SSM** — browse by path, put/edit/delete String and **SecureString** (mock encryption notice).
-6. Open **Lambda** — **Functions**: resource list + tabs: Configuration, Test (invoke), Triggers (SQS ESM); edit configuration, delete; **Layers**: catalog + versions (invoke needs node/python3 on runtime host).
+6. Open **Lambda** — **Functions**: resource list + tabs: Configuration, Test, Code, Triggers, **Monitor**; edit configuration, delete; **Layers**: catalog + versions.
 7. Open **API Gateway** — API table, **Resources** / **Stages** / **Test** tabs, and **Custom domain names**.
 8. Open **Secrets Manager** — list secrets, reveal value (mock storage), create and delete secrets.
 9. Open **EventBridge** — list rules, **Create rule** (schedule or pattern + optional Lambda target), delete rule, inspect targets, last invoke peek, **Send test event** (PutEvents).
@@ -132,7 +132,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **SQS** | **:** ListQueues table, CreateQueue, SetQueueAttributes, DeleteQueue, peek (admin), SendMessage, ReceiveMessage (1–10), ChangeMessageVisibility, DeleteMessage, PurgeQueue; **:** DLQ redrive (**StartMessageMoveTask**); **:** FIFO create/send | — |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
 | **S3** | Bucket inventory, breadcrumbs/folders, object overview; CreateBucket, DeleteBucket, upload/download/copy/delete, **DeleteObjects** batch; bucket policy, CORS, tags, **PutBucketVersioning** Enable/Suspend; SSE-S3 **PutBucketEncryption** and block public access | SSE-KMS and multipart → CLI |
-| **Lambda** | **Functions:** ListFunctions, GetFunction, AWS-style **resource header + tabs**, **UpdateFunctionConfiguration**, **UpdateFunctionCode** zip upload, Invoke, DeleteFunction. Function **Triggers** tab: List/Create/Get/DeleteEventSourceMapping (SQS). **Layers:** ListLayers, ListLayerVersions, GetLayerVersion, **PublishLayerVersion** (zip upload), **DeleteLayerVersion** | Monitor tab deferred; seeded `demo-fn` + SQS trigger via **Seed**; invoke needs node/python3 on PATH |
+| **Lambda** | **Functions:** ListFunctions, GetFunction, tabs, **UpdateFunctionConfiguration**, **UpdateFunctionCode**, Invoke, DeleteFunction, **Monitor**. **Triggers:** ESM CRUD. **Layers:** publish/delete | Graph widgets; auto `AWS/Lambda` metrics on invoke; invoke needs node/python3 on PATH |
 | **API Gateway** | **:** API table, Resources/Stages/Test tabs; **CreateRestApi** dialog; GetResources, Add route, **CreateDeployment** / **CreateStage**, GetStage, HTTP invoke, DeleteRestApi; custom domain tabs | Existing stage not auto-updated on deploy; full multi-step wizard → CLI/Terraform |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**; last invoke via admin peek | Custom bus create/delete → CLI |
