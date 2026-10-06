@@ -128,7 +128,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 
 | Panel | Capabilities | Limits |
 | --- | --- | --- |
-| **DynamoDB** | Table search + **Overview** + **Explore items** + **Indexes**; Scan/Query Run; CreateTable, DeleteTable, Put/Update/Delete (Simple + **JSON document**) | **** Lovable refresh; GSI Query / FilterExpression → CLI or ComingSoon |
+| **DynamoDB** | Table search + **Overview** + **Explore items** + **Indexes**; Scan/Query Run; GSI query, scalar FilterExpression, **Create index**; CreateTable, DeleteTable, Put/Update/Delete (Simple + **JSON document**) | Scan on a GSI, extra filter functions, GSI delete → CLI; sort key on Create table still ComingSoon |
 | **SQS** | **:** ListQueues table, CreateQueue, SetQueueAttributes, DeleteQueue, peek (admin), SendMessage, ReceiveMessage (1–10), ChangeMessageVisibility, DeleteMessage, PurgeQueue; **:** DLQ redrive (**StartMessageMoveTask**); **:** FIFO create/send | — |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
 | **S3** | Bucket inventory, breadcrumbs/folders, object overview; CreateBucket, DeleteBucket, upload/download/copy/delete, **DeleteObjects** batch; bucket policy, CORS, tags, **PutBucketVersioning** Enable/Suspend | Encryption / block-public edit still ComingSoon; multipart → CLI |
