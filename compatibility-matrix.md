@@ -13,7 +13,7 @@ Last updated: 2026-10-05..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 235 |
+| Operations **available** locally | 236 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -145,9 +145,10 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (8 scenarios)
 | PutBucketVersioning / GetBucketVersioning | available | yes (`bucket-state-config`) | Status; Enabled assigns current-object version IDs |
 | PutBucketEncryption / GetBucketEncryption / DeleteBucketEncryption | available | yes (`bucket-state-config`) | SSE-S3 (`AES256`); 404 when unset |
 | PutBucketLifecycleConfiguration / Get / DeleteBucketLifecycle | available | yes (`bucket-state-config`) | Rules persisted; no expiry; TDMOS header for TF waiter |
-| PutBucketTagging / GetBucketTagging | available | yes (`bucket-state-config`) | 404 when unset |
+| PutBucketTagging / GetBucketTagging / DeleteBucketTagging | available | yes (`bucket-state-config`) | 404 when unset; Delete clears the tag set |
+| PutBucketCors / GetBucketCors / DeleteBucketCors | available | yes (`bucket-state-config`) | 404 `NoSuchCORSConfiguration` when unset |
 
-**Not in matrix (gap):** SNS/SQS notification targets, CORS, SSE-KMS, S3 Select, ListParts.
+**Not in matrix (gap):** SNS/SQS notification targets, SSE-KMS, S3 Select, ListParts.
 
 ---
 
