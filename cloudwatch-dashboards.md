@@ -64,7 +64,7 @@ aws cloudwatch delete-dashboards --endpoint-url "$EP" --dashboard-names demo-das
 
 ## Console
 
-Open **CloudWatch → Dashboards** in the local Console ([console.md](console.md)) — read-only **ListDashboards** + **GetDashboard** with JSON body viewer.
+Open **CloudWatch → Dashboards** in the local Console ([console.md](console.md)) — **ListDashboards**, **GetDashboard**, **PutDashboard** (create + edit JSON), and **DeleteDashboards**. Widgets are not rendered.
 
 ## Related
 
