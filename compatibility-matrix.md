@@ -485,7 +485,7 @@ Guide: [cloudformation.md](cloudformation.md) · Verify: `simulith verify cloudf
 | DescribeStackResources | available | yes (`stack-lifecycle`) | Logical/physical IDs; inspection after create |
 | ListStackResources | available | yes (`stack-lifecycle`) | Serverless CLI; inspection after create |
 
-Supported CFN resource types: Lambda, IAM, API Gateway, EventBridge, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`** — see [cloudformation.md](cloudformation.md). Serverless hello green path shipped; use [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin.
+Supported CFN resource types: Lambda, IAM (`AWS::IAM::Role` and `AWS::IAM::Policy`), API Gateway, EventBridge, **`AWS::S3::Bucket`**, **`AWS::S3::BucketPolicy`** — see [cloudformation.md](cloudformation.md). Serverless hello green path shipped; use [`serverless-simulith`](examples/serverless/serverless-simulith/) plugin. Synthesized CDK templates (YAML, `AWS::CDK::Metadata`, `Custom::*` no-op) are accepted without provisioning those secondary types.
 
 ---
 

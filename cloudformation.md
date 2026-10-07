@@ -25,7 +25,7 @@ Local **CloudFormation control plane** via the AWS Query API — stack lifecycle
 | DescribeStackResources | Logical/physical IDs and status for stack resources |
 | DescribeStackResource | Single resource detail (Serverless deploy monitor) |
 | GetTemplate | Returns stored `TemplateBody` for a stack (Serverless deploy diff). Same `Action` as SES — disambiguated by `Version=2010-05-15` |
-| ValidateTemplate | Validates JSON template without creating a stack; returns `Parameters`, `Capabilities` subset (Serverless pre-deploy) |
+| ValidateTemplate | Validates a JSON or YAML template without creating a stack; returns `Parameters` and `Capabilities`. A named IAM role or policy reports `CAPABILITY_NAMED_IAM` only |
 | ListStackResources | Same resource rows as Describe (Serverless CLI) |
 
 ## What Simulith does not do
@@ -45,8 +45,9 @@ These AWS operations (and most resource types) are **not available** locally. Us
 
 | Type | Provisions via |
 | --- | --- |
-| `AWS::IAM::Role` | IAM store (inline policies subset) |
-| `AWS::Lambda::Function` | Lambda store (`Code.ZipFile` or `Code.S3Bucket`+`S3Key`) |
+| `AWS::IAM::Role` | IAM store (inline policies subset). `RoleName` optional — defaults to the logical ID |
+| `AWS::IAM::Policy` | Inline policy attached to each `Roles` entry |
+| `AWS::Lambda::Function` | Lambda store (`Code.ZipFile` or `Code.S3Bucket`+`S3Key`). `FunctionName` optional — defaults to the logical ID |
 | `AWS::Lambda::Permission` | Lambda permissions |
 | `AWS::Lambda::LayerVersion` | Lambda layers (`Content.ZipFile` or `Content.S3Bucket`+`S3Key` — not `Code`) |
 | `AWS::Lambda::Version` | Published function snapshot (`FunctionName` ref or ARN; physical ID = version ARN) |
@@ -62,7 +63,20 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | `AWS::S3::BucketPolicy` | S3 store (`Bucket` ref, `PolicyDocument` JSON — Serverless deployment bucket policy) |
 | `AWS::Logs::LogGroup` | CloudWatch Logs store |
 
-**Intrinsics (subset):** `Ref`, `Fn::GetAtt`, `Fn::Sub`, `Fn::Join`. Template `DependsOn` ordering is honored.
+**Intrinsics (subset):** `Ref`, `Fn::GetAtt`, `Fn::Sub`, `Fn::Join`, `Fn::If`, `Fn::Equals`, `Fn::Not`, `Fn::And`, `Fn::Or`, `Condition`. `AWS::NoValue` drops the property. Template `DependsOn` and resource `Condition` are honored. Omitted parameters use the template default when one is set.
+
+## CDK synthesized templates
+
+`CreateStack`, `UpdateStack`, and `ValidateTemplate` accept JSON or YAML, including CloudFormation short tags (`!Ref`, `!GetAtt`, `!If`, `!Equals`, …). A common CDK app template can include secondary constructs that are recorded as `CREATE_COMPLETE` and are not provisioned:
+
+| Type | Behavior |
+| --- | --- |
+| `AWS::CDK::Metadata` | Controlled no-op. Physical ID `noop-<logicalID>`. `Ref` and `GetAtt` return that ID |
+| `Custom::*` | Same no-op. The provider Lambda is not invoked |
+| `AWS::CloudFormation::CustomResource` | Same no-op |
+| `AWS::CloudFormation::WaitCondition` / `WaitConditionHandle` | Same no-op |
+
+Other resource types that are not in the supported table still fail the stack (`AWS::DynamoDB::Table`, `cdk bootstrap` / `CDKToolkit`, `AWS::Serverless::*`). `Custom::*` does not upload CDK assets; function code still needs `ZipFile` or an object already in S3.
 
 **S3 bucket GetAtt:** `Arn`, `DomainName`, `RegionalDomainName`. Stack delete empties the bucket before `DeleteBucket`.
 
