@@ -72,7 +72,7 @@ Default Console host port is **9080** (not 8080) to avoid conflicts with other l
 12. Open **CloudWatch** → **Alarms** — **DescribeAlarms**, **Create alarm**, and **Delete**.
 13. Open **CloudWatch** → **Dashboards** — **ListDashboards** / **GetDashboard**, **Create dashboard** / **Edit JSON**, or delete via Console.
 14. Open **CloudWatch** → **Insights** — run a Logs Insights query (**StartQuery** + **GetQueryResults**) against a log group.
-15. Open **Cognito** — list user pools (`demo-pool` after Seed), inspect clients/groups/JWKS, and browse **Users** (ListUsers + attribute detail).
+15. Open **Cognito** — pools, **Users** admin, **Auth debugger**.
 16. Open **SES** — list identity (`demo@simulith.local`), template (`demo-template`), **Send test email** (plain or templated), and outbox (seeded + new captures).
 17. Open **Verify** — import `verify-last.json` or CI artifact JSON (`verify-dynamodb.json`, `verify-s3.json`, etc.).
 19. Click **Reset local state** — clears all panels.
@@ -141,7 +141,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **CloudWatch Alarms** | **DescribeAlarms**, **PutMetricAlarm**, **DeleteAlarms** | SetAlarmState / SNS ARNs via CLI |
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard**, **PutDashboard**, **DeleteDashboards** | Opaque JSON body; no widget rendering |
 | **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |
-| **Cognito** | ListUserPools, clients, groups, JWKS; **ListUsers** + **AdminGetUser**; **AdminCreateUser**, **AdminSetUserPassword**, **AdminConfirmSignUp**, **AdminEnableUser**, **AdminDisableUser** | Delete user / Hosted UI deferred; pool/client create via CLI/Terraform; seeded `demo-pool` via **Seed** |
+| **Cognito** | ListUserPools, clients, groups, JWKS; **Users** admin CRUD; **Auth debugger** — InitiateAuth / AdminInitiateAuth | Hosted UI; USER_SRP_AUTH wizard; pool/client create via CLI/Terraform |
 | **SES** | ListIdentities, **VerifyEmailIdentity**, **DeleteIdentity**, ListTemplates, **CreateTemplate**, **DeleteTemplate**, **SendEmail** / **SendTemplatedEmail**; outbox via admin peek | No SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **SNS** | ListTopics, ListSubscriptionsByTopic, **CreateTopic** (standard and FIFO), **Subscribe** (optional exact-match filter policy), **Publish** (FIFO group/dedup ids and string message attributes), **DeleteTopic**, **Unsubscribe**; recent publishes via admin peek | Seeded `demo-alarm` via **Seed**; topic attributes → CLI |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
