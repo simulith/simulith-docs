@@ -31,7 +31,6 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 | Operation | Notes |
 | --- | --- |
-| DynamoDB Streams (`EnableStreams`, `GetRecords`, `GetShardIterator`, `DescribeStream`) | No change stream |
 | `UpdateTimeToLive` / `DescribeTimeToLive` | No TTL expiry |
 | `ExportTableToPointInTime` / `ImportTable` | No S3 export/import |
 | `CreateBackup` / `RestoreTableFromBackup` / `RestoreTableToPointInTime` | PITR is metadata only — no real restore |
@@ -113,12 +112,27 @@ Not supported yet: `ClientRequestToken` idempotency, `ReturnValuesOnConditionChe
 - **BillingMode** / **ProvisionedThroughput** — switch or adjust provisioned settings on table metadata
 - **DeletionProtectionEnabled** — when `true`, **DeleteTable** returns `ValidationException`
 - **SSESpecification** — stores **SSEDescription** (`ENABLED` / KMS); no real encryption
-- **StreamSpecification** — enable/disable stream metadata (no real streams)
+- **StreamSpecification** — enable or disable a stream. Enabling requires `StreamViewType` (`KEYS_ONLY`, `NEW_IMAGE`, `OLD_IMAGE`, `NEW_AND_OLD_IMAGES`) and sets `LatestStreamArn`
 - **GlobalSecondaryIndexUpdates** — one GSI **Create**, **Update** (throughput), or **Delete** per request; merges **AttributeDefinitions**
 - Returns **ACTIVE** immediately (no `UPDATING` wait)
 - Unknown table → `ResourceNotFoundException`
 
-Not supported yet: **ReplicaUpdates**, **TableClass**, **OnDemandThroughput**, LSI add via UpdateTable, real stream/SSE behavior.
+Not supported yet: **ReplicaUpdates**, **TableClass**, **OnDemandThroughput**, LSI add via UpdateTable, real SSE. Stream behavior is the single-shard engine below.
+
+## DynamoDB Streams (initial shard)
+
+Target prefix `DynamoDBStreams_20120810` on the same HTTP endpoint (SigV4 signing name `dynamodb`).
+
+| Operation | Behavior |
+| --- | --- |
+| ListStreams | Optional `TableName`, `Limit` 1–100, `ExclusiveStartStreamArn` |
+| DescribeStream | One shard, `StreamStatus` `ENABLED` or `DISABLED`, key schema, view type |
+| GetShardIterator | `TRIM_HORIZON`, `LATEST`, `AT_SEQUENCE_NUMBER`, `AFTER_SEQUENCE_NUMBER` |
+| GetRecords | Up to `Limit` records (default and max 1000). Open shards always return `NextShardIterator`. `MillisBehindLatest` is `0` |
+
+Successful `PutItem`, `UpdateItem`, `DeleteItem`, `BatchWriteItem`, and `TransactWriteItems` append one record (`INSERT`, `MODIFY`, or `REMOVE`). Failed conditions and deletes of missing items do not. Each stream has one open shard. Disabling the stream closes that shard and clears `LatestStreamArn`; the stream stays readable until `DeleteTable` or reset. Re-enabling allocates a new ARN.
+
+Not in this slice: shard splits, a 24-hour trim job, Lambda event source mappings, and the Console Streams tab.
 
 ## Continuous backups / PITR (Terraform metadata)
 
@@ -148,6 +162,7 @@ CREATE TABLE dynamodb_items (
 
 - **Table metadata** — CreateTable JSON blob in `dynamodb_tables`
 - **Items** — full AttributeMap JSON in `dynamodb_items`; key is canonical JSON of primary-key attributes
+- **Streams** — `dynamodb_streams` (one shard per stream) and `dynamodb_stream_records` (ordered change records). `DeleteTable` and `simulith reset` remove them. Snapshots round-trip the rows.
 
 Restarting the runtime preserves tables and items.
 
@@ -228,4 +243,4 @@ Service faults use the runtime:
 - `protocol.md` — AWS JSON wire format
 - `smithy-contracts.md` — Smithy model source
 - [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix
-- [compatibility.md](compatibility.md) — `simulith verify dynamodb` (default 6 scenarios; extended ListTables/DeleteTable/GSI/conditional via `--filter`)
+- [compatibility.md](compatibility.md) — `simulith verify dynamodb` (default 6 scenarios; extended ListTables/DeleteTable/GSI/conditional/`streams` via `--filter`)

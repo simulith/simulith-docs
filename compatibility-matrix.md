@@ -13,9 +13,9 @@ Last updated: 2026-10-07..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 237 |
-| Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
-| DynamoDB extended verify scenarios | 13 (`--filter extended`) |
+| Operations **available** locally | 238 |
+| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
+| DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
 
@@ -45,7 +45,7 @@ On rows marked **available** these three values are the only ones allowed: `runt
 
 ## DynamoDB
 
-Guide: [dynamodb.md](dynamodb.md) · Verify: `simulith verify dynamodb` (6 default + 13 extended)
+Guide: [dynamodb.md](dynamodb.md) · Verify: `simulith verify dynamodb` (6 default + 14 extended)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
@@ -64,10 +64,11 @@ Guide: [dynamodb.md](dynamodb.md) · Verify: `simulith verify dynamodb` (6 defau
 | DeleteItem | available | yes (`delete-item`) | |
 | DeleteTable | available | extended (`delete-table`) | Also used by verify cleanup |
 | ListTables | available | extended (`list-tables`) | |
-| UpdateTable | available | extended (`update-table`) | Stream metadata — see dynamodb.md |
+| UpdateTable | available | extended (`update-table`) | Enables the single-shard stream — see dynamodb.md |
 | TagResource / UntagResource / ListTagsOfResource | available | extended (`table-tags`) | Table tags in metadata |
+| ListStreams / DescribeStream / GetShardIterator / GetRecords | available | extended (`streams`) | One open shard. Compared fields: event name, source, view type, keys, and images |
 
-**Not in matrix (gap):** streams API, export/import, etc.
+**Still a gap:** TTL, export/import, real PITR restore, multi-shard lineage, 24-hour trim.
 
 ---
 
@@ -494,7 +495,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 
 | Service | Default scenarios | Extended (DynamoDB only) |
 | --- | --- | --- |
-| DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item`, `transact-write-get-items`, `projection-expression`, `update-expression-add-delete`, `query-scan-1mb-pagination`, `parallel-scan` |
+| DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item`, `transact-write-get-items`, `projection-expression`, `update-expression-add-delete`, `query-scan-1mb-pagination`, `parallel-scan`, `streams` |
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility`, `fifo-send-receive-dedup` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config`, `list-object-versions` | — |

@@ -10,7 +10,7 @@ Public mirror of Simulith **user documentation** and **runnable examples**.
 
 > **Source of truth:** the private `simulith/simulith` monorepo (`runtime/docs/`, `runtime/examples/`). This repository is a **read-only mirror** — do not edit here; changes are synced from release tags.
 
-Generated from monorepo commit `89a3fc4` on 2026-10-07.
+Generated from monorepo commit `9595303` on 2026-10-07.
 
 ## Start here
 
