@@ -231,6 +231,61 @@ No messages: `"messages": []`.
 
 ---
 
+### `GET /_simulith/v1/inspector/requests`
+
+Query recent in-memory recorded requests across AWS and Admin APIs for live diagnostics.
+
+| Query | Default | Description |
+| --- | --- | --- |
+| `limit` | `50` | Maximum requests to return (up to buffer capacity, default 200) |
+| `service` | `all` | Filter by detected AWS service (e.g. `s3`, `dynamodb`, `sqs`, `lambda`) |
+| `status` | `all` | Filter by status: `errors` (>=400), `2xx`, `4xx`, `5xx` |
+| `search` | — | Text search in action name, path, service, error message, or payload |
+
+**Response 200:**
+
+```json
+{
+  "status": "ok",
+  "requests": [
+    {
+      "id": "req-1728334800000000000-1",
+      "timestamp": "2026-10-07T21:00:00.000000000Z",
+      "method": "POST",
+      "path": "/",
+      "service": "dynamodb",
+      "action": "PutItem",
+      "statusCode": 200,
+      "durationMs": 3,
+      "clientIp": "127.0.0.1",
+      "headers": {
+        "Content-Type": "application/x-amz-json-1.0",
+        "X-Amz-Target": "DynamoDB_20120810.PutItem"
+      },
+      "requestBody": "{\"TableName\":\"Users\",\"Item\":{...}}",
+      "responseBody": "{}",
+      "warnings": []
+    }
+  ],
+  "totalRecorded": 1,
+  "errorCount": 0
+}
+```
+
+---
+
+### `POST /_simulith/v1/inspector/clear`
+
+Clears the in-memory recorded requests buffer.
+
+**Response 200:**
+
+```json
+{ "status": "ok", "action": "clear" }
+```
+
+---
+
 ## Examples (curl)
 
 Runtime on `:4566`:

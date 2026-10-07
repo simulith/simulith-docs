@@ -99,6 +99,7 @@ The Console uses **same-origin proxies** so the browser does not need CORS on th
 
 - **Shell** — dark OKLCH theme, **ConsoleShell** + categorized sidebar.
 - **Dashboard** — service cards with best-effort resource counts; seed, reset, health.
+- **Request Inspector** — live HTTP/SDK traffic monitor, payload inspection, and runtime error diagnostics with Postel's law warnings.
 - **Panels** — Lovable full-width tables + **panel-stack** detail on shipped routes; parity depth –445 (batch deletes, test sends, Lambda edit/ESM, etc.).
 
 ### Runtime admin routes
@@ -114,6 +115,8 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | `POST` | `/_simulith/v1/reset` | Clear local state |
 | `GET` | `/_simulith/v1/snapshot` | Export snapshot JSON |
 | `POST` | `/_simulith/v1/snapshot` | Import snapshot JSON |
+| `GET` | `/_simulith/v1/inspector/requests` | Live recorded HTTP/SDK requests |
+| `POST` | `/_simulith/v1/inspector/clear` | Clear in-memory request buffer |
 | `GET` | `/_simulith/v1/sqs/messages?queueName=` | Peek messages (non-destructive) |
 | `GET` | `/_simulith/v1/eventbridge/rules` | Peek schedule rules + lastInvokedAt |
 | `GET` | `/_simulith/v1/ses/outbox` | Peek captured SES messages |
@@ -128,6 +131,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 
 | Panel | Capabilities | Limits |
 | --- | --- | --- |
+| **Request Inspector** | **Live traffic stream**, status/service/search filters, auto-refresh feed, latency metrics, header & payload inspection, error diagnostics, Postel's Law warnings, clear history | In-memory ring buffer (up to 200 requests) |
 | **DynamoDB** | Table search + **Overview** + **Explore items** + **Indexes**; Scan/Query Run; GSI query, scalar FilterExpression, **Create index**; CreateTable, DeleteTable, Put/Update/Delete (Simple + **JSON document**) | Scan on a GSI, extra filter functions, GSI delete → CLI; sort key on Create table still ComingSoon |
 | **SQS** | **:** ListQueues table, CreateQueue, SetQueueAttributes, DeleteQueue, peek (admin), SendMessage, ReceiveMessage (1–10), ChangeMessageVisibility, DeleteMessage, PurgeQueue; **:** DLQ redrive (**StartMessageMoveTask**); **:** FIFO create/send | — |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |
