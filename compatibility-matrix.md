@@ -6,14 +6,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-10-05..
+Last updated: 2026-10-07..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 236 |
+| Operations **available** locally | 237 |
 | Default verify scenarios | DynamoDB 6 (+13 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 13 (`--filter extended`) |
 
@@ -141,6 +141,7 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (8 scenarios)
 | GetBucketNotificationConfiguration | available | no | GET `?notification` |
 | PutBucketNotificationConfiguration | available | no | Lambda + **TopicConfiguration** |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
+| ListObjects | available | no | v1 `marker` / `NextMarker`; same key order as ListObjectsV2. `delimiter` is not applied |
 | ListObjectVersions | available | yes (`list-object-versions`) | Current objects; last-write-wins (no noncurrent history) |
 | PutBucketVersioning / GetBucketVersioning | available | yes (`bucket-state-config`) | Status; Enabled assigns current-object version IDs |
 | PutBucketEncryption / GetBucketEncryption / DeleteBucketEncryption | available | yes (`bucket-state-config`) | SSE-S3 (`AES256`); 404 when unset |

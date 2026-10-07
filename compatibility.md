@@ -313,6 +313,8 @@ Verify deletes each `simulith-verify-*` function on Simulith via **DeleteFunctio
 
 Every pull request and push to `main`/`master` runs the **`Parity smoke`** job in `.github/workflows/ci.yml` (alongside runtime unit tests).
 
+A separate, non-required workflow clones three pinned open-source repositories and runs their integration tests against port 4566. See [External benchmarks](external-benchmarks.md).
+
 ### What runs
 
 The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`, then runs **Simulith-only verify smoke** (`--skip-aws`) for:
