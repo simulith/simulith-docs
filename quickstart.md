@@ -108,6 +108,8 @@ curl http://127.0.0.1:4566/health
 
 Expected: `{"status":"ok"}`.
 
+**GitHub Actions:** workflows in this repository start the same runtime with `uses: ./setup-action`. See [github-actions.md](github-actions.md).
+
 ---
 
 ## 2. Demo data
