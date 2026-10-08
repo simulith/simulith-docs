@@ -120,6 +120,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | `GET` | `/_simulith/v1/sqs/messages?queueName=` | Peek messages (non-destructive) |
 | `GET` | `/_simulith/v1/eventbridge/rules` | Peek schedule rules + lastInvokedAt |
 | `GET` | `/_simulith/v1/ses/outbox` | Peek captured SES messages |
+| `DELETE` | `/_simulith/v1/ses/outbox?messageId=…` | Remove one captured message |
 | `GET` | `/_simulith/v1/sns/messages?topicArn=` | Peek SNS publish log (optional topic filter) |
 | `GET` | `/_simulith/v1/cloudwatch/events?logGroupName=&logStreamName=` | Peek recent log events (admin fallback — Console uses **GetLogEvents** API) |
 

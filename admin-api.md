@@ -206,6 +206,24 @@ Empty outbox: `"messages": []`.
 
 ---
 
+### `DELETE /_simulith/v1/ses/outbox`
+
+Remove one captured message from the local outbox by **`messageId`** query parameter.
+
+**Response 200:**
+
+```json
+{
+  "status": "ok",
+  "action": "delete",
+  "messageId": "msg-…"
+}
+```
+
+**404** when the id is unknown. **400** when `messageId` is missing.
+
+---
+
 ### `GET /_simulith/v1/sns/messages`
 
 **Peek** published SNS messages from the local delivery log (non-destructive). Optional query `limit` (default 50, max 200) and `topicArn` (filter to one topic). Newest first.
