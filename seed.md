@@ -72,7 +72,7 @@ aws ssm get-parameter --name /app/demo/api-url --endpoint-url http://127.0.0.1:4
 
 On **Git Bash (Windows)**, set `export MSYS2_ARG_CONV_EXCL="*"` before SSM CLI commands, or use [PowerShell](quickstart.md). See [quickstart troubleshooting](quickstart.md#troubleshooting).
 
-Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, CloudWatch Logs, Cognito, SES, EC2/VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront — same scope as `simulith reset` — then re-applies the fixture).
+Re-running `simulith seed` is **idempotent** (default pre-clear wipes DynamoDB, SQS, SNS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, CloudWatch Logs, CloudWatch Metrics, Cognito, SES, EC2/VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront — same scope as `simulith reset` — then re-applies the fixture).
 
 More CLI examples: [aws-cli-examples.md](aws-cli-examples.md#seeded-data). SDK: [sdk-examples.md](sdk-examples.md#seeded-data).
 

@@ -22,6 +22,8 @@ Docker reference for the Simulith runtime. For first-time onboarding, see [quick
 
 All-in-one details: [console.md](console.md) · Smoke: `maintainer workflow (private monorepo)`
 
+**Shipped services:** the runtime image exposes **21** AWS-compatible service subsets (DynamoDB through CloudFormation — same list as [compatibility-matrix.md](compatibility-matrix.md)). Hub-oriented summary: [`../dockerhub/simulith/README.md`](https://hub.docker.com/r/simulith/simulith#aws-services-summary).
+
 ### Full product from published images (no repo)
 
 Pulls `simulith/simulith` + `simulith/console` (Docker Hub; GHCR mirror) — no checkout needed:

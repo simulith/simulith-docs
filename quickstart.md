@@ -14,6 +14,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | --- | --- |
 | DynamoDB | CreateTable, CRUD, Query, Scan — [dynamodb.md](dynamodb.md) |
 | SQS | CreateQueue, Send/Receive/DeleteMessage — [sqs.md](sqs.md) |
+| SNS | Topics, Publish, Subscribe fan-out — [sns.md](sns.md) |
 | SSM | Put/GetParameter (SQLite persistence) — [ssm.md](ssm.md) |
 | S3 | Bucket/object CRUD — [s3.md](s3.md) |
 | Lambda | Function CRUD, sync invoke, SQS ESM — [lambda.md](lambda.md) |
@@ -21,6 +22,7 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | Secrets Manager | Secret CRUD + GetSecretValue — [secretsmanager.md](secretsmanager.md) |
 | EventBridge | Schedule rules → Lambda — [eventbridge.md](eventbridge.md) |
 | CloudWatch Logs | Log groups + PutLogEvents — [cloudwatch.md](cloudwatch.md) |
+| CloudWatch Metrics | PutMetricData, ListMetrics — [cloudwatch-metrics.md](cloudwatch-metrics.md) |
 | Cognito | User Pool + Admin* + JWKS — [cognito.md](cognito.md) |
 | SES | Identity, templates, Send* (local outbox) — [ses.md](ses.md) |
 | VPC | VPC, subnets, security groups — [vpc.md](vpc.md) |
@@ -114,7 +116,7 @@ Expected: `{"status":"ok"}`.
 
 ## 2. Demo data
 
-The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, Secrets Manager secret `demo-secret`, EventBridge rule `demo-rule` (`rate(5 minutes)` → `demo-fn`), CloudWatch Logs group `/aws/lambda/demo-fn` with sample events, Cognito User Pool `demo-pool` (client `demo-client`, group `admin`), SES identity `demo@simulith.local` with template `demo-template`, VPC **`demo-vpc`** with database subnet and **`demo-postgres-sg`**, and RDS Postgres instance `demo-db` (Docker required on runtime host). Details: [seed.md](seed.md).
+The built-in seed profile creates a DynamoDB table `Demo`, SQS queue `demo-queue`, SSM parameters under `/app/demo/*`, S3 bucket `demo-bucket`, Lambda function `demo-fn` (with SQS ESM to `demo-queue`), API Gateway REST API `demo-api`, Secrets Manager secret `demo-secret`, EventBridge rule `demo-rule` (`rate(5 minutes)` → `demo-fn`), SNS topic **`demo-alarm`**, CloudWatch Logs group `/aws/lambda/demo-fn` with sample events, Cognito User Pool `demo-pool` (client `demo-client`, group `admin`), SES identity `demo@simulith.local` with template `demo-template`, VPC **`demo-vpc`** with database subnet and **`demo-postgres-sg`**, and RDS Postgres instance `demo-db` (Docker required on runtime host). Details: [seed.md](seed.md).
 
 **Console (Option A):** Dashboard → **Seed demo data** (runtime must be healthy).
 
