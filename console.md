@@ -97,10 +97,10 @@ The Console uses **same-origin proxies** so the browser does not need CORS on th
 
 ### Console UI (v3)
 
-- **Shell** — dark OKLCH theme, **ConsoleShell** + categorized sidebar.
+- **Shell** — dark OKLCH theme, **ConsoleShell** + categorized sidebar with unsupported service hints & badges.
 - **Dashboard** — service cards with best-effort resource counts; seed, reset, health.
 - **Request Inspector** — live HTTP/SDK traffic monitor, payload inspection, and runtime error diagnostics with Postel's law warnings.
-- **Panels** — Lovable full-width tables + **panel-stack** detail on shipped routes; parity depth –445 (batch deletes, test sends, Lambda edit/ESM, etc.).
+- **Panels** — Lovable column layout (`split-view`) for operational & security panels (KMS, EventBridge, VPC, Route 53, Secrets Manager, ACM, CloudFront) alongside stacked multi-tab inspection for heavy resources (DynamoDB, S3, SQS).
 
 ### Runtime admin routes
 

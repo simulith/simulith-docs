@@ -42,3 +42,7 @@ It is not a required status check. Parity smoke in `ci.yml` remains the check on
 ## Adding a pin
 
 Keep the catalog at exactly three repositories, one each for DynamoDB, SQS, and S3, until a later story widens it. A new pin must be a public GitHub repository outside the `simulith` org, a 40-character SHA, and a test command that already exists upstream and does not start LocalStack, DynamoDB Local, or another emulator.
+
+## Top-10 Real-World Benchmark Suite
+
+For broader ecosystem validation covering real Serverless Framework templates, CLI backup tools, and full Conduit RealWorld backends, see [Top-10 benchmarks](top10-benchmarks.md) (`runtime/scripts/run-10-benchmarks.mjs`).
