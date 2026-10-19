@@ -51,6 +51,7 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | `AWS::Lambda::Permission` | Lambda permissions |
 | `AWS::Lambda::LayerVersion` | Lambda layers (`Content.ZipFile` or `Content.S3Bucket`+`S3Key` — not `Code`) |
 | `AWS::Lambda::Version` | Published function snapshot (`FunctionName` ref or ARN; physical ID = version ARN) |
+| `AWS::Lambda::Url` | Function URL config (`TargetFunctionArn`; `AuthType` `NONE` or `AWS_IAM`; physical ID = URL id)
 | `AWS::ApiGateway::RestApi` | API Gateway |
 | `AWS::ApiGateway::Resource` | API Gateway |
 | `AWS::ApiGateway::Method` | API Gateway (+ `AWS_PROXY` integration; `AuthorizerId` when set) |
