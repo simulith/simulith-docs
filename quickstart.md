@@ -110,7 +110,7 @@ curl http://127.0.0.1:4566/health
 
 Expected: `{"status":"ok"}`.
 
-**GitHub Actions:** workflows in this repository start the same runtime with `uses: ./setup-action`. See [github-actions.md](github-actions.md).
+**GitHub Actions:** pin [`simulith/setup-action`](https://github.com/simulith/setup-action) to a release tag. See [github-actions.md](github-actions.md).
 
 ---
 

@@ -1,13 +1,13 @@
 # Simulith on GitHub Actions
 
-Simulith ships a composite GitHub Action (`setup-action/` in the main repository) that starts the runtime on a runner and exports the endpoint later steps pass to the AWS CLI or an SDK.
+Simulith ships a composite GitHub Action at [`simulith/setup-action`](https://github.com/simulith/setup-action). It starts the runtime on a runner and exports the endpoint later steps pass to the AWS CLI or an SDK.
 
 ```yaml
-- uses: ./setup-action
+- uses: simulith/setup-action@v0.301.2
 - run: curl -fsS "$SIMULITH_ENDPOINT/health"
 ```
 
-In the Simulith monorepo, workflows call `./setup-action`. A public repository can publish the same folder as `simulith/setup-action@<tag>` once the action repo is public. Pin third-party actions to a commit SHA; pin this action to a release tag or SHA when a public repo exists.
+Pin `uses:` to a release tag. Guides and the compatibility matrix: [simulith-docs](https://github.com/simulith/simulith-docs).
 
 ## What the action sets
 
@@ -20,7 +20,7 @@ In the Simulith monorepo, workflows call `./setup-action`. A public repository c
 | `AWS_EC2_METADATA_DISABLED` | `true` |
 
 ```yaml
-- uses: ./setup-action
+- uses: simulith/setup-action@v0.301.2
 - run: aws dynamodb list-tables --endpoint-url "$SIMULITH_ENDPOINT"
 ```
 
@@ -50,21 +50,13 @@ Prefer `--endpoint-url "$SIMULITH_ENDPOINT"`. The action also sets `AWS_ENDPOINT
 | `mode` | Behavior |
 | --- | --- |
 | `docker` (default) | `docker run` of `image:version` (default `simulith/simulith:latest`). Host `port` maps to container port 4566. The process binds `0.0.0.0` via `SIMULITH_HOST`. |
-| `binary` | Download the GitHub Release archive for the runner OS and architecture, verify `checksums.txt`, cache the binary, and run `simulith start --host 127.0.0.1 --port`. `version: latest` resolves the newest release before the cache key is chosen. GitHub-hosted runners download with `gh release download` and the job token. |
+| `binary` | Download the GitHub Release archive for the runner OS and architecture from [`simulith/setup-action`](https://github.com/simulith/setup-action/releases), verify `checksums.txt`, cache the binary, and run `simulith start --host 127.0.0.1 --port`. `version: latest` resolves the newest release before the cache key is chosen. |
 
 ```yaml
-- uses: ./setup-action
+- uses: simulith/setup-action@v0.301.2
   with:
     mode: binary
-    version: v0.285.0
+    version: v0.301.2
 ```
 
 No volume is mounted. State lasts for the job only. The action does not start the Console, and it does not mount the Docker socket (RDS sidecars and image-based Lambda need that separately — see [docker.md](docker.md)).
-
-## Marketplace
-
-GitHub Marketplace lists an action whose `action.yml` is at the repository root. Until a public `simulith/setup-action` repository exists, only checkouts of the Simulith monorepo can use `uses: ./setup-action`. Publishing to Marketplace requires that public repo and accepting Marketplace terms in the GitHub UI.
-
-## CI in the monorepo
-
-The Simulith repository runs a **Setup action** workflow that builds `runtime/Dockerfile` and checks `/health` in docker mode, then checks `/health` in binary mode against the latest published release.
