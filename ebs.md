@@ -25,3 +25,5 @@ Metadata-only **EBS volumes** on the **EC2 Query API** (`:4566`, SigV4 service `
 Green path (with EC2 compute): [`examples/terraform/ec2/instance-min/`](examples/terraform/ec2/instance-min/) — `aws_ebs_volume` + `aws_volume_attachment`.
 
 Verify: `simulith verify ec2 --skip-aws`.
+
+Console: **EC2** panel → **EBS volumes** tab (CreateVolume / DescribeVolumes / DeleteVolume when not in-use). Attach/detach via CLI, SDK, or Terraform.
