@@ -28,6 +28,7 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 | VPC endpoints | CreateVpcEndpoint, DescribeVpcEndpoints, ModifyVpcEndpoint, DeleteVpcEndpoints (Gateway + Interface metadata) |
 | Tags | CreateTags, DescribeTags |
 | Network interfaces | DescribeNetworkInterfaces (stub ENIs for Interface endpoints and NAT Gateways; empty otherwise) |
+| EC2 compute (metadata) | **DescribeAvailabilityZones** (static zones per region); **DescribeInstances**; **RunInstances** / **TerminateInstances** |
 
 ## What Simulith does not do
 
@@ -40,7 +41,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 | Flow Logs | Not implemented |
 | NAT packet translation | NAT Gateway is metadata (no packet NAT) |
 | PrivateLink data plane | Interface endpoints are metadata only |
-| EC2 instances (`RunInstances`) | VPC APIs only — no EC2 compute |
+| Real EC2 compute (boot, SSH, Session Manager) | **RunInstances** creates metadata records only — no hypervisor |
 
 ## Terraform
 

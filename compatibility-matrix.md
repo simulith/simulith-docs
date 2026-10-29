@@ -13,7 +13,7 @@ Last updated: 2026-10-07..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 238 |
+| Operations **available** locally | 240 |
 | Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
@@ -385,6 +385,8 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 | NAT Gateway + Elastic IP | available | yes (`nat-gateway-lifecycle`) | Stub ENI + documentation-range public IP; no NAT/IGW packet path |
 | Network ACLs | available | yes (`network-acl-lifecycle`) | Default + custom NACL metadata; rules are not enforced on packets |
 | Lambda VpcConfig | available | yes | ; invoke scenario in verify vpc |
+| DescribeAvailabilityZones / DescribeInstances | available | no | EC2 compute metadata |
+| RunInstances / TerminateInstances | available | no | Metadata-only instances in SQLite; no boot |
 
 ---
 
