@@ -55,3 +55,19 @@ resource "aws_instance" "app" {
     Environment = local.environment
   }
 }
+
+resource "aws_ebs_volume" "data" {
+  availability_zone = aws_subnet.app.availability_zone
+  size              = 8
+  type              = "gp3"
+
+  tags = {
+    Name = "${local.name_prefix}-data"
+  }
+}
+
+resource "aws_volume_attachment" "data" {
+  device_name = "/dev/xvdf"
+  volume_id   = aws_ebs_volume.data.id
+  instance_id = aws_instance.app.id
+}

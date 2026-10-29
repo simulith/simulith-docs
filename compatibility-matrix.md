@@ -1,6 +1,6 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty-one** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty-two** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS).
 
 > **Start here** for limits and verify coverage. Each [service guide](using-simulith.md) also lists **what you can do** and **what Simulith does not do**. Onboarding: [quickstart.md](quickstart.md) · [using-simulith.md](using-simulith.md).
 
@@ -12,8 +12,8 @@ Last updated: 2026-10-07..
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 21 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation) |
-| Operations **available** locally | 240 |
+| Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
+| Operations **available** locally | 242 |
 | Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
@@ -390,6 +390,17 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 
 ---
 
+## EBS (EC2 API)
+
+Guide: [ebs.md](ebs.md)
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateVolume / DescribeVolumes / DeleteVolume | available | yes (`ebs-volume-attach-lifecycle`) | Metadata-only volumes in SQLite; no real blocks |
+| AttachVolume / DetachVolume | available | yes (`ebs-volume-attach-lifecycle`) | Attachment metadata ↔ instance ids; no block I/O |
+
+---
+
 ## RDS (Postgres sidecar)
 
 Guide: [rds.md](rds.md) · Verify: `simulith verify rds`
@@ -514,7 +525,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
-| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle` | — |
+| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle`, `ebs-volume-attach-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy`, `list-roles-after-create` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |

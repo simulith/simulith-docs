@@ -29,6 +29,7 @@ Compatible with AWS CLI (`aws ec2`) and Terraform `aws_vpc` / `aws_subnet` / `aw
 | Tags | CreateTags, DescribeTags |
 | Network interfaces | DescribeNetworkInterfaces (stub ENIs for Interface endpoints and NAT Gateways; empty otherwise) |
 | EC2 compute (metadata) | **DescribeAvailabilityZones** (static zones per region); **DescribeInstances**; **RunInstances** / **TerminateInstances** |
+| EBS (metadata) | Volume attach APIs on the same EC2 endpoint — see [ebs.md](ebs.md); no block storage |
 
 ## What Simulith does not do
 
@@ -77,7 +78,7 @@ simulith verify vpc --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
 simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
 
-simulith verify ec2 --skip-aws          # EC2 compute metadata smoke (2 scenarios)
+simulith verify ec2 --skip-aws          # EC2 compute + EBS metadata smoke (3 scenarios)
 simulith verify ec2                     # DescribeAvailabilityZones + RunInstances parity
 ```
 
