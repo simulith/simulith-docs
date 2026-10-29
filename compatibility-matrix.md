@@ -385,8 +385,8 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 | NAT Gateway + Elastic IP | available | yes (`nat-gateway-lifecycle`) | Stub ENI + documentation-range public IP; no NAT/IGW packet path |
 | Network ACLs | available | yes (`network-acl-lifecycle`) | Default + custom NACL metadata; rules are not enforced on packets |
 | Lambda VpcConfig | available | yes | ; invoke scenario in verify vpc |
-| DescribeAvailabilityZones / DescribeInstances | available | no | EC2 compute metadata |
-| RunInstances / TerminateInstances | available | no | Metadata-only instances in SQLite; no boot |
+| DescribeAvailabilityZones / DescribeInstances | available | yes | EC2 compute metadata; `simulith verify ec2` |
+| RunInstances / TerminateInstances | available | yes (`instance-metadata-lifecycle`) | Metadata-only instances in SQLite; no boot |
 
 ---
 
@@ -514,6 +514,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
+| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy`, `list-roles-after-create` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |
@@ -538,6 +539,7 @@ simulith verify cloudwatch --skip-aws
 simulith verify cloudwatch-metrics --skip-aws
 simulith verify rds --skip-aws
 simulith verify vpc --skip-aws
+simulith verify ec2 --skip-aws
 simulith verify iam --skip-aws
 simulith verify kms --skip-aws
 simulith verify route53 --skip-aws

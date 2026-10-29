@@ -75,6 +75,9 @@ provider "aws" {
 simulith verify vpc --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
 simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
+
+simulith verify ec2 --skip-aws          # EC2 compute metadata smoke (2 scenarios)
+simulith verify ec2                     # DescribeAvailabilityZones + RunInstances parity
 ```
 
 Scenarios: `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle`. Lambda invoke scenario skips when `node` is not on PATH.
