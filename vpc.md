@@ -51,6 +51,7 @@ Green-path examples:
 - [`examples/terraform/vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) — Interface Secrets Manager endpoint
 - [`examples/terraform/vpc/nat-gateway-min/`](examples/terraform/vpc/nat-gateway-min/) — EIP + NAT Gateway + private default route
 - [`examples/terraform/vpc/network-acl-min/`](examples/terraform/vpc/network-acl-min/) — custom Network ACL + subnet association
+- [`examples/terraform/ec2/instance-min/`](examples/terraform/ec2/instance-min/) — `aws_instance` apply/destroy metadata only
 
 ```hcl
 provider "aws" {
