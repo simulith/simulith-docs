@@ -66,6 +66,16 @@ Connect with `psql -h 127.0.0.1 -p <port> -U <MasterUsername> -d <DBName>`.
 
 **Requires Docker** on PATH for real sidecar lifecycle. Unit tests use a mock sidecar.
 
+When Simulith runs **inside** the `simulith/simulith` container, mount the host Docker socket and run as **`root`** so the CLI can talk to the socket. Example:
+
+```bash
+docker run -d --name simulith --user root \
+  -p 4566:4566 \
+  -v simulith-data:/app/.simulith \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  simulith/simulith:latest
+```
+
 ## Terraform
 
 Green-path examples:
