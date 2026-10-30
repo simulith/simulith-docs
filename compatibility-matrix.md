@@ -261,7 +261,7 @@ Guide: [cognito.md](cognito.md) · Verify: `simulith verify cognito`
 | --- | --- | --- | --- |
 | CreateUserPool | available | yes (`user-pool-client-lifecycle`) |  |
 | DescribeUserPool | available | yes (`user-pool-client-lifecycle`) | |
-| ListUserPools | available | no | |
+| ListUserPools | available | yes (`public-auth-groups-domain`) | |
 | DeleteUserPool | available | yes (`user-pool-client-lifecycle`) | Cascades clients/groups/domain |
 | UpdateUserPool | available | no | Config merge |
 | CreateUserPoolClient | available | yes (`user-pool-client-lifecycle`) | |
@@ -269,17 +269,17 @@ Guide: [cognito.md](cognito.md) · Verify: `simulith verify cognito`
 | ListUserPoolClients | available | yes (`user-pool-client-lifecycle`) | |
 | DeleteUserPoolClient | available | yes (`user-pool-client-lifecycle`) | |
 | UpdateUserPoolClient | available | no | Client settings merge |
-| CreateGroup / GetGroup / ListGroups / DeleteGroup | available | no | |
-| CreateUserPoolDomain / Describe / Delete | available | no | Metadata only |
+| CreateGroup / GetGroup / ListGroups / DeleteGroup | available | yes (`public-auth-groups-domain`) | |
+| CreateUserPoolDomain / Describe / Delete | available | yes (`public-auth-groups-domain`) | Metadata only |
 | JWKS GET `/{poolId}/.well-known/jwks.json` | available | yes (`admin-auth-jwks`) | RSA per pool |
 | AdminCreateUser / AdminGetUser | available | yes (`admin-auth-jwks`) |  |
 | AdminSetUserPassword / AdminConfirmSignUp | available | yes (`admin-auth-jwks`) | AdminSetUserPassword |
 | AdminEnableUser / AdminDisableUser | available | no | |
 | AdminInitiateAuth | available | yes (`admin-auth-jwks`) | ADMIN_USER_PASSWORD_AUTH → RS256 JWT |
-| InitiateAuth / RespondToAuthChallenge | available | no | USER_PASSWORD_AUTH, USER_SRP_AUTH |
-| SignUp / ConfirmSignUp | available | no | Public self-registration |
-| ForgotPassword / ConfirmForgotPassword | available | no | In-memory reset codes |
-| ChangePassword | available | no | Access Token + previous/proposed password |
+| InitiateAuth / RespondToAuthChallenge | available | yes (`public-auth-groups-domain`) | USER_PASSWORD_AUTH, USER_SRP_AUTH |
+| SignUp / ConfirmSignUp | available | yes (`public-auth-groups-domain`) | Public self-registration |
+| ForgotPassword / ConfirmForgotPassword | available | yes (`public-auth-groups-domain`) | In-memory reset codes; code read from SES outbox |
+| ChangePassword | available | yes (`public-auth-groups-domain`) | Access Token + previous/proposed password |
 | SetUserPoolMfaConfig / GetUserPoolMfaConfig | available | no | Metadata; no TOTP challenge |
 | TagResource | available | no | User pool tags |
 | UntagResource | available | no | User pool tags |
@@ -515,7 +515,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value`, `secret-tags` | — |
-| Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks` | — |
+| Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks`, `public-auth-groups-domain` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | SNS | `topic-publish-lifecycle`, `subscribe-sqs-fanout` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke`, `custom-bus-lifecycle` | — |
