@@ -1,6 +1,6 @@
 # Simulith Console
 
-Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, SNS, SES, CloudWatch (Logs + Metrics + Alarms + Dashboards + Insights), Cognito, **EC2** (instance metadata + EBS volumes on the runtime API), VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md) · [serverless-integration.md](serverless-integration.md)).
+Web GUI for local Simulith — health, seed/reset, and **service panels** for DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, SNS, SES, CloudWatch (Logs + Metrics + Alarms + Dashboards + Insights), Cognito, **EC2** (instance metadata + EBS volumes attach/detach on the runtime API), VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation (read-only), and Verify. Deploy stacks via CLI, SDK, or [`serverless-simulith`](https://www.npmjs.com/package/serverless-simulith) — inspect them in the Console **CloudFormation** panel ([cloudformation.md](cloudformation.md) · [serverless-integration.md](serverless-integration.md)).
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
@@ -147,6 +147,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard**, **PutDashboard**, **DeleteDashboards** | Opaque JSON body; no widget rendering |
 | **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **Users** admin CRUD; **Auth debugger** — InitiateAuth / AdminInitiateAuth | Hosted UI; USER_SRP_AUTH wizard; pool/client create via CLI/Terraform |
+| **EC2** | **Instances:** DescribeInstances, RunInstances, TerminateInstances. **EBS volumes:** DescribeVolumes, CreateVolume, DeleteVolume, **AttachVolume**, **DetachVolume** | Metadata-only compute; no start/stop/reboot; key pairs tab is browser-local demo |
 | **SES** | ListIdentities, **VerifyEmailIdentity**, **DeleteIdentity**, ListTemplates, **CreateTemplate**, **DeleteTemplate**, **SendEmail** / **SendTemplatedEmail**; outbox via admin peek | No SMTP; seeded `demo@simulith.local` + `demo-template` via **Seed** |
 | **SNS** | ListTopics, ListSubscriptionsByTopic, **CreateTopic** (standard and FIFO), **Subscribe** (optional exact-match filter policy), **Publish** (FIFO group/dedup ids and string message attributes), **DeleteTopic**, **Unsubscribe**; recent publishes via admin peek | Seeded `demo-alarm` via **Seed**; topic attributes → CLI |
 | **VPC** | DescribeVpcs, DescribeSubnets, DescribeSecurityGroups (ingress/egress rules) | Create/delete UI deferred; metadata networking only; use Terraform `vpc/network-min` |
