@@ -14,7 +14,7 @@ Last updated: 2026-10-30..
 | --- | --- |
 | Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
 | Operations **available** locally | 242 |
-| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 3, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 4 |
+| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 3, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -480,7 +480,7 @@ Guide: [cloudfront.md](cloudfront.md) · Verify: `simulith verify cloudfront`
 | DeleteOriginAccessControl | available | yes (`distribution-config-update-delete`) | Terraform destroy |
 | ListCachePolicies | available | yes (`managed-cache-policies`) | AWS managed catalog |
 | GetCachePolicy | available | yes (`managed-cache-policies`) | AWS managed catalog |
-| TagResource | available | no | Distribution tags |
+| TagResource | available | yes (`distribution-tags`) | Distribution tags; verify  |
 
 ---
 
@@ -530,7 +530,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency`, `certificate-tags-delete` | — |
-| CloudFront | `oac-create-get`, `distribution-oac-lifecycle`, `distribution-config-update-delete`, `managed-cache-policies` | — |
+| CloudFront | `oac-create-get`, `distribution-oac-lifecycle`, `distribution-config-update-delete`, `managed-cache-policies`, `distribution-tags` | — |
 | CloudFormation | `stack-lifecycle`, `validate-template` | — |
 
 ```bash

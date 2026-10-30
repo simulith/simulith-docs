@@ -3,7 +3,7 @@
 Simulith ships a composite GitHub Action at [`simulith/setup-action`](https://github.com/simulith/setup-action). It starts the runtime on a runner and exports the endpoint later steps pass to the AWS CLI or an SDK.
 
 ```yaml
-- uses: simulith/setup-action@v0.314.0
+- uses: simulith/setup-action@v0.315.0
 - run: curl -fsS "$SIMULITH_ENDPOINT/health"
 ```
 
@@ -20,7 +20,7 @@ Pin `uses:` to a release tag. Guides and the compatibility matrix: [simulith-doc
 | `AWS_EC2_METADATA_DISABLED` | `true` |
 
 ```yaml
-- uses: simulith/setup-action@v0.314.0
+- uses: simulith/setup-action@v0.315.0
 - run: aws dynamodb list-tables --endpoint-url "$SIMULITH_ENDPOINT"
 ```
 
@@ -53,10 +53,10 @@ Prefer `--endpoint-url "$SIMULITH_ENDPOINT"`. The action also sets `AWS_ENDPOINT
 | `binary` | Download the GitHub Release archive for the runner OS and architecture from [`simulith/setup-action`](https://github.com/simulith/setup-action/releases), verify `checksums.txt`, cache the binary, and run `simulith start --host 127.0.0.1 --port`. `version: latest` resolves the newest release before the cache key is chosen. |
 
 ```yaml
-- uses: simulith/setup-action@v0.314.0
+- uses: simulith/setup-action@v0.315.0
   with:
     mode: binary
-    version: v0.314.0
+    version: v0.315.0
 ```
 
 No volume is mounted. State lasts for the job only. The action does not start the Console, and it does not mount the Docker socket (RDS sidecars and image-based Lambda need that separately — see [docker.md](docker.md)).
