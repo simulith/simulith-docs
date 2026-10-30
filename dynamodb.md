@@ -132,7 +132,7 @@ Target prefix `DynamoDBStreams_20120810` on the same HTTP endpoint (SigV4 signin
 
 Successful `PutItem`, `UpdateItem`, `DeleteItem`, `BatchWriteItem`, and `TransactWriteItems` append one record (`INSERT`, `MODIFY`, or `REMOVE`). Failed conditions and deletes of missing items do not. Each stream has one open shard. Disabling the stream closes that shard and clears `LatestStreamArn`; the stream stays readable until `DeleteTable` or reset. Re-enabling allocates a new ARN.
 
-Not in this slice: shard splits, a 24-hour trim job, Lambda event source mappings, and the Console Streams tab.
+Not in this slice: shard splits and a 24-hour trim job. **Lambda event source mappings** for streams: **** / ``. Console Streams tab: **** / ``.
 
 ## Continuous backups / PITR (Terraform metadata)
 

@@ -20,7 +20,7 @@ Simulith emulates the Lambda REST API on the same port as all other services (de
 | DeleteFunction | `DELETE /2015-03-31/functions/{name}` | ✓ |
 | InvokeFunction | `POST /2015-03-31/functions/{name}/invocations` | ✓ |
 | UpdateFunctionCode | `PUT /2015-03-31/functions/{name}/code` | ✓ |
-| CreateEventSourceMapping | `POST /2015-03-31/event-source-mappings` | ✓ |
+| CreateEventSourceMapping | `POST /2015-03-31/event-source-mappings` | ✓ SQS + DynamoDB Streams |
 | ListEventSourceMappings | `GET /2015-03-31/event-source-mappings` | ✓ |
 | GetEventSourceMapping | `GET /2015-03-31/event-source-mappings/{uuid}` | ✓ |
 | DeleteEventSourceMapping | `DELETE /2015-03-31/event-source-mappings/{uuid}` | ✓ |
@@ -44,7 +44,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 | `PublishVersion` / `ListVersionsByFunction` | No numbered versions (except CloudFormation `AWS::Lambda::Version` metadata) |
 | `PutFunctionConcurrency` / provisioned concurrency | Not applicable locally |
 | `CreateFunction` with `Code.S3Bucket` / `Code.S3Key` | Use `Code.ZipFile` (base64) |
-| Event source mappings other than SQS | No DynamoDB Streams, Kinesis, or MSK |
+| Event source mappings other than SQS and DynamoDB Streams | No Kinesis or MSK |
 | Lambda@Edge | Out of scope |
 
 ## AWS CLI examples
