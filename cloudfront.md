@@ -50,12 +50,12 @@ Module [`examples/terraform/cloudfront/cdn-min/`](examples/terraform/cloudfront/
 ## Verify
 
 ```bash
-simulith verify cloudfront --skip-aws          # Simulith-only smoke (2 scenarios)
-simulith verify cloudfront                     # OAC AWS parity + Simulith distribution smoke
+simulith verify cloudfront --skip-aws          # Simulith-only smoke (4 scenarios)
+simulith verify cloudfront                     # OAC + managed cache policy AWS parity; distribution smoke sim-only
 simulith verify cloudfront --filter oac        # subset by scenario name prefix
 ```
 
-Scenarios: `oac-create-get`, `distribution-oac-lifecycle`.
+Scenarios: `oac-create-get`, `distribution-oac-lifecycle`, `distribution-config-update-delete`, `managed-cache-policies`.
 
 ## Console
 

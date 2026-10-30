@@ -343,7 +343,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | KMS | `simulith verify kms --skip-aws` | 2 |
 | Route 53 | `simulith verify route53 --skip-aws` | 3 |
 | ACM | `simulith verify acm --skip-aws` | 3 |
-| CloudFront | `simulith verify cloudfront --skip-aws` | 2 |
+| CloudFront | `simulith verify cloudfront --skip-aws` | 4 |
 | CloudFormation | `simulith verify cloudformation --skip-aws` | 2 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.

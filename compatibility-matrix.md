@@ -6,7 +6,7 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-10-07..
+Last updated: 2026-10-30..
 
 ## Summary
 
@@ -14,7 +14,7 @@ Last updated: 2026-10-07..
 | --- | --- |
 | Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
 | Operations **available** locally | 242 |
-| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 2, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 2 |
+| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 3, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 4 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -474,12 +474,12 @@ Guide: [cloudfront.md](cloudfront.md) · Verify: `simulith verify cloudfront`
 | CreateDistribution | available | yes (`distribution-oac-lifecycle`) | S3 origin + OAC ref; Deployed immediately |
 | GetDistribution | available | yes (`distribution-oac-lifecycle`) | ETag header + config |
 | ListDistributions | available | yes (`distribution-oac-lifecycle`) | Summary list for Terraform refresh |
-| GetDistributionConfig | available | no | Config-only read |
-| UpdateDistribution | available | no | Disable-on-destroy; ETag / If-Match |
-| DeleteDistribution | available | no | Terraform destroy |
-| DeleteOriginAccessControl | available | no | Terraform destroy |
-| ListCachePolicies | available | no | AWS managed catalog |
-| GetCachePolicy | available | no | AWS managed catalog |
+| GetDistributionConfig | available | yes (`distribution-config-update-delete`) | Config-only read |
+| UpdateDistribution | available | yes (`distribution-config-update-delete`) | Disable-on-destroy; ETag / If-Match |
+| DeleteDistribution | available | yes (`distribution-config-update-delete`) | Terraform destroy |
+| DeleteOriginAccessControl | available | yes (`distribution-config-update-delete`) | Terraform destroy |
+| ListCachePolicies | available | yes (`managed-cache-policies`) | AWS managed catalog |
+| GetCachePolicy | available | yes (`managed-cache-policies`) | AWS managed catalog |
 | TagResource | available | no | Distribution tags |
 
 ---
@@ -530,7 +530,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency`, `certificate-tags-delete` | — |
-| CloudFront | `oac-create-get`, `distribution-oac-lifecycle` | — |
+| CloudFront | `oac-create-get`, `distribution-oac-lifecycle`, `distribution-config-update-delete`, `managed-cache-policies` | — |
 | CloudFormation | `stack-lifecycle`, `validate-template` | — |
 
 ```bash
