@@ -6,7 +6,7 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-10-30..
+Last updated: 2026-11-02..
 
 ## Summary
 
@@ -14,7 +14,7 @@ Last updated: 2026-10-30..
 | --- | --- |
 | Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
 | Operations **available** locally | 242 |
-| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 8, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 3, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
+| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 9, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 3, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -122,7 +122,7 @@ Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (10 scenarios)
 
 ## S3
 
-Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (8 scenarios)
+Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (9 scenarios)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
@@ -133,12 +133,12 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (8 scenarios)
 | GetObject | available | yes (`put-get-object`, `object-round-trip`) | Body + Content-Type, Content-Length, ETag |
 | HeadObject | available | yes (`head-object`) | Existence check; Content-Length |
 | DeleteObject | available | yes (`delete-object`) | Idempotent (204); `versionId` matches current object |
-| CopyObject | available | no | Same/cross-bucket via `x-amz-copy-source` |
-| DeleteObjects | available | no | Batch up to 1000 keys (`POST ?delete`); honors VersionId |
-| CreateMultipartUpload | available | no | POST `?uploads` |
-| UploadPart | available | no | `partNumber` 1–10000 |
-| CompleteMultipartUpload | available | no | Assembles parts; multipart ETag |
-| AbortMultipartUpload | available | no | Cleans in-progress upload |
+| CopyObject | available | yes (`copy-delete-multipart`) | Same/cross-bucket via `x-amz-copy-source` |
+| DeleteObjects | available | yes (`copy-delete-multipart`) | Batch up to 1000 keys (`POST ?delete`); honors VersionId |
+| CreateMultipartUpload | available | yes (`copy-delete-multipart`) | POST `?uploads` |
+| UploadPart | available | yes (`copy-delete-multipart`) | `partNumber` 1–10000 |
+| CompleteMultipartUpload | available | yes (`copy-delete-multipart`) | Assembles parts; multipart ETag |
+| AbortMultipartUpload | available | yes (`copy-delete-multipart`) | Cleans in-progress upload |
 | GetBucketNotificationConfiguration | available | no | GET `?notification` |
 | PutBucketNotificationConfiguration | available | no | Lambda + **TopicConfiguration** |
 | ListObjectsV2 | available | yes (`list-objects-v2-prefix`) | prefix, max-keys, continuation-token |
@@ -511,7 +511,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item`, `transact-write-get-items`, `projection-expression`, `update-expression-add-delete`, `query-scan-1mb-pagination`, `parallel-scan`, `streams` |
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility`, `fifo-send-receive-dedup` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
-| S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config`, `list-object-versions` | — |
+| S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config`, `list-object-versions`, `copy-delete-multipart` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value`, `secret-tags` | — |
