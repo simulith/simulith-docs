@@ -14,7 +14,7 @@ Last updated: 2026-11-02..
 | --- | --- |
 | Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
 | Operations **available** locally | 242 |
-| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 10, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 4, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
+| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 10, Lambda 10, API Gateway 5, Secrets Manager 3, Cognito 4, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -156,7 +156,7 @@ Guide: [s3.md](s3.md) · Verify: `simulith verify s3` (10 scenarios)
 
 ## Lambda
 
-Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
+Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (10 scenarios)
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
@@ -166,7 +166,7 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
 | DeleteFunction | available | yes (`function-crud-lifecycle`) | 204; removes metadata + zip from disk |
 | InvokeFunction | available | yes (`invoke-sync-payload`) | Sync subprocess; skips if `node` not on PATH; `java*` uses host `java`; `provided*` runs zip `bootstrap` |
 | UpdateFunctionCode | available | yes (`update-function-code`) | Replaces zip on disk; updates CodeSize / CodeSha256 |
-| UpdateFunctionConfiguration | available | no | Partial JSON patch: Environment, Timeout, MemorySize, Handler, Runtime, Role, Description, Layers, **VpcConfig** |
+| UpdateFunctionConfiguration | available | yes (`update-config-layer-catalog`) | Partial JSON patch: Environment, Timeout, MemorySize, Handler, Runtime, Role, Description, Layers, **VpcConfig** |
 | CreateEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | SQS (BatchSize ≤10) + DynamoDB stream ARNs |
 | ListEventSourceMappings | available | yes (`esm-sqs-lifecycle`) | Filter by FunctionName |
 | GetEventSourceMapping | available | yes (`esm-sqs-lifecycle`) | UUID path |
@@ -177,10 +177,10 @@ Guide: [lambda.md](lambda.md) · Verify: `simulith verify lambda` (9 scenarios)
 | Function URL HTTP invoke | available | yes (`function-url-invoke`) | Same path; raw JSON event |
 | InvokeFunction (Event) | available | yes (`invoke-async-event`) | HTTP 202 + background run |
 | PublishLayerVersion | available | yes (`layer-invoke`) | `/2018-10-31/layers/{name}/versions` |
-| ListLayers | available | no | All layer names |
-| ListLayerVersions | available | no | Per layer name |
-| GetLayerVersion | available | no | By version number |
-| DeleteLayerVersion | available | no | Removes metadata + zip |
+| ListLayers | available | yes (`update-config-layer-catalog`) | All layer names |
+| ListLayerVersions | available | yes (`update-config-layer-catalog`) | Per layer name |
+| GetLayerVersion | available | yes (`update-config-layer-catalog`) | By version number |
+| DeleteLayerVersion | available | yes (`update-config-layer-catalog`) | Removes metadata + zip |
 | CreateFunction (`Layers`) | available | yes (`layer-invoke`) | Layer ARNs on configuration |
 
 **Not in matrix (gap):** aliases, versions.
@@ -203,10 +203,10 @@ Guide: [apigateway.md](apigateway.md) · Verify: `simulith verify apigateway`
 | CreateDeployment | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/deployments` |
 | CreateStage | available | yes (`deployment-stage-lifecycle`) | `POST /restapis/{id}/stages` |
 | Stage HTTP invoke | available | yes (`stage-http-invoke`) | `…/{stage}/_user_request_/…` → Lambda proxy (no SigV4) |
-| GetResources / GetResource / GetMethod / GetIntegration | available | no | Terraform refresh; GetResources wire key `item` |
-| GetDeployment / GetStage | available | no | Terraform read after create |
-| DeleteStage / DeleteDeployment / DeleteResource / DeleteMethod / DeleteIntegration | available | no | Terraform destroy |
-| Lambda AddPermission / RemovePermission / GetPolicy | available | no | `POST/DELETE/GET …/functions/{name}/policy` |
+| GetResources / GetResource / GetMethod / GetIntegration | available | yes (`terraform-refresh-destroy`) | Terraform refresh; GetResources wire key `item` |
+| GetDeployment / GetStage | available | yes (`terraform-refresh-destroy`) | Terraform read after create |
+| DeleteStage / DeleteDeployment / DeleteResource / DeleteMethod / DeleteIntegration | available | yes (`terraform-refresh-destroy`) | Terraform destroy |
+| Lambda AddPermission / RemovePermission / GetPolicy | available | yes (`terraform-refresh-destroy`) | `POST/DELETE/GET …/functions/{name}/policy` |
 
 **Terraform:** [`examples/terraform/apigateway/`](examples/terraform/apigateway/) — green apply + HTTP invoke + destroy.
 
@@ -512,8 +512,8 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility`, `fifo-send-receive-dedup` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config`, `list-object-versions`, `copy-delete-multipart`, `notifications-list-objects-v1` | — |
-| Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
-| API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
+| Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location`, `update-config-layer-catalog` | — |
+| API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke`, `terraform-refresh-destroy` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value`, `secret-tags` | — |
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks`, `public-auth-groups-domain`, `user-pool-tags` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |

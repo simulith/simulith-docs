@@ -132,7 +132,7 @@ REST API metadata, resources, methods, integrations, authorizers, deployments, a
 ## Verify
 
 ```bash
-simulith verify apigateway --skip-aws          # Simulith-only smoke (4 scenarios)
+simulith verify apigateway --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify apigateway                     # AWS parity (requires SIMULITH_VERIFY_LAMBDA_ROLE_ARN)
 simulith verify apigateway --filter rest-api   # subset by scenario name prefix
 ```

@@ -325,8 +325,8 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | SQS | `simulith verify sqs --skip-aws` | 11 |
 | SSM | `simulith verify ssm --skip-aws` | 10 |
 | S3 | `simulith verify s3 --skip-aws` | 10 |
-| Lambda | `simulith verify lambda --skip-aws` | 9 |
-| API Gateway | `simulith verify apigateway --skip-aws` | 4 |
+| Lambda | `simulith verify lambda --skip-aws` | 10 |
+| API Gateway | `simulith verify apigateway --skip-aws` | 5 |
 | Secrets Manager | `simulith verify secretsmanager --skip-aws` | 3 |
 | Cognito | `simulith verify cognito --skip-aws` | 4 |
 | SES | `simulith verify ses --skip-aws` | 2 |

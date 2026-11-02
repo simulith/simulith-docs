@@ -384,7 +384,7 @@ export SIMULITH_VERIFY_LAMBDA_ROLE_ARN=arn:aws:iam::<account>:role/<lambda-execu
 simulith verify lambda --region us-east-1 --endpoint http://127.0.0.1:4566
 ```
 
-**Nine scenarios:** function CRUD lifecycle, invoke sync payload, async invoke (`InvocationType: Event`), function URL invoke, **layer-backed invoke**, update function code, SQS ESM lifecycle, list functions after create, get function code location.
+**Ten scenarios:** function CRUD lifecycle, invoke sync payload, async invoke (`InvocationType: Event`), function URL invoke, **layer-backed invoke**, update function code, SQS ESM lifecycle, list functions after create, get function code location, **update config and layer catalog**.
 
 **Invoke scenario** requires **`node`** on the **Simulith runtime host** PATH (not only on the verify client). In Docker CI the runtime image has no Node — those scenarios are **skipped** automatically via `/health` → `lambdaInvoke.node`. Typical local dev: install `node` on the host running `simulith start`.
 
