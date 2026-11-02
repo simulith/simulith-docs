@@ -14,7 +14,7 @@ Last updated: 2026-11-02..
 | --- | --- |
 | Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
 | Operations **available** locally | 242 |
-| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 9, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 3, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
+| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 10, SSM 10, S3 9, Lambda 9, API Gateway 4, Secrets Manager 3, Cognito 4, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -281,9 +281,9 @@ Guide: [cognito.md](cognito.md) · Verify: `simulith verify cognito`
 | ForgotPassword / ConfirmForgotPassword | available | yes (`public-auth-groups-domain`) | In-memory reset codes; code read from SES outbox |
 | ChangePassword | available | yes (`public-auth-groups-domain`) | Access Token + previous/proposed password |
 | SetUserPoolMfaConfig / GetUserPoolMfaConfig | available | no | Metadata; no TOTP challenge |
-| TagResource | available | no | User pool tags |
-| UntagResource | available | no | User pool tags |
-| ListTagsForResource | available | no | User pool tags |
+| TagResource | available | yes (`user-pool-tags`) | User pool tags; verify  |
+| UntagResource | available | yes (`user-pool-tags`) | User pool tags; verify  |
+| ListTagsForResource | available | yes (`user-pool-tags`) | User pool tags; verify  |
 | AddCustomAttributes | available | no | Custom schema merge |
 | ListUsers | available | no | PreSignUp trigger pagination |
 
@@ -515,7 +515,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location` | — |
 | API Gateway | `rest-api-crud-lifecycle`, `proxy-integration-lifecycle`, `deployment-stage-lifecycle`, `stage-http-invoke` | — |
 | Secrets Manager | `secret-crud-lifecycle`, `get-secret-value`, `secret-tags` | — |
-| Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks`, `public-auth-groups-domain` | — |
+| Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks`, `public-auth-groups-domain`, `user-pool-tags` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | SNS | `topic-publish-lifecycle`, `subscribe-sqs-fanout` | — |
 | EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke`, `custom-bus-lifecycle` | — |
