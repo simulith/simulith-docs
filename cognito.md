@@ -91,7 +91,7 @@ aws cognito-idp create-user-pool \
 ## Verify
 
 ```bash
-simulith verify cognito --skip-aws          # Simulith-only smoke (4 scenarios)
+simulith verify cognito --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify cognito                     # AWS parity (requires AWS credentials)
 simulith verify cognito --filter admin-auth  # subset by scenario name prefix
 ```
