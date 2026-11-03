@@ -24,8 +24,8 @@ SQS uses **AWS Query** (`application/x-www-form-urlencoded` + **XML** responses)
 | DeleteQueue | **Available** | Remove queue and all messages by `QueueUrl` |
 | PurgeQueue | **Available** | Delete all messages; queue remains; 60s throttle |
 | SetQueueAttributes | **Available** | Update persisted queue metadata (incl. RedrivePolicy) |
-| ListDeadLetterSourceQueues | **Available** | Source queues whose RedrivePolicy targets this DLQ |
-| StartMessageMoveTask | **Available** | Synchronous move of visible DLQ messages to a source queue |
+| ListDeadLetterSourceQueues | **Available** | Source queues whose RedrivePolicy targets this DLQ; verify **`dlq-redrive`** |
+| StartMessageMoveTask | **Available** | Synchronous move of visible DLQ messages to a source queue; verify **`dlq-redrive`** |
 
 ## What Simulith does not do
 

@@ -92,8 +92,8 @@ Guide: [sqs.md](sqs.md) · Verify: `simulith verify sqs` (11 scenarios) · Stand
 | PurgeQueue | available | yes (`purge-queue`) | 60s throttle between purges |
 | ChangeMessageVisibility | available | yes (`change-message-visibility`) | Invalid handle → error |
 | ChangeMessageVisibilityBatch | available | yes (`change-message-visibility`) | Same scenario as single |
-| ListDeadLetterSourceQueues | available | no | DLQ source discovery |
-| StartMessageMoveTask | available | no | Synchronous DLQ redrive |
+| ListDeadLetterSourceQueues | available | yes (`dlq-redrive`) | DLQ source discovery |
+| StartMessageMoveTask | available | yes (`dlq-redrive`) | Synchronous DLQ redrive |
 
 **FIFO gaps (documented in [sqs.md](sqs.md)):** high-throughput mode, `ReceiveRequestAttemptId`, per-message delay on FIFO.
 
@@ -509,7 +509,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Service | Default scenarios | Extended (DynamoDB only) |
 | --- | --- | --- |
 | DynamoDB | `create-describe-table`, `put-get-item`, `query`, `scan`, `update-item`, `delete-item` | `list-tables`, `delete-table`, `query-gsi`, `conditional-put`, `update-table`, `table-tags`, `batch-write-item`, `batch-get-item`, `transact-write-get-items`, `projection-expression`, `update-expression-add-delete`, `query-scan-1mb-pagination`, `parallel-scan`, `streams` |
-| SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility`, `fifo-send-receive-dedup` | — |
+| SQS | `create-get-queue-url`, `send-receive-delete`, `get-queue-attributes`, `list-queues`, `delete-queue`, `set-queue-attributes`, `send-message-batch`, `delete-message-batch`, `purge-queue`, `change-message-visibility`, `fifo-send-receive-dedup`, `dlq-redrive` | — |
 | SSM | `put-get-parameter`, `put-overwrite`, `get-parameters-batch`, `get-parameters-by-path`, `delete-parameter`, `delete-parameters`, `describe-parameters`, `secure-string`, `parameter-tags`, `parameter-tier` | — |
 | S3 | `create-list-delete-bucket`, `put-get-object`, `head-object`, `delete-object`, `list-objects-v2-prefix`, `object-round-trip`, `bucket-state-config`, `list-object-versions`, `copy-delete-multipart`, `notifications-list-objects-v1` | — |
 | Lambda | `function-crud-lifecycle`, `invoke-sync-payload`, `invoke-async-event`, `function-url-invoke`, `layer-invoke`, `update-function-code`, `esm-sqs-lifecycle`, `list-functions-after-create`, `get-function-code-location`, `update-config-layer-catalog` | — |
