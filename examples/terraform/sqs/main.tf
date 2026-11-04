@@ -5,4 +5,9 @@
 
 resource "aws_sqs_queue" "app" {
   name = var.queue_name
+
+  tags = {
+    Environment = "local"
+    ManagedBy   = "terraform"
+  }
 }

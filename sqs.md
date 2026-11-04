@@ -26,6 +26,9 @@ SQS uses **AWS Query** (`application/x-www-form-urlencoded` + **XML** responses)
 | SetQueueAttributes | **Available** | Update persisted queue metadata (incl. RedrivePolicy) |
 | ListDeadLetterSourceQueues | **Available** | Source queues whose RedrivePolicy targets this DLQ; verify **`dlq-redrive`** |
 | StartMessageMoveTask | **Available** | Synchronous move of visible DLQ messages to a source queue; verify **`dlq-redrive`** |
+| TagQueue | **Available** | Merge cost-allocation tags on queue |
+| UntagQueue | **Available** | Remove tag keys |
+| ListQueueTags | **Available** | List tags; verify **`queue-tags`** |
 
 ## What Simulith does not do
 
@@ -33,7 +36,6 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 | Operation | Notes |
 | --- | --- |
-| `TagQueue` / `UntagQueue` / `ListQueueTags` | No queue tags |
 | `CancelMessageMoveTask` / `ListMessageMoveTasks` | No async task tracking; **StartMessageMoveTask** completes synchronously |
 | FIFO throughput / deduplication scope | **perQueue** / **queue** only; no high-throughput FIFO mode |
 
@@ -234,7 +236,7 @@ If no attribute names are requested, Simulith returns the **full supported subse
 | FIFO send fields | MessageGroupId / deduplication | **Required** on FIFO queues; rejected on standard queues |
 | QueueUrl host match | Strict URL must match queue | **Resolved by queue name** in URL path |
 | Long polling | Distributed sampling | **SQLite poll loop** (~200ms); blocks up to `WaitTimeSeconds` or queue default |
-| Receipt handle | AWS opaque token | **`simulith:{messageId}:{count}:{nonce}`** |
+| Receipt handle | AWS opaque token | **Opaque v2** (default, ≥80 chars, not parseable). **Legacy accept:** `simulith:{messageId}:{count}:{nonce}` still works for delete/visibility. Opt-in legacy emit: `SIMULITH_SQS_RECEIPT_HANDLE_FORMAT=legacy` |
 | Stale receipt handle on delete | May succeed without deleting message | **Same** — 200 OK no-op when handle does not match latest stored handle |
 | Stale receipt handle on ChangeMessageVisibility | `ReceiptHandleIsInvalid` | **Same** — 404 when handle invalid or superseded |
 | Queue attributes | Full validation | Stored; minimal validation |
