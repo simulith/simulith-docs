@@ -6,7 +6,7 @@ Local Amazon EventBridge / CloudWatch Events **schedule rules** that invoke Lamb
 
 Simulith emulates EventBridge schedule APIs on the same port as other services (default `:4566`).
 
-- **SigV4 service name:** `events`
+- **SigV4 service names:** `events` (rules, buses, archives) · `schemas` (schema registry REST under `/v1/…`)
 - **Protocol:** AWS JSON 1.1 (`X-Amz-Target: AWSEvents.<Operation>`)
 - **Bus:** default bus + custom event buses
 - **Delivery:** schedule poller invokes Lambda targets via `InvokeSync` (no real EventBridge bus)
@@ -22,6 +22,9 @@ Compatible with AWS CLI (`aws events`) and SDKs when using `--endpoint-url http:
 | PutTargets / RemoveTargets / ListTargetsByRule | ✓ (Lambda ARNs) |
 | PutEvents → pattern rules → Lambda Invoke | ✓ default + custom buses |
 | CreateEventBus / DeleteEventBus / DescribeEventBus / ListEventBuses | ✓ |
+| CreateArchive / DescribeArchive / ListArchives / UpdateArchive / DeleteArchive | ✓ |
+| StartReplay / DescribeReplay / ListReplays / CancelReplay | ✓ |
+| EventBridge Schemas (registry + discoverer) | ✓ subset |
 | Schedule poller → Lambda Invoke | ✓ `rate(...)`; `cron(...)` ≈ every minute |
 
 ## What Simulith does not do
@@ -30,9 +33,10 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 
 | Operation | Notes |
 | --- | --- |
-| Archives / replays | Not implemented |
+| Archive retention enforcement (exact AWS) | Subset — best-effort purge on capture |
+| Async replay throttling / destinations | Subset — in-process replay to source or optional destination bus |
 | EventBridge Pipes | Not implemented |
-| Schema registry | Not implemented |
+| Full Schemas API (code bindings, export, search) | Subset — CRUD + discoverers only |
 | Non-Lambda targets (SQS, SNS, Step Functions) | Lambda targets only |
 
 ## Limits
@@ -46,12 +50,12 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 ## Verify
 
 ```bash
-simulith verify eventbridge --skip-aws          # Simulith-only smoke (3 scenarios)
+simulith verify eventbridge --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify eventbridge                     # AWS parity (rule CRUD; schedule fire is Simulith smoke)
 simulith verify eventbridge --filter schedule   # subset by scenario name prefix
 ```
 
-Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PATH), `custom-bus-lifecycle`.
+Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PATH), `custom-bus-lifecycle`, `archive-replay-lifecycle`, `schema-registry-discovery`.
 
 ## Console
 
@@ -74,6 +78,22 @@ aws events put-targets --endpoint-url "$EP" \
 ```
 
 Scheduled event payload shape: `source=aws.events`, `detail-type=Scheduled Event`.
+
+### Schema registry (Schemas API)
+
+Uses the **`schemas`** SigV4 service and REST paths under `/v1/` on the same endpoint URL.
+
+```bash
+aws schemas create-discoverer --endpoint-url "$EP" \
+  --source-arn "arn:aws:events:us-east-1:000000000000:event-bus/default"
+
+aws events put-events --endpoint-url "$EP" \
+  --entries Source=my.app,DetailType=OrderCreated,Detail='{"orderId":"42"}'
+
+aws schemas list-schemas --endpoint-url "$EP" --registry-name aws.events
+```
+
+Discovered schemas are named `{source}@{detail-type}` in the **`aws.events`** registry (JSON Schema Draft 4, best-effort inference).
 
 ### PutEvents (event-pattern rules)
 

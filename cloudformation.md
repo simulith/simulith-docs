@@ -35,7 +35,7 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | Operation / type | Notes |
 | --- | --- |
 | `CreateChangeSet` / `ExecuteChangeSet` / `DescribeChangeSet` | No change sets |
-| Nested stacks | Not implemented |
+| Nested stacks (deep hierarchy / exports) | Subset — **`AWS::CloudFormation::Stack`** with inline `TemplateBody` / S3 `TemplateURL`; child stack lifecycle; parent delete cascades |
 | Drift detection | Not implemented |
 | `AWS::EC2::*` / `AWS::ECS::*` / `AWS::RDS::*` in templates | Not provisioned |
 | Most of the AWS resource catalog | Only the Serverless-oriented types listed below |
@@ -63,6 +63,7 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | `AWS::S3::Bucket` | S3 store (`BucketName`, `PublicAccessBlockConfiguration`, `Tags` subset) |
 | `AWS::S3::BucketPolicy` | S3 store (`Bucket` ref, `PolicyDocument` JSON — Serverless deployment bucket policy) |
 | `AWS::Logs::LogGroup` | CloudWatch Logs store |
+| `AWS::CloudFormation::Stack` | Nested stack — provisions child stack + supported types in child template |
 
 **Intrinsics (subset):** `Ref`, `Fn::GetAtt`, `Fn::Sub`, `Fn::Join`, `Fn::If`, `Fn::Equals`, `Fn::Not`, `Fn::And`, `Fn::Or`, `Condition`. `AWS::NoValue` drops the property. Template `DependsOn` and resource `Condition` are honored. Omitted parameters use the template default when one is set.
 
@@ -73,8 +74,8 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | Type | Behavior |
 | --- | --- |
 | `AWS::CDK::Metadata` | Controlled no-op. Physical ID `noop-<logicalID>`. `Ref` and `GetAtt` return that ID |
-| `Custom::*` | Same no-op. The provider Lambda is not invoked |
-| `AWS::CloudFormation::CustomResource` | Same no-op |
+| `Custom::*` | With `ServiceToken`, invokes provider Lambda (subset — sync JSON response). Without `ServiceToken`, no-op |
+| `AWS::CloudFormation::CustomResource` | Same invoke subset as `Custom::*` when `ServiceToken` is set |
 | `AWS::CloudFormation::WaitCondition` / `WaitConditionHandle` | Same no-op |
 
 Other resource types that are not in the supported table still fail the stack (`AWS::DynamoDB::Table`, `cdk bootstrap` / `CDKToolkit`, `AWS::Serverless::*`). `Custom::*` does not upload CDK assets; function code still needs `ZipFile` or an object already in S3.
@@ -146,15 +147,15 @@ Deployment buckets use `AWS::S3::Bucket`. See [`hello-serverless`](examples/serv
 ## Verify
 
 ```bash
-simulith verify cloudformation --skip-aws   # CI smoke (Simulith-only)
+simulith verify cloudformation --skip-aws   # CI smoke (Simulith-only, 3 scenarios)
 simulith verify cloudformation              # full parity vs AWS sandbox (P-dev)
 ```
 
-Scenarios: `stack-lifecycle`, `validate-template`.
+Scenarios: `stack-lifecycle`, `validate-template`, `nested-stack`.
 
 ## Limits
 
-- No change sets, nested stacks, drift detection, or StackSets
+- No change sets, drift detection, or StackSets; nested stacks are a **subset** (inline/S3 child template, no stack exports across accounts)
 - Create/update/delete are **synchronous** (`*_COMPLETE` immediately)
 - Update uses **replace-all** (no resource-level diff yet)
 

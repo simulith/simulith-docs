@@ -13,8 +13,8 @@ Last updated: 2026-11-03..
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
-| Operations **available** locally | 245 |
-| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 13, SSM 10, S3 10, Lambda 10, API Gateway 5, Secrets Manager 3, Cognito 5, SES 2, SNS 2, EventBridge 3, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5 |
+| Operations **available** locally | 247 |
+| Default verify scenarios | DynamoDB 6 (+14 extended), SQS 13, SSM 10, S3 10, Lambda 10, API Gateway 5, Secrets Manager 3, Cognito 5, SES 2, SNS 2, EventBridge 5, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5, CloudFormation 3 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
 Run verification: [`compatibility.md`](compatibility.md).
@@ -338,6 +338,8 @@ Guide: [eventbridge.md](eventbridge.md) · Verify: `simulith verify eventbridge`
 | Schedule → Lambda Invoke | available | yes (`schedule-lambda-invoke`) | `rate(...)`; `cron(...)` ≈ 1m; needs `node` |
 | PutEvents (default + custom bus) | available | yes (`custom-bus-lifecycle`) | ,  |
 | CreateEventBus / DeleteEventBus / DescribeEventBus / ListEventBuses | available | yes (`custom-bus-lifecycle`) |  |
+| CreateArchive / DescribeArchive / ListArchives / UpdateArchive / DeleteArchive | available | yes (`archive-replay-lifecycle`) | PutEvents capture;  |
+| StartReplay / DescribeReplay / ListReplays / CancelReplay | available | yes (`archive-replay-lifecycle`) | Destination bus required;  |
 
 ---
 
@@ -521,7 +523,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Cognito | `user-pool-client-lifecycle`, `admin-auth-jwks`, `public-auth-groups-domain`, `user-pool-tags`, `admin-pool-client-depth` | — |
 | SES | `identity-template-lifecycle`, `send-templated-email` | — |
 | SNS | `topic-publish-lifecycle`, `subscribe-sqs-fanout` | — |
-| EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke`, `custom-bus-lifecycle` | — |
+| EventBridge | `rule-target-lifecycle`, `schedule-lambda-invoke`, `custom-bus-lifecycle`, `archive-replay-lifecycle`, `schema-registry-discovery` | — |
 | CloudWatch Logs | `log-group-lifecycle`, `put-log-events`, `get-log-events`, `filter-log-events`, `logs-insights`, `logs-insights-depth`, `logs-insights-parse`, `logs-insights-bin`, `logs-insights-pipeline` | — |
 | CloudWatch Metrics | `put-list-metrics`, `get-metric-statistics`, `get-metric-data` | — |
 | CloudWatch Alarms | `put-describe-alarms`, `delete-alarms`, `alarm-evaluation`, `alarm-eval-depth` | — |
@@ -534,7 +536,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency`, `certificate-tags-delete` | — |
 | CloudFront | `oac-create-get`, `distribution-oac-lifecycle`, `distribution-config-update-delete`, `managed-cache-policies`, `distribution-tags` | — |
-| CloudFormation | `stack-lifecycle`, `validate-template` | — |
+| CloudFormation | `stack-lifecycle`, `validate-template`, `nested-stack` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws

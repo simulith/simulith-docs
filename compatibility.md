@@ -333,7 +333,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Cognito | `simulith verify cognito --skip-aws` | 5 |
 | SES | `simulith verify ses --skip-aws` | 2 |
 | SNS | `simulith verify sns --skip-aws` | 2 |
-| EventBridge | `simulith verify eventbridge --skip-aws` | 3 |
+| EventBridge | `simulith verify eventbridge --skip-aws` | 5 |
 | CloudWatch Logs | `simulith verify cloudwatch --skip-aws` | 9 |
 | CloudWatch Metrics | `simulith verify cloudwatch-metrics --skip-aws` | 3 |
 | CloudWatch Alarms | `simulith verify cloudwatch-alarms --skip-aws` | 4 |
@@ -346,7 +346,7 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | Route 53 | `simulith verify route53 --skip-aws` | 3 |
 | ACM | `simulith verify acm --skip-aws` | 3 |
 | CloudFront | `simulith verify cloudfront --skip-aws` | 5 |
-| CloudFormation | `simulith verify cloudformation --skip-aws` | 2 |
+| CloudFormation | `simulith verify cloudformation --skip-aws` | 3 |
 
 No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.
 
