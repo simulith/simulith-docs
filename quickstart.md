@@ -36,6 +36,8 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 
+**Local cost estimate:** With **Console** at `:9080`, open **Billing** for an AWS-style on-demand estimate from your local API usage (plus inventory sync). Same data via `ce:GetCostAndUsage` and `simulith verify cost`. **Not** your real AWS bill — see [cost-explorer.md](cost-explorer.md).
+
 ---
 
 ## Prerequisites

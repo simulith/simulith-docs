@@ -58,8 +58,8 @@ Your app / CLI / Terraform
 | **Credentials** | IAM user/role, SSO, etc. | Any static pair when SigV4 is off (default): e.g. `test` / `secret` |
 | **Account ID** | Your 12-digit account | Fixed **`000000000000`** in ARNs and queue URLs |
 | **Data storage** | AWS-managed, multi-AZ | **SQLite** under `/app/.simulith` in Docker (mount a volume to persist) — [persistence.md](persistence.md) |
-| **Billing / quotas** | AWS pricing and service limits | None — limited by disk and documented API subset |
-| **Services (available)** | Full catalogs | **Twenty-one curated local subsets** — DynamoDB through CloudFormation; see each service guide and the [compatibility matrix](compatibility-matrix.md) |
+| **Billing / quotas** | AWS Billing and Cost Explorer (real invoices) | **Local cost estimate** — Console **Billing** + `ce:GetCostAndUsage` from dev traffic ([cost-explorer.md](cost-explorer.md)); not a real AWS bill. No cloud quotas — limited by disk and documented API subset |
+| **Services (available)** | Full catalogs | **Twenty-three** areas in the [compatibility matrix](compatibility-matrix.md) (incl. EC2/EBS and local cost estimate) — see each service guide |
 | **API coverage** | Complete per service | **Subset** — `simulith verify` scenarios on all shipped services — [compatibility-matrix.md](compatibility-matrix.md) |
 | **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
@@ -194,7 +194,7 @@ docker run -d --name simulith-console --network simulith-net \
 # Verify (new terminal)
 curl http://localhost:9080/runtime/health
 
-# Open Console → Seed demo data → browse DynamoDB / SQS / SSM
+# Open Console → Seed demo data → browse DynamoDB / SQS / SSM; optional **Billing** for local cost estimate
 
 export AWS_ENDPOINT=http://127.0.0.1:9080/runtime
 export AWS_DEFAULT_REGION=us-east-1
