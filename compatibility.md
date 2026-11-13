@@ -35,6 +35,7 @@ simulith verify kms
 simulith verify route53
 simulith verify acm
 simulith verify cloudfront
+simulith verify cost
 simulith verify cloudformation
 ```
 
@@ -347,8 +348,9 @@ The job builds `simulith`, seeds local state, starts the HTTP server on `:4566`,
 | ACM | `simulith verify acm --skip-aws` | 3 |
 | CloudFront | `simulith verify cloudfront --skip-aws` | 5 |
 | CloudFormation | `simulith verify cloudformation --skip-aws` | 3 |
+| Cost estimate | `simulith verify cost --skip-aws` | 3 |
 
-No AWS credentials are required. Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.
+No AWS credentials are required for `--skip-aws` services. **`simulith verify cost`** is always Simulith-only (no `--skip-aws` flag). Reports use JSON schema `version: 1` with **`mode: smoke`** (no `compatibilityPercent`). Lambda **invoke** scenario is skipped when `node` is not on PATH. RDS scenarios are skipped when **Docker** is not on PATH.
 
 **Extended DynamoDB scenarios** (`--filter extended`, 13 total) are **not** part of the default PR job — they add time and overlap with default smoke coverage goals; run them locally or set `VERIFY_DDB_EXTENDED=true` when invoking the script below.
 

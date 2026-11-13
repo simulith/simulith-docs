@@ -292,6 +292,30 @@ Query recent in-memory recorded requests across AWS and Admin APIs for live diag
 
 ---
 
+### `POST /_simulith/v1/cost/inventory/refresh`
+
+Recomputes **Fixed:*** inventory rows for today (UTC) from SQLite resource counts.
+
+**Response 200:**
+
+```json
+{ "status": "ok", "action": "cost_inventory_refresh" }
+```
+
+---
+
+### `GET /_simulith/v1/cost/months`
+
+Lists calendar months (`YYYY-MM`) that have persisted cost usage rows (Cost Explorer estimate).
+
+**Response 200:**
+
+```json
+{ "status": "ok", "months": ["2026-11", "2026-10"] }
+```
+
+---
+
 ### `POST /_simulith/v1/inspector/clear`
 
 Clears the in-memory recorded requests buffer.

@@ -100,6 +100,7 @@ The Console uses **same-origin proxies** so the browser does not need CORS on th
 - **Shell** — dark OKLCH theme, **ConsoleShell** + categorized sidebar with unsupported service hints & badges.
 - **Dashboard** — service cards with best-effort resource counts; seed, reset, health.
 - **Request Inspector** — live HTTP/SDK traffic monitor, payload inspection, and runtime error diagnostics with Postel's law warnings.
+- **Billing** — local **Cost Explorer estimate** (Today / 7d / 30d / month, by service and **usage type** incl. Lambda GB-s); not an AWS invoice. See [cost-explorer.md](cost-explorer.md).
 - **Panels** — Lovable column layout (`split-view`) for operational & security panels (KMS, EventBridge, VPC, Route 53, Secrets Manager, ACM, CloudFront) alongside stacked multi-tab inspection for heavy resources (DynamoDB, S3, SQS).
 
 ### Runtime admin routes
@@ -123,6 +124,8 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | `DELETE` | `/_simulith/v1/ses/outbox?messageId=…` | Remove one captured message |
 | `GET` | `/_simulith/v1/sns/messages?topicArn=` | Peek SNS publish log (optional topic filter) |
 | `GET` | `/_simulith/v1/cloudwatch/events?logGroupName=&logStreamName=` | Peek recent log events (admin fallback — Console uses **GetLogEvents** API) |
+| `GET` | `/_simulith/v1/cost/months` | Months with persisted cost usage (Billing month picker) |
+| `POST` | `/_simulith/v1/cost/inventory/refresh` | Recompute **Fixed:*** inventory rows for today |
 
 **Security:** local development only — no authentication in the Console. Do not expose admin routes on untrusted networks without a gateway.
 
@@ -133,6 +136,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | Panel | Capabilities | Limits |
 | --- | --- | --- |
 | **Request Inspector** | **Live traffic stream**, status/service/search filters, auto-refresh feed, latency metrics, header & payload inspection, error diagnostics, Postel's Law warnings, clear history | In-memory ring buffer (up to 200 requests) |
+| **Billing** | Date presets, service cost table, daily trend, **Sync inventory**; uses `ce:GetCostAndUsage` | Estimate only — reference us-east-1 prices; not AWS Billing |
 | **DynamoDB** | Table search + **Overview** + **Explore items** + **Indexes** + **Streams**; Scan/Query Run; GSI query, scalar FilterExpression, **Create index**; CreateTable, DeleteTable, Put/Update/Delete (Simple + **JSON document**) | Scan on a GSI, extra filter functions, GSI delete → CLI; sort key on Create table still ComingSoon; enable stream → CLI/Terraform |
 | **SQS** | **:** ListQueues table, CreateQueue, SetQueueAttributes, DeleteQueue, peek (admin), SendMessage, ReceiveMessage (1–10), ChangeMessageVisibility, DeleteMessage, PurgeQueue; **:** DLQ redrive (**StartMessageMoveTask**); **:** FIFO create/send | — |
 | **SSM** | GetParametersByPath, PutParameter (**String** + **SecureString**), DeleteParameter, **DeleteParameters** (batch) | SecureString = mock local encryption (not KMS); StringList → CLI |

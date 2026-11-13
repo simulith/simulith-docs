@@ -1,19 +1,19 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty-two** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty-three** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, **Cost Explorer (local estimate)**).
 
 > **Start here** for limits and verify coverage. Each [service guide](using-simulith.md) also lists **what you can do** and **what Simulith does not do**. Onboarding: [quickstart.md](quickstart.md) · [using-simulith.md](using-simulith.md).
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-11-03..
+Last updated: 2026-11-13..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 22 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS) |
-| Operations **available** locally | 247 |
+| Services in matrix | 23 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, Cost Explorer estimate) |
+| Operations **available** locally | 248 |
 | Default verify scenarios | DynamoDB 6 (+14 extended), SQS 13, SSM 10, S3 10, Lambda 10, API Gateway 5, Secrets Manager 3, Cognito 5, SES 2, SNS 2, EventBridge 5, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5, CloudFormation 3 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
@@ -507,6 +507,20 @@ Supported CFN resource types: Lambda, IAM (`AWS::IAM::Role` and `AWS::IAM::Polic
 
 ---
 
+## Cost Explorer (local estimate)
+
+Guide: [cost-explorer.md](cost-explorer.md) · Verify: `simulith verify cost --skip-aws`
+
+> Not real AWS Billing. Reference prices for developer education.
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| GetCostAndUsage | partial | yes (`get-cost-and-usage`) | `DAILY` / `MONTHLY`; metrics `UnblendedCost`, `UsageQuantity`; `GroupBy` `SERVICE` or `USAGE_TYPE` |
+| GetDimensionValues | partial | — | `SERVICE`, `USAGE_TYPE` |
+| Lambda GB-Second metering | available | yes (`api-metering` + invoke) | Inspector hook after successful Invoke |
+
+---
+
 ## Verify scenario index
 
 Quick reference — full runbook in [compatibility.md](compatibility.md).
@@ -537,6 +551,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | ACM | `certificate-request-describe-list`, `certificate-client-token-idempotency`, `certificate-tags-delete` | — |
 | CloudFront | `oac-create-get`, `distribution-oac-lifecycle`, `distribution-config-update-delete`, `managed-cache-policies`, `distribution-tags` | — |
 | CloudFormation | `stack-lifecycle`, `validate-template`, `nested-stack` | — |
+| Cost estimate | `get-cost-and-usage`, `api-metering`, `inventory-refresh` | — |
 
 ```bash
 simulith verify dynamodb --skip-aws
@@ -562,6 +577,7 @@ simulith verify route53 --skip-aws
 simulith verify acm --skip-aws
 simulith verify cloudfront --skip-aws
 simulith verify cloudformation --skip-aws
+simulith verify cost --skip-aws
 ```
 
 ---
