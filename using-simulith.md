@@ -47,6 +47,14 @@ Your app / CLI / Terraform
 
 **Different:** where data lives, credentials, account IDs, billing, and which operations exist. Each service guide lists **what you can do** and **what Simulith does not do**. The [compatibility matrix](compatibility-matrix.md) is the full operation table.
 
+### FAQ — local AWS environment
+
+| Question | Answer |
+| --- | --- |
+| **What is a local AWS environment?** | Simulith on `:4566` — same CLI/SDK/Terraform patterns as AWS, state on your machine, Console for inspection. Not a cloud account. |
+| **Need an AWS account?** | No, for local dev with Simulith. Use AWS for production and for APIs outside the documented subset. |
+| **Replace AWS?** | No — local dev and test only; [compatibility matrix](compatibility-matrix.md) and verify define scope. |
+
 ---
 
 ## Simulith vs AWS — developer comparison

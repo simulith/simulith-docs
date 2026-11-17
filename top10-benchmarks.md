@@ -7,6 +7,8 @@ Simulith validates AWS compatibility across three distinct layers:
 
 This suite guarantees that Simulith is not merely passing synthetic happy-path tests, but cleanly executing unedited customer and community workloads at first contact.
 
+**Ongoing per-service expansion (five public repos per area, findings log):** [Per-service external benchmarks](per-service-external-benchmarks.md).
+
 ---
 
 ## The 10 Pinned Repositories

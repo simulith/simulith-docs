@@ -14,7 +14,7 @@ A failure is a compatibility signal. The runner does not skip a red test and doe
 
 The catalog is `runtime/benchmarks/external/catalog.json`. Each entry stores a full commit SHA, not a branch. These releases still install on Python 3.8 and 3.12, and their clients follow `AWS_ENDPOINT_URL` (PynamoDB uses `PYNAMODB_INTEGRATION_TEST_DDB_URL`).
 
-`s3transfer` cleanup calls ListObjects (v1). That listing reuses the ListObjectsV2 key order, with `marker` / `NextMarker`. `delimiter` is not applied. The other PynamoDB test in the same file, `test_connection_integration`, builds a GSI and an LSI and then reads `ProvisionedThroughput` from DescribeTable. That test stays out of the pin until DescribeTable returns that block.
+`s3transfer` cleanup calls ListObjects (v1). That listing reuses the ListObjectsV2 key order, with `marker` / `NextMarker`. `delimiter` is not applied. The full PynamoDB `test_connection_integration` (GSI/LSI, update throughput, batch, query) is tracked as a **probe** in `runtime/benchmarks/per-service/dynamodb/FINDINGS.md`; the tri-repo pin still uses `test_connection_integration__describe_as_needed` for fast CI smoke.
 
 ## Run locally
 
@@ -42,6 +42,10 @@ It is not a required status check. Parity smoke in `ci.yml` remains the check on
 ## Adding a pin
 
 Keep the catalog at exactly three repositories, one each for DynamoDB, SQS, and S3, until a later story widens it. A new pin must be a public GitHub repository outside the `simulith` org, a 40-character SHA, and a test command that already exists upstream and does not start LocalStack, DynamoDB Local, or another emulator.
+
+## Per-service catalogs (5 repos × traceability)
+
+For **issue discovery** across all matrix services, maintain separate catalogs under `runtime/benchmarks/per-service/<service>/` with a `FINDINGS.md` run log per service. Same harness as the top-10 suite via `CATALOG_PATH`. See [Per-service external benchmarks](per-service-external-benchmarks.md).
 
 ## Top-10 Real-World Benchmark Suite
 
