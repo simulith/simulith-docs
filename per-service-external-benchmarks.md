@@ -107,6 +107,8 @@ Do not replace a failing upstream test with a weaker one without recording the g
 | S3 | `runtime/benchmarks/per-service/s3/catalog.json` | `runtime/benchmarks/per-service/s3/FINDINGS.md` |
 | SSM | `runtime/benchmarks/per-service/ssm/catalog.json` | `runtime/benchmarks/per-service/ssm/FINDINGS.md` |
 | SNS | `runtime/benchmarks/per-service/sns/catalog.json` | `runtime/benchmarks/per-service/sns/FINDINGS.md` |
+| Lambda | `runtime/benchmarks/per-service/lambda/catalog.json` | `runtime/benchmarks/per-service/lambda/FINDINGS.md` |
+| Secrets Manager | `runtime/benchmarks/per-service/secretsmanager/catalog.json` | `runtime/benchmarks/per-service/secretsmanager/FINDINGS.md` |
 | Others | TBD — one service at a time | — |
 
 ---
