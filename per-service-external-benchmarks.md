@@ -113,6 +113,7 @@ Do not replace a failing upstream test with a weaker one without recording the g
 | API Gateway | `runtime/benchmarks/per-service/apigateway/catalog.json` | `runtime/benchmarks/per-service/apigateway/FINDINGS.md` |
 | Cognito | `runtime/benchmarks/per-service/cognito/catalog.json` | `runtime/benchmarks/per-service/cognito/FINDINGS.md` |
 | SES | `runtime/benchmarks/per-service/ses/catalog.json` | `runtime/benchmarks/per-service/ses/FINDINGS.md` |
+| IAM | `runtime/benchmarks/per-service/iam/catalog.json` | `runtime/benchmarks/per-service/iam/FINDINGS.md` |
 | Others | TBD — one service at a time | — |
 
 ---
