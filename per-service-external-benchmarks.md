@@ -112,6 +112,7 @@ Do not replace a failing upstream test with a weaker one without recording the g
 | EventBridge | `runtime/benchmarks/per-service/eventbridge/catalog.json` | `runtime/benchmarks/per-service/eventbridge/FINDINGS.md` |
 | API Gateway | `runtime/benchmarks/per-service/apigateway/catalog.json` | `runtime/benchmarks/per-service/apigateway/FINDINGS.md` |
 | Cognito | `runtime/benchmarks/per-service/cognito/catalog.json` | `runtime/benchmarks/per-service/cognito/FINDINGS.md` |
+| SES | `runtime/benchmarks/per-service/ses/catalog.json` | `runtime/benchmarks/per-service/ses/FINDINGS.md` |
 | Others | TBD — one service at a time | — |
 
 ---
