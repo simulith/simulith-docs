@@ -1,6 +1,6 @@
 # Using Simulith — local development vs AWS
 
-You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, EventBridge, CloudWatch Logs, Cognito, SES, SNS, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, and CloudFormation locally, and how that compares to real AWS.
+You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with all **twenty-three** shipped service areas locally (DynamoDB through Cost Explorer estimate — full list in the [compatibility matrix](compatibility-matrix.md)), and how that compares to real AWS.
 
 > **Installation:** not covered here — see [quickstart](quickstart.md) or [Docker Hub overviews](https://hub.docker.com/r/simulith/simulith).
 
@@ -73,7 +73,7 @@ Your app / CLI / Terraform
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |
 | **Promote to AWS** | Deploy to cloud | Same Terraform/modules — switch workspace + `-var-file` — [terraform-integration.md](terraform-integration.md#workspaces-and--var-file-simulith-vs-real-aws) |
 
-When something behaves differently from AWS, check the service guide (**[dynamodb.md](dynamodb.md)**, **[sqs.md](sqs.md)**, **[s3.md](s3.md)**, **[lambda.md](lambda.md)**, **[apigateway.md](apigateway.md)**, **[secretsmanager.md](secretsmanager.md)**, **[eventbridge.md](eventbridge.md)**, **[cloudwatch.md](cloudwatch.md)**, **[cognito.md](cognito.md)**, **[ses.md](ses.md)**, **[sns.md](sns.md)**, **[vpc.md](vpc.md)**, **[rds.md](rds.md)**, **[iam.md](iam.md)**, **[kms.md](kms.md)**, **[route53.md](route53.md)**, **[acm.md](acm.md)**, **[cloudfront.md](cloudfront.md)**, **[cloudformation.md](cloudformation.md)**) for documented deviations before assuming a bug.
+When something behaves differently from AWS, check the matching guide under [Quickstart — What you get](quickstart.md#what-you-get) and [Runtime docs — Service guides](README.md#service--platform-guides-shipped) (e.g. **[vpc.md](vpc.md)** / **[ebs.md](ebs.md)** for EC2 API, **[cost-explorer.md](cost-explorer.md)** for Billing) before assuming a bug.
 
 ---
 
@@ -125,7 +125,7 @@ Best for **exploration**, demos, and users who prefer a GUI.
 
 1. Open **http://localhost:9080**
 2. **Seed demo data** on the dashboard (or load seed via CLI — [seed.md](seed.md))
-3. Explore service panels from the dashboard grid — e.g. **DynamoDB**, **SQS**, **SNS** (`demo-alarm`), **S3**, **Lambda** (`demo-fn`), **API Gateway**, **Secrets Manager**, **EventBridge** (`demo-rule`), **CloudWatch** (Logs/Metrics), **Cognito** (`demo-pool`), **SES** (`demo-template`), **VPC**, **RDS** (`demo-db`), **IAM**, **KMS**, **Route 53**, **ACM**, **CloudFront**, **CloudFormation**, and **Verify** — full list in [console.md](console.md)
+3. Explore service panels from the dashboard grid — e.g. **DynamoDB**, **SQS**, **SNS** (`demo-alarm`), **S3**, **Lambda** (`demo-fn`), **API Gateway**, **Secrets Manager**, **EventBridge** (`demo-rule`), **CloudWatch** (Logs/Metrics), **Cognito** (`demo-pool`), **SES** (`demo-template`), **EC2** (instances + EBS), **VPC**, **RDS** (`demo-db`), **IAM**, **KMS**, **Route 53**, **ACM**, **CloudFront**, **CloudFormation**, **Billing**, and **Verify** — full list in [console.md](console.md)
 4. **Lambda panel:** list, config, invoke with JSON — sync invoke needs `node`/`python3` on the runtime host PATH — [lambda.md](lambda.md)
 5. Optional: **Verify** panel — import compatibility JSON from CI
 

@@ -7,7 +7,17 @@ Simulith validates AWS compatibility across three distinct layers:
 
 This suite guarantees that Simulith is not merely passing synthetic happy-path tests, but cleanly executing unedited customer and community workloads at first contact.
 
-**Ongoing per-service expansion (five public repos per area, findings log):** [Per-service external benchmarks](per-service-external-benchmarks.md).
+### Per-service catalogs (5 pins × matrix area)
+
+The **same harness** (`run-10-benchmarks.mjs` + `CATALOG_PATH`) runs **five pinned repos per shipped service area** (EC2, EBS, Cost Explorer, CloudFormation, …). This doc describes only the **fixed top-10** catalog in `runtime/benchmarks/top10/catalog.json`.
+
+| What | Where |
+| --- | --- |
+| Runbook, service table, workflow | [Per-service external benchmarks](per-service-external-benchmarks.md) |
+| Catalog paths + `FINDINGS.md` index | `runtime/benchmarks/per-service/README.md` (in-repo index; not mirrored) |
+| Latest **5/5 PASS** rows & open gaps | `runtime/benchmarks/per-service/<service>/FINDINGS.md` |
+
+Do not duplicate per-service results here — update the matching `FINDINGS.md` after each pass.
 
 ---
 

@@ -25,7 +25,8 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | CloudWatch Metrics | PutMetricData, ListMetrics — [cloudwatch-metrics.md](cloudwatch-metrics.md) |
 | Cognito | User Pool + Admin* + JWKS — [cognito.md](cognito.md) |
 | SES | Identity, templates, Send* (local outbox) — [ses.md](ses.md) |
-| VPC | VPC, subnets, security groups — [vpc.md](vpc.md) |
+| VPC / EC2 (metadata) | VPC, subnets, SGs, RunInstances/TerminateInstances — [vpc.md](vpc.md) · Console **EC2** |
+| EBS (EC2 API) | Volume CRUD, attach/detach (metadata) — [ebs.md](ebs.md) |
 | RDS | PostgreSQL + RDS Proxy (Docker sidecar) — [rds.md](rds.md) |
 | IAM | Roles and policies (RDS Proxy) — [iam.md](iam.md) |
 | KMS | Customer master keys + encrypt/decrypt — [kms.md](kms.md) |
@@ -33,10 +34,13 @@ Simulith runs a local HTTP server (default port **4566**) that AWS CLI and SDKs 
 | ACM | DNS-validated certificates — [acm.md](acm.md) |
 | CloudFront | OAC + distributions (local CDN metadata) — [cloudfront.md](cloudfront.md) |
 | CloudFormation | Stack lifecycle + Serverless v3 deploy — [cloudformation.md](cloudformation.md) |
+| Cost Explorer (estimate) | Local `ce:GetCostAndUsage` + inventory — [cost-explorer.md](cost-explorer.md) · Console **Billing** |
 
 State persists in SQLite. Developer commands: seed, reset, snapshot — see [persistence.md](persistence.md).
 
-**Local cost estimate:** With **Console** at `:9080`, open **Billing** for an AWS-style on-demand estimate from your local API usage (plus inventory sync). Same data via `ce:GetCostAndUsage` and `simulith verify cost`. **Not** your real AWS bill — see [cost-explorer.md](cost-explorer.md).
+**Billing panel:** same Cost Explorer estimate — see row above and [cost-explorer.md](cost-explorer.md) (not your real AWS invoice).
+
+**Full matrix:** all **23** areas — [compatibility-matrix.md](compatibility-matrix.md).
 
 ---
 
