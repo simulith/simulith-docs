@@ -115,6 +115,7 @@ Do not replace a failing upstream test with a weaker one without recording the g
 | SES | `runtime/benchmarks/per-service/ses/catalog.json` | `runtime/benchmarks/per-service/ses/FINDINGS.md` |
 | IAM | `runtime/benchmarks/per-service/iam/catalog.json` | `runtime/benchmarks/per-service/iam/FINDINGS.md` |
 | KMS | `runtime/benchmarks/per-service/kms/catalog.json` | `runtime/benchmarks/per-service/kms/FINDINGS.md` |
+| CloudWatch Logs | `runtime/benchmarks/per-service/cloudwatch/catalog.json` | `runtime/benchmarks/per-service/cloudwatch/FINDINGS.md` |
 | Others | TBD — one service at a time | — |
 
 ---
