@@ -124,6 +124,7 @@ Do not replace a failing upstream test with a weaker one without recording the g
 | EC2 (VPC) | `runtime/benchmarks/per-service/ec2/catalog.json` | `runtime/benchmarks/per-service/ec2/FINDINGS.md` |
 | CloudWatch Metrics | `runtime/benchmarks/per-service/cloudwatch-metrics/catalog.json` | `runtime/benchmarks/per-service/cloudwatch-metrics/FINDINGS.md` |
 | EventBridge Schemas | `runtime/benchmarks/per-service/schemas/catalog.json` | `runtime/benchmarks/per-service/schemas/FINDINGS.md` |
+| Cost Explorer | `runtime/benchmarks/per-service/cost-explorer/catalog.json` | `runtime/benchmarks/per-service/cost-explorer/FINDINGS.md` |
 | Others | TBD — one service at a time | — |
 
 ---
