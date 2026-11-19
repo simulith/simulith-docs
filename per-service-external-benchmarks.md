@@ -118,6 +118,7 @@ Do not replace a failing upstream test with a weaker one without recording the g
 | CloudWatch Logs | `runtime/benchmarks/per-service/cloudwatch/catalog.json` | `runtime/benchmarks/per-service/cloudwatch/FINDINGS.md` |
 | Route 53 | `runtime/benchmarks/per-service/route53/catalog.json` | `runtime/benchmarks/per-service/route53/FINDINGS.md` |
 | RDS | `runtime/benchmarks/per-service/rds/catalog.json` | `runtime/benchmarks/per-service/rds/FINDINGS.md` |
+| ACM | `runtime/benchmarks/per-service/acm/catalog.json` | `runtime/benchmarks/per-service/acm/FINDINGS.md` |
 | Others | TBD — one service at a time | — |
 
 ---
