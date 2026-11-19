@@ -121,6 +121,7 @@ Do not replace a failing upstream test with a weaker one without recording the g
 | ACM | `runtime/benchmarks/per-service/acm/catalog.json` | `runtime/benchmarks/per-service/acm/FINDINGS.md` |
 | CloudFront | `runtime/benchmarks/per-service/cloudfront/catalog.json` | `runtime/benchmarks/per-service/cloudfront/FINDINGS.md` |
 | CloudFormation | `runtime/benchmarks/per-service/cloudformation/catalog.json` | `runtime/benchmarks/per-service/cloudformation/FINDINGS.md` |
+| EC2 (VPC) | `runtime/benchmarks/per-service/ec2/catalog.json` | `runtime/benchmarks/per-service/ec2/FINDINGS.md` |
 | Others | TBD — one service at a time | — |
 
 ---
