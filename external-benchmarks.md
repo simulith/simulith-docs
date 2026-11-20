@@ -9,12 +9,12 @@ A failure is a compatibility signal. The runner does not skip a red test and doe
 | Id | Repository | Commit | Service | What runs |
 | --- | --- | --- | --- | --- |
 | `boto3-sqs` | [boto/boto3](https://github.com/boto/boto3) `1.35.99` | `74405eeea71466dd905fedad97d9553f63cf887f` | SQS | `tests.integration.test_sqs.TestSQSResource.test_sqs` |
-| `pynamodb-connection` | [pynamodb/PynamoDB](https://github.com/pynamodb/PynamoDB) `5.5.1` | `7b60000164696fa2c668bdd74e3344fa2e9a6970` | DynamoDB | `test_connection_integration__describe_as_needed` (create, put, get, delete) |
+| `pynamodb-connection` | [pynamodb/PynamoDB](https://github.com/pynamodb/PynamoDB) `5.5.1` | `7b60000164696fa2c668bdd74e3344fa2e9a6970` | DynamoDB | `test_connection_integration` (GSI/LSI, throughput, batch, query) |
 | `s3transfer-upload` | [boto/s3transfer](https://github.com/boto/s3transfer) `0.10.4` | `0323658c863654911d385899d4b907ae003d80ff` | S3 | `tests.integration.test_upload.TestUpload.test_upload_below_threshold` |
 
 The catalog is `runtime/benchmarks/external/catalog.json`. Each entry stores a full commit SHA, not a branch. These releases still install on Python 3.8 and 3.12, and their clients follow `AWS_ENDPOINT_URL` (PynamoDB uses `PYNAMODB_INTEGRATION_TEST_DDB_URL`).
 
-`s3transfer` cleanup calls ListObjects (v1). That listing reuses the ListObjectsV2 key order, with `marker` / `NextMarker`. `delimiter` is not applied. The full PynamoDB `test_connection_integration` (GSI/LSI, update throughput, batch, query) is tracked as a **probe** in `runtime/benchmarks/per-service/dynamodb/FINDINGS.md`; the tri-repo pin still uses `test_connection_integration__describe_as_needed` for fast CI smoke.
+`s3transfer` cleanup calls ListObjects (v1). That listing reuses the ListObjectsV2 key order, with `marker` / `NextMarker`. `delimiter` is not applied. PynamoDB history and probe notes: `runtime/benchmarks/per-service/dynamodb/FINDINGS.md`.
 
 ## Run locally
 
