@@ -77,6 +77,10 @@ Example: `parse @message /level=(?<level>\w+)/ | filter level = 'ERROR' | fields
 
 Log groups, streams, and events are stored in SQLite (`cloudwatch_log_*` tables). `simulith reset` clears them.
 
+## Console
+
+Open **CloudWatch → Logs** in the local Console ([console.md](console.md)) — **DescribeLogGroups**, **DescribeLogStreams**, **GetLogEvents**, **FilterLogEvents**, **CreateLogGroup**, **PutLogEvents**, and **DeleteLogGroup**. Delete log stream only is CLI/SDK; Metrics, Alarms, Dashboards, and Insights live on sibling tabs (see [cloudwatch-metrics.md](cloudwatch-metrics.md), [cloudwatch-alarms.md](cloudwatch-alarms.md), [cloudwatch-dashboards.md](cloudwatch-dashboards.md)).
+
 ## Seed
 
 Default **Seed** includes log group **`/aws/lambda/demo-fn`** with a sample stream and three events (`hello from seed` in the middle line). . See [seed.md](seed.md).

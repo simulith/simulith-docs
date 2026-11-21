@@ -59,7 +59,7 @@ Scenarios: `rule-target-lifecycle`, `schedule-lambda-invoke` (needs `node` on PA
 
 ## Console
 
-Panel **EventBridge** (`/eventbridge`) — list rules, targets, and last invoke via admin peek (`GET /_simulith/v1/eventbridge/rules`). .
+Panel **EventBridge** (`/eventbridge`) — list rules and targets, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**, **CreateEventBus** / **DeleteEventBus**; last invoke via admin peek (`GET /_simulith/v1/eventbridge/rules`). See [console.md](console.md).
 
 Default **Seed** includes schedule rule **`demo-rule`** (`rate(5 minutes)`) targeting **`demo-fn`**. .
 

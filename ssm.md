@@ -143,6 +143,10 @@ Optional snapshot v1 `"ssm"` block is supported.
 
 ---
 
+## Console
+
+Panel **SSM** (`/ssm`) — browse parameters by path, **PutParameter** / edit / delete for **String**, **StringList** (comma-separated value), and **SecureString**, plus **DeleteParameters** (batch, up to 10 names). See [console.md](console.md).
+
 ## Related
 
 - [compatibility-matrix.md](compatibility-matrix.md) — public operation × verify coverage matrix

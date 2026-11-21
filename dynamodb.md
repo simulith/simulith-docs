@@ -132,7 +132,7 @@ Target prefix `DynamoDBStreams_20120810` on the same HTTP endpoint (SigV4 signin
 
 Successful `PutItem`, `UpdateItem`, `DeleteItem`, `BatchWriteItem`, and `TransactWriteItems` append one record (`INSERT`, `MODIFY`, or `REMOVE`). Failed conditions and deletes of missing items do not. Each stream has one open shard. Disabling the stream closes that shard and clears `LatestStreamArn`; the stream stays readable until `DeleteTable` or reset. Re-enabling allocates a new ARN.
 
-Not in this slice: shard splits and a 24-hour trim job. **Lambda event source mappings** for streams: **** / ``. Console Streams tab: **** / ``.
+Not in this slice: shard splits and a 24-hour trim job. **Lambda event source mappings** for streams: **** / ``. Console **Streams** tab: **** / ****; **enable/disable stream** in UI — **** / ****.
 
 ## Continuous backups / PITR (Terraform metadata)
 
@@ -187,7 +187,9 @@ Supported DynamoDB wire types:
 
 Key attributes must use scalar types (`S`, `N`, or `B`) matching the table `AttributeDefinitions`.
 
-**Console:** Map/List item editing in the web UI — **JSON document** tab; Simple tab for string scalars. See [`console.md`](console.md).
+## Console
+
+Panel **DynamoDB** (`/dynamodb`) — table search, **Overview**, **Explore items**, **Indexes**, and **Streams**; **Enable/disable stream**; Scan/Query (**Scan on GSI**), GSI query, scalar FilterExpression, **Create/delete index**; CreateTable, DeleteTable, Put/Update/Delete. See [console.md](console.md).
 
 ## Local behavior deviations
 
