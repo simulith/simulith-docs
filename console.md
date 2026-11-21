@@ -144,7 +144,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Lambda** | **Functions:** ListFunctions, GetFunction, tabs, **UpdateFunctionConfiguration**, **UpdateFunctionCode**, Invoke, DeleteFunction, **Monitor**. **Triggers:** ESM CRUD. **Layers:** publish/delete | Graph widgets; auto `AWS/Lambda` metrics on invoke; invoke needs node/python3 on PATH |
 | **API Gateway** | **:** API table, Resources/Stages/Test tabs; **CreateRestApi** dialog; GetResources, Add route, **CreateDeployment** / **CreateStage**, GetStage, HTTP invoke, DeleteRestApi; custom domain tabs | Existing stage not auto-updated on deploy; full multi-step wizard → CLI/Terraform |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
-| **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**; last invoke via admin peek | Custom bus create/delete → CLI |
+| **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**, **CreateEventBus** / **DeleteEventBus**; last invoke via admin peek | — |
 | **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents**; **CreateLogGroup**, **PutLogEvents**; **DeleteLogGroup** | Delete stream only → CLI; other CW tabs read-only |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics**, **PutMetricData** | GetMetricData batch via CLI/SDK |
 | **CloudWatch Alarms** | **DescribeAlarms**, **PutMetricAlarm**, **DeleteAlarms**, **SetAlarmState**, SNS **OKActions** / **AlarmActions** | InsufficientDataActions via CLI |
