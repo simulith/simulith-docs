@@ -147,7 +147,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**; last invoke via admin peek | Custom bus create/delete → CLI |
 | **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents**; **CreateLogGroup**, **PutLogEvents** | Delete group/stream → CLI/Terraform; other CW tabs read-only |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics**, **PutMetricData** | GetMetricData batch via CLI/SDK |
-| **CloudWatch Alarms** | **DescribeAlarms**, **PutMetricAlarm**, **DeleteAlarms** | SetAlarmState / SNS ARNs via CLI |
+| **CloudWatch Alarms** | **DescribeAlarms**, **PutMetricAlarm**, **DeleteAlarms**, **SetAlarmState**, SNS **OKActions** / **AlarmActions** | InsufficientDataActions via CLI |
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard**, **PutDashboard**, **DeleteDashboards** | Opaque JSON body; no widget rendering |
 | **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |
 | **Cognito** | ListUserPools, clients, groups, JWKS; **Users** admin CRUD; **Auth debugger** — InitiateAuth / AdminInitiateAuth | Hosted UI; USER_SRP_AUTH wizard; pool/client create via CLI/Terraform |
