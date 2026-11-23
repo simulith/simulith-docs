@@ -4,6 +4,8 @@ Web GUI for local Simulith — health, seed/reset, and **service panels** for Dy
 
 For first-time runtime onboarding, see [quickstart.md](quickstart.md).
 
+**Console vs runtime vs AWS Console:** the **Service panels** table below is the **product contract** for the web UI. API coverage and `simulith verify` live in [compatibility-matrix.md](compatibility-matrix.md). **AWS Management Console alignment**, open T2 gaps, and panel-by-panel audit: console-parity-overview.md.
+
 ---
 
 ## Quick run (Docker)
@@ -145,7 +147,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **API Gateway** | **:** API table, Resources/Stages/Test tabs; **CreateRestApi** dialog; GetResources, Add route, **CreateDeployment** / **CreateStage**, GetStage, HTTP invoke, DeleteRestApi; custom domain tabs | Existing stage not auto-updated on deploy; full multi-step wizard → CLI/Terraform |
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**, **CreateEventBus** / **DeleteEventBus**; last invoke via admin peek | — |
-| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents**; **CreateLogGroup**, **PutLogEvents**; **DeleteLogGroup** | Delete stream only → CLI; other CW tabs read-only |
+| **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents**; **CreateLogGroup**, **PutLogEvents**; **DeleteLogGroup** | Delete log stream only → CLI; Metrics / Alarms / Dashboards / Insights are separate tabs |
 | **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics**, **PutMetricData** | GetMetricData batch via CLI/SDK |
 | **CloudWatch Alarms** | **DescribeAlarms**, **PutMetricAlarm**, **DeleteAlarms**, **SetAlarmState**, SNS **OKActions** / **AlarmActions** | InsufficientDataActions via CLI |
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard**, **PutDashboard**, **DeleteDashboards** | Opaque JSON body; no widget rendering |
