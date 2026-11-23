@@ -49,7 +49,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 - **Base table** — Query without `IndexName`
 - **GSI / LSI** — Query with `IndexName` matching CreateTable metadata; KeyCondition uses index key attribute names; index keys read from item attributes (sparse GSI: items missing the GSI hash attribute are skipped)
 - **KeyConditionExpression** (Query): partition `=`; optional range `=`, comparisons, `BETWEEN`, `begins_with`
-- **FilterExpression**: `AND`-combined scalar comparisons on item attributes
+- **FilterExpression**: `AND`-combined scalar comparisons; `contains`, `begins_with`, `attribute_exists`, `attribute_not_exists` on item attributes
 - **ExpressionAttributeNames** (`#name`) and **ExpressionAttributeValues** (`:val`) supported
 - **ProjectionExpression** — comma-separated top-level attributes on GetItem, Query, Scan, BatchGetItem, TransactGetItems; missing attrs omitted
 - **Limit** caps evaluated items per page; **1 MB** caps returned item payload per page; **ExclusiveStartKey** / **LastEvaluatedKey** use table primary-key AttributeMap
