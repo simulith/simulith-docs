@@ -315,7 +315,7 @@ Guide: [sns.md](sns.md) · Verify: `simulith verify sns`
 | DeleteTopic | available | yes (`topic-publish-lifecycle`) | Removes topic, subscriptions, and stored messages |
 | ListTopics | available | yes (`topic-publish-lifecycle`) | |
 | GetTopicAttributes | available | yes (`topic-publish-lifecycle`) | TopicArn, Owner, FifoTopic, ContentBasedDeduplication |
-| SetTopicAttributes | available | no | No-op accept for Terraform |
+| SetTopicAttributes | available | extended | DisplayName + ContentBasedDeduplication persist; other attrs no-op |
 | Publish | available | yes (`topic-publish-lifecycle`, `subscribe-sqs-fanout`) | Fan-out; FIFO group id + dedup. Filter policy applies on dispatch |
 | GetSubscriptionAttributes | available | no | PendingConfirmation false for sqs/lambda |
 | Subscribe | available | yes (`subscribe-sqs-fanout`) | Protocols `lambda`, `sqs`. FilterPolicy exact string match |
