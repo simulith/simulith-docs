@@ -20,6 +20,7 @@ Compatible with AWS CLI (`aws logs`) and AWS SDKs when using `--endpoint-url htt
 | DeleteLogGroup | `Logs_20140328.DeleteLogGroup` | ✓ |
 | DescribeLogGroups | `Logs_20140328.DescribeLogGroups` | ✓ |
 | CreateLogStream | `Logs_20140328.CreateLogStream` | ✓ |
+| DeleteLogStream | `Logs_20140328.DeleteLogStream` | ✓ |
 | DescribeLogStreams | `Logs_20140328.DescribeLogStreams` | ✓ |
 | PutLogEvents | `Logs_20140328.PutLogEvents` | ✓ |
 | GetLogEvents | `Logs_20140328.GetLogEvents` | ✓ |
@@ -79,7 +80,7 @@ Log groups, streams, and events are stored in SQLite (`cloudwatch_log_*` tables)
 
 ## Console
 
-Open **CloudWatch → Logs** in the local Console ([console.md](console.md)) — **DescribeLogGroups**, **DescribeLogStreams**, **GetLogEvents**, **FilterLogEvents**, **CreateLogGroup**, **PutLogEvents**, and **DeleteLogGroup**. Delete log stream only is CLI/SDK; Metrics, Alarms, Dashboards, and Insights live on sibling tabs (see [cloudwatch-metrics.md](cloudwatch-metrics.md), [cloudwatch-alarms.md](cloudwatch-alarms.md), [cloudwatch-dashboards.md](cloudwatch-dashboards.md)).
+Open **CloudWatch → Logs** in the local Console ([console.md](console.md)) — **DescribeLogGroups**, **DescribeLogStreams**, **GetLogEvents**, **FilterLogEvents**, **CreateLogGroup**, **PutLogEvents**, **DeleteLogGroup**, and **DeleteLogStream**. Metrics, Alarms, Dashboards, and Insights live on sibling tabs (see [cloudwatch-metrics.md](cloudwatch-metrics.md), [cloudwatch-alarms.md](cloudwatch-alarms.md), [cloudwatch-dashboards.md](cloudwatch-dashboards.md)).
 
 ## Seed
 

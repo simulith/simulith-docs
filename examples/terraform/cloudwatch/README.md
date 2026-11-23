@@ -48,7 +48,7 @@ aws logs describe-log-groups \
   --log-group-name-prefix "$(terraform output -raw log_group_name)"
 ```
 
-Optional — create a stream and event via CLI (not in this Terraform module; `DeleteLogStream` is not emulated yet):
+Optional — create a stream and event via CLI (not in this Terraform module; use SDK/CLI **DeleteLogStream** or Console to destroy streams):
 
 ```bash
 aws logs create-log-stream \
@@ -69,7 +69,7 @@ Expected plan: **1 to destroy**. Deleting the log group removes nested streams a
 
 - **`skip_requesting_account_id = true`** — Simulith uses fixed account `000000000000`.
 - **No tags or `retention_in_days`** in this module — avoids `TagResource` / `PutRetentionPolicy` APIs not yet emulated.
-- **`aws_cloudwatch_log_stream`** as a Terraform resource is deferred — destroy requires `DeleteLogStream`.
+- **`aws_cloudwatch_log_stream`** as a Terraform resource is still deferred — add module follow-up now that **DeleteLogStream** is emulated.
 
 ## Related
 

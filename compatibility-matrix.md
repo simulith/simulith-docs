@@ -350,7 +350,7 @@ Guide: [cloudwatch.md](cloudwatch.md) · Verify: `simulith verify cloudwatch`
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
 | CreateLogGroup / DeleteLogGroup / DescribeLogGroups | available | yes (`log-group-lifecycle`) |  |
-| CreateLogStream / DescribeLogStreams | available | yes (`put-log-events`) | |
+| CreateLogStream / DeleteLogStream / DescribeLogStreams | available | yes (`put-log-events`) | DeleteLogStream  |
 | PutLogEvents | available | yes (`put-log-events`) | Sequence token after first batch |
 | GetLogEvents | available | yes (`get-log-events`) |  |
 | FilterLogEvents | available | yes (`filter-log-events`) | ; simple text filter |
