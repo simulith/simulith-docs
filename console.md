@@ -148,7 +148,7 @@ Registered in the runtime on the **same SQLite store** as AWS handlers. Console 
 | **Secrets Manager** | ListSecrets, GetSecretValue (reveal), CreateSecret, DeleteSecret | Mock plain-text storage (not KMS); seeded `demo-secret` via **Seed** |
 | **EventBridge** | ListRules, DescribeRule, ListTargetsByRule, **PutRule** / delete rule + targets, **PutEvents**, **ListEventBuses**, **CreateEventBus** / **DeleteEventBus**; last invoke via admin peek | — |
 | **CloudWatch Logs** | DescribeLogGroups, DescribeLogStreams, **GetLogEvents**, **FilterLogEvents**; **CreateLogGroup**, **PutLogEvents**; **DeleteLogGroup** | Delete log stream only → CLI; Metrics / Alarms / Dashboards / Insights are separate tabs |
-| **CloudWatch Metrics** | **ListMetrics**, **GetMetricStatistics**, **PutMetricData** | GetMetricData batch via CLI/SDK |
+| **CloudWatch Metrics** | **ListMetrics**, **GetMetricData**, **PutMetricData** | GetMetricStatistics via CLI/SDK |
 | **CloudWatch Alarms** | **DescribeAlarms**, **PutMetricAlarm**, **DeleteAlarms**, **SetAlarmState**, SNS **OKActions** / **AlarmActions** / **InsufficientDataActions** | — |
 | **CloudWatch Dashboards** | **ListDashboards**, **GetDashboard**, **PutDashboard**, **DeleteDashboards** | Opaque JSON body; no widget rendering |
 | **CloudWatch Insights** | **StartQuery**, **GetQueryResults** | CWLI subset + depth (`stats count()`, `not like`, multi-group); read-only |

@@ -74,6 +74,6 @@ aws cloudwatch get-metric-statistics --namespace Simulith/Demo --metric-name Lat
 
 ## Console
 
-Open **CloudWatch → Metrics** — **ListMetrics**, **Put metric data**, and **GetMetricStatistics**.
+Open **CloudWatch → Metrics** — **ListMetrics**, **Put metric data**, and **GetMetricData**.
 
 See also [cloudwatch.md](cloudwatch.md) (Logs).
