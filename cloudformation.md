@@ -75,8 +75,8 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | Type | Behavior |
 | --- | --- |
 | `AWS::CDK::Metadata` | Controlled no-op. Physical ID `noop-<logicalID>`. `Ref` and `GetAtt` return that ID |
-| `Custom::*` | With `ServiceToken`, invokes provider Lambda (subset — sync JSON response). Without `ServiceToken`, no-op |
-| `AWS::CloudFormation::CustomResource` | Same invoke subset as `Custom::*` when `ServiceToken` is set |
+| `Custom::*` | With `ServiceToken`, invokes provider Lambda. **Sync:** invoke payload `{"PhysicalResourceId","Data"}`. **Async:** `ResponseURL` points to `PUT /_simulith/cloudformation/response?token=…` (cfn-response subset). Without `ServiceToken`, no-op |
+| `AWS::CloudFormation::CustomResource` | Same as `Custom::*` when `ServiceToken` is set |
 | `AWS::CloudFormation::WaitCondition` / `WaitConditionHandle` | Same no-op |
 
 Other resource types that are not in the supported table still fail the stack (`cdk bootstrap` / `CDKToolkit`, `AWS::Serverless::*`, `AWS::ECS::*`, …). `Custom::*` does not upload CDK assets; function code still needs `ZipFile` or an object already in S3.
