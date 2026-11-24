@@ -42,7 +42,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 | Flow Logs | Not implemented |
 | NAT packet translation | NAT Gateway is metadata (no packet NAT) |
 | PrivateLink data plane | Interface endpoints are metadata only |
-| Real EC2 compute (boot, SSH, Session Manager) | **RunInstances** creates metadata records only — no hypervisor |
+| Real EC2 compute (boot, SSH, Session Manager) | **RunInstances** starts a **Docker SSH sidecar** on the Simulith host (`127.0.0.1:<port>`, user/password via env — see [ebs.md](ebs.md#ec2-ssh-sidecar)); requires **Docker on PATH**. **`DescribeImages`** catalog for `aws_ami` / TF. No hypervisor / Session Manager. |
 
 ## Terraform
 
@@ -52,7 +52,7 @@ Green-path examples:
 - [`examples/terraform/vpc/interface-endpoint-min/`](examples/terraform/vpc/interface-endpoint-min/) — Interface Secrets Manager endpoint
 - [`examples/terraform/vpc/nat-gateway-min/`](examples/terraform/vpc/nat-gateway-min/) — EIP + NAT Gateway + private default route
 - [`examples/terraform/vpc/network-acl-min/`](examples/terraform/vpc/network-acl-min/) — custom Network ACL + subnet association
-- [`examples/terraform/ec2/instance-min/`](examples/terraform/ec2/instance-min/) — `aws_instance` apply/destroy metadata only
+- [`examples/terraform/ec2/instance-min/`](examples/terraform/ec2/instance-min/) — `aws_instance` apply/destroy + SSH sidecar when Docker is available (FW-EC2-020)
 
 ```hcl
 provider "aws" {
@@ -78,7 +78,7 @@ simulith verify vpc --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
 simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
 
-simulith verify ec2 --skip-aws          # EC2 compute + EBS metadata smoke (3 scenarios)
+simulith verify ec2 --skip-aws          # EC2 compute + EBS metadata smoke (4 scenarios)
 simulith verify ec2                     # DescribeAvailabilityZones + RunInstances parity
 ```
 

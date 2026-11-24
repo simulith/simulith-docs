@@ -6,14 +6,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-11-13..
+Last updated: 2026-11-24..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 23 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, Cost Explorer estimate) |
-| Operations **available** locally | 248 |
+| Operations **available** locally | 250 |
 | Default verify scenarios | DynamoDB 6 (+14 extended), SQS 13, SSM 10, S3 10, Lambda 10, API Gateway 5, Secrets Manager 3, Cognito 5, SES 2, SNS 2, EventBridge 5, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5, CloudFormation 3 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
@@ -391,7 +391,9 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 | Network ACLs | available | yes (`network-acl-lifecycle`) | Default + custom NACL metadata; rules are not enforced on packets |
 | Lambda VpcConfig | available | yes | ; invoke scenario in verify vpc |
 | DescribeAvailabilityZones / DescribeInstances | available | yes | EC2 compute metadata; `simulith verify ec2` |
-| RunInstances / TerminateInstances | available | yes (`instance-metadata-lifecycle`) | Metadata-only instances in SQLite; no boot |
+| RunInstances / TerminateInstances | available | yes (`instance-metadata-lifecycle`, `instance-ssh-sidecar` when Docker present) | Docker SSH sidecar on host; key pairs + user-data |
+| ImportKeyPair / DescribeKeyPairs / DeleteKeyPair | available | no | SQLite `ec2_key_pairs`; injected into SSH sidecar |
+| DescribeImages | available | no | AMI catalog + synthetic `ami-*`; filters subset |
 
 ---
 
@@ -544,7 +546,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
-| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle`, `ebs-volume-attach-lifecycle` | — |
+| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle`, `instance-ssh-sidecar`, `ebs-volume-attach-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy`, `list-roles-after-create` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |

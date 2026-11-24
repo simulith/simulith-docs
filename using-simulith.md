@@ -47,6 +47,8 @@ Your app / CLI / Terraform
 
 **Different:** where data lives, credentials, account IDs, billing, and which operations exist. Each service guide lists **what you can do** and **what Simulith does not do**. The [compatibility matrix](compatibility-matrix.md) is the full operation table.
 
+Not every shipped service runs a full AWS **data plane** locally (for example EC2 has no SSH boot; VPC has metadata without packet NAT). For a **per-service depth map** (runnable vs IaC-only vs sidecar) and a demoapp-oriented checklist, see **[Service depth tiers](service-depth-tiers.md)**.
+
 ### FAQ — local AWS environment
 
 | Question | Answer |

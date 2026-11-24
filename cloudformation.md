@@ -63,6 +63,7 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | `AWS::S3::Bucket` | S3 store (`BucketName`, `PublicAccessBlockConfiguration`, `Tags` subset) |
 | `AWS::S3::BucketPolicy` | S3 store (`Bucket` ref, `PolicyDocument` JSON — Serverless deployment bucket policy) |
 | `AWS::Logs::LogGroup` | CloudWatch Logs store |
+| `AWS::DynamoDB::Table` | DynamoDB store (`TableName`, `AttributeDefinitions`, `KeySchema`, `BillingMode`, GSI/LSI subset — same CreateTable bar as API) |
 | `AWS::CloudFormation::Stack` | Nested stack — provisions child stack + supported types in child template |
 
 **Intrinsics (subset):** `Ref`, `Fn::GetAtt`, `Fn::Sub`, `Fn::Join`, `Fn::If`, `Fn::Equals`, `Fn::Not`, `Fn::And`, `Fn::Or`, `Condition`. `AWS::NoValue` drops the property. Template `DependsOn` and resource `Condition` are honored. Omitted parameters use the template default when one is set.
@@ -78,7 +79,7 @@ These AWS operations (and most resource types) are **not available** locally. Us
 | `AWS::CloudFormation::CustomResource` | Same invoke subset as `Custom::*` when `ServiceToken` is set |
 | `AWS::CloudFormation::WaitCondition` / `WaitConditionHandle` | Same no-op |
 
-Other resource types that are not in the supported table still fail the stack (`AWS::DynamoDB::Table`, `cdk bootstrap` / `CDKToolkit`, `AWS::Serverless::*`). `Custom::*` does not upload CDK assets; function code still needs `ZipFile` or an object already in S3.
+Other resource types that are not in the supported table still fail the stack (`cdk bootstrap` / `CDKToolkit`, `AWS::Serverless::*`, `AWS::ECS::*`, …). `Custom::*` does not upload CDK assets; function code still needs `ZipFile` or an object already in S3.
 
 **S3 bucket GetAtt:** `Arn`, `DomainName`, `RegionalDomainName`. Stack delete empties the bucket before `DeleteBucket`.
 
