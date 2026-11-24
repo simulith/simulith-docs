@@ -1,6 +1,6 @@
 # Using Simulith — local development vs AWS
 
-You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with all **twenty-three** shipped service areas locally (DynamoDB through Cost Explorer estimate — full list in the [compatibility matrix](compatibility-matrix.md)), and how that compares to real AWS.
+You started Simulith with Docker — **what next?** This guide is the **second step** after [quickstart](quickstart.md) and [docker](docker.md): how to work with all **twenty-four** shipped service areas locally (DynamoDB through Cost Explorer estimate — full list in the [compatibility matrix](compatibility-matrix.md)), and how that compares to real AWS.
 
 > **Installation:** not covered here — see [quickstart](quickstart.md) or [Docker Hub overviews](https://hub.docker.com/r/simulith/simulith).
 
@@ -69,7 +69,7 @@ Not every shipped service runs a full AWS **data plane** locally (for example EC
 | **Account ID** | Your 12-digit account | Fixed **`000000000000`** in ARNs and queue URLs |
 | **Data storage** | AWS-managed, multi-AZ | **SQLite** under `/app/.simulith` in Docker (mount a volume to persist) — [persistence.md](persistence.md) |
 | **Billing / quotas** | AWS Billing and Cost Explorer (real invoices) | **Local cost estimate** — Console **Billing** + `ce:GetCostAndUsage` from dev traffic ([cost-explorer.md](cost-explorer.md)); not a real AWS bill. No cloud quotas — limited by disk and documented API subset |
-| **Services (available)** | Full catalogs | **Twenty-three** areas in the [compatibility matrix](compatibility-matrix.md) (incl. EC2/EBS and local cost estimate) — see each service guide |
+| **Services (available)** | Full catalogs | **Twenty-four** areas in the [compatibility matrix](compatibility-matrix.md) (incl. EC2/EBS, Auto Scaling, and local cost estimate) — see each service guide |
 | **API coverage** | Complete per service | **Subset** — `simulith verify` scenarios on all shipped services — [compatibility-matrix.md](compatibility-matrix.md) |
 | **Console** | AWS Management Console | **Simulith Console** (local web UI) — [console.md](console.md) · [Console vs AWS Console](console.md) |
 | **Reset state** | Delete resources in AWS | `simulith reset`, Console **Reset**, or admin API — [admin-api.md](admin-api.md) |

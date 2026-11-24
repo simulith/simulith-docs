@@ -1,6 +1,6 @@
 # Compatibility matrix — Simulith
 
-Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty-three** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, **Cost Explorer (local estimate)**).
+Public reference for **local API support** vs **`simulith verify` coverage** on all **twenty-four** shipped services (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, Auto Scaling (EC2 capacity), RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, **Cost Explorer (local estimate)**).
 
 > **Start here** for limits and verify coverage. Each [service guide](using-simulith.md) also lists **what you can do** and **what Simulith does not do**. Onboarding: [quickstart.md](quickstart.md) · [using-simulith.md](using-simulith.md).
 
@@ -12,8 +12,8 @@ Last updated: 2026-11-24..
 
 | Metric | Count |
 | --- | --- |
-| Services in matrix | 23 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, Cost Explorer estimate) |
-| Operations **available** locally | 250 |
+| Services in matrix | 24 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, Auto Scaling (EC2 capacity), RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, Cost Explorer estimate) |
+| Operations **available** locally | 255 |
 | Default verify scenarios | DynamoDB 6 (+14 extended), SQS 13, SSM 10, S3 10, Lambda 10, API Gateway 5, Secrets Manager 3, Cognito 5, SES 2, SNS 2, EventBridge 5, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5, CloudFormation 3 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
@@ -394,6 +394,20 @@ Guide: [vpc.md](vpc.md) · Verify: `simulith verify vpc`
 | RunInstances / TerminateInstances | available | yes (`instance-metadata-lifecycle`, `instance-ssh-sidecar` when Docker present) | Docker SSH sidecar on host; key pairs + user-data |
 | ImportKeyPair / DescribeKeyPairs / DeleteKeyPair | available | no | SQLite `ec2_key_pairs`; injected into SSH sidecar |
 | DescribeImages | available | no | AMI catalog + synthetic `ami-*`; filters subset |
+| CreateLaunchTemplate / DescribeLaunchTemplates / DeleteLaunchTemplate | available | no | SQLite launch templates for ASG + Terraform `aws_launch_template` |
+
+---
+
+## Auto Scaling (EC2 capacity)
+
+Guide: [vpc.md](vpc.md) (networking prerequisites) · Depends on RunInstances SSH sidecar
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| CreateAutoScalingGroup / UpdateAutoScalingGroup / DeleteAutoScalingGroup | available | no | Launch template required; synchronously scales via EC2 sidecar |
+| DescribeAutoScalingGroups / SetDesiredCapacity | available | no | |
+| DescribeAutoScalingInstances | available | no | |
+| DescribeScalingActivities | available | no | Empty activity list (stub) |
 
 ---
 
