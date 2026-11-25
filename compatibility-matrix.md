@@ -404,9 +404,9 @@ Guide: [vpc.md](vpc.md) (networking prerequisites) · Depends on RunInstances SS
 
 | Operation | API status | Verify | Notes |
 | --- | --- | --- | --- |
-| CreateAutoScalingGroup / UpdateAutoScalingGroup / DeleteAutoScalingGroup | available | no | Launch template required; synchronously scales via EC2 sidecar |
-| DescribeAutoScalingGroups / SetDesiredCapacity | available | no | |
-| DescribeAutoScalingInstances | available | no | |
+| CreateAutoScalingGroup / UpdateAutoScalingGroup / DeleteAutoScalingGroup | available | yes (`autoscaling-launch-template-group` when Docker present) | Launch template required; synchronously scales via EC2 sidecar |
+| DescribeAutoScalingGroups / SetDesiredCapacity | available | yes (`autoscaling-launch-template-group`) | |
+| DescribeAutoScalingInstances | available | yes (`autoscaling-launch-template-group`) | |
 | DescribeScalingActivities | available | no | Empty activity list (stub) |
 
 ---
@@ -560,7 +560,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
-| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle`, `instance-ssh-sidecar`, `ebs-volume-attach-lifecycle` | — |
+| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle`, `instance-ssh-sidecar`, `autoscaling-launch-template-group`, `ebs-volume-attach-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy`, `list-roles-after-create` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |

@@ -53,6 +53,7 @@ Green-path examples:
 - [`examples/terraform/vpc/nat-gateway-min/`](examples/terraform/vpc/nat-gateway-min/) — EIP + NAT Gateway + private default route
 - [`examples/terraform/vpc/network-acl-min/`](examples/terraform/vpc/network-acl-min/) — custom Network ACL + subnet association
 - [`examples/terraform/ec2/instance-min/`](examples/terraform/ec2/instance-min/) — `aws_instance` apply/destroy + SSH sidecar when Docker is available (FW-EC2-020)
+- [`examples/terraform/ec2/asg-min/`](examples/terraform/ec2/asg-min/) — launch template + ASG apply/destroy
 
 ```hcl
 provider "aws" {
@@ -78,7 +79,7 @@ simulith verify vpc --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
 simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
 
-simulith verify ec2 --skip-aws          # EC2 compute + EBS metadata smoke (4 scenarios)
+simulith verify ec2 --skip-aws          # EC2 compute + EBS + ASG smoke (5 scenarios)
 simulith verify ec2                     # DescribeAvailabilityZones + RunInstances parity
 ```
 
