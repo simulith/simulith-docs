@@ -1,6 +1,6 @@
 # SSM Parameter Store — Simulith runtime
 
-Local **AWS Systems Manager Parameter Store** emulation for the supported subset (Put/Get/Delete single parameter, bulk read by names and path).
+Local **AWS Systems Manager Parameter Store** emulation for the supported subset (Put/Get/Delete single parameter, bulk read by names and path). A **Session Manager control-plane bridge** for EC2 SSH sidecars is documented in [Session Manager (EC2 bridge)](#session-manager-ec2-bridge).
 
 ## Protocol
 
@@ -140,6 +140,24 @@ Optional snapshot v1 `"ssm"` block is supported.
 | DeleteParameters (batch) | **Available** — up to 10 names per call |
 | GetParametersByPath at scale | Full-table name scan in memory (local store) |
 | NextToken format | Simulith offset token (not AWS-compatible) |
+
+---
+
+## Session Manager (EC2 bridge)
+
+**** — control plane only for **running** EC2 instances with an active Docker SSH sidecar (same bar as [ebs.md — EC2 SSH sidecar](ebs.md#ec2-ssh-sidecar)).
+
+| Operation | Status | Notes |
+| --- | --- | --- |
+| DescribeInstanceInformation | **Available** | `PingStatus=Online`, `ResourceType=EC2Instance` |
+| GetConnectionStatus | **Available** | `connected` when sidecar is up |
+| StartSession | **Available** | `Target` = instance id; returns `SessionId`, `TokenValue`, `StreamUrl` |
+| TerminateSession | **Available** | Ends in-memory session |
+| DescribeSessions | **Available** | Active sessions only (not persisted) |
+
+`StreamUrl` points at `ws://127.0.0.1:<SIMULITH_PORT>/v1/ssm/data-channel/<session-id>` — **WebSocket data channel not implemented**; the AWS CLI Session Manager plugin will not attach yet. Use SSH to the sidecar for an interactive shell.
+
+Verify: `simulith verify ec2 --filter ec2-ssm-session-control` (skips when Docker sidecar cannot start).
 
 ---
 

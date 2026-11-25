@@ -6,14 +6,14 @@ Public reference for **local API support** vs **`simulith verify` coverage** on 
 
 **Important:** **available** means the operation is implemented in the local runtime (often with documented limits — see the service guide). **Verify** means a curated scenario in [`simulith verify`](compatibility.md) compares Simulith to real AWS (or smoke-only with `--skip-aws`). Shipped locally ≠ verified against AWS.
 
-Last updated: 2026-11-24..
+Last updated: 2026-11-25..
 
 ## Summary
 
 | Metric | Count |
 | --- | --- |
 | Services in matrix | 24 (DynamoDB, SQS, SSM, S3, Lambda, API Gateway, Secrets Manager, Cognito, SES, SNS, EventBridge, CloudWatch Logs, CloudWatch Metrics, VPC, Auto Scaling (EC2 capacity), RDS, IAM, KMS, Route 53, ACM, CloudFront, CloudFormation, EBS, Cost Explorer estimate) |
-| Operations **available** locally | 255 |
+| Operations **available** locally | 260 |
 | Default verify scenarios | DynamoDB 6 (+14 extended), SQS 13, SSM 10, S3 10, Lambda 10, API Gateway 5, Secrets Manager 3, Cognito 5, SES 2, SNS 2, EventBridge 5, CloudWatch Logs 7, CloudWatch Metrics 3, CloudWatch Dashboards 3, RDS 2, VPC 5, IAM 4, KMS 2, Route 53 3, ACM 3, CloudFront 5, CloudFormation 3 |
 | DynamoDB extended verify scenarios | 14 (`--filter extended`) |
 
@@ -119,7 +119,17 @@ Guide: [ssm.md](ssm.md) · Verify: `simulith verify ssm` (10 scenarios)
 | RemoveTagsFromResource | available | yes (`parameter-tags`) | Parameter resources only |
 | ListTagsForResource | available | yes (`parameter-tags`) | Parameter resources only |
 
-**Not in matrix (gap):** full ParameterFilters, labels, Advanced tier, parameter policies, real AWS KMS, etc.
+### Session Manager (EC2 sidecar bridge)
+
+| Operation | API status | Verify | Notes |
+| --- | --- | --- | --- |
+| DescribeInstanceInformation | available | yes (`ec2-ssm-session-control` in `simulith verify ec2`) | Running sidecar instances only |
+| GetConnectionStatus | available | yes (`ec2-ssm-session-control`) | |
+| StartSession | available | yes (`ec2-ssm-session-control`) | Local `StreamUrl`; no `ssmmessages` WS yet |
+| TerminateSession | available | yes (`ec2-ssm-session-control`) | |
+| DescribeSessions | available | no | In-memory sessions |
+
+**Not in matrix (gap):** full ParameterFilters, labels, Advanced tier, parameter policies, real AWS KMS, Session Manager data channel / plugin shell, etc.
 
 ---
 
@@ -560,7 +570,7 @@ Quick reference — full runbook in [compatibility.md](compatibility.md).
 | CloudWatch Dashboards | `put-get-dashboard`, `list-dashboards`, `delete-dashboards` | — |
 | RDS | `db-instance-lifecycle`, `db-proxy-tcp-connect` | — |
 | VPC | `vpc-subnet-sg-lifecycle`, `lambda-vpc-proxy-reachability`, `interface-vpc-endpoint-lifecycle`, `nat-gateway-lifecycle`, `network-acl-lifecycle` | — |
-| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle`, `instance-ssh-sidecar`, `autoscaling-launch-template-group`, `ebs-volume-attach-lifecycle` | — |
+| EC2 compute | `describe-availability-zones`, `instance-metadata-lifecycle`, `instance-ssh-sidecar`, `ec2-ssm-session-control`, `autoscaling-launch-template-group`, `ebs-volume-attach-lifecycle` | — |
 | IAM | `rds-proxy-role-lifecycle`, `managed-policy-get`, `role-inline-policy`, `list-roles-after-create` | — |
 | KMS | `cmk-alias-lifecycle`, `encrypt-decrypt-roundtrip` | — |
 | Route 53 | `hosted-zone-record-lifecycle`, `cname-record-upsert`, `delete-empty-hosted-zone` | — |

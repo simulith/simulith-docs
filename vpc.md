@@ -42,7 +42,7 @@ These AWS operations are **not available** locally. Use real AWS if you need the
 | Flow Logs | Not implemented |
 | NAT packet translation | NAT Gateway is metadata (no packet NAT) |
 | PrivateLink data plane | Interface endpoints are metadata only |
-| Real EC2 compute (boot, SSH, Session Manager) | **RunInstances** starts a **Docker SSH sidecar** on the Simulith host (`127.0.0.1:<port>`, user/password via env — see [ebs.md](ebs.md#ec2-ssh-sidecar)); requires **Docker on PATH**. **`DescribeImages`** catalog for `aws_ami` / TF. No hypervisor / Session Manager. |
+| Real EC2 compute (boot, SSH, Session Manager) | **RunInstances** starts a **Docker SSH sidecar** on the Simulith host (`127.0.0.1:<port>`, user/password via env — see [ebs.md](ebs.md#ec2-ssh-sidecar)); requires **Docker on PATH**. **`DescribeImages`** catalog for `aws_ami` / TF. **Session Manager (control plane):** sidecar instances appear in `DescribeInstanceInformation`; `StartSession` returns Simulith-local `StreamUrl` — [ssm.md](ssm.md#session-manager-ec2-bridge). No hypervisor; no AWS `ssmmessages` data channel yet. |
 
 ## Terraform
 
@@ -79,7 +79,7 @@ simulith verify vpc --skip-aws          # Simulith-only smoke (5 scenarios)
 simulith verify vpc                     # AWS parity (DescribeVpcs after CreateVpc)
 simulith verify vpc --filter vpc-subnet # subset by scenario name prefix
 
-simulith verify ec2 --skip-aws          # EC2 compute + EBS + ASG smoke (5 scenarios)
+simulith verify ec2 --skip-aws          # EC2 compute + EBS + ASG + SSM session smoke (6 scenarios)
 simulith verify ec2                     # DescribeAvailabilityZones + RunInstances parity
 ```
 
